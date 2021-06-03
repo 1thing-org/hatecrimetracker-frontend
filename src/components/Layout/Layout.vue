@@ -1,15 +1,12 @@
 <template>
-<div :class="{root: true, sidebarClose}">
-  <!-- <Helper />
-  <Header />
-  <Sidebar /> -->
+<div :class="{root: true}">
   <div ref="content" class="content animated fadeInUp">
     <transition name="router-animation">
       <router-view />
     </transition>
   </div>
   <footer class="contentFooter">
-    Light Blue Vue Admin Dashboard Template - Made by <a href="https://flatlogic.com" target="_blank">Flatlogic</a>
+    Anti-Asian Hate Crime Tacker
   </footer>
 </div>
 </template>
