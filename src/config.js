@@ -19,5 +19,5 @@ export default {
     ...colors,
     white: "#fff"
   },
-  api_endpoint: "https://aoi.hatecrimetracker.1-thing.org"
+  api_endpoint: "https://api.hatecrimetracker.1-thing.org"
 };
