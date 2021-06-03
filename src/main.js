@@ -27,7 +27,6 @@ Vue.mixin(layoutMixin);
 Vue.use(Toasted, {duration: 10000});
 
 Vue.config.productionTip = false;
-Vue.prototype.$log = console.log;
 
 /* eslint-disable no-new */
 new Vue({

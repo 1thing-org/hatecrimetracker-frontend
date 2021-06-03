@@ -8,7 +8,7 @@
           customHeader
         >
           <div class="bg-transparent" style="align: center">
-            <Map style="width: 80%" />
+            <Map style="width: 80%" :stats=mapStats />
           </div>
         </Widget>
       </b-col>
@@ -131,6 +131,7 @@ export default {
             data: data,
           },
         ],
+        mapStats:{},
         chartOptions: {
           chart: {
             id: "chart2",
@@ -291,6 +292,8 @@ export default {
                     data: dailyCountSeries,
                   },
             ]
+
+            this.mapStats = {"total":response.data.total}
           })
       this.dataCollection = {
         labels: [
