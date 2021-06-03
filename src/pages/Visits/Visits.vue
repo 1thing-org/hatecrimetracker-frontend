@@ -199,8 +199,8 @@ export default {
             selection: {
               enabled: true,
               xaxis: {
-                min: new Date("19 Jun 2010").getTime(),
-                max: new Date("14 Aug 2017").getTime(),
+                // min: new Date("19 Jun 2010").getTime(),
+                // max: new Date("14 Aug 2017").getTime(),
                 labels: {
                   style: {
                     colors: colors.chartTextColor,
