@@ -3,113 +3,136 @@
     <h1 class="page-title">Hate Crime Map</h1>
     <b-row>
       <b-col lg="12">
-        <div class="bg-transparent" style="align:center">
-          <Map style="width: 80%" />
-        </div>
+        <Widget
+          title="<h5><strong>Incidents by States</strong></h5>"
+          customHeader
+        >
+          <div class="bg-transparent" style="align: center">
+            <Map style="width: 80%" />
+          </div>
+        </Widget>
       </b-col>
     </b-row>
     <b-row>
-      <b-col xl="12" xs="12">
-        <div id="wrapper">
-          <div id="chart-line2">
-            <apexchart
-              type="line"
-              height="250"
-              :options="incidentData.chartOptions"
-              :series="incidentData.series"
-            ></apexchart>
-          </div>
-          <div id="chart-line">
-            <apexchart
-              type="area"
-              height="150"
-              :options="incidentData.chartOptionsLine"
-              :series="incidentData.seriesLine"
-            ></apexchart>
-          </div>
-        </div>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col lg="10" xs="12">
-        <div>
-          <h6>Incidents</h6>
-          <div class="widget-body p-0">
-            <div class="list-group list-group-lg">
-              <a class="list-group-item" href="#">
-                <span class="thumb-sm float-left mr">
-                  <img
-                    class="rounded-circle"
-                    src="../../assets/people/a2.jpg"
-                    alt="..."
-                  />
-                  <i class="status status-bottom bg-success" />
-                </span>
-                <div>
-                  <h6 class="m-0">Chris Gray</h6>
-                  <p class="help-block text-ellipsis m-0">
-                    Hey! What&apos;s up? So many times since we
-                  </p>
-                </div>
-              </a>
-              <a class="list-group-item" href="#">
-                <span class="thumb-sm float-left mr">
-                  <img
-                    class="rounded-circle"
-                    src="../../assets/people/a4.jpg"
-                    alt="..."
-                  />
-                  <i class="status status-bottom bg-success" />
-                </span>
-                <div>
-                  <h6 class="m-0">Jamey Brownlow</h6>
-                  <p class="help-block text-ellipsis m-0">
-                    Good news coming tonight. Seems they agreed to proceed
-                  </p>
-                </div>
-              </a>
-              <a class="list-group-item" href="#">
-                <span class="thumb-sm float-left mr">
-                  <img
-                    class="rounded-circle"
-                    src="../../assets/people/a1.jpg"
-                    alt="..."
-                  />
-                  <i class="status status-bottom bg-primary" />
-                </span>
-                <div>
-                  <h6 class="m-0">Livia Walsh</h6>
-                  <p class="help-block text-ellipsis m-0">
-                    Check my latest email plz!
-                  </p>
-                </div>
-              </a>
-              <a class="list-group-item" href="#">
-                <span class="thumb-sm float-left mr">
-                  <img
-                    class="rounded-circle"
-                    src="../../assets/people/a5.jpg"
-                    alt="..."
-                  />
-                  <i class="status status-bottom bg-danger" />
-                </span>
-                <div>
-                  <h6 class="m-0">Jaron Fitzroy</h6>
-                  <p class="help-block text-ellipsis m-0">
-                    What about summer break?
-                  </p>
-                </div>
-              </a>
+      <b-col xl="10" xs="12">
+        <Widget
+          title="<h5><strong>Incidents History</strong></h5>"
+          customHeader
+        >
+          <div id="wrapper">
+            <div id="chart-line2">
+              <apexchart
+                type="line"
+                height="250"
+                :options="incidentData.chartOptions"
+                :series="incidentData.series"
+              ></apexchart>
+            </div>
+            <div id="chart-line">
+              <apexchart
+                type="area"
+                height="150"
+                :options="incidentData.chartOptionsLine"
+                :series="incidentData.seriesLine"
+              ></apexchart>
             </div>
           </div>
-          <footer class="bg-widget mt">
-            <input
-              type="search"
-              class="form-control form-control-sm"
-              placeholder="Search"
-            />
-          </footer>
-        </div>
+        </Widget>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col xl="10" xs="12">
+        <Widget title="<h5><strong>Incidents</strong></h5>" customHeader>
+          <div class="table-resposive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="hidden-sm-down">#</th>
+                  <th>Picture</th>
+                  <th>Description</th>
+                  <th class="hidden-sm-down">Info</th>
+                  <th class="hidden-sm-down">Date</th>
+                  <th class="hidden-sm-down">Size</th>
+                  <th class="hidden-sm-down">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in tableStyles" :key="row.id">
+                  <td>{{ row.id }}</td>
+                  <td>
+                    <img
+                      class="img-rounded"
+                      :src="row.picture"
+                      alt=""
+                      height="50"
+                    />
+                  </td>
+                  <td>
+                    {{ row.description }}
+                    <div v-if="row.label">
+                      <b-badge :variant="row.label.colorClass">{{
+                        row.label.text
+                      }}</b-badge>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="mb-0">
+                      <small>
+                        <span class="fw-semi-bold">Type:</span>
+                        <span class="text-muted"
+                          >&nbsp; {{ row.info.type }}</span
+                        >
+                      </small>
+                    </p>
+                    <p>
+                      <small>
+                        <span class="fw-semi-bold">Dimensions:</span>
+                        <span class="text-muted"
+                          >&nbsp; {{ row.info.dimensions }}</span
+                        >
+                      </small>
+                    </p>
+                  </td>
+                  <td class="text-muted">
+                    {{ parseDate(row.date) }}
+                  </td>
+                  <td class="text-muted">
+                    {{ row.size }}
+                  </td>
+                  <td class="width-150">
+                    <b-progress
+                      :variant="row.progress.colorClass"
+                      :value="row.progress.percent"
+                      :max="100"
+                      class="progress-sm mb-xs"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="clearfix">
+            <div class="float-right">
+              <b-button variant="default" class="mr-3" size="sm"
+                >Send to...</b-button
+              >
+              <b-dropdown
+                variant="inverse"
+                class="mr-xs"
+                size="sm"
+                text="Clear"
+                right
+              >
+                <b-dropdown-item>Clear</b-dropdown-item>
+                <b-dropdown-item>Move ...</b-dropdown-item>
+                <b-dropdown-item>Something else here</b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item>Separated link</b-dropdown-item>
+              </b-dropdown>
+            </div>
+            <p>Basic table with styled content</p>
+          </div>
+        </Widget>
       </b-col>
     </b-row>
   </div>
@@ -117,6 +140,7 @@
 
 <script>
 import Vue from "vue";
+import Widget from "@/components/Widget/Widget";
 import Map from "./components/Map/Map";
 import AreaChart from "./components/AreaChart/AreaChart";
 import AnimatedNumber from "animated-number-vue";
@@ -127,6 +151,7 @@ export default {
   name: "Visits",
   components: {
     Map,
+    Widget,
     AreaChart,
     AnimatedNumber,
   },
@@ -192,14 +217,13 @@ export default {
             axisTicks: {
               show: false,
             },
-            
           },
           yaxis: {
             labels: {
               style: {
                 colors: colors.chartTextColor,
-              }
-            }
+              },
+            },
           },
           grid: {
             borderColor: colors.gridLineColor,
@@ -252,11 +276,92 @@ export default {
             labels: {
               style: {
                 colors: colors.chartTextColor,
-              }
-            }
+              },
+            },
           },
         },
       },
+      tableStyles: [
+        {
+          id: 1,
+          picture: require("../../assets/tables/1.jpg"), // eslint-disable-line global-require
+          description: "Palo Alto",
+          info: {
+            type: "JPEG",
+            dimensions: "200x150",
+          },
+          date: new Date("September 14, 2018"),
+          size: "45.6 KB",
+          progress: {
+            percent: 29,
+            colorClass: "success",
+          },
+        },
+        {
+          id: 2,
+          picture: require("../../assets/tables/2.jpg"), // eslint-disable-line global-require
+          description: "The Sky",
+          info: {
+            type: "PSD",
+            dimensions: "2400x1455",
+          },
+          date: new Date("November 14, 2018"),
+          size: "15.3 MB",
+          progress: {
+            percent: 33,
+            colorClass: "warning",
+          },
+        },
+        {
+          id: 3,
+          picture: require("../../assets/tables/3.jpg"), // eslint-disable-line global-require
+          description: "Down the road",
+          label: {
+            colorClass: "danger",
+            text: "INFO!",
+          },
+          info: {
+            type: "JPEG",
+            dimensions: "200x150",
+          },
+          date: new Date("September 14, 2018"),
+          size: "49.0 KB",
+          progress: {
+            percent: 38,
+            colorClass: "inverse",
+          },
+        },
+        {
+          id: 4,
+          picture: require("../../assets/tables/4.jpg"), // eslint-disable-line global-require
+          description: "The Edge",
+          info: {
+            type: "PNG",
+            dimensions: "210x160",
+          },
+          date: new Date("September 15, 2018"),
+          size: "69.1 KB",
+          progress: {
+            percent: 17,
+            colorClass: "danger",
+          },
+        },
+        {
+          id: 5,
+          picture: require("../../assets/tables/5.jpg"), // eslint-disable-line global-require
+          description: "Fortress",
+          info: {
+            type: "JPEG",
+            dimensions: "1452x1320",
+          },
+          date: new Date("October 1, 2018"),
+          size: "2.3 MB",
+          progress: {
+            percent: 41,
+            colorClass: "primary",
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -284,7 +389,12 @@ export default {
       }
       Vue.set(this, "checkedArr", arr);
     },
-
+    parseDate(date) {
+      const dateSet = date.toDateString().split(" ");
+      return `${date.toLocaleString("en-us", { month: "long" })} ${
+        dateSet[2]
+      }, ${dateSet[3]}`;
+    },
     fillData() {
       this.dataCollection = {
         labels: [
