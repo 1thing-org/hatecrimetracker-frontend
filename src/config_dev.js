@@ -19,5 +19,5 @@ export default {
     ...colors,
     white: "#fff"
   },
-  api_endpoint: "https://aoi.hatecrimetracker.1-thing.org"
+  api_endpoint: "http://localhost:8081", //"https://hatecrimetracker-2021.uc.r.appspot.com"
 };
