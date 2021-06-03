@@ -38,6 +38,7 @@
     "vue-echarts": "^4.1.0",
     "vue-router": "^3.5.1",
     "vue-toasted": "^1.1.28",
+    "vue2-daterange-picker": "^0.6.5",
     "vue2-google-maps": "0.10.7",
     "vuex": "^3.6.2",
     "webpack-cli": "^3.3.12"
