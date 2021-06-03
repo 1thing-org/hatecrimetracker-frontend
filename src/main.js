@@ -16,11 +16,6 @@ Vue.use(BootstrapVue);
 Vue.use(VCalendar, {
   firstDayOfWeek: 2
 });
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyB7OXmzfQYua_1LEhRdqsoYzyJOPh9hGLg',
-  },
-});
 
 Vue.component('apexchart', VueApexCharts);
 Vue.mixin(layoutMixin);
