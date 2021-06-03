@@ -4,11 +4,8 @@
 
     </div>
     <div class="stats">
-      <h6 class="mt-1">GEO-LOCATIONS</h6>
       <p class="h3 m-0">
-      <span class="mr-xs fw-normal"><AnimatedNumber value="1656843"
-                                                    v-bind="animateNumberOptions"></AnimatedNumber></span>
-        <i class="fa fa-map-marker"/>
+      <span class="mr-xs fw-normal">Total Incidents: 12345</span>
       </p>
     </div>
   </div>
@@ -21,26 +18,24 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_usaHigh from "@amcharts/amcharts4-geodata/usaHigh";
 
-import cities from './mock';
-
 export default {
   name: 'Map',
   components: { AnimatedNumber },
   data() {
     return {
-      animateNumberOptions: {
-        duration: 2000,
-        easing: 'easeInQuad',
-        formatValue(value) {
-          let number = value.toFixed(0);
-          let numberAsArrayWithSapces = [];
-          while (number >= 1) {
-            numberAsArrayWithSapces.unshift(number % 1000);
-            number = (number/1000).toFixed();
-          }
-          return numberAsArrayWithSapces.join(' ');
-        }
-      }
+      // animateNumberOptions: {
+      //   duration: 2000,
+      //   easing: 'easeInQuad',
+      //   formatValue(value) {
+      //     let number = value.toFixed(0);
+      //     let numberAsArrayWithSapces = [];
+      //     while (number >= 1) {
+      //       numberAsArrayWithSapces.unshift(number % 1000);
+      //       number = (number/1000).toFixed();
+      //     }
+      //     return numberAsArrayWithSapces.join(' ');
+      //   }
+      // }
     }
   },
   mounted() {
@@ -50,8 +45,46 @@ export default {
     map.chartContainer.wheelable = false;
     map.seriesContainer.draggable = false;
     map.seriesContainer.resizable = false;
+
     let polygonSeries = map.series.push(new am4maps.MapPolygonSeries());
     polygonSeries.useGeodata = true;
+
+    debugger
+    polygonSeries.heatRules.push({
+      property: "fill",
+      target: polygonSeries.mapPolygons.template,
+      min: am4core.color("#ffffff"), //minimal color
+      max: am4core.color("#ff0000")
+    });
+
+    let heatLegend = map.createChild(am4maps.HeatLegend);
+  heatLegend.series = polygonSeries;
+  heatLegend.align = "right";
+  heatLegend.width = am4core.percent(25);
+  heatLegend.marginRight = am4core.percent(4);
+  heatLegend.minValue = 0;
+  heatLegend.maxValue = 100;
+  heatLegend.valign = "bottom";
+    polygonSeries.data = [
+      {
+        id: "US-AL",
+        value: 5
+      },
+      {
+        id: "US-CA",
+        value: 50
+      },
+      {
+        id: "US-NJ",
+        value: 20
+      },
+      {
+        id: "US-NY",
+        value: 90
+      },
+    ];
+
+
     map.homeZoomLevel = 1.2;
 
     map.zoomControl = new am4maps.ZoomControl();
@@ -77,31 +110,15 @@ export default {
     minusButtonHoverState.properties.fillOpacity = 0.24;
 
     let polygonTemplate = polygonSeries.mapPolygons.template;
-    polygonTemplate.tooltipText = "{name}";
+    polygonTemplate.tooltipHTML = "<strong>{name}<strong><p>many many cases:{value}!</p>";
     polygonTemplate.fill = am4core.color("#474D84");
     polygonTemplate.fillOpacity = 1;
+    polygonTemplate.clickable = true;
     let hs = polygonTemplate.states.create("hover");
     hs.properties.fillOpacity = 0.5;
 
     polygonTemplate.stroke = am4core.color("#6979C9");
     polygonTemplate.strokeOpacity = 1;
-
-    let citySeries = map.series.push(new am4maps.MapImageSeries());
-    citySeries.data = cities;
-    citySeries.dataFields.value = "size";
-
-    let city = citySeries.mapImages.template;
-    city.nonScaling = true;
-    city.propertyFields.latitude = "latitude";
-    city.propertyFields.longitude = "longitude";
-    let circle = city.createChild(am4core.Circle);
-    circle.fill = am4core.color("#C7D0FF");
-    circle.stroke = am4core.color("#ffffff");
-    circle.strokeWidth = 0;
-    let circleHoverState = circle.states.create("hover");
-    circleHoverState.properties.strokeWidth = 1;
-    circle.tooltipText = '{tooltip}';
-    circle.propertyFields.radius = 'size';
 
     this.map = map;
   },
