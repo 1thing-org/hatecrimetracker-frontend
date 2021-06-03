@@ -1,4 +1,4 @@
-let publicPath = process.env.NODE_ENV === 'production' ? 'light-blue-vue-admin/' : '/';
+let publicPath = process.env.NODE_ENV === 'production' ? '/' : '/';
 
 module.exports = {
   publicPath,
