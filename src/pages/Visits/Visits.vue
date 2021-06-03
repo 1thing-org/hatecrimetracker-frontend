@@ -30,7 +30,7 @@
             </div>
             <div id="chart-line">
               <apexchart
-                type="area"
+                type="bar"
                 height="150"
                 :options="incidentData.chartOptionsLine"
                 :series="incidentData.seriesLine"
@@ -54,7 +54,7 @@
                     {{ row.incident_location }}
                   </td>
                   <td>
-                    <a :href=row.url  :title=row.abstract >{{ row.title }}</a>
+                    <a :href=row.url target="_blank" :title=row.abstract >{{ row.title }}</a>
                   </td>
                 </tr>
               </tbody>
@@ -107,14 +107,7 @@ export default {
     AnimatedNumber,
   },
   data() {
-    const data = [
-      [1276920000000, 34],
-      [1308456000000, 43],
-      [1340078400000, 31],
-      [1371614400000, 43],
-      [1403150400000, 33],
-      [1487116800000, 52],
-    ];
+    const data = [];
     return {
       animateNumberOptions: {
         duration: 2000,
@@ -191,7 +184,7 @@ export default {
           chart: {
             id: "chart1",
             height: 150,
-            type: "area",
+            type: "bar",
             brush: {
               target: "chart2",
               enabled: true,
@@ -279,9 +272,27 @@ export default {
       axios.get(config.api_endpoint+"/stats")
           .then((response) => {
             const dailyCountSeries = []
+            const monthlyCountSeries = []
+            let currMonth=0
+            let monthTotal = 0
             response.data.stats.forEach(dailyCount => {
               dailyCountSeries.push([moment(String(dailyCount.key)).format(), dailyCount.value])
+              const month = moment(String(dailyCount.key)).startOf('month').format()
+              if (currMonth==0) {
+                currMonth=month
+              }
+              if (currMonth == month ) {
+                monthTotal += dailyCount.value
+              }
+              else {
+                monthlyCountSeries.push([currMonth, monthTotal])
+                currMonth = month
+                monthTotal = dailyCount.value
+              }
             });
+            if ( 0!=currMonth){
+              monthlyCountSeries.push([currMonth, monthTotal])
+            }
             this.incidentData.series =  [
                   {
                     data: dailyCountSeries,
@@ -289,57 +300,21 @@ export default {
             ]
             this.incidentData.seriesLine = [
                   {
-                    data: dailyCountSeries,
+                    data: monthlyCountSeries,
                   },
             ]
-
+            //Data to populate map
+            /* 
+            mapData: [
+              { state: NY,
+                date_range: "Mar 2018 - Sep 2020",
+                total: 123
+              }
+            ]
+            */ 
             this.mapStats = {"total":response.data.total}
           })
-      this.dataCollection = {
-        labels: [
-          this.getRandomInt(),
-          this.getRandomInt(),
-          this.getRandomInt(),
-          this.getRandomInt(),
-          this.getRandomInt(),
-          this.getRandomInt(),
-          this.getRandomInt(),
-        ],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#1870DC",
-            borderColor: "transparent",
-            data: [
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-            ],
-          },
-          {
-            label: "Data Two",
-            backgroundColor: "#F45722",
-            borderColor: "transparent",
-            data: [
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-              this.getRandomInt(),
-            ],
-          },
-        ],
-      };
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    },
+    } //fillData
   },
   mounted() {
     this.fillData();
