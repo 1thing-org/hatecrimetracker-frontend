@@ -19,4 +19,5 @@ export default {
     ...colors,
     white: "#fff"
   },
+  api_endpoint: "http://localhost:8081", //"https://hatecrimetracker-2021.uc.r.appspot.com"
 };
