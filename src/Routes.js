@@ -11,18 +11,12 @@ import Charts from '@/pages/Charts/Charts';
 import Dashboard from '@/pages/Visits/Visits';
 import Login from '@/pages/Login/Login';
 import ErrorPage from '@/pages/Error/Error';
-import Home from '@/pages/Home/Home';
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'hash',
   routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-    },
     {
       path: '/login',
       name: 'Login',
