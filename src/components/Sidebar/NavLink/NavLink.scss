@@ -1,0 +1,111 @@
+@import '../../../styles/app';
+
+.headerLink {
+  width: 100%;
+  overflow-x: hidden;
+
+  @media (min-width: map_get($grid-breakpoints, lg))
+  and (min-height: $screen-lg-height), (max-width: map_get($grid-breakpoints, md) - 1px) {
+    font-size: 13px;
+  }
+
+  a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+  }
+
+  &:last-child > a {
+    border-bottom: 1px solid $sidebar-item-border-color;
+  }
+
+  > a,
+  > div a {
+    align-items: center;
+    position: relative;
+    padding-left: 54px;
+    line-height: 35px;
+    border-top: 1px solid $sidebar-item-border-color;
+    border-radius: $border-radius;
+
+    > i {
+      margin-right: 7px;
+    }
+
+    @media (min-width: map_get($grid-breakpoints, lg))
+    and (min-height: $screen-lg-height), (max-width: map_get($grid-breakpoints, md) - 1px) {
+      line-height: 55px;
+    }
+
+    &:hover {
+      background-color: $addition-bg;
+    }
+  }
+
+  .icon {
+    font-size: $font-size-larger;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 3px;
+    left: 11px;
+    width: 32px;
+    height: 32px;
+
+    @media (min-width: map_get($grid-breakpoints, lg))
+    and (min-height: $screen-lg-height), (max-width: map_get($grid-breakpoints, md) - 1px) {
+      top: 12px;
+    }
+  }
+
+  .badge {
+    float: right;
+    line-height: 8px;
+    margin-top: 6px;
+    margin-right: 15px;
+    padding: 7px;
+
+    @media (min-width: map_get($grid-breakpoints, lg)) and (min-height: $screen-lg-height), (max-width: map_get($grid-breakpoints, md) - 1px) {
+      margin-top: 16px;
+    }
+  }
+}
+
+.nav-link-nested > a {
+  line-height: 32px !important;
+}
+
+.headerLabel {
+  font-weight: 600;
+}
+
+.caretWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 15px;
+
+  i {
+    transform: rotate(-90deg);
+    @include transition(transform 0.3s ease-in-out);
+  }
+}
+
+.carretActive i {
+  transform: rotate(0deg);
+}
+
+a.router-link-active {
+  font-weight: $font-weight-semi-bold;
+  font-size: $font-size-base-large;
+
+  .icon {
+    border-radius: 50%;
+    background-color: #3979F6;
+
+  }
+}

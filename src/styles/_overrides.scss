@@ -1,0 +1,683 @@
+.container-fluid {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.navbar {
+  height: $navbar-height;
+  border: none;
+  justify-content: flex-start;
+  font-size: 1rem;
+
+  .nav-link > i {
+    font-size: 20px;
+  }
+
+  .input-group {
+    width: 245px;
+  }
+
+  .form-control {
+    line-height: 1.7;
+    padding: 0.6rem 0.85rem;
+  }
+}
+
+.progress-bar {
+  @include box-shadow(none);
+}
+
+.progress {
+  height: $spacer * 1.3;
+  margin-bottom: $spacer / 2;
+  background: theme-color("progress-bg");
+}
+
+.progress-sm {
+  height: 10px;
+}
+
+.progress-xs {
+  height: 5px;
+}
+
+.input-group {
+  .input-group-append, .input-group-prepend {
+    .btn {
+      border: none;
+    }
+  }
+}
+
+.form-control {
+  font-family: $font-family-base;
+  box-shadow: none;
+  transition: border-color ease-in-out 0.15s, background-color ease-in-out 0.15s;
+  font-weight: $font-weight-thin;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: $spacer;
+  line-height: inherit;
+  color: $text-muted;
+  border: 0;
+  border-bottom: 1px solid $border-color;
+  font-size: 15px;
+  font-weight: $font-weight-normal;
+}
+
+.input-sm {
+  font-size: 13px;
+}
+
+.alert {
+  font-size: $font-size-sm;
+
+  .close {
+    color: $text-color;
+  }
+}
+
+.alert-sm {
+  padding: 10px 15px;
+
+  .close {
+    font-size: 20px;
+    top: 0;
+    right: -8px;
+  }
+}
+
+.alert-dismissible {
+  padding-right: 1.25rem;
+}
+
+/*  Badge */
+// Add colors for badges
+.badge {
+  padding: 4px 8px;
+  font-weight: $font-weight-semi-bold;
+  font-size: 12px;
+}
+
+.badge {
+  color: $header-color;
+
+  .list-group-item > & {
+    margin-top: 2px;
+  }
+}
+
+.badge-light,
+.badge-secondary {
+  color: $gray-300;
+}
+
+.table-no-border {
+  margin-left: -$table-cell-padding;
+  margin-right: -$table-cell-padding;
+
+  > thead > tr > th,
+  > thead > tr > td,
+  > tbody > tr > th,
+  > tbody > tr > td,
+  > tfoot > tr > th,
+  > tfoot > tr > td {
+    border-top: 0;
+  }
+}
+
+.table-sm {
+  font-size: $font-size-sm;
+
+  > thead > tr > th,
+  > thead > tr > td,
+  > tbody > tr > th,
+  > tbody > tr > td,
+  > tfoot > tr > th,
+  > tfoot > tr > td {
+    padding: 6px;
+  }
+
+  &.table-no-border {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+}
+
+.small,
+small {
+  font-size: 85%;
+}
+
+///////// Buttons //////////
+
+[class*="btn-outline"] {
+  background-image: none;
+}
+
+.btn-link {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn {
+
+  &,
+  &:hover,
+  &.disabled,
+  &:disabled {
+    color: $header-color;
+  }
+}
+
+.btn-default {
+  border: none;
+}
+
+.btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn {
+  font-family: $font-family-sans-serif;
+
+  .glyphicon {
+    top: 3px;
+  }
+}
+
+.btn,
+.btn-inverse,
+.btn-gray {
+  &:not(.active) {
+    box-shadow: none !important;
+  }
+}
+
+.btn-rounded {
+  @include border-radius(6px);
+}
+
+.btn-rounded-f {
+  @include border-radius(50px);
+}
+
+.btn-outline {
+  @include button-variant(transparent, $text-color);
+
+  @include hover-focus() {
+    background-color: rgba($white, 0.1);
+  }
+}
+
+///////// Dropdowns //////////
+
+.dropdown {
+  &.show {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+.dropdown-menu-right {
+  left: auto;
+  right: 0;
+}
+
+.dropdown-toggle::after {
+  font-family: 'Line Awesome Free';
+  content: "\F107";
+  border: none;
+  width: auto;
+  height: auto;
+  vertical-align: baseline;
+  opacity: .8;
+  font-size: 85%;
+  font-weight: $font-weight-semi-bold;
+}
+
+.dropdown-toggle-no-caret:after {
+  content: none;
+}
+
+.nav-item.dropdown {
+  &.show {
+    .nav-link.active {
+      background: $navbar-link-active-bg;
+      color: $navbar-link-active-color;
+    }
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid;
+  // IE8
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+///////// Alerts //////////
+
+.alert {
+  border: none;
+
+  .btn {
+    border: none;
+  }
+
+  button.close {
+    font-weight: $font-weight-thin;
+    font-size: 18px;
+    text-shadow: none;
+    opacity: 1;
+    color: $text-color;
+    outline: none;
+    padding: 0;
+    position: static;
+  }
+}
+
+.alert-white button.close {
+  color: $gray-600;
+}
+
+.alert-rounded {
+  border-radius: 50px;
+}
+
+@mixin alert($color) {
+  background: theme-color($color);
+  color: $header-color;
+
+  &.alert-transparent {
+    color: theme-color($color);
+    background: rgba(theme-color($color), $alert-transparent);
+  }
+
+  .btn:not(.btn-default) {
+    background: rgba($header-color, 0.8);
+    color: theme-color($color);
+  }
+}
+
+.alert-success {
+  @include alert('success');
+}
+
+.alert-info {
+  @include alert('info');
+}
+
+.alert-warning {
+  @include alert('warning');
+}
+
+.alert-danger {
+  @include alert('danger');
+}
+
+.alert-default {
+  @include alert('default');
+}
+
+///////// Jumbotron //////////
+.widget {
+  .jumbotron {
+    background: transparent;
+  }
+}
+
+///////// Breadcrumbs //////////
+
+.breadcrumb {
+  color: $text-color;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+
+  a {
+    color: inherit;
+  }
+
+  > .active {
+    font-weight: $font-weight-semi-bold;
+  }
+
+  padding: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '>';
+  color: $text-color;
+}
+
+///////// Glyphicons //////////
+
+.glyphicon {
+  vertical-align: baseline;
+}
+
+///////// Font Awesome //////////
+
+.navbar {
+  .fa {
+    &.fa-lg {
+      line-height: 19px;
+    }
+  }
+}
+
+///////// Tooltips //////////
+
+.bs-tether-target.show {
+  display: inline-block !important;
+}
+
+.tooltip.in {
+  opacity: 1;
+}
+
+.tooltip-inner {
+  @include border-radius(3px);
+}
+
+///////// List Group //////////
+
+.list-group {
+  .list-group-item {
+    background-color: transparent;
+  }
+}
+
+.list-group-lg {
+  .list-group-item {
+    padding: 1.25rem;
+  }
+}
+
+.list-group:not(.list-group-sortable) .list-group-item {
+  border-left: none;
+  border-right: none;
+}
+
+.list-group-item {
+  @include transition(background 0.15s ease-in-out);
+
+  &:first-child {
+    border-radius: 0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $addition-bg;
+  }
+
+  &,
+  &:hover {
+    color: $text-color;
+  }
+}
+
+////////// Headings //////////
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  color: $header-color;
+
+  small,
+  .small {
+    font-weight: $font-weight-thin;
+    font-size: 75%;
+    color: $text-muted;
+  }
+}
+
+// Popovers
+
+.popover {
+  border: none;
+
+  @include box-shadow(none);
+}
+
+.popover-content {
+  padding: 20px;
+}
+
+.popover-text-gray {
+  .popover-header,
+  .popover-body {
+    color: $gray-700;
+  }
+}
+
+// Modals
+// -------------------------------------------------
+.modal {
+  .modal-footer, .modal-header {
+    border-width: $input-border-width;
+  }
+}
+
+// Navs
+// --------------------------------------------------
+
+.nav-tabs {
+  &.nav-item + .nav-item {
+    margin-left: 0;
+  }
+
+  border-bottom: none;
+
+  > .nav-item {
+    margin-bottom: 0;
+
+    > .nav-link {
+      padding: 12px 18px;
+      border: none;
+      color: $text-muted;
+
+      .label {
+        margin-bottom: -2px;
+      }
+
+      @include transition(color 0.15s ease-in-out);
+
+      &:hover {
+        background-color: transparent;
+        color: $text-color;
+      }
+    }
+
+    .nav-link.open {
+      &,
+      &:hover,
+      &:focus {
+        background-color: $nav-tabs-active-link-hover-bg;
+        color: $nav-tabs-active-link-hover-color;
+      }
+    }
+
+    .nav-link.active {
+      &,
+      &:hover,
+      &:focus {
+        background-color: $nav-tabs-active-link-hover-bg;
+        color: $nav-tabs-active-link-hover-color;
+        border: none;
+        font-weight: $font-weight-semi-bold;
+
+        @include box-shadow(none);
+      }
+    }
+  }
+}
+
+.nav-pills {
+  padding: 0;
+
+  .nav-link {
+    color: transparentize($text-color, .3);
+
+    &:hover {
+      color: $nav-pills-link-active-color;
+    }
+
+    &.active {
+      font-weight: $font-weight-semi-bold;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.tab-content {
+  position: relative;
+  z-index: 1;
+  background-color: $widget-bg;
+
+  > .tab-pane {
+    padding: $spacer*2;
+  }
+}
+
+// Code
+// -----------------
+
+code {
+  font-size: 85%;
+  background-color: rgba($primary, .3);
+  border-radius: $border-radius-sm;
+  color: $success;
+  padding: $spacer / 10;
+}
+
+pre {
+  display: block;
+  padding: 6.5px;
+  margin: 0 0 (1rem / 2);
+  font-size: 13px;
+  line-height: 1rem;
+  word-break: break-all;
+  word-wrap: break-word;
+  color: $pre-color;
+  background-color: $pre-bg;
+  border: 1px solid $pre-border;
+  border-radius: $border-radius;
+  white-space: pre-line;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+
+  // Account for some code outputs that place code tags in pre tags
+  code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0;
+  }
+}
+
+//
+// Accordion
+// --------------------------------------------------
+
+.accordion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .fa {
+    transition: $transition-base;
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+//
+// Font Awesome
+// --------------------------------------------------
+
+.circle {
+  .fa {
+    vertical-align: middle;
+  }
+}
+
+.card {
+  box-shadow: $widget-shadow;
+}
+
+////// VUE TOASTED //////
+.toasted-container {
+  .toasted {
+    box-shadow: none;
+    font-size: $font-size-sm;
+    border-radius: $border-radius;
+
+    &.default {
+      background: theme-color('default');
+      color: theme-color('dark');
+    }
+
+    &.error {
+      background: theme-color('error');
+    }
+
+    &.success {
+      background: theme-color('success');
+    }
+
+    &.info {
+      background: theme-color('info');
+    }
+
+    &.warning {
+      background: theme-color('warning');
+    }
+
+    .action {
+      color: white;
+    }
+  }
+}
+
+////// ECharts //////
+.echarts {
+  width: 100%;
+}

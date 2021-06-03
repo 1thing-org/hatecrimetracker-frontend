@@ -1,0 +1,126 @@
+@import '../../styles/app';
+
+.app-header.navbar {
+  z-index: 100;
+  padding: 0 1.85rem 0;
+
+  @include media-breakpoint-down(md) {
+    padding: 0 10px;
+  }
+
+  .dropdown-menu {
+    color: $text-muted;
+    margin-top: 12.5px;
+    background: $default-bg;
+    border: none;
+  }
+
+  .dropdown-item {
+    color: $text-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: $addition-bg;
+      color: $text-color;
+      outline: none;
+    }
+  }
+
+  .dropdown-menu-messages {
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .dropdown-menu-settings {
+    .dropdown-divider {
+      border-color: $dark;
+    }
+  }
+
+.search-group {
+  .input-group-text {
+    padding-left: .85rem;
+    color: $gray-600;
+    border-radius: 0;
+  }
+  #search-input {
+    border-radius: 0;
+  }
+
+}
+
+  .divider {
+    display: block;
+    width: 1px;
+    height: 20px;
+    margin: 18px 15px;
+    background-color: rgba(255,255,255, 0.4);
+  }
+
+  .header-alert {
+    background: $text-transparent;
+    border: none;
+    font-size: $font-size-sm;
+    line-height: 19px;
+    margin-bottom: 0;
+    padding: 3px 9px;
+    text-shadow: none;
+    border-radius: 10px;
+    color: $text-color;
+
+    .close {
+      margin-left: 1rem;
+    }
+
+    @media (max-width: breakpoint-max('lg')) {
+      display: none;
+    }
+  }
+
+  .navbar-nav-mobile {
+    flex-direction: row;
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+
+      &.show {
+        display: flex !important;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding-right: $navbar-nav-link-padding-x;
+        padding-left: $navbar-nav-link-padding-x;
+        color: $text-color;
+
+        &:hover {
+          color: $header-color;
+        }
+      }
+    }
+
+    .navbar-text {
+      display: flex;
+      align-items: center;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+
+      @media (max-width: breakpoint-max('xs')) {
+        position: fixed;
+        top: $navbar-height;
+        right: 1rem;
+        margin-top: 0;
+      }
+    }
+  }
+  .avatar-toggle .dropdown-toggle::after {
+    display: none;
+  }
+}
