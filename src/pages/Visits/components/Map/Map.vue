@@ -84,7 +84,7 @@ export default {
 
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipHTML =
-      "<strong>{name}<strong><p>many many cases:{value}!</p>";
+      "<strong>{name}:<strong> {value}";
     polygonTemplate.fill = am4core.color("#AAAAAA");
     polygonTemplate.fillOpacity = 1;
     polygonTemplate.clickable = true;
