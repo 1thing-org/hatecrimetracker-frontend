@@ -23,13 +23,13 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col lg="12">
+      <b-col xl="10" >
         <Widget
-          title="<h5><strong>Incidents by States</strong></h5>"
+          :title="'<h5><strong>Total Incidents: '+totalIncidents+'</strong></h5>'"
           customHeader
         >
           <div class="bg-transparent" style="align: center">
-            <Map style="width: 80%" :stats="mapStats" />
+            <Map style="width: 100%" :stats="mapStats" />
           </div>
         </Widget>
       </b-col>
@@ -113,6 +113,7 @@ export default {
   },
   data() {
     return {
+      totalIncidents: 0,
       dateRange: {
         startDate: moment().subtract(1, "year"),
         endDate: moment(),
@@ -297,7 +298,9 @@ export default {
         const monthlyCountSeries = [];
         let currMonth = 0;
         let monthTotal = 0;
+        let total = 0;
         response.data.stats.forEach((dailyCount) => {
+          total+=dailyCount.value;
           dailyCountSeries.push([
             moment(String(dailyCount.key)).format(),
             dailyCount.value,
@@ -314,6 +317,7 @@ export default {
             monthTotal = dailyCount.value;
           }
         });
+        this.totalIncidents = total;
         if (0 != currMonth) {
           monthlyCountSeries.push([currMonth, monthTotal]);
         }

@@ -1,11 +1,6 @@
 <template>
   <div>
     <div class="map" ref="map"></div>
-    <div class="stats">
-      <p class="h3 m-0">
-        <span class="mr-xs fw-normal">Total Incidents: 12345</span>
-      </p>
-    </div>
   </div>
 </template>
 
@@ -50,6 +45,7 @@ export default {
     map.chartContainer.wheelable = false;
     map.seriesContainer.draggable = false;
     map.seriesContainer.resizable = false;
+    map.maxZoomLevel = .5;
 
     let polygonSeries = map.series.push(new am4maps.MapPolygonSeries());
     polygonSeries.useGeodata = true;
@@ -71,7 +67,7 @@ export default {
     heatLegend.valign = "bottom";
     polygonSeries.data = [];
 
-    map.homeZoomLevel = 1.2;
+    map.homeZoomLevel = 1;
 
     map.zoomControl = new am4maps.ZoomControl();
     map.zoomControl.align = "left";
