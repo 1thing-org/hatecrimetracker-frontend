@@ -22,19 +22,6 @@ export default {
   },
   data() {
     return {
-      // animateNumberOptions: {
-      //   duration: 2000,
-      //   easing: 'easeInQuad',
-      //   formatValue(value) {
-      //     let number = value.toFixed(0);
-      //     let numberAsArrayWithSapces = [];
-      //     while (number >= 1) {
-      //       numberAsArrayWithSapces.unshift(number % 1000);
-      //       number = (number/1000).toFixed();
-      //     }
-      //     return numberAsArrayWithSapces.join(' ');
-      //   }
-      // }
     };
   },
   stats:{},
@@ -53,14 +40,14 @@ export default {
     polygonSeries.heatRules.push({
       property: "fill",
       target: polygonSeries.mapPolygons.template,
-      min: am4core.color("#888888"), //minimal color
+      min: am4core.color("#884444"), //minimal color
       max: am4core.color("#ff0000"),
     });
 
     let heatLegend = map.createChild(am4maps.HeatLegend);
     heatLegend.series = polygonSeries;
     heatLegend.align = "right";
-    heatLegend.width = am4core.percent(25);
+    heatLegend.width = am4core.percent(10);
     heatLegend.marginRight = am4core.percent(4);
     heatLegend.minValue = 0;
     heatLegend.maxValue = 100;
@@ -98,7 +85,7 @@ export default {
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipHTML =
       "<strong>{name}<strong><p>many many cases:{value}!</p>";
-    polygonTemplate.fill = am4core.color("#474D84");
+    polygonTemplate.fill = am4core.color("#AAAAAA");
     polygonTemplate.fillOpacity = 1;
     polygonTemplate.clickable = true;
     let hs = polygonTemplate.states.create("hover");
