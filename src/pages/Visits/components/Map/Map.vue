@@ -40,7 +40,7 @@ export default {
     polygonSeries.heatRules.push({
       property: "fill",
       target: polygonSeries.mapPolygons.template,
-      min: am4core.color("#884444"), //minimal color
+      min: am4core.color("#0000EE"), //minimal color
       max: am4core.color("#ff0000"),
     });
 
@@ -52,6 +52,7 @@ export default {
     heatLegend.minValue = 0;
     heatLegend.maxValue = 100;
     heatLegend.valign = "bottom";
+    heatLegend.orientation = "vertical";
     polygonSeries.data = [];
 
     map.homeZoomLevel = 1;
