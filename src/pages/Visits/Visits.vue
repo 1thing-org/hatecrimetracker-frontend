@@ -7,7 +7,7 @@
       <b-col lg="6" xs="12">
         <date-range-picker
           ref="picker"
-          :locale-data="{ firstDay: 1, format: 'dd-mm-yyyy' }"
+          :locale-data="{ firstDay: 1, format: 'yyyy-mm-dd' }"
           minDate="1/1/2010"
           :singleDatePicker="false"
           :showDropdowns="true"
@@ -279,9 +279,9 @@ export default {
       const incidentsAPIUrl =
         config.api_endpoint +
         "/incidents?start=" +
-        moment(startDate).format("MM-DD-YYYY") +
+        moment(startDate).format("YYYY-MM-DD") +
         "&end=" +
-        moment(endDate).format("MM-DD-YYYY") +
+        moment(endDate).format("YYYY-MM-DD") +
         (state ? "&state=" + state : "");
       axios.get(incidentsAPIUrl).then((response) => {
         this.incidentList = response.data.incidents;
@@ -289,9 +289,9 @@ export default {
       const statsAPIUrl =
         config.api_endpoint +
         "/stats?start=" +
-        moment(startDate).format("MM-DD-YYYY") +
+        moment(startDate).format("YYYY-MM-DD") +
         "&end=" +
-        moment(endDate).format("MM-DD-YYYY") +
+        moment(endDate).format("YYYY-MM-DD") +
         (state ? "&state=" + state : "");
       axios.get(statsAPIUrl).then((response) => {
         const dailyCountSeries = [];

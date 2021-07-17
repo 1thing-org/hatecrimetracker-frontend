@@ -1,5 +1,5 @@
 cp src/config_prod.js src/config.js
 yarn build
-gcloud config set project hatecrimetracker-2021
-gsutil cp -R dist/* gs://hatecrimetracker.1-thing.org
+gcloud config set project hate-crime-tracker
+gsutil cp -R dist/* gs://hatecrimetracker
 cp src/config_dev.js src/config.js
