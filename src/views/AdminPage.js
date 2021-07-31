@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 const AdminPage = () => {
   const user = useContext(UserContext);
-  if (!user) {
-    return <div>Please Login first</div>;
+  if (!user || !user.isadmin) {
+    return (<div> Please <Link to="/login">Login</Link> </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
-  console.log(user);
-
-
+  console.log("User:", user)
   return (
     <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
       <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
