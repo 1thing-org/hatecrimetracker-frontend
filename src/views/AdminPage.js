@@ -6,7 +6,7 @@ const AdminPage = () => {
   if (!user) {
     return <div>Please Login first</div>;
   }
-  const { photoURL, displayName, email } = user;
+  const { photoURL, displayName, email, isadmin } = user;
   console.log(user);
 
 
@@ -25,6 +25,7 @@ const AdminPage = () => {
         <div className="md:pl-4">
           <h2 className="text-2xl font-semibold">Name: {displayName}</h2>
           <h3 className="italic">Email: {email}</h3>
+          <h3 className="italic">Is Admin: {isadmin?"true":"false"}</h3>
         </div>
       </div>
       <button className="w-full py-3 bg-red-600 mt-4 text-white" onClick={() => { auth.signOut() }}>Sign out</button>
