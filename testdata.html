@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <script lang="javascript">
+        serverURL = "http://a1207f00909c64052834777791969b7b-585460300.us-east-2.elb.amazonaws.com:8088";
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwMzYyNzAsIklEIjoiNWY5Y2JhZjMtNDc5OS00NDEyLTlmMmMtNzcwYzg4MjAwNDA3IiwiQ3JlYXRlZEF0IjoiMjAyMS0wNS0wOVQxOTo1NDozOC43OTg3MjFaIiwiVXBkYXRlZEF0IjoiMjAyMS0wNS0wOVQxOTo1NDozOC43OTg4NTNaIiwidXNlcm5hbWUiOiJhZG1pbiIsIkZpcnN0TmFtZSI6ImFkbWluIiwiTGFzdE5hbWUiOiJhZG1pbiIsIlN0YXR1cyI6MSwiRW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYSQwOCR0WWtkTDVqT2h5WXg2UXlNbm03cmV1Z3FWd0k1ZC45L2V2YTgxaHJwTlNNNGJrTmlzMTVuQyJ9.4SA-sdspS0Ot-fp13ylApGM4YhvhjCBPSqoXTyv-P6I";
+
+        function GetAuth() {
+            return Promise.resolve(token);
+        }
+        function getNews(page, cindex) {
+            console.log("getNews with page: ", page, " cindex: ", cindex)
+            // stop loading any data on page end
+            if (page == "eof") {
+                return new Promise((resolve, reject) => {
+                    resolve([])
+                });
+            }
+            // return data
+            return GetAuth().then(token => {
+                console.log("page token sending: ", page)
+                var requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": token,
+                        "page": page,
+                    },
+                    redirect: 'follow'
+                };
+                console.debug("getNews request: ", requestOptions)
+                if (cindex == 0) {
+                    return fetch(serverURL + "/app/news/headline", requestOptions)
+                }
+                return fetch(serverURL + "/app/news/category/" + categories[cindex], requestOptions)
+            })
+                .then(res => {
+                    console.debug("fetch news result: ", JSON.stringify(res))
+                    // save page states
+                    // make sure pageToken is always set from the server even when page to the end should return empty token
+                    if (res.headers.has("page")) {
+                        // copy on write, good for ready heavy
+                        let ptArr = this.state.pageToken
+                        ptArr[cindex] = res.headers.get("page")
+                        this.setState({ pageToken: ptArr })
+                    }
+                    return res.json()
+                }).catch(error => {
+                    console.error(error)
+                    //this.setState({ refreshing: false })
+                });
+        }
+        login = async () => {
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwMzYyNzAsIklEIjoiNWY5Y2JhZjMtNDc5OS00NDEyLTlmMmMtNzcwYzg4MjAwNDA3IiwiQ3JlYXRlZEF0IjoiMjAyMS0wNS0wOVQxOTo1NDozOC43OTg3MjFaIiwiVXBkYXRlZEF0IjoiMjAyMS0wNS0wOVQxOTo1NDozOC43OTg4NTNaIiwidXNlcm5hbWUiOiJhZG1pbiIsIkZpcnN0TmFtZSI6ImFkbWluIiwiTGFzdE5hbWUiOiJhZG1pbiIsIlN0YXR1cyI6MSwiRW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYSQwOCR0WWtkTDVqT2h5WXg2UXlNbm03cmV1Z3FWd0k1ZC45L2V2YTgxaHJwTlNNNGJrTmlzMTVuQyJ9.4SA-sdspS0Ot-fp13ylApGM4YhvhjCBPSqoXTyv-P6I";
+            return;
+
+            // const  [username, password] = ["admin", "admin"]; //this.state
+            // let url = serverURL + "/auth/login?username=" + username + "&password=" + password
+            // try {
+            //     const response = await fetch(url, { method: 'POST' })
+            //     if (response.status === 200) {
+            //         const userData = await response.json()
+            //         try {
+            //             token = response.headers.get("Authorization");
+            //             console.log(response.headers);
+            //             // await AsyncStorage.setItem('userToken', token);
+            //             // await AsyncStorage.setItem('userObject', JSON.stringify(userData));
+            //             // await AsyncStorage.setItem('userID', userData.ID)
+            //         } catch (err) {
+            //             console.error("login store user error ", err)
+            //         }
+            //         // console.log("userID: ", await AsyncStorage.getItem("userID"))
+            //         // this.props.navigation.navigate('App', { userID: userData.ID });
+            //     } else {
+            //         alert("Login failed: invalid username or password");
+            //     }
+            // } catch (error) {
+            //     console.log("Error: ", error);
+            // }
+        }
+
+
+        login().then(() => {
+            return getNews("", 0);
+        })
+            .then(news => console.log("news:" + news))
+            ;
+    </script>
+</head>
+
+<body> hello world</body>
+
+</html>
