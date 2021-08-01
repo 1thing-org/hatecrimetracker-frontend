@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import * as Yup from 'yup';
 import { UserContext } from "../providers/UserProvider";
+import {auth} from "../firebase"
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
@@ -139,6 +140,7 @@ const IncidentAdminPage = () => {
           className="border border-blue-300 col-2"
         ></div>
         <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
+        <p><Link onClick={()=>auth.signOut()}>Sign Out</Link></p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
