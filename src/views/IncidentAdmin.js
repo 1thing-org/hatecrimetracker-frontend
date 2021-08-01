@@ -8,6 +8,8 @@ import { Button } from 'reactstrap';
 import * as Yup from 'yup';
 import { UserContext } from "../providers/UserProvider";
 import {auth} from "../firebase"
+import Swal from 'sweetalert2';
+import * as incidentsService from "../services/incidents"
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
@@ -48,7 +50,7 @@ const IncidentAdminPage = () => {
       selector: "url",
       width:"120px",
       format: (row) => {
-        return <Button.Ripple color='primary' block onClick={() => deleteIncident(row.id)} >
+        return <Button.Ripple color='primary' block onClick={() => deleteIncident(row)} >
           Delete
         </Button.Ripple>;
       }
@@ -76,52 +78,62 @@ const IncidentAdminPage = () => {
     resolver: yupResolver(validationSchema)
   });
 
-  const FAKE_DATA = {
-    "incidents": [
-      {
-        "abstract": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
-        "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
-        "id": "DauMR6nHVZjrc1X4dGoR",
-        "incident_location": "CA",
-        "incident_source": "racismiscontagious",
-        "incident_time": "Fri, 10 Jul 2020 00:00:00 GMT",
-        "key": "incident/DauMR6nHVZjrc1X4dGoR",
-        "title": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
-        "url": "https://nextshark.com/davis-karen-ken-call-police-asian-man/"
-      },
-      {
-        "abstract": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
-        "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
-        "id": "4m53VtJYowUQYiYQ1zHV",
-        "incident_location": "NY",
-        "incident_source": "racismiscontagious",
-        "incident_time": "Tue, 07 Jul 2020 00:00:00 GMT",
-        "key": "incident/4m53VtJYowUQYiYQ1zHV",
-        "title": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
-        "url": "https://nextshark.com/bryant-park-korean-american-artist-punched-nyc/"
-      }
-    ]
-  }
+  // const FAKE_DATA = {
+  //   "incidents": [
+  //     {
+  //       "abstract": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
+  //       "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
+  //       "id": "DauMR6nHVZjrc1X4dGoR",
+  //       "incident_location": "CA",
+  //       "incident_source": "racismiscontagious",
+  //       "incident_time": "Fri, 10 Jul 2020 00:00:00 GMT",
+  //       "key": "incident/DauMR6nHVZjrc1X4dGoR",
+  //       "title": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
+  //       "url": "https://nextshark.com/davis-karen-ken-call-police-asian-man/"
+  //     },
+  //     {
+  //       "abstract": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
+  //       "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
+  //       "id": "4m53VtJYowUQYiYQ1zHV",
+  //       "incident_location": "NY",
+  //       "incident_source": "racismiscontagious",
+  //       "incident_time": "Tue, 07 Jul 2020 00:00:00 GMT",
+  //       "key": "incident/4m53VtJYowUQYiYQ1zHV",
+  //       "title": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
+  //       "url": "https://nextshark.com/bryant-park-korean-american-artist-punched-nyc/"
+  //     }
+  //   ]
+  // }
 
   function onSubmit(data) {
-    // existingIncidents.push({ title: data.title, year: data.incident_time.toString(), incident_location: data.incident_location, url: data.url, abstract: data.abstract });
-    // setData(existingIncidents);
-    return createIncident(data);
+    incidentsService.createIncident(data).then((incident_id) => Swal.fire("The incident has been saved successfully!"));
   }
   function dateChanged(event) {
-    setData(FAKE_DATA.incidents);
-    // const date = event.target.value;
-    // //load incidents around the date +/-3 days
-    // getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
-    //   .then(incidents => setData(incidents));
+    // setData(FAKE_DATA.incidents);
+    const date = event.target.value;
+    //load incidents around the date +/-3 days
+    incidentsService.getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
+      .then(incidents => setData(incidents));
   }
 
-  function createIncident(data) {
-    alert("Create incident");
-  }
-
-  function deleteIncident(id) {
-    alert("Delete incident:" + id);
+  function deleteIncident(incident) {
+    Swal.fire({
+      title: 'Are you sure you want to delete this incident?',
+      icon: 'warn',
+      html:
+        'Title:' + incident.title + '<br/>' +
+        'Date:' + moment(incident.incident_time).format('MM/DD/YYYY') + '<br/>' +
+        'Location:' + incident.incident_location,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        incidentsService.deleteIncident(incident.id).then(() => Swal.fire("Incident has been delete successfully!"))
+      } 
+    })
   }
   if (!user || !user.isadmin) {
     return (<div> Please <Link to="/login">Login</Link> </div>);

@@ -12,3 +12,22 @@ export function getIncidents( startDate, endDate, state = null) {
         return response.data.incidents;
     });
 }
+
+export function createIncident(incident) {
+    const incidentAPIUrl = config.api_endpoint + "/incidents";
+    if ( !incident.incident_source ){
+        incident.incident_source = "MANUAL";
+    }
+    return axios.post(incidentAPIUrl, {incident:incident},
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "false",
+                "strict-origin-when-cross-origin": "false"
+            }
+        }).then((response) => { return response.incident_id; });
+}
+
+export function deleteIncident(id) {
+    const incidentAPIUrl = config.api_endpoint + "/incidents/" + id;
+    return axios.delete(incidentAPIUrl).then((response) => { return response.data; });
+}

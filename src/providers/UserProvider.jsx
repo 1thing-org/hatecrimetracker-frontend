@@ -2,9 +2,8 @@ import axios from "axios";
 import React, { Component, createContext } from "react";
 import { auth } from "../firebase";
 import useJwt from '@src/auth/jwt/useJwt'
-
+import appConfig from "../configs/appConfig";
 export const UserContext = createContext({ user: null });
-const API_URL = "http://127.0.0.1:8081"
 class UserProvider extends Component {
     state = {
         user: null
@@ -20,7 +19,7 @@ class UserProvider extends Component {
                 const token = userAuth.getIdToken().then( (token) => {
                     useJwt.setToken(token);
                     user = { email, displayName, photoURL };
-                    axios.get(API_URL + "/isadmin",
+                    axios.get(appConfig.api_endpoint + "/isadmin",
                     {
                         headers: {
                             "Access-Control-Allow-Origin": "false",
