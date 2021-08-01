@@ -78,33 +78,6 @@ const IncidentAdminPage = () => {
     resolver: yupResolver(validationSchema)
   });
 
-  // const FAKE_DATA = {
-  //   "incidents": [
-  //     {
-  //       "abstract": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
-  //       "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
-  //       "id": "DauMR6nHVZjrc1X4dGoR",
-  //       "incident_location": "CA",
-  //       "incident_source": "racismiscontagious",
-  //       "incident_time": "Fri, 10 Jul 2020 00:00:00 GMT",
-  //       "key": "incident/DauMR6nHVZjrc1X4dGoR",
-  //       "title": "Two people recently called the police on an Asian American man who was visiting his parents. Following the incident, the man wrote a complaint stating that the accusers had committed racial profiling, bias-by-proxy, discrimination and harassment, and the officers failed to investigate their actions properly and threatened him.",
-  //       "url": "https://nextshark.com/davis-karen-ken-call-police-asian-man/"
-  //     },
-  //     {
-  //       "abstract": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
-  //       "created_on": "Sat, 17 Jul 2021 21:26:19 GMT",
-  //       "id": "4m53VtJYowUQYiYQ1zHV",
-  //       "incident_location": "NY",
-  //       "incident_source": "racismiscontagious",
-  //       "incident_time": "Tue, 07 Jul 2020 00:00:00 GMT",
-  //       "key": "incident/4m53VtJYowUQYiYQ1zHV",
-  //       "title": "A Korean American artist was punched in the face and knocked to the ground on her way to work near Bryant Park in New York City.",
-  //       "url": "https://nextshark.com/bryant-park-korean-american-artist-punched-nyc/"
-  //     }
-  //   ]
-  // }
-
   function onSubmit(data) {
     incidentsService.createIncident(data).then((incident_id) => Swal.fire("The incident has been saved successfully!"));
   }
