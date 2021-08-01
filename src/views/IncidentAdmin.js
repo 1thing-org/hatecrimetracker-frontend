@@ -79,14 +79,21 @@ const IncidentAdminPage = () => {
   });
 
   function onSubmit(data) {
-    incidentsService.createIncident(data).then((incident_id) => Swal.fire("The incident has been saved successfully!"));
+    incidentsService.createIncident(data).then((incident_id) => {
+      Swal.fire("The incident has been saved successfully!")
+      reloadIncidents(data.incident_time);
+    });
+  }
+
+  function reloadIncidents(date) {
+     //load incidents around the date +/-3 days
+     incidentsService.getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
+     .then(incidents => setData(incidents));
   }
   function dateChanged(event) {
     // setData(FAKE_DATA.incidents);
     const date = event.target.value;
-    //load incidents around the date +/-3 days
-    incidentsService.getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
-      .then(incidents => setData(incidents));
+    reloadIncidents(date);
   }
 
   function deleteIncident(incident) {
@@ -104,7 +111,10 @@ const IncidentAdminPage = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        incidentsService.deleteIncident(incident.id).then(() => Swal.fire("Incident has been delete successfully!"))
+        incidentsService.deleteIncident(incident.id).then(() => {
+          Swal.fire("Incident has been delete successfully!")
+          reloadIncidents(incident.incident_time);
+        })
       } 
     })
   }
