@@ -31,14 +31,6 @@ const Routes = [
     }
   },
   {
-    path: '/admin_old',
-    component: lazy(() => import('../../views/AdminPage')),
-    layout: 'BlankLayout',
-    meta: {
-      authRoute: true
-    }
-  },
-  {
     path: '/admin',
     component: lazy(() => import('../../views/IncidentAdmin')),
     layout: 'BlankLayout',
