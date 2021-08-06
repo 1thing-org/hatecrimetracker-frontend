@@ -8,8 +8,31 @@ export function getIncidents( startDate, endDate, state = null) {
         "/incidents?start=" +  moment(startDate).format("YYYY-MM-DD") +
         "&end=" + moment(endDate).format("YYYY-MM-DD") +
         (state ? "&state=" + state : "");
-    return axios.get(incidentsAPIUrl).then((response) => {
+    return axios.get(incidentsAPIUrl,
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "false",
+                "strict-origin-when-cross-origin": "false"
+            }
+        }).then((response) => {
         return response.data.incidents;
+    });
+}
+
+export function getStats( startDate, endDate, state = null) {
+    const statsAPIUrl =
+        config.api_endpoint +
+        "/stats?start=" +  moment(startDate).format("YYYY-MM-DD") +
+        "&end=" + moment(endDate).format("YYYY-MM-DD") +
+        (state ? "&state=" + state : "");
+    return axios.get(statsAPIUrl,
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "false",
+                "strict-origin-when-cross-origin": "false"
+            }
+        }).then((response) => {
+        return response.data;
     });
 }
 

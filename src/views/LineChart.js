@@ -2,74 +2,86 @@ import { Card, CardHeader, CardTitle, CardBody, Badge } from 'reactstrap'
 import { ArrowDown } from 'react-feather'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
-const data = [
-  {
-    name: '7/12',
-    pv: 280
-  },
-  {
-    name: '8/12',
-    pv: 200
-  },
-  {
-    name: '9/12',
-    pv: 220
-  },
-  {
-    name: '10/12',
-    pv: 180
-  },
-  {
-    name: '11/12',
-    pv: 270
-  },
-  {
-    name: '12/12',
-    pv: 250
-  },
-  {
-    name: '13/12',
-    pv: 70
-  },
-  {
-    name: '14/12',
-    pv: 90
-  },
-  {
-    name: '15/12',
-    pv: 200
-  },
-  {
-    name: '16/12',
-    pv: 150
-  },
-  {
-    name: '17/12',
-    pv: 160
-  },
-  {
-    name: '18/12',
-    pv: 100
-  },
-  {
-    name: '19/12',
-    pv: 150
-  },
-  {
-    name: '20/12',
-    pv: 100
-  },
-  {
-    name: '21/12',
-    pv: 50
-  }
-]
+// const data = [
+//   {
+//     "key": "2021-02-16", 
+//     "value": 2
+//   }, 
+//   {
+//     "key": "2021-02-15", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-02-12", 
+//     "value": 2
+//   }, 
+//   {
+//     "key": "2021-02-11", 
+//     "value": 2
+//   }, 
+//   {
+//     "key": "2021-02-09", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-02-08", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-02-07", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-02-03", 
+//     "value": 3
+//   }, 
+//   {
+//     "key": "2021-01-31", 
+//     "value": 2
+//   }, 
+//   {
+//     "key": "2021-01-29", 
+//     "value": null
+//   }, 
+//   {
+//     "key": "2021-01-28", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-01-27", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-01-22", 
+//     "value": 1
+//   }, 
+//   {
+//     "key": "2021-01-13", 
+//     "value": 2
+//   },
+//   {
+//     "key": "2021-01-04", 
+//     "value": null
+//   },
+//   {
+//     "key": "2021-01-03", 
+//     "value": null
+//   },
+//   {
+//     "key": "2021-01-02", 
+//     "value": null
+//   }, 
+//   {
+//     "key": "2021-01-01", 
+//     "value": 1
+//   }
+// ]
 
 const CustomTooltip = ({ active, payload }) => {
-  if (active && payload) {
+  if (active && payload && payload[0] && payload[0].value) {
     return (
       <div className='recharts-custom-tooltip'>
-        <span>{`${payload[0].value}%`}</span>
+        <span>{`${payload[0].value} cases`}</span>
       </div>
     )
   }
@@ -77,24 +89,25 @@ const CustomTooltip = ({ active, payload }) => {
   return null
 }
 
-const SimpleLineChart = ({ warning }) => {
+const SimpleLineChart = ({ warning, chart_data }) => {
+  console.log(chart_data)
   return (
     <Card>
       <CardHeader>
         <div>
-          <CardTitle tag='h4'>United States Hate Crime Data</CardTitle>
+          <CardTitle tag='h4'>United States Hate Crime Incident Count</CardTitle>
         </div>
       </CardHeader>
 
       <CardBody>
         <div className='recharts-wrapper'>
           <ResponsiveContainer>
-            <LineChart height={300} data={data}>
+            <LineChart height={300} data={chart_data}>
               <CartesianGrid />
-              <XAxis dataKey='name' />
+              <XAxis dataKey='key' />
               <YAxis />
               <Tooltip content={CustomTooltip} />
-              <Line dataKey='pv' stroke={warning} strokeWidth={3} />
+              <Line dataKey='value' stroke={warning} strokeWidth={3} />
             </LineChart>
           </ResponsiveContainer>
         </div>

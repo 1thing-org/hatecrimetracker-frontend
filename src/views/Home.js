@@ -7,6 +7,7 @@ import { Fragment, useContext, useState } from 'react'
 import moment from 'moment';
 import MapChart from "./MapChart"
 import LineChart from "./LineChart"
+import BarChart from "./BarChart"
 import * as incidentsService from "../services/incidents"
 import { ThemeColors } from '@src/utility/context/ThemeColors'
 
@@ -18,7 +19,8 @@ import '@styles/react/libs/charts/recharts.scss'
 const Home = () => {
 
   // ** Data grid that shows list of events
-  const [data, setData] = useState([]);
+  const [incidents, setIncidents] = useState([]);
+  const [stats, setStats] = useState({ stats: [], total: {} });
   const columns = [
     {
       name: 'Date',
@@ -31,14 +33,14 @@ const Home = () => {
       name: 'Location',
       selector: 'incident_location',
       sortable: true,
-      width:"80px"
+      width: "80px"
     },
     {
       name: 'Title',
       selector: 'title',
       sortable: true,
-      max_width:"600px",
-      wrap : true,
+      max_width: "600px",
+      wrap: true,
       format: (row) => {
         if (row.url) {
           return <a href={row.url} target='_blank'>{row.title}</a>;
@@ -72,17 +74,43 @@ const Home = () => {
       value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), dateFns.endOfYear(dateFns.addYears(new Date(), -1))]
     }
   ];
+  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
+  const mergeDate = (stats, start_date, end_date) => {
+    const new_stats = [];
+    let start = moment(start_date);
+    const end = moment(end_date);
+    while (start <= end) {
+      const strDate = start.format('YYYY-MM-DD');
+      if (stats.length > 0 && stats[stats.length - 1].key == strDate) {
+        //found the date in stats, use it
+        new_stats.push(stats[stats.length - 1]);
+        stats.pop();
+      }
+      else {
+        new_stats.push({ key: strDate, value: null });
+      }
+      start.add(1, 'days');
+    }
+    return new_stats;
+  }
   const { colors } = useContext(ThemeColors)
   function handleDateRangeSelect(ranges) {
     incidentsService.getIncidents(ranges[0], ranges[1])
-      .then(incidents => setData(incidents));
+          .then(incidents => setIncidents(incidents));
+    incidentsService.getStats(ranges[0], ranges[1])
+      .then(stats => {
+        stats.stats = mergeDate(stats.stats, ranges[0], ranges[1]);
+        setStats(stats);
+      });
   }
+
   return (
     <div>
-      <DateRangePicker  ranges={dateRanges} disabledDate={afterToday()} onChange={handleDateRangeSelect}/> 
+      <DateRangePicker ranges={dateRanges} disabledDate={afterToday()} onChange={handleDateRangeSelect} />
       <Row className='match-height'>
         <Col xl='8' lg='8' md='6' xs='12'>
-          <LineChart warning={colors.warning.main} />
+          <BarChart warning={colors.warning.main} chart_data={stats.stats} />
+          <LineChart warning={colors.warning.main} chart_data={stats.stats} />
           <Card>
             <CardHeader>
               <CardTitle>Hate Crime Map</CardTitle>
@@ -100,9 +128,9 @@ const Home = () => {
             <CardBody>
               <CardText>Hate Crime Trend</CardText>
               <CardText>
-              <DataTable striped={true}
+                <DataTable striped={true}
                   columns={columns}
-                  data={data}
+                  data={incidents}
                 />
                 news placeholder abc dummy link
                 <CardLink
