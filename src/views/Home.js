@@ -1,55 +1,24 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col } from 'reactstrap'
-import 'rsuite/dist/styles/rsuite-default.css';
-import DataTable from 'react-data-table-component';
-import { DateRangePicker } from 'rsuite';
+import { ThemeColors } from '@src/utility/context/ThemeColors';
+import '@styles/react/libs/charts/recharts.scss';
+import '@styles/react/libs/flatpickr/flatpickr.scss';
 import * as dateFns from 'date-fns';
-import { Fragment, useContext, useState } from 'react'
 import moment from 'moment';
-import MapChart from "./MapChart"
-import LineChart from "./LineChart"
-import BarChart from "./BarChart"
-import * as incidentsService from "../services/incidents"
-import { ThemeColors } from '@src/utility/context/ThemeColors'
+import { useContext, useState } from 'react';
+import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap';
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/styles/rsuite-default.css';
+import * as incidentsService from "../services/incidents";
+import BarChart from "./BarChart";
+import IncidentTable from './IncidentTable';
+import LineChart from "./LineChart";
+import MapChart from "./MapChart";
 
-// ** Styles
-import '@styles/react/libs/flatpickr/flatpickr.scss'
-import '@styles/react/libs/charts/recharts.scss'
 //These are needed for charts
 
 const Home = () => {
 
-  // ** Data grid that shows list of events
   const [incidents, setIncidents] = useState([]);
   const [stats, setStats] = useState({ stats: [], total: {} });
-  const columns = [
-    {
-      name: 'Date',
-      selector: 'incident_time',
-      sortable: true,
-      format: row => moment(row.incident_time).format('MM/DD/YYYY'),
-      width: "100px"
-    },
-    {
-      name: 'Location',
-      selector: 'incident_location',
-      sortable: true,
-      width: "80px"
-    },
-    {
-      name: 'Title',
-      selector: 'title',
-      sortable: true,
-      max_width: "600px",
-      wrap: true,
-      format: (row) => {
-        if (row.url) {
-          return <a href={row.url} target='_blank'>{row.title}</a>;
-        }
-        return row.title;
-      }
-    }
-  ];
-  // ** Data grid that shows list of events
 
   const {
     afterToday,
@@ -96,7 +65,7 @@ const Home = () => {
   const { colors } = useContext(ThemeColors)
   function handleDateRangeSelect(ranges) {
     incidentsService.getIncidents(ranges[0], ranges[1])
-          .then(incidents => setIncidents(incidents));
+      .then(incidents => setIncidents(incidents));
     incidentsService.getStats(ranges[0], ranges[1])
       .then(stats => {
         stats.stats = mergeDate(stats.stats, ranges[0], ranges[1]);
@@ -128,8 +97,7 @@ const Home = () => {
             <CardBody>
               <CardText>Hate Crime Trend</CardText>
               <CardText>
-                <DataTable striped={true}
-                  columns={columns}
+                <IncidentTable
                   data={incidents}
                 />
                 news placeholder abc dummy link

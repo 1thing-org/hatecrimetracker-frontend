@@ -1,15 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
-import DataTable from 'react-data-table-component';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
-import * as Yup from 'yup';
-import { UserContext } from "../providers/UserProvider";
-import {auth} from "../firebase"
 import Swal from 'sweetalert2';
-import * as incidentsService from "../services/incidents"
+import * as Yup from 'yup';
+import { auth } from "../firebase";
+import { UserContext } from "../providers/UserProvider";
+import * as incidentsService from "../services/incidents";
+import IncidentTable from './IncidentTable';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
@@ -17,45 +16,6 @@ const IncidentAdminPage = () => {
   const isAddMode = true;
 
   const [data, setData] = useState([]);
-  const columns = [
-    {
-      name: 'Date',
-      selector: 'incident_time',
-      sortable: true,
-      format: row => moment(row.incident_time).format('MM/DD/YYYY'),
-      width: "100px"
-    },
-    {
-      name: 'Location',
-      selector: 'incident_location',
-      sortable: true,
-      width:"80px"
-    },
-    {
-      name: 'Title',
-      selector: 'title',
-      sortable: true,
-      max_width:"600px",
-      wrap : true,
-      format: (row) => {
-        if (row.url) {
-          return <a href={row.url} target='_blank'>{row.title}</a>;
-        }
-        return row.title;
-      }
-    },
-    {
-      name: 'Action',
-      grow: 1,
-      selector: "url",
-      width:"120px",
-      format: (row) => {
-        return <Button.Ripple color='primary' block onClick={() => deleteIncident(row)} >
-          Delete
-        </Button.Ripple>;
-      }
-    }
-  ];
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -86,9 +46,9 @@ const IncidentAdminPage = () => {
   }
 
   function reloadIncidents(date) {
-     //load incidents around the date +/-3 days
-     incidentsService.getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
-     .then(incidents => setData(incidents));
+    //load incidents around the date +/-3 days
+    incidentsService.getIncidents(moment(date).subtract(3, 'days'), moment(date).add(3, 'days'))
+      .then(incidents => setData(incidents));
   }
   function dateChanged(event) {
     // setData(FAKE_DATA.incidents);
@@ -115,7 +75,7 @@ const IncidentAdminPage = () => {
           Swal.fire("Incident has been delete successfully!")
           reloadIncidents(incident.incident_time);
         })
-      } 
+      }
     })
   }
   if (!user || !user.isadmin) {
@@ -135,7 +95,7 @@ const IncidentAdminPage = () => {
           className="border border-blue-300 col-2"
         ></div>
         <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
-        <p><Link onClick={()=>auth.signOut()}>Sign Out</Link></p>
+        <p><Link onClick={() => auth.signOut()}>Sign Out</Link></p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
@@ -179,9 +139,8 @@ const IncidentAdminPage = () => {
           <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
         </div>
       </form>
-      <DataTable className="col-12" striped={true}
+      <IncidentTable className="col-12"
         title="Incidents Around the Same Time Period"
-        columns={columns}
         data={data}
       />
     </div>
