@@ -2,7 +2,7 @@ import { ThemeColors } from '@src/utility/context/ThemeColors';
 import '@styles/react/libs/charts/recharts.scss';
 import '@styles/react/libs/flatpickr/flatpickr.scss';
 import moment from 'moment';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap';
 import DateRangeSelector from './DateRangeSelector';
 import 'rsuite/dist/styles/rsuite-default.css';
@@ -15,6 +15,7 @@ import MapChart from "./MapChart";
 const Home = () => {
 
   const [incidents, setIncidents] = useState([]);
+  const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()]);
   const [stats, setStats] = useState({ stats: [], total: {} });
 
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
@@ -36,8 +37,7 @@ const Home = () => {
     }
     return new_stats;
   }
-  const { colors } = useContext(ThemeColors)
-  function handleDateRangeSelect(ranges) {
+  const loadData = (ranges) => {
     incidentsService.getIncidents(ranges[0], ranges[1])
       .then(incidents => setIncidents(incidents));
     incidentsService.getStats(ranges[0], ranges[1])
@@ -46,19 +46,30 @@ const Home = () => {
         setStats(stats);
       });
   }
+  const { colors } = useContext(ThemeColors)
+  function handleDateRangeSelect(ranges) {
+    loadData(ranges);
+  }
+
+  //** ComponentDidMount
+  useEffect(() => {
+    if ( dateRange.length == 2 ) {
+      loadData(dateRange);
+    }
+  }, [dateRange])
 
   return (
     <div>
-      <DateRangeSelector onChange={handleDateRangeSelect} />
+      <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
       <Row className='match-height'>
         <Col xl='8' lg='8' md='6' xs='12'>
-          <BarChart warning={colors.warning.main} chart_data={stats.stats} />
-          <LineChart warning={colors.warning.main} chart_data={stats.stats} />
           <Card>
             <CardHeader>
               <CardTitle>Hate Crime Map</CardTitle>
             </CardHeader>
             <CardBody>
+              <BarChart warning={colors.warning.main} chart_data={stats.stats} />
+              <LineChart warning={colors.warning.main} chart_data={stats.stats} />
               <MapChart />
             </CardBody>
           </Card>
@@ -71,7 +82,7 @@ const Home = () => {
             <CardBody>
               <CardText>Hate Crime Trend</CardText>
               <CardText>
-                <IncidentTable data={incidents}/>
+                <IncidentTable data={incidents} />
                 news placeholder abc dummy link
                 <CardLink
                   href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/'

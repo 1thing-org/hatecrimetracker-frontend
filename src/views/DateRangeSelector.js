@@ -23,9 +23,9 @@ const dateRanges = [
     value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), dateFns.endOfYear(dateFns.addYears(new Date(), -1))]
   }
 ];
-const DateRangeSelector = ({ onChange }) => {
+const DateRangeSelector = ({ onChange, value }) => {
     return (
-      <DateRangePicker ranges={dateRanges} disabledDate={afterToday()} onChange={onChange} />
+      <DateRangePicker ranges={dateRanges} disabledDate={afterToday()} onChange={onChange} value={value} />
     )
 }
 
