@@ -90,7 +90,6 @@ const CustomTooltip = ({ active, payload }) => {
 }
 
 const SimpleLineChart = ({ warning, chart_data }) => {
-  console.log(chart_data)
   return (
     <Card>
       <CardHeader>
