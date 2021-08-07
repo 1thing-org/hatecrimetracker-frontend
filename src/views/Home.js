@@ -1,11 +1,10 @@
 import { ThemeColors } from '@src/utility/context/ThemeColors';
 import '@styles/react/libs/charts/recharts.scss';
 import '@styles/react/libs/flatpickr/flatpickr.scss';
-import * as dateFns from 'date-fns';
 import moment from 'moment';
 import { useContext, useState } from 'react';
 import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap';
-import { DateRangePicker } from 'rsuite';
+import DateRangeSelector from './DateRangeSelector';
 import 'rsuite/dist/styles/rsuite-default.css';
 import * as incidentsService from "../services/incidents";
 import BarChart from "./BarChart";
@@ -13,36 +12,11 @@ import IncidentTable from './IncidentTable';
 import LineChart from "./LineChart";
 import MapChart from "./MapChart";
 
-//These are needed for charts
-
 const Home = () => {
 
   const [incidents, setIncidents] = useState([]);
   const [stats, setStats] = useState({ stats: [], total: {} });
 
-  const {
-    afterToday,
-  } = DateRangePicker;
-  const dateRanges = [
-    {
-      label: 'Last Month',
-
-      value: [dateFns.addMonths(new Date(), -1), new Date()]
-    },
-    {
-      label: 'Previous Month',
-
-      value: [dateFns.startOfMonth(dateFns.addMonths(new Date(), -1)), dateFns.endOfMonth(dateFns.addMonths(new Date(), -1))]
-    },
-    {
-      label: 'Last Year',
-      value: [dateFns.addYears(new Date(), -1), new Date()]
-    },
-    {
-      label: 'Previous Year',
-      value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), dateFns.endOfYear(dateFns.addYears(new Date(), -1))]
-    }
-  ];
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   const mergeDate = (stats, start_date, end_date) => {
     const new_stats = [];
@@ -75,7 +49,7 @@ const Home = () => {
 
   return (
     <div>
-      <DateRangePicker ranges={dateRanges} disabledDate={afterToday()} onChange={handleDateRangeSelect} />
+      <DateRangeSelector onChange={handleDateRangeSelect} />
       <Row className='match-height'>
         <Col xl='8' lg='8' md='6' xs='12'>
           <BarChart warning={colors.warning.main} chart_data={stats.stats} />
@@ -97,9 +71,7 @@ const Home = () => {
             <CardBody>
               <CardText>Hate Crime Trend</CardText>
               <CardText>
-                <IncidentTable
-                  data={incidents}
-                />
+                <IncidentTable data={incidents}/>
                 news placeholder abc dummy link
                 <CardLink
                   href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/'
