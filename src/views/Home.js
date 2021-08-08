@@ -9,6 +9,7 @@ import 'rsuite/dist/styles/rsuite-default.css';
 import * as incidentsService from "../services/incidents";
 import BarChart from "./BarChart";
 import IncidentTable from './IncidentTable';
+import IncidentCountTable from './IncidentCountTable';
 import LineChart from "./LineChart";
 import MapChart from "./MapChart";
 
@@ -71,32 +72,17 @@ const Home = () => {
               <BarChart warning={colors.warning.main} chart_data={stats.stats} />
               <LineChart warning={colors.warning.main} chart_data={stats.stats} />
               <MapChart />
+              <IncidentCountTable title={"Incident Count by States"} data={stats.total} />
             </CardBody>
           </Card>
         </Col>
         <Col xl='4' lg='4' md='6' xs='12'>
           <Card>
             <CardHeader>
-              <CardTitle>News Placeholder </CardTitle>
+              <CardTitle>Hate Crime Incidents</CardTitle>
             </CardHeader>
             <CardBody>
-              <CardText>Hate Crime Trend</CardText>
-              <CardText>
-                <IncidentTable data={incidents} />
-                news placeholder abc dummy link
-                <CardLink
-                  href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/'
-                  target='_blank'
-                >
-                  Template Documentation
-                </CardLink>
-              </CardText>
-              <CardText>
-                news placeholder abc
-              </CardText>
-              <CardText>
-                news placeholder abc
-              </CardText>
+              <IncidentTable data={incidents} />
             </CardBody>
           </Card>
         </Col>
