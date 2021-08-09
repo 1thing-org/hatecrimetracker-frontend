@@ -64,7 +64,6 @@ const columns = [
         name: 'State',
         selector: 'state',
         sortable: true,
-        width: "100px"
     },
     {
         name: 'Count',
@@ -75,7 +74,13 @@ const columns = [
         name: 'Count/1M',
         selector: 'count_per_m',
         sortable: true,
-        wrap: true
+        wrap: true,
+        format: (row) => {
+            if (row.count_per_m > 0.0001) {
+              return row.count_per_m.toFixed(4);
+            }
+            return "";
+          }
     }
 ];
 const toIncidentCount = (data) => {
@@ -88,7 +93,6 @@ const toIncidentCount = (data) => {
             count_per_m: count / StatePopulation[state] * 1000000
         });
     }
-    console.log(result)
     return result;
 }
 //data is map of state to count
