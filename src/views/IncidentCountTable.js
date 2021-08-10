@@ -71,13 +71,13 @@ const columns = [
         sortable: true,
     },
     {
-        name: 'Count/1M',
-        selector: 'count_per_m',
+        name: 'Count/1MM',
+        selector: 'count_rate',
         sortable: true,
         wrap: true,
         format: (row) => {
-            if (row.count_per_m > 0.0001) {
-              return row.count_per_m.toFixed(4);
+            if (row.count_rate > 0.0001) {
+              return row.count_rate.toFixed(4);
             }
             return "";
           }
@@ -90,7 +90,7 @@ const toIncidentCount = (data) => {
         result.push({
             state,
             count,
-            count_per_m: count / StatePopulation[state] * 1000000
+            count_rate: count / StatePopulation[state] * 1000000
         });
     }
     return result;
