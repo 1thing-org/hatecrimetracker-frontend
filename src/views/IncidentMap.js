@@ -47,8 +47,8 @@ const IncidentMap = (props) => {
     polygonSeries.heatRules.push({
       property: "fill",
       target: polygonSeries.mapPolygons.template,
-      min: am4core.color("#0000EE"), //minimal color
-      max: am4core.color("#ff0000"),
+      min: am4core.color("#9F833B"), //minimal color
+      max: am4core.color("#FCEB4F"),
     });
     let heatLegend = map.createChild(am4maps.HeatLegend);
     heatLegend.series = polygonSeries;
