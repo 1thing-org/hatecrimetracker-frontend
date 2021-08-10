@@ -10,8 +10,7 @@ import * as incidentsService from "../services/incidents";
 import BarChart from "./BarChart";
 import IncidentTable from './IncidentTable';
 import IncidentCountTable from './IncidentCountTable';
-import LineChart from "./LineChart";
-import MapChart from "./MapChart";
+import IncidentMap from "./IncidentMap";
 
 const Home = () => {
 
@@ -70,8 +69,7 @@ const Home = () => {
             </CardHeader>
             <CardBody>
               <BarChart warning={colors.warning.main} chart_data={stats.stats} />
-              <LineChart warning={colors.warning.main} chart_data={stats.stats} />
-              <MapChart />
+              <IncidentMap mapData={stats.total} />
               <IncidentCountTable title={"Incident Count by States"} data={stats.total} />
             </CardBody>
           </Card>
