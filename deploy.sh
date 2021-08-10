@@ -1,5 +1,5 @@
-cp src/config_prod.js src/config.js
+cp src/configs/config_prod.js src/configs/appConfig.js
 yarn build
 gcloud config set project hate-crime-tracker
-gsutil cp -R dist/* gs://hatecrimetracker
-cp src/config_dev.js src/config.js
+gsutil cp -R build/* gs://hatecrimetracker
+cp src/configs/config_dev.js src/configs/appConfig.js
