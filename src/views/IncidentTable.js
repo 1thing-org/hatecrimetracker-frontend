@@ -7,7 +7,7 @@ const columns = [
     selector: 'incident_time',
     sortable: true,
     format: row => moment(row.incident_time).format('MM/DD/YYYY'),
-    width: "100px"
+    width: "120px"
   },
   {
     name: 'Location',

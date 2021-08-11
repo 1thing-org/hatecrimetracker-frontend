@@ -1,67 +1,7 @@
-import { Card, CardHeader, CardTitle, CardBody, Badge } from 'reactstrap'
-import { ArrowDown } from 'react-feather'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-
-const data = [
-  {
-    "key": "2021-02-16", 
-    "value": 2
-  }, 
-  {
-    "key": "2021-02-15", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-02-12", 
-    "value": 2
-  }, 
-  {
-    "key": "2021-02-11", 
-    "value": 2
-  }, 
-  {
-    "key": "2021-02-09", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-02-08", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-02-07", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-02-03", 
-    "value": 3
-  }, 
-  {
-    "key": "2021-01-31", 
-    "value": 2
-  }, 
-
-  {
-    "key": "2021-01-28", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-01-27", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-01-22", 
-    "value": 1
-  }, 
-  {
-    "key": "2021-01-13", 
-    "value": 2
-  },
-
-  {
-    "key": "2021-01-01", 
-    "value": 1
-  }
-]
+import moment from 'moment';
+import { useState, useEffect } from 'react';
+import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload[0] && payload[0].value) {
@@ -76,6 +16,21 @@ const CustomTooltip = ({ active, payload }) => {
 }
 
 const SimpleBarChart = ({ warning, chart_data }) => {
+  const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
+    const d = moment(tickVal, "YYYY-MM-DD")
+    return d.format("M/D/YY");
+  }
+  const [ticks, setTicks] = useState([]);
+  useEffect(() => {
+    const newTicks = [];
+    for( let i = 0; i < chart_data.length; i++ ) {
+      const d = moment(chart_data[i].key, "YYYY-MM-DD")
+      if (d.date() == 1) {
+        newTicks.push(chart_data[i].key);
+      }
+    }
+    setTicks(newTicks);
+  }, [chart_data]);
   return (
     <Card>
       <CardHeader>
@@ -88,11 +43,11 @@ const SimpleBarChart = ({ warning, chart_data }) => {
         <div className='recharts-wrapper'>
           <ResponsiveContainer>
             <BarChart height={300} data={chart_data}>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey='key' />
+            <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey='key' tickFormatter={formatXAxis}  ticks={ticks} />
               <YAxis />
-              <Tooltip content={CustomTooltip} />
-              <Bar dataKey='value' stroke={warning} strokeWidth={3} />
+              <Tooltip />
+              <Bar dataKey='value' stroke={warning} strokeWidth={3}  />
             </BarChart>
           </ResponsiveContainer>
         </div>
