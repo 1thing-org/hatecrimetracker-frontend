@@ -56,10 +56,10 @@ const IncidentAdminPage = () => {
     reloadIncidents(date);
   }
 
-  function deleteIncident(incident) {
+  const deleteIncident = (incident) =>{
     Swal.fire({
       title: 'Are you sure you want to delete this incident?',
-      icon: 'warn',
+      icon: 'warning',
       html:
         'Title:' + incident.title + '<br/>' +
         'Date:' + moment(incident.incident_time).format('MM/DD/YYYY') + '<br/>' +
@@ -77,7 +77,7 @@ const IncidentAdminPage = () => {
         })
       }
     })
-  }
+  };
   if (!user || !user.isadmin) {
     return (<div> Please <Link to="/login">Login</Link> </div>);
   }
@@ -142,6 +142,7 @@ const IncidentAdminPage = () => {
       <IncidentTable className="col-12"
         title="Incidents Around the Same Time Period"
         data={data}
+        onDelete={deleteIncident}
       />
     </div>
   );
