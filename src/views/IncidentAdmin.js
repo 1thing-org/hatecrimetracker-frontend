@@ -62,6 +62,7 @@ const IncidentAdminPage = () => {
       icon: 'warning',
       html:
         'Title:' + incident.title + '<br/>' +
+        'Id:' + incident.id + '<br/>' +
         'Date:' + moment(incident.incident_time).format('MM/DD/YYYY') + '<br/>' +
         'Location:' + incident.incident_location,
       showCancelButton: true,
