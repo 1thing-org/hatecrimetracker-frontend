@@ -73,8 +73,8 @@ const IncidentMap = (props) => {
       if ( currentActiveState == ev.target ) return;
       if ( currentActiveState ) {
         currentActiveState.zIndex = currentActiveStateZIndex;
-        currentActiveState.strokeWidth = null;
-        currentActiveState.stroke = null;
+        currentActiveState.strokeWidth = polygonTemplate.strokeWidth;
+        currentActiveState.stroke = polygonTemplate.stroke;
         currentActiveState.filters.clear();
       }
 
