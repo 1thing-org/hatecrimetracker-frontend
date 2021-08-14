@@ -9,3 +9,36 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.incident-list .title {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 22px;
+	line-height: 120%;
+	color:#FEF753;
+	margin-top:8px;
+}
+
+.incident-list .incident {
+	margin-bottom: 16px;
+}
+.incident-list .location_time{
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 22px;
+	margin-top:2px;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.incident-list .description{
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 22px;
+	color: #FFFFFF;
+	margin-top:4px;
+}

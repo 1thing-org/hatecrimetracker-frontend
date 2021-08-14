@@ -9,7 +9,7 @@ import DateRangeSelector from './DateRangeSelector';
 import 'rsuite/dist/styles/rsuite-default.css';
 import * as incidentsService from "../services/incidents";
 import BarChart from "./BarChart";
-import IncidentTable from './IncidentTable';
+import IncidentList from './IncidentList';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentMap from "./IncidentMap";
 import StateSelection from './StateSelection';
@@ -19,7 +19,8 @@ const Home = () => {
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()]);
-  const [stats, setStats] = useState({ stats: [], total: {} });
+  const [incidentTimeSeries, setIncidentTimeSeries] = useState( []);
+  const [incidentAggregated, setIncidentAggregated] = useState( []);
 
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   const mergeDate = (stats, start_date, end_date) => {
@@ -40,21 +41,26 @@ const Home = () => {
     }
     return new_stats;
   }
-  const loadData = () => {
+  const loadData = (updateMap = false) => {
     if ( dateRange.length != 2 )
       return;
     incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState)
       .then(incidents => setIncidents(incidents));
     incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
       .then(stats => {
-        stats.stats = mergeDate(stats.stats, dateRange[0], dateRange[1]);
-        setStats(stats);
+        setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1]));
+        if ( updateMap ) {
+          setIncidentAggregated(stats.total);
+        }
       });
   }
 
   useEffect(() => {
     loadData();
-  }, [selectedState, dateRange]);
+  }, [selectedState]);
+  useEffect(() => {
+    loadData(true); //update both incidents and map
+  }, [dateRange]);
 
   const { colors } = useContext(ThemeColors)
   function handleDateRangeSelect(ranges) {
@@ -87,9 +93,9 @@ const Home = () => {
               <CardTitle>Hate Crime Map</CardTitle>
             </CardHeader>
             <CardBody>
-              <BarChart warning={colors.warning.main} chart_data={stats.stats} />
-              <IncidentMap mapData={stats.total} selectdState={selectedState} onChange={onStateChange}/>
-              <IncidentCountTable title={"Incident Count by States"} data={stats.total} />
+              <BarChart warning={colors.warning.main} chart_data={incidentTimeSeries} />
+              <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange}/>
+              <IncidentCountTable title={"Incident Count by States"} data={incidentAggregated} />
             </CardBody>
           </Card>
         </Col>
@@ -99,7 +105,7 @@ const Home = () => {
               <CardTitle>Hate Crime Incidents</CardTitle>
             </CardHeader>
             <CardBody>
-              <IncidentTable data={incidents} />
+              <IncidentList data={incidents} />
             </CardBody>
           </Card>
         </Col>
