@@ -40,29 +40,28 @@ const Home = () => {
     }
     return new_stats;
   }
-  const loadData = (ranges) => {
-    incidentsService.getIncidents(ranges[0], ranges[1])
+  const loadData = () => {
+    if ( dateRange.length != 2 )
+      return;
+    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState)
       .then(incidents => setIncidents(incidents));
-    incidentsService.getStats(ranges[0], ranges[1])
+    incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
       .then(stats => {
-        stats.stats = mergeDate(stats.stats, ranges[0], ranges[1]);
+        stats.stats = mergeDate(stats.stats, dateRange[0], dateRange[1]);
         setStats(stats);
       });
   }
+
+  useEffect(() => {
+    loadData();
+  }, [selectedState, dateRange]);
+
   const { colors } = useContext(ThemeColors)
   function handleDateRangeSelect(ranges) {
-    loadData(ranges);
+    setDateRange(ranges);
   }
 
-  //** ComponentDidMount
-  useEffect(() => {
-    if ( dateRange.length == 2 ) {
-      loadData(dateRange);
-    }
-  }, [dateRange])
-
   function onStateChange(state){
-    console.log("State changed from map:", state);
     setSelectedState(state);
   }
   return (
