@@ -35,7 +35,7 @@ const SimpleBarChart = ({ warning, chart_data }) => {
     <Card>
       <CardHeader>
         <div>
-          <CardTitle tag='h4'>United States Hate Crime Incident Count</CardTitle>
+          <CardTitle tag='h4'>Hate Crime Incident Trend</CardTitle>
         </div>
       </CardHeader>
 

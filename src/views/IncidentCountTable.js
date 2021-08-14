@@ -1,5 +1,6 @@
 import DataTable from 'react-data-table-component';
 import { useState, useEffect } from 'react';
+import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 //Data of 2020
 const StatePopulation = { 
     "AL": 5024279,
@@ -102,8 +103,15 @@ const IncidentCountTable = ({ data, title }) => {
     useEffect(() => {
         setIncidentCountData(toIncidentCount(data));
     }, [data])
-    return (
-        <DataTable striped={true} title={title} columns={columns} data={incidentCountData} />
-    )
+    return (<Card>
+        <CardHeader>
+          <div>
+            <CardTitle tag='h4'>{title}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+        <DataTable striped={true} columns={columns} data={incidentCountData} />
+        </CardBody>
+      </Card>);
 }
 export default IncidentCountTable

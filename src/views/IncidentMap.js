@@ -2,7 +2,7 @@ import am4geodata_usaHigh from "@amcharts/amcharts4-geodata/usaHigh";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { SelectionState } from "draft-js";
+import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 am4core.useTheme(am4themes_animated);
@@ -100,7 +100,7 @@ const IncidentMap = (props) => {
     polygonSeries.data = [];
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipHTML =
-      "<strong>{name}:<strong> {value}";
+      "<strong>{name}:<strong> {value?value:0}";
     polygonTemplate.fill = am4core.color("#AAAAAA");
     polygonTemplate.fillOpacity = 1;
     polygonTemplate.clickable = true;
@@ -125,7 +125,17 @@ const IncidentMap = (props) => {
       map.dispose();
     };
   }, []);
-  return <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+  return (<Card>
+    <CardHeader>
+      <div>
+        <CardTitle tag='h4'>Hate Crime Map</CardTitle>
+      </div>
+    </CardHeader>
+    <CardBody>
+      <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+    </CardBody>
+  </Card>);
+
 }
 
 export default IncidentMap

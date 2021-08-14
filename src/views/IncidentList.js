@@ -53,17 +53,17 @@ const STATES = {
 }
 const IncidentList = (props) =>{
   return (
-    <div class="incident-list">
+    <div className="incident-list">
       {props.data.map(function (d, idx) {
         return (
-          <div class="incident">
-            <p class="title">{d.title}</p>
-            <p class="location_time">
+          <div className="incident" key={idx}>
+            <p className="title">{d.title}</p>
+            <p className="location_time">
               <a href={d.url} target='_blank'> 
                 {STATES[d.incident_location]?STATES[d.incident_location]:d.incident_location} | {moment(d.incident_time).format('MM/DD/YYYY')}
               </a>
             </p>
-            <p class="description">{d.abstract}</p>
+            <p className="description">{d.abstract}</p>
           </div>)
       })}
     </div>

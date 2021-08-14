@@ -1,5 +1,4 @@
 import { ThemeColors } from '@src/utility/context/ThemeColors';
-import AutoComplete from '@components/autocomplete'
 import '@styles/react/libs/charts/recharts.scss';
 import '@styles/react/libs/flatpickr/flatpickr.scss';
 import moment from 'moment';
@@ -72,16 +71,13 @@ const Home = () => {
   }
   return (
     <div>
-      
       <Row>
-        <Col xs='12'>
+        <Col xs='12' >
           <Card>
             <CardBody>
-             
-              State: <StateSelection value={selectedState} onChange={onStateChange}/>
-
- &nbsp;
-              <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
+              Location: <StateSelection value={selectedState} onChange={onStateChange}/>
+              &nbsp;&nbsp;
+              Time Period: <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
             </CardBody>
           </Card>
         </Col>
@@ -89,13 +85,10 @@ const Home = () => {
       <Row className='match-height'>
         <Col xl='8' lg='8' md='6' xs='12'>
           <Card>
-            <CardHeader>
-              <CardTitle>Hate Crime Map</CardTitle>
-            </CardHeader>
             <CardBody>
               <BarChart warning={colors.warning.main} chart_data={incidentTimeSeries} />
               <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange}/>
-              <IncidentCountTable title={"Incident Count by States"} data={incidentAggregated} />
+              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated} />
             </CardBody>
           </Card>
         </Col>
