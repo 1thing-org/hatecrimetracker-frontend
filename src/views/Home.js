@@ -1,4 +1,5 @@
 import { ThemeColors } from '@src/utility/context/ThemeColors';
+import AutoComplete from '@components/autocomplete'
 import '@styles/react/libs/charts/recharts.scss';
 import '@styles/react/libs/flatpickr/flatpickr.scss';
 import moment from 'moment';
@@ -11,10 +12,12 @@ import BarChart from "./BarChart";
 import IncidentTable from './IncidentTable';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentMap from "./IncidentMap";
+import StateSelection from './StateSelection';
 
 const Home = () => {
 
   const [incidents, setIncidents] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
   const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()]);
   const [stats, setStats] = useState({ stats: [], total: {} });
 
@@ -58,9 +61,25 @@ const Home = () => {
     }
   }, [dateRange])
 
+  function onStateChange(state){
+    setSelectedState(state);
+  }
   return (
     <div>
-      <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
+      
+      <Row>
+        <Col xs='12'>
+          <Card>
+            <CardBody>
+             
+              State: <StateSelection value={selectedState} onChange={onStateChange}/>
+
+ &nbsp;
+              <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
       <Row className='match-height'>
         <Col xl='8' lg='8' md='6' xs='12'>
           <Card>
@@ -69,7 +88,7 @@ const Home = () => {
             </CardHeader>
             <CardBody>
               <BarChart warning={colors.warning.main} chart_data={stats.stats} />
-              <IncidentMap mapData={stats.total} />
+              <IncidentMap mapData={stats.total} selectdState={selectedState} onChange={onStateChange}/>
               <IncidentCountTable title={"Incident Count by States"} data={stats.total} />
             </CardBody>
           </Card>

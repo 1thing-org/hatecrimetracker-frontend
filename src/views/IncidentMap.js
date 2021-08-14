@@ -2,6 +2,7 @@ import am4geodata_usaHigh from "@amcharts/amcharts4-geodata/usaHigh";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { SelectionState } from "draft-js";
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 am4core.useTheme(am4themes_animated);
@@ -15,8 +16,10 @@ https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 
 //mapData is result from api/stats.total
 const IncidentMap = (props) => {
-  //const map = am4core.create("chartdiv", am4maps.MapChart);
   const [mapPolygonSeries, setMapPolygonSeries] = useState();
+  const [polygonTemplate, setPolygonTemplate] = useState();
+  const [currentActiveState, setCurrentActiveState] = useState();
+  const [currentActiveStateZIndex, setCurrentActiveStateZIndex] = useState();
 
   const updateMap = (mapStatistics) => {
     if (!mapPolygonSeries) return;
@@ -29,10 +32,40 @@ const IncidentMap = (props) => {
     }
     mapPolygonSeries.data = data;
   }
-  var currentActiveState, currentActiveStateZIndex;
   useEffect(() => {
     updateMap(props.mapData);
   }, [props.mapData]);
+
+  useEffect(() => {
+    if (!mapPolygonSeries || !polygonTemplate) return;
+    const polygon = mapPolygonSeries.getPolygonById("US-" + props.selectdState);
+    selectState(polygon);
+  }, [props.selectdState]);
+
+  const selectState = (stateMapObject) => {
+    if (currentActiveState == stateMapObject)
+      return;
+    if (currentActiveState) { //clear the previousely selected state
+      currentActiveState.zIndex = currentActiveStateZIndex;
+      currentActiveState.strokeWidth = polygonTemplate.strokeWidth;
+      currentActiveState.stroke = polygonTemplate.stroke;
+      currentActiveState.filters.clear();
+    }
+
+    //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
+    if (stateMapObject) {
+      setCurrentActiveStateZIndex(stateMapObject.zIndex);
+      stateMapObject.zIndex = Number.MAX_VALUE;
+      stateMapObject.toFront();
+      stateMapObject.strokeWidth = 3;
+      stateMapObject.stroke = am4core.color("#FCEB4F");
+      var activeShadow = stateMapObject.filters.push(new am4core.DropShadowFilter);
+      activeShadow.dx = 6;
+      activeShadow.dy = 6;
+      activeShadow.opacity = 0.3;
+    }
+    setCurrentActiveState(stateMapObject);
+  }
   //componentDidMount
   useLayoutEffect(() => {
     let map = am4core.create("chartdiv", am4maps.MapChart);
@@ -69,31 +102,18 @@ const IncidentMap = (props) => {
     let hs = polygonTemplate.states.create("hover");
     hs.properties.fillOpacity = 0.5;
 
-    polygonTemplate.events.on("hit", function(ev) {
-      if ( currentActiveState == ev.target ) return;
-      if ( currentActiveState ) {
-        currentActiveState.zIndex = currentActiveStateZIndex;
-        currentActiveState.strokeWidth = polygonTemplate.strokeWidth;
-        currentActiveState.stroke = polygonTemplate.stroke;
-        currentActiveState.filters.clear();
+    polygonTemplate.events.on("hit", function (ev) {
+      if (currentActiveState == ev.target) return;
+      selectState(ev.target);
+      if ( ev.target && ev.target.id ) {
+        props.onChange(ev.target.id.split("-")[1]);
       }
-
-      //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
-      currentActiveState = ev.target;
-      currentActiveStateZIndex = currentActiveState.zIndex;
-      currentActiveState.zIndex = Number.MAX_VALUE;
-      currentActiveState.toFront();
-      currentActiveState.strokeWidth = 3;
-      currentActiveState.stroke = am4core.color("#FCEB4F");
-      var activeShadow = currentActiveState.filters.push(new am4core.DropShadowFilter);
-      activeShadow.dx = 6;
-      activeShadow.dy = 6;
-      activeShadow.opacity = 0.3;
     });
 
     polygonTemplate.stroke = am4core.color("#6979C9");
     polygonTemplate.strokeOpacity = 1;
     setMapPolygonSeries(polygonSeries);
+    setPolygonTemplate(polygonTemplate);
     return () => {
       map.dispose();
     };
