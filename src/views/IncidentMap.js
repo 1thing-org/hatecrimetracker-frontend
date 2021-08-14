@@ -4,7 +4,7 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-
+import {getStateIncidentPerM, formatIncidentRate, stateFullName, forEachState} from '../utility/Utils';
 am4core.useTheme(am4themes_animated);
 
 /*
@@ -23,12 +23,16 @@ const IncidentMap = (props) => {
   const updateMap = (mapStatistics) => {
     if (!mapPolygonSeries) return;
     let data = [];
-    for (const state in mapStatistics) {
+    forEachState( (state, name) => {
+      const count = mapStatistics[state]?mapStatistics[state] : null;
       data.push({
         id: "US-" + state,
-        value: mapStatistics[state],
+        value: count,
+        tooltipText: "<center><strong>" + name + "</strong></center><br/>"
+          + "<strong>Case Number:</strong> " + (count?count:0) + "<br/>"
+          + "<strong>Count/1MM:</strong> " + (count?formatIncidentRate(getStateIncidentPerM( count, state)):0)
       })
-    }
+    })
     mapPolygonSeries.data = data;
     selectState(selectedState);
   }
@@ -99,8 +103,7 @@ const IncidentMap = (props) => {
     heatLegend.orientation = "vertical";
     polygonSeries.data = [];
     let polygonTemplate = polygonSeries.mapPolygons.template;
-    polygonTemplate.tooltipHTML =
-      "<strong>{name}:<strong> {value?value:0}";
+    polygonTemplate.tooltipHTML = "{tooltipText}";
     polygonTemplate.fill = am4core.color("#AAAAAA");
     polygonTemplate.fillOpacity = 1;
     polygonTemplate.clickable = true;
