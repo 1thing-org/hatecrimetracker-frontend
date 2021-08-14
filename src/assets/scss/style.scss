@@ -46,3 +46,29 @@ body{
 	color: #FFFFFF;
 	margin-top:4px;
 }
+
+// .rdt_TableCell{
+// 	background:#000;
+// 	font-family: Helvetica;
+// 	font-style: normal;
+// 	color:#FFFFFF;
+// }
+
+.rdt_TableCell .selected{
+	color:#FEF753;
+	font-weight: bold;
+}
+
+// .rdt_TableRow{
+// 	background:#000;
+// }
+
+.rdt_TableHeader{
+	background:#000000;
+}
+
+.rdt_TableHeadRow{
+	// background:#FEF753;
+	// color:#000000;
+	font-weight: bold;
+}

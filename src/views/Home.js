@@ -88,7 +88,9 @@ const Home = () => {
             <CardBody>
               <BarChart warning={colors.warning.main} chart_data={incidentTimeSeries} />
               <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange}/>
-              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated} />
+              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated} 
+              selectedState={selectedState}
+              stateChanged={(state) => setSelectedState(state)}/>
             </CardBody>
           </Card>
         </Col>

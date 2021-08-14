@@ -1,7 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import {getStateIncidentPerM, formatIncidentRate} from '../utility/Utils';
+import { formatIncidentRate, getStateIncidentPerM } from '../utility/Utils';
 const columns = [
     {
         name: 'State',
@@ -21,6 +21,7 @@ const columns = [
         format: (row) => formatIncidentRate(row.count_rate)
     }
 ];
+
 const toIncidentCount = (data) => {
     const result = [];
     for (const state in data) {
@@ -34,21 +35,54 @@ const toIncidentCount = (data) => {
     return result;
 }
 //data is map of state to count
-const IncidentCountTable = ({ data, title }) => {
+const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
     const [incidentCountData, setIncidentCountData] = useState(toIncidentCount(data));
+    const [currState, setCurrState] = useState(selectedState);
     //** ComponentDidMount
     useEffect(() => {
         setIncidentCountData(toIncidentCount(data));
     }, [data])
+    useEffect(() => {
+        setCurrState(selectedState);
+    }, [selectedState])
+
+    const conditionalRowStyles = [
+        {
+            when: (row) => row.state === currState,
+            style: {
+                color: "yellow",
+                ':hover': { color: "yellow" },
+                backgroundColor: '#000000',
+                fontweight: 'bold',
+            },
+        },
+        {
+            when: (row) => row.state !== currState,
+            style: {
+                color: "white",
+                backgroundColor: '#000000',
+            },
+        },
+    ];
+    const updateState = useCallback((row) => {
+        stateChanged(row.state);
+    });
     return (<Card>
         <CardHeader>
-          <div>
-            <CardTitle tag='h4'>{title}</CardTitle>
-          </div>
+            <div>
+                <CardTitle tag='h4'>{title}</CardTitle>
+            </div>
         </CardHeader>
         <CardBody>
-        <DataTable striped={true} columns={columns} data={incidentCountData} />
+            <DataTable columns={columns} data={incidentCountData}
+                keyField={"state"}
+                noHeader={true}
+                highlightOnHover
+                onRowClicked={updateState}
+                conditionalRowStyles={conditionalRowStyles}
+                theme="dark"
+            />
         </CardBody>
-      </Card>);
+    </Card>);
 }
 export default IncidentCountTable
