@@ -16,13 +16,15 @@ https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 
 //mapData is result from api/stats.total
 const IncidentMap = (props) => {
-  const [mapPolygonSeries, setMapPolygonSeries] = useState();
-  const [polygonTemplate, setPolygonTemplate] = useState();
-  const [currentActiveState, setCurrentActiveState] = useState();
-  const [currentActiveStateZIndex, setCurrentActiveStateZIndex] = useState();
+  console.log("init IncidentMap"  );
+  const [mapState, setMapState] = useState();
+  // const [mapPolygonSeries, setMapStatePolygonSeries] = useState();
+  // const [mapPolygonTemplate, setMapStatePolygonTemplate] = useState();
+  // const [currentActiveState, setCurrentActiveState] = useState();
+  // const [currentActiveStateZIndex, setCurrentActiveStateZIndex] = useState();
 
   const updateMap = (mapStatistics) => {
-    if (!mapPolygonSeries) return;
+    if (!mapState || !mapState.mapPolygonSeries) return;
     let data = [];
     for (const state in mapStatistics) {
       data.push({
@@ -30,31 +32,42 @@ const IncidentMap = (props) => {
         value: mapStatistics[state]
       })
     }
-    mapPolygonSeries.data = data;
+    mapState.mapPolygonSeries.data = data;
   }
   useEffect(() => {
     updateMap(props.mapData);
   }, [props.mapData]);
 
   useEffect(() => {
-    if (!mapPolygonSeries || !polygonTemplate) return;
-    const polygon = mapPolygonSeries.getPolygonById("US-" + props.selectdState);
+    if (!mapState || !mapState.mapPolygonSeries || !mapState.mapPolygonTemplate) return;
+    const polygon = mapState.mapPolygonSeries.getPolygonById("US-" + props.selectdState);
     selectState(polygon);
   }, [props.selectdState]);
 
   const selectState = (stateMapObject) => {
-    if (currentActiveState == stateMapObject)
-      return;
-    if (currentActiveState) { //clear the previousely selected state
-      currentActiveState.zIndex = currentActiveStateZIndex;
-      currentActiveState.strokeWidth = polygonTemplate.strokeWidth;
-      currentActiveState.stroke = polygonTemplate.stroke;
-      currentActiveState.filters.clear();
+    // if (currentActiveState == stateMapObject)
+    //   return;
+    // if (currentActiveState) { //clear the previousely selected state
+    //   currentActiveState.zIndex = currentActiveStateZIndex;
+    //   currentActiveState.strokeWidth = mapPolygonTemplate.strokeWidth;
+    //   currentActiveState.stroke = mapPolygonTemplate.stroke;
+    //   currentActiveState.filters.clear();
+    // }
+    if (mapState.mapPolygonSeries) {
+      for ( let i=0; i< mapState.mapPolygonSeries.mapPolygons.length; i++) {
+        const polygon = mapState.mapPolygonSeries.mapPolygons[i];
+        polygon.strokeWidth = mapState.mapPolygonTemplate.strokeWidth;
+        polygon.stroke = mapState.mapPolygonTemplate.stroke;
+        polygon.filters.clear();
+      }
     }
 
     //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
+
+    
     if (stateMapObject) {
-      setCurrentActiveStateZIndex(stateMapObject.zIndex);
+      //setCurrentActiveStateZIndex(stateMapObject.zIndex);
+      mapState.currentActiveStateZIndex = stateMapObject.zIndex
       stateMapObject.zIndex = Number.MAX_VALUE;
       stateMapObject.toFront();
       stateMapObject.strokeWidth = 3;
@@ -64,7 +77,8 @@ const IncidentMap = (props) => {
       activeShadow.dy = 6;
       activeShadow.opacity = 0.3;
     }
-    setCurrentActiveState(stateMapObject);
+    mapState.currentActiveState = stateMapObject;
+    setMapState(mapState);
   }
   //componentDidMount
   useLayoutEffect(() => {
@@ -103,17 +117,21 @@ const IncidentMap = (props) => {
     hs.properties.fillOpacity = 0.5;
 
     polygonTemplate.events.on("hit", function (ev) {
-      if (currentActiveState == ev.target) return;
+      if (!mapState || mapState.currentActiveState == ev.target) return;
       selectState(ev.target);
-      if ( ev.target && ev.target.id ) {
+      if (ev.target && ev.target.id) {
         props.onChange(ev.target.id.split("-")[1]);
       }
     });
 
     polygonTemplate.stroke = am4core.color("#6979C9");
     polygonTemplate.strokeOpacity = 1;
-    setMapPolygonSeries(polygonSeries);
-    setPolygonTemplate(polygonTemplate);
+
+    setMapState({
+      mapPolygonSeries: polygonSeries,
+      mapPolygonTemplate: polygonTemplate
+    });
+    // setMapPolygonTemplate(polygonTemplate);
     return () => {
       map.dispose();
     };
