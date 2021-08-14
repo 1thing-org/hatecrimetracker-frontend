@@ -18,7 +18,7 @@ https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 const IncidentMap = (props) => {
   const [mapPolygonSeries, setMapPolygonSeries] = useState();
   const [polygonTemplate, setPolygonTemplate] = useState();
-  const [currentActiveState, setCurrentActiveState] = useState();
+  const [selectedState, setSelectedState] = useState();
 
   const updateMap = (mapStatistics) => {
     if (!mapPolygonSeries) return;
@@ -26,47 +26,49 @@ const IncidentMap = (props) => {
     for (const state in mapStatistics) {
       data.push({
         id: "US-" + state,
-        value: mapStatistics[state]
+        value: mapStatistics[state],
       })
     }
     mapPolygonSeries.data = data;
+    selectState(selectedState);
   }
   useEffect(() => {
     updateMap(props.mapData);
   }, [props.mapData]);
 
   useEffect(() => {
-    if (!mapPolygonSeries || !polygonTemplate) return;
-    const polygon = mapPolygonSeries.getPolygonById("US-" + props.selectdState);
-    setCurrentActiveState(polygon);
+    setSelectedState(props.selectdState);
   }, [props.selectdState]);
 
   useEffect(() => {
-    console.log("currentActiveState changed");
-    selectState(currentActiveState);
-  }, [currentActiveState]);
+    selectState(selectedState);
+  }, [selectedState]);
 
-  const selectState = (stateMapObject) => {
-    if (mapPolygonSeries && polygonTemplate) {
-      //clean selection effect on other states
-      for ( let i=0; i< mapPolygonSeries.mapPolygons.length; i++) {
-        const polygon = mapPolygonSeries.mapPolygons.values[i];
+  const selectState = (state) => {
+    if (!mapPolygonSeries || !polygonTemplate) {
+      return;
+    }
+    const stateId = "US-" + state;
+    //clean selection effect on other states
+    for (let i = 0; i < mapPolygonSeries.mapPolygons.values.length; i++) {
+      const polygon = mapPolygonSeries.mapPolygons.values[i];
+      if (stateId == polygon.dataItem?.dataContext?.id) {
+        //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
+        polygon.zIndex = Number.MAX_VALUE;
+        polygon.toFront();
+        polygon.strokeWidth = 4;
+        polygon.stroke = am4core.color("#FCEB4F");
+        var activeShadow = polygon.filters.push(new am4core.DropShadowFilter);
+        activeShadow.dx = 6;
+        activeShadow.dy = 6;
+        activeShadow.opacity = 0.3;
+      }
+      else {
         polygon.strokeWidth = polygonTemplate.strokeWidth;
         polygon.stroke = polygonTemplate.stroke;
+        polygon.zIndex = i;
         polygon.filters.clear();
       }
-    }
-
-    //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
-    if (stateMapObject) {
-      stateMapObject.zIndex = Number.MAX_VALUE;
-      stateMapObject.toFront();
-      stateMapObject.strokeWidth = 3;
-      stateMapObject.stroke = am4core.color("#FCEB4F");
-      var activeShadow = stateMapObject.filters.push(new am4core.DropShadowFilter);
-      activeShadow.dx = 6;
-      activeShadow.dy = 6;
-      activeShadow.opacity = 0.3;
     }
   }
   //componentDidMount
@@ -106,13 +108,12 @@ const IncidentMap = (props) => {
     hs.properties.fillOpacity = 0.5;
 
     polygonTemplate.events.on("hit", function (ev) {
-      if (currentActiveState == ev.target) return;
-      setCurrentActiveState(ev.target);
-      if ( ev.target?.dataItem?.dataContext?.id ) {
-        const newState = ev.target.dataItem.dataContext.id.split("-")[1];
-        if ( newState != props.selectdState ) {
-          props.onChange(newState);
-        }
+      let newState = null;
+      if (ev.target?.dataItem?.dataContext?.id) {
+        newState = ev.target.dataItem.dataContext.id.split("-")[1];
+      }
+      if (newState != props.selectdState) {
+        props.onChange(newState);
       }
     });
 
