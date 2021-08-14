@@ -62,6 +62,7 @@ const Home = () => {
   }, [dateRange])
 
   function onStateChange(state){
+    console.log("State changed from map:", state);
     setSelectedState(state);
   }
   return (

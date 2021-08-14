@@ -59,7 +59,6 @@ const IncidentMap = (props) => {
 
     //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
     if (stateMapObject) {
-      setCurrentActiveStateZIndex(stateMapObject.zIndex);
       stateMapObject.zIndex = Number.MAX_VALUE;
       stateMapObject.toFront();
       stateMapObject.strokeWidth = 3;
@@ -108,10 +107,12 @@ const IncidentMap = (props) => {
 
     polygonTemplate.events.on("hit", function (ev) {
       if (currentActiveState == ev.target) return;
-      //selectState(ev.target);
       setCurrentActiveState(ev.target);
-      if ( ev.target && ev.target.id ) {
-        props.onChange(ev.target.id.split("-")[1]);
+      if ( ev.target?.dataItem?.dataContext?.id ) {
+        const newState = ev.target.dataItem.dataContext.id.split("-")[1];
+        if ( newState != props.selectdState ) {
+          props.onChange(newState);
+        }
       }
     });
 
