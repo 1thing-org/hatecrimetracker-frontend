@@ -20,16 +20,17 @@ const SimpleBarChart = ({ warning, chart_data }) => {
     const d = moment(tickVal, "YYYY-MM-DD")
     return d.format("M/D/YY");
   }
-  const [ticks, setTicks] = useState([]);
+  const [xticks, setXTicks] = useState([]);
   useEffect(() => {
-    const newTicks = [];
+    const newXTicks = [];
+    const newYTicks = {};
     for( let i = 0; i < chart_data.length; i++ ) {
       const d = moment(chart_data[i].key, "YYYY-MM-DD")
       if (d.date() == 1) {
-        newTicks.push(chart_data[i].key);
+        newXTicks.push(chart_data[i].key);
       }
     }
-    setTicks(newTicks);
+    setXTicks(newXTicks);
   }, [chart_data]);
   return (
     <Card>
@@ -44,8 +45,8 @@ const SimpleBarChart = ({ warning, chart_data }) => {
           <ResponsiveContainer>
             <BarChart height={300} data={chart_data}>
             <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey='key' tickFormatter={formatXAxis}  ticks={ticks} />
-              <YAxis />
+              <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
+              <YAxis allowDecimals={false} interval="preserveStartEnd"/>
               <Tooltip />
               <Bar dataKey='value' stroke={warning} strokeWidth={3}  />
             </BarChart>
