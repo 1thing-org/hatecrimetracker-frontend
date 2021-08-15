@@ -72,3 +72,27 @@ body{
 	// color:#000000;
 	font-weight: bold;
 }
+
+.maptooltip {
+	background: #000;
+}
+
+.maptooltip .state {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 22px;
+	color: #FFFFFF;
+	margin-top:4px;
+}
+
+.maptooltip .casenumber {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	color: #FFFFFF;
+	margin-top:4px;
+}

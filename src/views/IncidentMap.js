@@ -28,9 +28,10 @@ const IncidentMap = (props) => {
       data.push({
         id: "US-" + state,
         value: count,
-        tooltipText: "<center><strong>" + name + "</strong></center><br/>"
-          + "<strong>Case Number:</strong> " + (count?count:0) + "<br/>"
-          + "<strong>Count/1MM:</strong> " + (count?formatIncidentRate(getStateIncidentPerM( count, state)):0)
+        tooltipText: "<div class='maptooltip'><span class='state'>" + name + "</span><br/>"
+          + "<div class='casenumber'>Case Number: " + (count?count:0) + "<br/>"
+          + "Count/1MM: " + (count?formatIncidentRate(getStateIncidentPerM( count, state)):0)
+          + "</div></div>"
       })
     })
     mapPolygonSeries.data = data;
@@ -102,6 +103,10 @@ const IncidentMap = (props) => {
     heatLegend.valign = "bottom";
     heatLegend.orientation = "vertical";
     polygonSeries.data = [];
+    polygonSeries.tooltip.getFillFromObject = false;
+    polygonSeries.tooltip.background.fill = am4core.color("#000000");
+    polygonSeries.tooltip.getStrokeFromObject = false;
+    polygonSeries.tooltip.stroke = am4core.color("#FEF753");
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipHTML = "{tooltipText}";
     polygonTemplate.fill = am4core.color("#AAAAAA");
