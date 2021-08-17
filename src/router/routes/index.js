@@ -11,13 +11,7 @@ const Routes = [
   {
     path: '/home',
     component: lazy(() => import('../../views/Home')),
-    meta: {
-      menuHidden: true
-    }
-  },
-  {
-    path: '/second-page',
-    component: lazy(() => import('../../views/SecondPage')),
+    layout: 'BlankLayout',
     meta: {
       menuHidden: true
     }
