@@ -10,3 +10,5 @@
 ##############
 When configure Google Cloud Bucket to hold static files, make sure in the website configuration, 
 set 404 page to index.html too. Otherwise you will get NoKey error when loading any page like /home,/admin, etc.
+
+Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/
