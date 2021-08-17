@@ -9,6 +9,8 @@ import { auth } from "../firebase";
 import { UserContext } from "../providers/UserProvider";
 import * as incidentsService from "../services/incidents";
 import IncidentTable from './IncidentTable';
+import {Button } from 'reactstrap'
+import {signInWithGoogle} from '../firebase'
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
@@ -23,7 +25,7 @@ const IncidentAdminPage = () => {
       .required('Title is required'),
     incident_time: Yup.date().required('Incident time is required')
       .default(function () {
-        return new Date("2020-03-30");
+        return new Date();
       }),
     incident_location: Yup.string()
       .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
@@ -56,7 +58,7 @@ const IncidentAdminPage = () => {
     reloadIncidents(date);
   }
 
-  const deleteIncident = (incident) =>{
+  const deleteIncident = (incident) => {
     Swal.fire({
       title: 'Are you sure you want to delete this incident?',
       icon: 'warning',
@@ -80,7 +82,13 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div> Please <Link to="/login">Login</Link> </div>);
+    return (<div className="col-2"><Button.Ripple tag={Link} to='/admin' color='primary' block
+      onClick={() => {
+        signInWithGoogle();
+      }}>
+      Sign in with Google
+    </Button.Ripple>
+    </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
   return (
