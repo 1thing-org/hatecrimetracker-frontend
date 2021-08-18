@@ -40,7 +40,7 @@ const IncidentTable = ({ data, title, onDelete }) => {
       selector: "url",
       width:"120px",
       format: (row) => {
-        return <Button.Ripple color='primary' block onClick={() => onDelete(row)} >
+        return <Button.Ripple color='warning' block onClick={() => onDelete(row)} >
           Delete
         </Button.Ripple>;
       }
@@ -49,7 +49,7 @@ const IncidentTable = ({ data, title, onDelete }) => {
   }
   
   return (
-    <DataTable striped={true} title={title} columns={columns} data={data} />
+    <DataTable  title={title} columns={columns} data={data} theme="dark"/>
   )
 }
 export default IncidentTable
