@@ -15,7 +15,7 @@ const CustomTooltip = ({ active, payload }) => {
   return null
 }
 
-const SimpleBarChart = ({ warning, chart_data }) => {
+const SimpleBarChart = ({ color, chart_data }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
     const d = moment(tickVal, "YYYY-MM-DD")
     return d.format("M/D/YY");
@@ -48,7 +48,7 @@ const SimpleBarChart = ({ warning, chart_data }) => {
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
               <YAxis allowDecimals={false} interval="preserveStartEnd"/>
               <Tooltip />
-              <Bar dataKey='value' stroke={warning} strokeWidth={3}  />
+              <Bar dataKey='value' stroke={color} strokeWidth={3}  />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -5,21 +5,22 @@ import moment from 'moment';
 import { useContext, useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap';
 import DateRangeSelector from './DateRangeSelector';
-import 'rsuite/dist/styles/rsuite-default.css';
+import 'rsuite/dist/styles/rsuite-dark.css';
 import * as incidentsService from "../services/incidents";
 import BarChart from "./BarChart";
 import IncidentList from './IncidentList';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentMap from "./IncidentMap";
 import StateSelection from './StateSelection';
+import UILoader from '@components/ui-loader'
 
 const Home = () => {
-
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()]);
-  const [incidentTimeSeries, setIncidentTimeSeries] = useState( []);
-  const [incidentAggregated, setIncidentAggregated] = useState( []);
+  const [incidentTimeSeries, setIncidentTimeSeries] = useState([]);
+  const [incidentAggregated, setIncidentAggregated] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   const mergeDate = (stats, start_date, end_date) => {
@@ -41,16 +42,19 @@ const Home = () => {
     return new_stats;
   }
   const loadData = (updateMap = false) => {
-    if ( dateRange.length != 2 )
+    if (dateRange.length != 2)
       return;
+    
+      setLoading(true);
     incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState)
       .then(incidents => setIncidents(incidents));
     incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
       .then(stats => {
         setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1]));
-        if ( updateMap ) {
+        if (updateMap) {
           setIncidentAggregated(stats.total);
         }
+        setLoading(false);
       });
   }
 
@@ -62,22 +66,25 @@ const Home = () => {
   }, [dateRange]);
 
   const { colors } = useContext(ThemeColors)
+  console.log(colors)
   function handleDateRangeSelect(ranges) {
     setDateRange(ranges);
   }
 
-  function onStateChange(state){
+  function onStateChange(state) {
     setSelectedState(state);
   }
   return (
+    <UILoader blocking={loading}>
     <div>
+      
       <Row>
         <Col xs='12' >
           <Card>
             <CardBody>
-              Location: <StateSelection value={selectedState} onChange={onStateChange}/>
+              Location: <StateSelection value={selectedState} onChange={onStateChange} />
               &nbsp;&nbsp;
-              Time Period: <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange}/>
+              Time Period: <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
             </CardBody>
           </Card>
         </Col>
@@ -86,11 +93,11 @@ const Home = () => {
         <Col xl='8' lg='8' md='6' xs='12'>
           <Card>
             <CardBody>
-              <BarChart warning={colors.warning.main} chart_data={incidentTimeSeries} />
-              <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange}/>
-              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated} 
-              selectedState={selectedState}
-              stateChanged={(state) => setSelectedState(state)}/>
+              <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} />
+              <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange} />
+              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated}
+                selectedState={selectedState}
+                stateChanged={(state) => setSelectedState(state)} />
             </CardBody>
           </Card>
         </Col>
@@ -106,6 +113,7 @@ const Home = () => {
         </Col>
       </Row>
     </div>
+    </UILoader>
   )
 }
 

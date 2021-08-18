@@ -11,9 +11,12 @@ PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 
 body{
-	background:#000;
+	background:#000000;
 }
-
+body.dark-layout {
+	color: #b4b7bd;
+	background-color: #000000; }
+	
 .incident-list .title {
 	font-family: Helvetica;
 	font-style: normal;
@@ -67,11 +70,12 @@ body{
 	background:#000000;
 }
 
-.rdt_TableHeadRow{
-	// background:#FEF753;
-	// color:#000000;
-	font-weight: bold;
-}
+
+// .rdt_TableHeadRow{
+// 	background:#FEF753;
+// 	color:#000000;
+// 	font-weight: bold;
+// }
 
 .maptooltip {
 	background: #000;
@@ -96,3 +100,11 @@ body{
 	color: #FFFFFF;
 	margin-top:4px;
 }
+
+.dark-layout .card {
+	background-color: #000000;
+	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); }
+  
+  .dark-layout .card .card-footer {
+	border-color: #000000; }
+  
