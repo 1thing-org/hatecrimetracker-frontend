@@ -23,11 +23,26 @@ const SimpleBarChart = ({ color, chart_data }) => {
   const [xticks, setXTicks] = useState([]);
   useEffect(() => {
     const newXTicks = [];
-    const newYTicks = {};
     for( let i = 0; i < chart_data.length; i++ ) {
       const d = moment(chart_data[i].key, "YYYY-MM-DD")
-      if (d.date() == 1) {
-        newXTicks.push(chart_data[i].key);
+      //if total dates>6M, show ticks at first day of each month
+      //if between 3M-6M show on 15th of each month too
+      //if <3M, show 8th, 22nd too
+      switch(d.date()) {
+        case 1:
+          newXTicks.push(chart_data[i].key);
+          break;
+        case 15:
+          if ( chart_data.length <= 180 ) { 
+            newXTicks.push(chart_data[i].key);
+          }
+          break;
+        case 8:
+        case 22:
+          if ( chart_data.length <= 90 ) { 
+            newXTicks.push(chart_data[i].key);
+          }
+          break;
       }
     }
     setXTicks(newXTicks);
@@ -48,7 +63,7 @@ const SimpleBarChart = ({ color, chart_data }) => {
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
               <YAxis allowDecimals={false} interval="preserveStartEnd"/>
               <Tooltip />
-              <Bar dataKey='value' stroke={color} strokeWidth={3}  />
+              <Bar dataKey='value'  fill={color} strokeWidth={3}  />
             </BarChart>
           </ResponsiveContainer>
         </div>
