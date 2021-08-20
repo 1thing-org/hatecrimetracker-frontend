@@ -64,7 +64,6 @@ const Home = () => {
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
-    console.log(colors)
     function handleDateRangeSelect(ranges) {
         setDateRange(ranges)
     }
