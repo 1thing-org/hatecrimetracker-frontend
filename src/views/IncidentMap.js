@@ -1,9 +1,10 @@
+import { ThemeColors } from '@src/utility/context/ThemeColors'
 import am4geodata_usaHigh from "@amcharts/amcharts4-geodata/usaHigh";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import {getStateIncidentPerM, formatIncidentRate, stateFullName, forEachState} from '../utility/Utils';
 am4core.useTheme(am4themes_animated);
 
@@ -49,6 +50,7 @@ const IncidentMap = (props) => {
     selectState(selectedState);
   }, [selectedState]);
 
+  const { colors } = useContext(ThemeColors)
   const selectState = (state) => {
     if (!mapPolygonSeries || !polygonTemplate) {
       return;
@@ -62,7 +64,7 @@ const IncidentMap = (props) => {
         polygon.zIndex = Number.MAX_VALUE;
         polygon.toFront();
         polygon.strokeWidth = 4;
-        polygon.stroke = am4core.color("#FCEB4F");
+        polygon.stroke = am4core.color("#FCEB4F") //am4core.color(colors.danger.main);
         var activeShadow = polygon.filters.push(new am4core.DropShadowFilter);
         activeShadow.dx = 6;
         activeShadow.dy = 6;
@@ -90,18 +92,18 @@ const IncidentMap = (props) => {
     polygonSeries.heatRules.push({
       property: "fill",
       target: polygonSeries.mapPolygons.template,
-      min: am4core.color("#9F833B"), //minimal color
-      max: am4core.color("#FCEB4F"),
+      min: am4core.color("olive"), //minimal color
+      max: am4core.color("yellow"),
     });
-    let heatLegend = map.createChild(am4maps.HeatLegend);
-    heatLegend.series = polygonSeries;
-    heatLegend.align = "right";
-    heatLegend.width = am4core.percent(10);
-    heatLegend.marginRight = am4core.percent(4);
-    heatLegend.minValue = 0;
-    heatLegend.maxValue = 10;
-    heatLegend.valign = "bottom";
-    heatLegend.orientation = "vertical";
+    // let heatLegend = map.createChild(am4maps.HeatLegend);
+    // heatLegend.series = polygonSeries;
+    // heatLegend.align = "right";
+    // heatLegend.width = am4core.percent(10);
+    // heatLegend.marginRight = am4core.percent(4);
+    // // heatLegend.minValue = 0;
+    // // heatLegend.maxValue = 20;
+    // heatLegend.valign = "bottom";
+    // // heatLegend.orientation = "vertical";
     polygonSeries.data = [];
     polygonSeries.tooltip.getFillFromObject = false;
     polygonSeries.tooltip.background.fill = am4core.color("#000000");
