@@ -5,9 +5,12 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload[0] && payload[0].value) {
+    const d = moment(payload[0].payload.key, "YYYY-MM-DD")
+    const strDate = d.format("M/D/YYYY");
     return (
       <div className='recharts-custom-tooltip'>
-        <span>{`${payload[0].value} cases`}</span>
+        <p>{strDate}</p>
+        <strong>{payload[0].value + " " + (payload[0].value>1? 'cases' : 'case')}</strong>
       </div>
     )
   }
@@ -62,7 +65,7 @@ const SimpleBarChart = ({ color, chart_data }) => {
             <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
               <YAxis allowDecimals={false} interval="preserveStartEnd"/>
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Bar dataKey='value' stroke={chart_data.length>60?color:undefined} fill={color} strokeWidth={3}  />
             </BarChart>
           </ResponsiveContainer>
