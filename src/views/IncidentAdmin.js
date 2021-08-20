@@ -14,7 +14,6 @@ import {signInWithGoogle} from '../firebase'
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
-  const id = 0;
   const isAddMode = true;
 
   const [data, setData] = useState([]);
@@ -43,6 +42,7 @@ const IncidentAdminPage = () => {
   function onSubmit(data) {
     incidentsService.createIncident(data).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
+      reset();
       reloadIncidents(data.incident_time);
     });
   }
