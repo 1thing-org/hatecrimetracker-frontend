@@ -28,7 +28,7 @@ const dateRanges = [
   },
   {
     label: 'YTD', 
-    value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), new Date()]
+    value: [dateFns.startOfYear(new Date()), new Date()]
   },
 ];
 const DateRangeSelector = ({ onChange, value }) => {
