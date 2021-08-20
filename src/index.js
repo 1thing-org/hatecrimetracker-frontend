@@ -36,6 +36,10 @@ import './assets/scss/style.scss'
 import * as serviceWorker from './serviceWorker'
 
 import UserProvider from "./providers/UserProvider";
+
+import { hotjar } from 'react-hotjar';
+
+hotjar.initialize(2563128, 6);
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 
