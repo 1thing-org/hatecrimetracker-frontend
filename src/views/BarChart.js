@@ -63,7 +63,7 @@ const SimpleBarChart = ({ color, chart_data }) => {
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
               <YAxis allowDecimals={false} interval="preserveStartEnd"/>
               <Tooltip />
-              <Bar dataKey='value'  fill={color} strokeWidth={3}  />
+              <Bar dataKey='value' stroke={chart_data.length>60?color:undefined} fill={color} strokeWidth={3}  />
             </BarChart>
           </ResponsiveContainer>
         </div>
