@@ -9,19 +9,27 @@ const dateRanges = [
 
     value: [dateFns.addMonths(new Date(), -1), new Date()]
   },
-  {
-    label: 'Previous Month',
+  // {
+  //   label: dateFns.format(dateFns.addMonths(new Date(), -1), "MMMMMMM, yyyy"),
 
-    value: [dateFns.startOfMonth(dateFns.addMonths(new Date(), -1)), dateFns.endOfMonth(dateFns.addMonths(new Date(), -1))]
+  //   value: [dateFns.startOfMonth(dateFns.addMonths(new Date(), -1)), dateFns.endOfMonth(dateFns.addMonths(new Date(), -1))]
+  // },
+  {
+    label: 'Last 6 Months',
+    value: [dateFns.addMonths(new Date(), -6), new Date()]
   },
   {
-    label: 'Last Year',
+    label: 'Last Year', 
     value: [dateFns.addYears(new Date(), -1), new Date()]
   },
   {
-    label: 'Previous Year',
+    label: dateFns.format(dateFns.addYears(new Date(), -1), "yyyy"),
     value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), dateFns.endOfYear(dateFns.addYears(new Date(), -1))]
-  }
+  },
+  {
+    label: 'YTD', 
+    value: [dateFns.startOfYear(dateFns.addYears(new Date(), -1)), new Date()]
+  },
 ];
 const DateRangeSelector = ({ onChange, value }) => {
     return (
