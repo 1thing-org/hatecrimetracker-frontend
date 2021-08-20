@@ -35,26 +35,35 @@ import './assets/scss/style.scss'
 // ** Service Worker
 import * as serviceWorker from './serviceWorker'
 
-import UserProvider from "./providers/UserProvider";
+import UserProvider from './providers/UserProvider'
 
-import { hotjar } from 'react-hotjar';
+import { hotjar } from 'react-hotjar'
 
-hotjar.initialize(2563128, 6);
+import GA4React from 'ga-4-react'
+
+try {
+    setTimeout((_) => {
+        const ga4react = new GA4React('G-XS3NGG7FZS')
+        ga4react.initialize()
+    }, 4000)
+} catch (err) {}
+
+hotjar.initialize(2563128, 6)
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 
 ReactDOM.render(
-  <UserProvider>
-    <Provider store={store}>
-      <Suspense fallback={<Spinner />}>
-        <ThemeContext>
-          <LazyApp />
-          <ToastContainer newestOnTop />
-        </ThemeContext>
-      </Suspense>
-    </Provider>
-  </UserProvider>,
-  document.getElementById('root')
+    <UserProvider>
+        <Provider store={store}>
+            <Suspense fallback={<Spinner />}>
+                <ThemeContext>
+                    <LazyApp />
+                    <ToastContainer newestOnTop />
+                </ThemeContext>
+            </Suspense>
+        </Provider>
+    </UserProvider>,
+    document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

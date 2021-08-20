@@ -14,11 +14,6 @@ import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 import UILoader from '@components/ui-loader'
 
-import ReactGA from 'react-ga4'
-
-ReactGA.initialize('G-XS3NGG7FZS')
-ReactGA.send('pageview')
-
 const Home = () => {
     const [incidents, setIncidents] = useState([])
     const [selectedState, setSelectedState] = useState('')
