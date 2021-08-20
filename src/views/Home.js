@@ -1,120 +1,129 @@
-import { ThemeColors } from '@src/utility/context/ThemeColors';
-import '@styles/react/libs/charts/recharts.scss';
-import '@styles/react/libs/flatpickr/flatpickr.scss';
-import moment from 'moment';
-import { useContext, useState, useEffect } from 'react';
-import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap';
-import DateRangeSelector from './DateRangeSelector';
-import 'rsuite/dist/styles/rsuite-dark.css';
-import * as incidentsService from "../services/incidents";
-import BarChart from "./BarChart";
-import IncidentList from './IncidentList';
-import IncidentCountTable from './IncidentCountTable';
-import IncidentMap from "./IncidentMap";
-import StateSelection from './StateSelection';
+import { ThemeColors } from '@src/utility/context/ThemeColors'
+import '@styles/react/libs/charts/recharts.scss'
+import '@styles/react/libs/flatpickr/flatpickr.scss'
+import moment from 'moment'
+import { useContext, useState, useEffect } from 'react'
+import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap'
+import DateRangeSelector from './DateRangeSelector'
+import 'rsuite/dist/styles/rsuite-dark.css'
+import * as incidentsService from '../services/incidents'
+import BarChart from './BarChart'
+import IncidentList from './IncidentList'
+import IncidentCountTable from './IncidentCountTable'
+import IncidentMap from './IncidentMap'
+import StateSelection from './StateSelection'
 import UILoader from '@components/ui-loader'
 
+import ReactGA from 'react-ga4'
+
+ReactGA.initialize('G-XS3NGG7FZS')
+ReactGA.send('pageview')
+
 const Home = () => {
-  const [incidents, setIncidents] = useState([]);
-  const [selectedState, setSelectedState] = useState("");
-  const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()]);
-  const [incidentTimeSeries, setIncidentTimeSeries] = useState([]);
-  const [incidentAggregated, setIncidentAggregated] = useState([]);
-  const [loading, setLoading] = useState(false);
+    const [incidents, setIncidents] = useState([])
+    const [selectedState, setSelectedState] = useState('')
+    const [dateRange, setDateRange] = useState([moment().subtract(1, 'years').toDate(), new Date()])
+    const [incidentTimeSeries, setIncidentTimeSeries] = useState([])
+    const [incidentAggregated, setIncidentAggregated] = useState([])
+    const [loading, setLoading] = useState(false)
 
-  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
-  const mergeDate = (stats, start_date, end_date) => {
-    const new_stats = [];
-    let start = moment(start_date);
-    const end = moment(end_date);
-    while (start <= end) {
-      const strDate = start.format('YYYY-MM-DD');
-      if (stats.length > 0 && stats[stats.length - 1].key == strDate) {
-        //found the date in stats, use it
-        new_stats.push(stats[stats.length - 1]);
-        stats.pop();
-      }
-      else {
-        new_stats.push({ key: strDate, value: null });
-      }
-      start.add(1, 'days');
-    }
-    return new_stats;
-  }
-  const loadData = (updateMap = false) => {
-    if (dateRange.length != 2)
-      return;
-    
-      setLoading(true);
-    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState)
-      .then(incidents => setIncidents(incidents));
-    incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
-      .then(stats => {
-        setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1]));
-        if (updateMap) {
-          setIncidentAggregated(stats.total);
+    // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
+    const mergeDate = (stats, start_date, end_date) => {
+        const new_stats = []
+        let start = moment(start_date)
+        const end = moment(end_date)
+        while (start <= end) {
+            const strDate = start.format('YYYY-MM-DD')
+            if (stats.length > 0 && stats[stats.length - 1].key == strDate) {
+                //found the date in stats, use it
+                new_stats.push(stats[stats.length - 1])
+                stats.pop()
+            } else {
+                new_stats.push({ key: strDate, value: null })
+            }
+            start.add(1, 'days')
         }
-        setLoading(false);
-      });
-  }
+        return new_stats
+    }
+    const loadData = (updateMap = false) => {
+        if (dateRange.length != 2) return
 
-  useEffect(() => {
-    loadData();
-  }, [selectedState]);
-  useEffect(() => {
-    loadData(true); //update both incidents and map
-  }, [dateRange]);
+        setLoading(true)
+        incidentsService
+            .getIncidents(dateRange[0], dateRange[1], selectedState)
+            .then((incidents) => setIncidents(incidents))
+        incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
+            setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1]))
+            if (updateMap) {
+                setIncidentAggregated(stats.total)
+            }
+            setLoading(false)
+        })
+    }
 
-  const { colors } = useContext(ThemeColors)
-  console.log(colors)
-  function handleDateRangeSelect(ranges) {
-    setDateRange(ranges);
-  }
+    useEffect(() => {
+        loadData()
+    }, [selectedState])
+    useEffect(() => {
+        loadData(true) //update both incidents and map
+    }, [dateRange])
 
-  function onStateChange(state) {
-    setSelectedState(state);
-  }
-  return (
-    <UILoader blocking={loading}>
-    <div>
-      
-      <Row>
-        <Col xs='12' >
-          <Card>
-            <CardBody>
-              Location: <StateSelection value={selectedState} onChange={onStateChange} />
-              &nbsp;&nbsp;
-              Time Period: <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-      <Row className='match-height'>
-        <Col xl='8' lg='8' md='6' xs='12'>
-          <Card>
-            <CardBody>
-              <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} />
-              <IncidentMap mapData={incidentAggregated} selectdState={selectedState} onChange={onStateChange} />
-              <IncidentCountTable title={"Incident Count by State"} data={incidentAggregated}
-                selectedState={selectedState}
-                stateChanged={(state) => setSelectedState(state)} />
-            </CardBody>
-          </Card>
-        </Col>
-        <Col xl='4' lg='4' md='6' xs='12'>
-          <Card>
-            <CardHeader>
-              <CardTitle>Hate Crime Incidents</CardTitle>
-            </CardHeader>
-            <CardBody>
-              <IncidentList data={incidents} />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </div>
-    </UILoader>
-  )
+    const { colors } = useContext(ThemeColors)
+    console.log(colors)
+    function handleDateRangeSelect(ranges) {
+        setDateRange(ranges)
+    }
+
+    function onStateChange(state) {
+        setSelectedState(state)
+    }
+    return (
+        <UILoader blocking={loading}>
+            <div>
+                <Row>
+                    <Col xs='12'>
+                        <Card>
+                            <CardBody>
+                                Location: <StateSelection value={selectedState} onChange={onStateChange} />
+                                &nbsp;&nbsp; Time Period:{' '}
+                                <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row className='match-height'>
+                    <Col xl='8' lg='8' md='6' xs='12'>
+                        <Card>
+                            <CardBody>
+                                <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} />
+                                <IncidentMap
+                                    mapData={incidentAggregated}
+                                    selectdState={selectedState}
+                                    onChange={onStateChange}
+                                />
+                                <IncidentCountTable
+                                    title={'Incident Count by State'}
+                                    data={incidentAggregated}
+                                    selectedState={selectedState}
+                                    stateChanged={(state) => setSelectedState(state)}
+                                />
+                            </CardBody>
+                        </Card>
+                    </Col>
+                    <Col xl='4' lg='4' md='6' xs='12'>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Hate Crime Incidents</CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <IncidentList data={incidents} />
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        </UILoader>
+    )
 }
 
 export default Home
