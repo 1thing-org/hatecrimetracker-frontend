@@ -142,7 +142,7 @@ const IncidentMap = (props) => {
       </div>
     </CardHeader>
     <CardBody>
-      <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+      <div id="chartdiv" style={{ width: "100%", height: "400px" }}></div>
     </CardBody>
   </Card>);
 
