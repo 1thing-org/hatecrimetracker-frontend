@@ -42,7 +42,10 @@ const IncidentAdminPage = () => {
   function onSubmit(data) {
     incidentsService.createIncident(data).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
-      reset();
+      setValue("title", "");
+      setValue("incident_location", "");
+      setValue("url", "");
+      setValue("abstract", "");
       reloadIncidents(data.incident_time);
     });
   }
