@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import { formatIncidentRate, getStateIncidentPerM } from '../utility/Utils';
+import { formatIncidentRate, getStateIncidentPerM, stateFullName } from '../utility/Utils';
 const columns = [
     {
         name: 'State',
-        selector: 'state',
+        selector: 'state_name',
         sortable: true,
     },
     {
@@ -27,8 +27,9 @@ const toIncidentCount = (data) => {
     for (const state in data) {
         const count = data[state];
         result.push({
-            state,
-            count,
+            state: state,
+            state_name: stateFullName(state),
+            count: count,
             count_rate: getStateIncidentPerM(count, state)
         });
     }
@@ -53,7 +54,7 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
                 color: "yellow",
                 ':hover': { color: "yellow" },
                 backgroundColor: '#000000',
-                fontweight: 'bold',
+                fontWeight: 'bold',
             },
         },
         {

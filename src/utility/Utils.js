@@ -148,6 +148,7 @@ const STATES_SHORT_TO_FULL = {
   "CA": "California",
   "CO": "Colorado",
   "CT": "Connecticut",
+  "DC": "District of Columbia",
   "DE": "Delaware",
   "FL": "Florida",
   "GA": "Georgia",
@@ -190,7 +191,9 @@ const STATES_SHORT_TO_FULL = {
   "WA": "Washington",
   "WV": "West Virginia",
   "WI": "Wisconsin",
-  "WY": "Wyoming"
+  "WY": "Wyoming",
+  "CANADA": "Canada",
+  "ONLINE": "Online"
 }
 
 export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort];
