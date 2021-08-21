@@ -40,6 +40,7 @@ const IncidentAdminPage = () => {
   });
 
   function onSubmit(data) {
+    data.created_by = user.email;
     incidentsService.createIncident(data).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
       setValue("title", "");
@@ -85,7 +86,7 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button.Ripple tag={Link} to='/admin' color='primary' block
+    return (<div className="col-2"><Button.Ripple tag={Link} to='/admin' color='secondary' block
       onClick={() => {
         signInWithGoogle();
       }}>

@@ -12,11 +12,10 @@ class UserProvider extends Component {
     async componentDidMount() {
         auth.onAuthStateChanged(async userAuth => {
 
-            //const user = await generateUserDocument(userAuth);
             if (userAuth) {
                 let user = null
                 const { email, displayName, photoURL } = userAuth;
-                const token = userAuth.getIdToken().then( (token) => {
+                userAuth.getIdToken().then( (token) => {
                     useJwt.setToken(token);
                     user = { email, displayName, photoURL };
                     axios.get(appConfig.api_endpoint + "/isadmin",
