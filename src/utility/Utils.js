@@ -196,5 +196,5 @@ const STATES_SHORT_TO_FULL = {
   "ONLINE": "Online"
 }
 
-export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort];
+export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort] ? STATES_SHORT_TO_FULL[stateShort] : stateShort;
 export const forEachState = (callback) => Object.entries(STATES_SHORT_TO_FULL).forEach(([state, name]) => callback(state, name));
