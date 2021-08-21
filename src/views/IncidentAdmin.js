@@ -17,6 +17,7 @@ const IncidentAdminPage = () => {
   const isAddMode = true;
 
   const [data, setData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -53,12 +54,14 @@ const IncidentAdminPage = () => {
 
   function reloadIncidents(date) {
     //load incidents around the date -7 - 1 days
-    incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'))
+    console.log("reloading incidents around:" + date);
+    incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, true)
       .then(incidents => setData(incidents));
   }
   function dateChanged(event) {
     // setData(FAKE_DATA.incidents);
     const date = event.target.value;
+    setSelectedDate(date);
     reloadIncidents(date);
   }
 
@@ -80,7 +83,7 @@ const IncidentAdminPage = () => {
       if (result.isConfirmed) {
         incidentsService.deleteIncident(incident.id).then(() => {
           Swal.fire("Incident has been delete successfully!")
-          reloadIncidents(incident.incident_time);
+          reloadIncidents(selectedDate);
         })
       }
     })
