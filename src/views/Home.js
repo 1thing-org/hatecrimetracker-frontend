@@ -89,7 +89,7 @@ const Home = () => {
                     <Col xl='8' lg='8' md='6' xs='12'>
                         <Card>
                             <CardBody>
-                                <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} />
+                                <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState} />
                                 <IncidentMap
                                     mapData={incidentAggregated}
                                     selectdState={selectedState}

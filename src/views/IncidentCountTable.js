@@ -39,9 +39,15 @@ const toIncidentCount = (data) => {
 const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
     const [incidentCountData, setIncidentCountData] = useState(toIncidentCount(data));
     const [currState, setCurrState] = useState(selectedState);
+    const [totalCases, setTotalCases] = useState(0);
     //** ComponentDidMount
     useEffect(() => {
         setIncidentCountData(toIncidentCount(data));
+        let total = 0;
+        for (const state in data) {
+            total += data[state];
+        };
+        setTotalCases(total);
     }, [data])
     useEffect(() => {
         setCurrState(selectedState);
@@ -71,7 +77,7 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
     return (<Card>
         <CardHeader>
             <div>
-                <CardTitle tag='h4'>{title}</CardTitle>
+                <CardTitle tag='h4'>{title} - Total {totalCases} Incidents</CardTitle>
             </div>
         </CardHeader>
         <CardBody>
