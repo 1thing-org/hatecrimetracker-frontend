@@ -3,7 +3,7 @@ import '@styles/react/libs/charts/recharts.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
 import moment from 'moment'
 import { useContext, useState, useEffect } from 'react'
-import { Card, CardBody, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap'
+import { Card, CardBody, CardHeader, Container, CardTitle, Col, Row, FormGroup, Label } from 'reactstrap'
 import DateRangeSelector from './DateRangeSelector'
 import 'rsuite/dist/styles/rsuite-dark.css'
 import * as incidentsService from '../services/incidents'
@@ -78,9 +78,14 @@ const Home = () => {
                     <Col xs='12'>
                         <Card>
                             <CardBody>
-                                Location: <StateSelection value={selectedState} onChange={onStateChange} />
-                                &nbsp;&nbsp; Time Period:{' '}
-                                <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
+                                <Container>
+                                    <Row>
+                                        <Col xs="12" sm="auto"><FormGroup>
+                                            <Label>Location:</Label> <StateSelection value={selectedState} onChange={onStateChange} /> </FormGroup></Col>
+                                        <Col xs="12" sm="auto"><FormGroup>
+                                            <Label>Time Period:</Label> <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} /></FormGroup></Col>
+                                    </Row>
+                                </Container>
                             </CardBody>
                         </Card>
                     </Col>
