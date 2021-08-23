@@ -22,20 +22,50 @@ const Home = () => {
     const [incidentAggregated, setIncidentAggregated] = useState([])
     const [loading, setLoading] = useState(false)
 
+    //given [{'2021-01-02:1}, {'2021-01-01:1}...], calculate monthly aggregation and return
+    //{'2021-01-01':3, '2021-02-01':10...}
+    const calcMonthlyAggregation = (stats) => {
+        const result = {}
+        stats.forEach(element => {
+            const month = moment(element.key).format('YYYY-MM-01');
+            if ( !result[month] ) {
+                result[month] = 0;
+            }
+            result[month] += element.value;
+        });
+        return result;
+    }
     // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
-    const mergeDate = (stats, start_date, end_date) => {
+    // Remove date out of the range, and insert days that does not have data
+    // start_date, end_date: Date
+    // monthly: monthly aggregation { first_day_of_month: count_of_the_month }
+    const mergeDate = (stats, start_date, end_date, monthly) => {
         const new_stats = []
         let start = moment(start_date)
         const end = moment(end_date)
+        const strStartDate = start.format('YYYY-MM-DD')
+        const strEndDate = end.format('YYYY-MM-DD')
         while (start <= end) {
             const strDate = start.format('YYYY-MM-DD')
-            if (stats.length > 0 && stats[stats.length - 1].key == strDate) {
-                //found the date in stats, use it
-                new_stats.push(stats[stats.length - 1])
-                stats.pop()
-            } else {
-                new_stats.push({ key: strDate, value: null })
+            const monthlyData = monthly[start.format('YYYY-MM-01')]
+            if (stats.length > 0) {
+                if (stats[stats.length - 1].key < strStartDate || stats[stats.length - 1].key > strEndDate) {
+                    stats.pop();
+                    continue; //skip data that is out of range
+                }
+                if (stats[stats.length - 1].key == strDate) {
+                    //found the date in stats, use it
+                    new_stats.push(
+                        {
+                            monthly_cases: monthlyData,
+                            ...stats[stats.length - 1]
+                        }
+                    )
+                    stats.pop();
+                    continue;
+                }
             }
+            new_stats.push({ key: strDate, value: null, monthly_cases: monthlyData })
             start.add(1, 'days')
         }
         return new_stats
@@ -47,13 +77,21 @@ const Home = () => {
         incidentsService
             .getIncidents(dateRange[0], dateRange[1], selectedState)
             .then((incidents) => setIncidents(incidents))
-        incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
-            setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1]))
-            if (updateMap) {
-                setIncidentAggregated(stats.total)
-            }
-            setLoading(false)
-        })
+        incidentsService.getStats(
+            moment(dateRange[0]).startOf('month'),
+            moment(dateRange[1]).endOf('month'),
+            selectedState).then((stats) => {
+                setIncidentTimeSeries(
+                    mergeDate(
+                        stats.stats, dateRange[0], dateRange[1],
+                        calcMonthlyAggregation(stats.stats)
+                    )
+                )
+                if (updateMap) {
+                    setIncidentAggregated(stats.total)
+                }
+                setLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -93,6 +131,9 @@ const Home = () => {
                 <Row className='match-height'>
                     <Col xl='8' lg='8' md='6' xs='12'>
                         <Card>
+                            <CardHeader>
+                                <CardTitle>Hate Crime Incidents</CardTitle>
+                            </CardHeader>
                             <CardBody>
                                 <BarChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState} />
                                 <IncidentMap

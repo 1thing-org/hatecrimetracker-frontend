@@ -1,23 +1,8 @@
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { stateFullName } from '../utility/Utils';
-
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload[0] && payload[0].value) {
-    const d = moment(payload[0].payload.key, "YYYY-MM-DD")
-    const strDate = d.format("M/D/YYYY");
-    return (
-      <div className='recharts-custom-tooltip'>
-        <p>{strDate}</p>
-        <strong>{payload[0].value + " " + (payload[0].value > 1 ? 'cases' : 'case')}</strong>
-      </div>
-    )
-  }
-
-  return null
-}
 
 const SimpleBarChart = ({ color, chart_data, state }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
@@ -26,6 +11,7 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
   }
   const [xticks, setXTicks] = useState([]);
   const [totalCases, setTotalCases] = useState(0);
+  const [tooltip, setTooltip] = useState(); //decide which tooltip to show
   useEffect(() => {
     const newXTicks = [];
     let total = 0;
@@ -55,24 +41,54 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
     setXTicks(newXTicks);
     setTotalCases(total);
   }, [chart_data]);
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload[0] && payload[0].value) {
+      const d = moment(payload[0].payload.key, "YYYY-MM-DD")
+      const monthly = payload[0].payload.monthly_cases;
+      const daily = payload[0].payload.value ? payload[0].payload.value : 0;
+      return tooltip !== 'daily' ? (
+        <div className='recharts-custom-tooltip'>
+          <p>{d.format("MMM YYYY")}</p>
+          <p><strong>{monthly + " total " + (monthly > 1 ? 'cases' : 'case')}</strong></p>
+        </div>
+      ) :
+        (
+          <div className='recharts-custom-tooltip'>
+            <p>{d.format("M/D/YYYY")}</p>
+            <p><strong>{daily + " " + (daily ? 'cases' : 'case')}</strong></p>
+            <p><strong>{monthly + " monthly " + (monthly > 1 ? 'cases' : 'case')}</strong></p>
+          </div>
+        )
+    }
+    return null
+  }
   return (
     <Card>
       <CardHeader>
         <div>
-          <CardTitle tag='h4'>Hate Crime Incident Trend - Total {totalCases} Incidents {state?"in "+stateFullName(state):""}</CardTitle>
+          <CardTitle tag='h4'>Hate Crime Incident Trend - Total {totalCases} Incidents {state ? "in " + stateFullName(state) : ""}</CardTitle>
         </div>
       </CardHeader>
 
       <CardBody>
         <div className='recharts-wrapper'>
           <ResponsiveContainer>
-            <BarChart height={300} data={chart_data}>
+            <ComposedChart height={300} data={chart_data}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
-              <YAxis allowDecimals={false} interval="preserveStartEnd" />
+              <YAxis allowDecimals={false} orientation="left" interval="preserveStartEnd"
+                type="number"
+                domain={['dataMin', 'dataMax + 3']}
+                label={{ value: 'Daily Count', angle: -90, position: 'insideLeft' }} />
+              <YAxis yAxisId="right" orientation="right" allowDecimals={false} interval="preserveStartEnd"
+                label={{ value: 'Monthly Count', angle: 90, position: 'insideRight' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3} />
-            </BarChart>
+              <Area name="Monthly Count" type="monotone" dataKey="monthly_cases" fill="#8884d8" stroke="#8884d8" yAxisId="right"
+                onMouseOver={() => setTooltip('monthly')} />
+              <Bar name="Daily Count" dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}
+                onMouseOver={() => setTooltip('daily')} />
+              <Legend />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </CardBody>
