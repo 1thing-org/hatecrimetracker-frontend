@@ -78,7 +78,7 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
               <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
               <YAxis allowDecimals={false} orientation="left" interval="preserveStartEnd"
                 type="number"
-                domain={['dataMin', 'dataMax + 3']}
+                domain={['0', 'dataMax + 3']}
                 label={{ value: 'Daily Count', angle: -90, position: 'insideLeft' }} />
               <YAxis yAxisId="right" orientation="right" allowDecimals={false} interval="preserveStartEnd"
                 label={{ value: 'Monthly Count', angle: 90, position: 'insideRight' }} />
