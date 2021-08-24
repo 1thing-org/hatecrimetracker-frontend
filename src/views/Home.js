@@ -14,14 +14,15 @@ import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 import UILoader from '@components/ui-loader'
 
-import { useRouter } from '@hooks/useRouter'
+import { useRouter, routeChange } from '@hooks/useRouter'
+
+import { isObjEmpty } from '@utils'
 
 const Home = () => {
     const router = useRouter()
-    const defaultDateRange =
-        Object.entries(router.query).length === 0
-            ? [moment().subtract(1, 'years').toDate(), new Date()]
-            : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
+    const defaultDateRange = isObjEmpty
+        ? [moment().subtract(1, 'years').toDate(), new Date()]
+        : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
 
     const [incidents, setIncidents] = useState([])
     const [selectedState, setSelectedState] = useState('')
@@ -76,7 +77,6 @@ const Home = () => {
     // handle date change
     function handleDateRangeSelect(ranges) {
         setDateRange(ranges)
-        // console.log(ranges)
 
         router.push(`/home?from=${moment(ranges[0]).format('YYYY-MM-DD')}&to=${moment(ranges[1]).format('YYYY-MM-DD')}`)
     }
