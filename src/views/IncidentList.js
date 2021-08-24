@@ -58,7 +58,6 @@ const IncidentList = (props) => {
                 return (
                     <div className='incident' key={idx}>
                         <a className='title' href={d.url} target='_blank'>
-                            {' '}
                             {d.title}
                         </a>
 
