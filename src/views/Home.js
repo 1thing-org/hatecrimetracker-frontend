@@ -14,6 +14,7 @@ import IncidentCountTable from './IncidentCountTable'
 import IncidentList from './IncidentList'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
+
 import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
 
@@ -84,8 +85,16 @@ const Home = () => {
         loadData()
     }, [selectedState])
     //update both incidents and map
+    // monkey patch to fix history -1 and update data
     useEffect(() => {
         loadData(true)
+        router.history.listen((location) => {
+            // get history search params, split 'from' and 'to'
+            setDateRange([
+                moment(JSON.stringify(router.history.location.search).split('&to=')[0].split('?from=')[1]).toDate(),
+                moment(JSON.stringify(router.history.location.search).split('&to=')[1].slice(0, -1)).toDate()
+            ])
+        })
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
