@@ -16,8 +16,7 @@ import IncidentCountTable from './IncidentCountTable'
 import IncidentList from './IncidentList'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
-
-import { useRouter, routeChange } from '@hooks/useRouter'
+import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
 
 const Home = () => {
@@ -86,8 +85,9 @@ const Home = () => {
     useEffect(() => {
         loadData()
     }, [selectedState])
+    //update both incidents and map
     useEffect(() => {
-        loadData(true) //update both incidents and map
+        loadData(true)
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
