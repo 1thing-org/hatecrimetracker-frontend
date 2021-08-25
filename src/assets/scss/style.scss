@@ -21,7 +21,7 @@ body.dark-layout {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 14px;
 	line-height: 120%;
 	color:#FEF753;
 	margin-top:8px;
@@ -34,8 +34,8 @@ body.dark-layout {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: bold;
-	font-size: 16px;
-	line-height: 22px;
+	font-size: 12px;
+	line-height: 18px;
 	margin-top:2px;
 	color: rgba(255, 255, 255, 0.7);
 }
@@ -44,8 +44,8 @@ body.dark-layout {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 14px;
-	line-height: 22px;
+	font-size: 12px;
+	line-height: 16px;
 	color: #FFFFFF;
 	margin-top:4px;
 }
@@ -103,8 +103,19 @@ body.dark-layout {
 
 .dark-layout .card {
 	background-color: #000000;
-	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); }
+	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); 
+	margin-bottom: .5rem;
+}
+
+.dark-layout .card-title {
+	color:#FEF753;
+}
   
-  .dark-layout .card .card-footer {
-	border-color: #000000; }
-  
+.dark-layout .card .card-footer {
+	border-color: #000000; 
+}
+
+.logo {
+	max-width: 32px;
+	margin: 1rem;
+}
