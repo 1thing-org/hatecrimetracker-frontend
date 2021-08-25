@@ -1,22 +1,22 @@
+import UILoader from '@components/ui-loader'
+import { useRouter } from '@hooks/useRouter'
+import logo from '@src/assets/images/logo/logo.png'
 import { ThemeColors } from '@src/utility/context/ThemeColors'
 import '@styles/react/libs/charts/recharts.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
+import { isObjEmpty } from '@utils'
 import moment from 'moment'
-import { useContext, useState, useEffect } from 'react'
-import { Card, CardBody, CardHeader, Container, CardTitle, Col, Row, FormGroup, Label } from 'reactstrap'
-import DateRangeSelector from './DateRangeSelector'
+import { useContext, useEffect, useState } from 'react'
+import { Card, CardBody, Col, Container, FormGroup, Label, Row } from 'reactstrap'
 import 'rsuite/dist/styles/rsuite-dark.css'
 import * as incidentsService from '../services/incidents'
 import BarChart from './BarChart'
-import IncidentList from './IncidentList'
+import DateRangeSelector from './DateRangeSelector'
 import IncidentCountTable from './IncidentCountTable'
+import IncidentList from './IncidentList'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
-import UILoader from '@components/ui-loader'
-import logo from '@src/assets/images/logo/logo.png'
-import { useRouter, routeChange } from '@hooks/useRouter'
 
-import { isObjEmpty } from '@utils'
 
 const Home = () => {
     const router = useRouter()
@@ -31,19 +31,6 @@ const Home = () => {
     const [incidentAggregated, setIncidentAggregated] = useState([])
     const [loading, setLoading] = useState(false)
 
-    //given [{'2021-01-02:1}, {'2021-01-01:1}...], calculate monthly aggregation and return
-    //{'2021-01-01':3, '2021-02-01':10...}
-    const calcMonthlyAggregation = (stats) => {
-        const result = {}
-        stats.forEach(element => {
-            const month = moment(element.key).format('YYYY-MM-01');
-            if (!result[month]) {
-                result[month] = 0;
-            }
-            result[month] += element.value;
-        });
-        return result;
-    }
     // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
     // Remove date out of the range, and insert days that does not have data
     // start_date, end_date: Date
@@ -56,7 +43,7 @@ const Home = () => {
         const strEndDate = end.format('YYYY-MM-DD')
         while (start <= end) {
             const strDate = start.format('YYYY-MM-DD')
-            const monthlyData = monthly[start.format('YYYY-MM-01')]
+            const monthlyData = monthly[start.format('YYYY-MM')]
             if (stats.length > 0) {
                 if (stats[stats.length - 1].key < strStartDate || stats[stats.length - 1].key > strEndDate) {
                     stats.pop();
@@ -86,15 +73,10 @@ const Home = () => {
         incidentsService
             .getIncidents(dateRange[0], dateRange[1], selectedState)
             .then((incidents) => setIncidents(incidents))
-        incidentsService.getStats(
-            moment(dateRange[0]).startOf('month'),
-            moment(dateRange[1]).endOf('month'),
-            selectedState).then((stats) => {
+        incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
+            .then((stats) => {
                 setIncidentTimeSeries(
-                    mergeDate(
-                        stats.stats, dateRange[0], dateRange[1],
-                        calcMonthlyAggregation(stats.stats)
-                    )
+                    mergeDate( stats.stats, dateRange[0], dateRange[1], stats.monthly_stats )
                 )
                 if (updateMap) {
                     setIncidentAggregated(stats.total)
