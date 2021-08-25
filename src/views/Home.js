@@ -15,12 +15,12 @@ import StateSelection from './StateSelection'
 import UILoader from '@components/ui-loader'
 
 import { useRouter, routeChange } from '@hooks/useRouter'
-
 import { isObjEmpty } from '@utils'
 
 const Home = () => {
     const router = useRouter()
-    const defaultDateRange = isObjEmpty
+
+    const defaultDateRange = isObjEmpty(router.query)
         ? [moment().subtract(1, 'years').toDate(), new Date()]
         : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
 
@@ -136,9 +136,9 @@ const Home = () => {
                     </Col>
                     <Col xl='4' lg='4' md='6' xs='12'>
                         <Card>
-                            <CardHeader>
+                            {/* <CardHeader>
                                 <CardTitle>Hate Crime Incidents</CardTitle>
-                            </CardHeader>
+                            </CardHeader> */}
                             <CardBody>
                                 <IncidentList data={incidents} />
                             </CardBody>
