@@ -13,7 +13,7 @@ import IncidentCountTable from './IncidentCountTable'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 import UILoader from '@components/ui-loader'
-
+import logo from '@src/assets/images/logo/logo.png'
 import { useRouter, routeChange } from '@hooks/useRouter'
 
 import { isObjEmpty } from '@utils'
@@ -37,7 +37,7 @@ const Home = () => {
         const result = {}
         stats.forEach(element => {
             const month = moment(element.key).format('YYYY-MM-01');
-            if ( !result[month] ) {
+            if (!result[month]) {
                 result[month] = 0;
             }
             result[month] += element.value;
@@ -127,59 +127,52 @@ const Home = () => {
             <div>
                 <Row>
                     <Col xs='12'>
-                        <Card>
-                            <CardBody>
-                                <Container>
-                                    <Row>
-                                        <Col xs='12' sm='auto'>
-                                            <FormGroup>
-                                                <Label>Location:</Label>{' '}
-                                                <StateSelection value={selectedState} onChange={onStateChange} />{' '}
-                                            </FormGroup>
-                                        </Col>
-                                        <Col xs='12' sm='auto'>
-                                            <FormGroup>
-                                                <Label>Time Period:</Label>{' '}
-                                                <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                </Container>
-                            </CardBody>
-                        </Card>
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <h4 className="card-title"><img src={logo} alt='logo' className="logo"/> Anti-Asian Hate Crime Tracker</h4>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs='12' sm='auto'>
+                                    <FormGroup>
+                                        <Label>Location:</Label>{' '}
+                                        <StateSelection value={selectedState} onChange={onStateChange} />{' '}
+                                    </FormGroup>
+                                </Col>
+                                <Col xs='12' sm='auto'>
+                                    <FormGroup>
+                                        <Label>Time Period:</Label>{' '}
+                                        <DateRangeSelector onChange={handleDateRangeSelect} value={dateRange} />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </Container>
                     </Col>
                 </Row>
                 <Row className='match-height'>
                     <Col xl='8' lg='8' md='6' xs='12'>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Hate Crime Incidents</CardTitle>
-                            </CardHeader>
-                            <CardBody>
-                                <BarChart
-                                    color={colors.primary.main}
-                                    chart_data={incidentTimeSeries}
-                                    state={selectedState}
-                                />
-                                <IncidentMap
-                                    mapData={incidentAggregated}
-                                    selectdState={selectedState}
-                                    onChange={onStateChange}
-                                />
-                                <IncidentCountTable
-                                    title={'Incident Count by State'}
-                                    data={incidentAggregated}
-                                    selectedState={selectedState}
-                                    stateChanged={(state) => setSelectedState(state)}
-                                />
-                            </CardBody>
-                        </Card>
+                        <div>
+                            <BarChart
+                                color={colors.primary.main}
+                                chart_data={incidentTimeSeries}
+                                state={selectedState}
+                            />
+                            <IncidentMap
+                                mapData={incidentAggregated}
+                                selectdState={selectedState}
+                                onChange={onStateChange}
+                            />
+                            <IncidentCountTable
+                                title={'Incident Count by State'}
+                                data={incidentAggregated}
+                                selectedState={selectedState}
+                                stateChanged={(state) => setSelectedState(state)}
+                            />
+                        </div>
                     </Col>
                     <Col xl='4' lg='4' md='6' xs='12'>
                         <Card>
-                            <CardHeader>
-                                <CardTitle>Hate Crime Incidents</CardTitle>
-                            </CardHeader>
                             <CardBody>
                                 <IncidentList data={incidents} />
                             </CardBody>

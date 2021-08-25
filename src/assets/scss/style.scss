@@ -103,8 +103,18 @@ body.dark-layout {
 
 .dark-layout .card {
 	background-color: #000000;
-	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); }
+	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); 
+	margin-bottom: .5rem;
+}
+
+.dark-layout .card-title {
+	color:#FEF753;
+}
   
-  .dark-layout .card .card-footer {
-	border-color: #000000; }
-  
+.dark-layout .card .card-footer {
+	border-color: #000000; 
+}
+
+.logo {
+	max-width: 32px;
+}
