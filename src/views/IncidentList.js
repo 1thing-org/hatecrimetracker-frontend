@@ -60,7 +60,6 @@ const IncidentList = (props) => {
                         <a className='title' href={d.url} target='_blank'>
                             {d.title}
                         </a>
-
                         <p className='location_time'>
                             {STATES[d.incident_location] ? STATES[d.incident_location] : d.incident_location} |{' '}
                             {moment(d.incident_time).format('MM/DD/YYYY')}

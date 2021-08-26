@@ -1,10 +1,8 @@
 import UILoader from '@components/ui-loader'
-import { useRouter } from '@hooks/useRouter'
 import logo from '@src/assets/images/logo/logo.png'
 import { ThemeColors } from '@src/utility/context/ThemeColors'
 import '@styles/react/libs/charts/recharts.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
-import { isObjEmpty } from '@utils'
 import moment from 'moment'
 import { useContext, useEffect, useState } from 'react'
 import { Card, CardBody, Col, Container, FormGroup, Label, Row } from 'reactstrap'
@@ -17,10 +15,13 @@ import IncidentList from './IncidentList'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 
+import { useRouter } from '@hooks/useRouter'
+import { isObjEmpty } from '@utils'
 
 const Home = () => {
     const router = useRouter()
-    const defaultDateRange = isObjEmpty
+
+    const defaultDateRange = isObjEmpty(router.query)
         ? [moment().subtract(1, 'years').toDate(), new Date()]
         : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
 
@@ -46,19 +47,17 @@ const Home = () => {
             const monthlyData = monthly[start.format('YYYY-MM')]
             if (stats.length > 0) {
                 if (stats[stats.length - 1].key < strStartDate || stats[stats.length - 1].key > strEndDate) {
-                    stats.pop();
-                    continue; //skip data that is out of range
+                    stats.pop()
+                    continue //skip data that is out of range
                 }
                 if (stats[stats.length - 1].key == strDate) {
                     //found the date in stats, use it
-                    new_stats.push(
-                        {
-                            monthly_cases: monthlyData,
-                            ...stats[stats.length - 1]
-                        }
-                    )
-                    stats.pop();
-                    continue;
+                    new_stats.push({
+                        monthly_cases: monthlyData,
+                        ...stats[stats.length - 1]
+                    })
+                    stats.pop()
+                    continue
                 }
             }
             new_stats.push({ key: strDate, value: null, monthly_cases: monthlyData })
@@ -73,23 +72,29 @@ const Home = () => {
         incidentsService
             .getIncidents(dateRange[0], dateRange[1], selectedState)
             .then((incidents) => setIncidents(incidents))
-        incidentsService.getStats(dateRange[0], dateRange[1], selectedState)
-            .then((stats) => {
-                setIncidentTimeSeries(
-                    mergeDate( stats.stats, dateRange[0], dateRange[1], stats.monthly_stats )
-                )
-                if (updateMap) {
-                    setIncidentAggregated(stats.total)
-                }
-                setLoading(false)
-            })
+        incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
+            setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1], stats.monthly_stats))
+            if (updateMap) {
+                setIncidentAggregated(stats.total)
+            }
+            setLoading(false)
+        })
     }
 
     useEffect(() => {
         loadData()
     }, [selectedState])
+    //update both incidents and map
+    // monkey patch to fix history -1 and update data
     useEffect(() => {
-        loadData(true) //update both incidents and map
+        loadData(true)
+        router.history.listen((location) => {
+            // get history search params, split 'from' and 'to'
+            setDateRange([
+                moment(JSON.stringify(router.history.location.search).split('&to=')[0].split('?from=')[1]).toDate(),
+                moment(JSON.stringify(router.history.location.search).split('&to=')[1].slice(0, -1)).toDate()
+            ])
+        })
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
@@ -112,7 +117,9 @@ const Home = () => {
                         <Container>
                             <Row>
                                 <Col>
-                                    <h4 className="card-title"><img src={logo} alt='logo' className="logo"/> Anti-Asian Hate Crime Tracker</h4>
+                                    <h4 className='card-title'>
+                                        <img src={logo} alt='logo' className='logo' /> Anti-Asian Hate Crime Tracker
+                                    </h4>
                                 </Col>
                             </Row>
                             <Row>
@@ -155,6 +162,9 @@ const Home = () => {
                     </Col>
                     <Col xl='4' lg='4' md='6' xs='12'>
                         <Card>
+                            {/* <CardHeader>
+                                <CardTitle>Hate Crime Incidents</CardTitle>
+                            </CardHeader> */}
                             <CardBody>
                                 <IncidentList data={incidents} />
                             </CardBody>
