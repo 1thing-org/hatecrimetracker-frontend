@@ -91,7 +91,7 @@ const Home = () => {
     useEffect(() => {
         loadData(true)
 
-        if (router.history) {
+        if (router.history.location.search) {
             router.history.listen((location) => {
                 // get history search params, split 'from' and 'to'
                 setDateRange([
@@ -106,6 +106,10 @@ const Home = () => {
                     setSelectedState(getStateHistory)
                 }
             })
+        } else {
+            // reset state
+            setDateRange([moment().subtract(1, 'years').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')])
+            setSelectedState()
         }
     }, [dateRange])
 
