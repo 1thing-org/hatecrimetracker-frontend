@@ -84,33 +84,38 @@ const Home = () => {
     useEffect(() => {
         loadData()
     }, [selectedState])
+
     //update both incidents and map
     // monkey patch to fix history -1 and update data
-
-    // console.log(router.history.location.search)
+    console.log(router.history.location.search)
     useEffect(() => {
         loadData(true)
 
-        if (router.history.location.search) {
-            router.history.listen((location) => {
-                // get history search params, split 'from' and 'to'
-                setDateRange([
-                    moment(JSON.stringify(router.history.location.search).split('&')[0].split('=')[1]).toDate(),
-                    moment(JSON.stringify(router.history.location.search).split('&')[1].split('=')[1]).toDate()
-                ])
-                const getStateHistory = JSON.stringify(router.history.location.search)
-                    .split('&')[2]
-                    .split('=')[1]
-                    .slice(0, -1)
-                if (getStateHistory) {
-                    setSelectedState(getStateHistory)
-                }
-            })
-        } else {
-            // reset state
-            setDateRange([moment().subtract(1, 'years').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')])
-            setSelectedState()
-        }
+        // if (router.history.location.search) {
+        router.history.listen((location) => {
+            // get history search params, split 'from' and 'to'
+            setDateRange([
+                moment(JSON.stringify(router.history.location.search).split('&')[0].split('=')[1]).toDate(),
+                moment(JSON.stringify(router.history.location.search).split('&')[1].split('=')[1]).toDate()
+            ])
+            const getStateHistory = JSON.stringify(router.history.location.search)
+                .split('&')[2]
+                .split('=')[1]
+                .slice(0, -1)
+            if (getStateHistory) {
+                setSelectedState(getStateHistory)
+            } else {
+                router.push(
+                    `/home?from=${JSON.stringify(router.history.location.search)
+                        .split('&')[0]
+                        .split('=')[1]
+                        .format('YYYY-MM-DD')}&to=${JSON.stringify(router.history.location.search)
+                        .split('&')[1]
+                        .split('=')[1]
+                        .format('YYYY-MM-DD')}&state=All`
+                )
+            }
+        })
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
