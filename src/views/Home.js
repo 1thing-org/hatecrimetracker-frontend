@@ -14,7 +14,6 @@ import IncidentCountTable from './IncidentCountTable'
 import IncidentList from './IncidentList'
 import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
-
 import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
 
