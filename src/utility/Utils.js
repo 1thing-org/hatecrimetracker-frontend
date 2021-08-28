@@ -137,14 +137,74 @@ const StatePopulation = {
   "WI": 5893718,
   "WY": 576851
 }
-export const formatIncidentRate = (rate) => (rate > 0.0001) ? rate.toFixed(4) : "";
-export const getStateIncidentPerM = (incidentCount, state) => incidentCount / StatePopulation[state] * 1000000;
+
+//2019
+//https://worldpopulationreview.com/state-rankings/asian-population
+const ASIAN_POPULATION = {
+  "AK": 61128,
+  "AL": 86490,
+  "AR": 57895,
+
+  "AZ": 310727,
+  "CA": 6551732,
+  "CO": 243556,
+  "CT": 191505,
+  "DC": 28722,
+  "DE": 43398,
+  "FL": 734880,
+  "GA": 488952,
+
+  "HI": 802551,
+  "IA": 92564,
+  "ID": 40745,
+  "IL": 808038,
+  "IN": 186237,
+  "KS": 105946,
+  "KY": 83733,
+  "LA": 98019,
+  "MA": 516599,
+  "MD": 449579,
+  "ME": 22658,
+  "MI": 377181,
+  "MN": 316790,
+  "MO": 155191,
+
+  "MS": 38321,
+  "MT": 14690,
+  "NC": 355907,
+  "ND": 15471,
+  "NE": 58983,
+  "NH": 46317,
+  "NJ": 923811,
+  "NM": 48809,
+  "NV": 305500,
+  "NY": 1839680,
+  "OH": 326348,
+  "OK": 112607,
+  "OR": 246789,
+  "PA": 512310,
+
+  "RI": 44653,
+  "SC": 103491,
+  "SD": 15897,
+  "TN": 148955,
+  "TX": 1565746,
+  "UT": 107058,
+  "VA": 664348,
+
+  "VT": 14503,
+  "WA": 812035,
+  "WI": 194286,
+  "WV": 19794,
+  "WY": 8996
+};
 
 const STATES_SHORT_TO_FULL = {
   "AL": "Alabama",
   "AK": "Alaska",
   "AZ": "Arizona",
   "AR": "Arkansas",
+  "AS": " American Samoa",
   "CA": "California",
   "CO": "Colorado",
   "CT": "Connecticut",
@@ -152,6 +212,7 @@ const STATES_SHORT_TO_FULL = {
   "DE": "Delaware",
   "FL": "Florida",
   "GA": "Georgia",
+  "GU": "Guam",
   "HI": "Hawaii",
   "ID": "Idaho",
   "IL": "Illinois",
@@ -167,6 +228,7 @@ const STATES_SHORT_TO_FULL = {
   "MN": "Minnesota",
   "MS": "Mississippi",
   "MO": "Missouri",
+  "MP": "Northern Mariana Islands",
   "MT": "Montana",
   "NE": "Nebraska",
   "NV": "Nevada",
@@ -185,6 +247,7 @@ const STATES_SHORT_TO_FULL = {
   "SD": "South Dakota",
   "TN": "Tennessee",
   "TX": "Texas",
+  "VI": "U.S. Virgin Islands",
   "UT": "Utah",
   "VT": "Vermont",
   "VA": "Virginia",
@@ -196,5 +259,8 @@ const STATES_SHORT_TO_FULL = {
   "ONLINE": "Online"
 }
 
+export const formatIncidentRate = (rate) => (rate > 0.0001) ? rate.toFixed(2) : "N/A";
+export const getStateIncidentPerM = (incidentCount, state) => (incidentCount / StatePopulation[state] * 1000000);
+export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / ASIAN_POPULATION[state] * 1000000;
 export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort] ? STATES_SHORT_TO_FULL[stateShort] : stateShort;
 export const forEachState = (callback) => Object.entries(STATES_SHORT_TO_FULL).forEach(([state, name]) => callback(state, name));

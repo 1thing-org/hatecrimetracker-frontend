@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import { formatIncidentRate, getStateIncidentPerM, stateFullName } from '../utility/Utils';
+import { formatIncidentRate, getStateIncidentPerM, getStateIncidentPer10kAsian, stateFullName } from '../utility/Utils';
 const columns = [
     {
         name: 'State',
@@ -12,6 +12,13 @@ const columns = [
         name: 'Count',
         selector: 'count',
         sortable: true,
+    },
+    {
+        name: 'Count/10K Asian',
+        selector: 'count_rate_asian',
+        sortable: true,
+        wrap: true,
+        format: (row) => formatIncidentRate(row.count_rate_asian)
     },
     {
         name: 'Count/1MM',
@@ -30,7 +37,8 @@ const toIncidentCount = (data) => {
             state: state,
             state_name: stateFullName(state),
             count: count,
-            count_rate: getStateIncidentPerM(count, state)
+            count_rate: getStateIncidentPerM(count, state),
+            count_rate_asian: getStateIncidentPer10kAsian(count, state),
         });
     }
     return result;
