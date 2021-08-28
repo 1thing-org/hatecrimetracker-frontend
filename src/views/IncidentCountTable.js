@@ -12,12 +12,16 @@ const columns = [
         name: 'Count',
         selector: 'count',
         sortable: true,
+        maxWidth: '20%',
+        right: true,
     },
     {
         name: 'Count/10K Asian',
         selector: 'count_rate_asian',
         sortable: true,
         wrap: true,
+        maxWidth: '20%',
+        right: true,
         format: (row) => formatIncidentRate(row.count_rate_asian)
     },
     {
@@ -25,6 +29,8 @@ const columns = [
         selector: 'count_rate',
         sortable: true,
         wrap: true,
+        maxWidth: '20%',
+        right: true,
         format: (row) => formatIncidentRate(row.count_rate)
     }
 ];
