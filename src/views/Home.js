@@ -26,7 +26,7 @@ const Home = () => {
         : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
 
     const [incidents, setIncidents] = useState([])
-    const [selectedState, setSelectedState] = useState('')
+    const [selectedState, setSelectedState] = useState(router.query.state)
     const [dateRange, setDateRange] = useState(defaultDateRange)
     const [incidentTimeSeries, setIncidentTimeSeries] = useState([])
     const [incidentAggregated, setIncidentAggregated] = useState([])
@@ -81,41 +81,27 @@ const Home = () => {
         })
     }
 
+    const saveHistory = () => {
+        //if date ranger or state is changed, save in router history
+        if (selectedState.toLowerCase() == router.query.state?.toLowerCase()
+            && moment(dateRange[0]) == moment(router.query.from)
+            && moment(dateRange[1]) == moment(router.query.to)) {
+            return;
+        }
+
+        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}&state=${selectedState.toUpperCase()}`;
+        router.push(newurl);
+    }
+
     useEffect(() => {
         loadData()
+        saveHistory();
     }, [selectedState])
 
     //update both incidents and map
-    // monkey patch to fix history -1 and update data
-    console.log(router.history.location.search)
     useEffect(() => {
         loadData(true)
-
-        // if (router.history.location.search) {
-        router.history.listen((location) => {
-            // get history search params, split 'from' and 'to'
-            setDateRange([
-                moment(JSON.stringify(router.history.location.search).split('&')[0].split('=')[1]).toDate(),
-                moment(JSON.stringify(router.history.location.search).split('&')[1].split('=')[1]).toDate()
-            ])
-            const getStateHistory = JSON.stringify(router.history.location.search)
-                .split('&')[2]
-                .split('=')[1]
-                .slice(0, -1)
-            if (getStateHistory) {
-                setSelectedState(getStateHistory)
-            } else {
-                router.push(
-                    `/home?from=${JSON.stringify(router.history.location.search)
-                        .split('&')[0]
-                        .split('=')[1]
-                        .format('YYYY-MM-DD')}&to=${JSON.stringify(router.history.location.search)
-                        .split('&')[1]
-                        .split('=')[1]
-                        .format('YYYY-MM-DD')}&state=All`
-                )
-            }
-        })
+        saveHistory();
     }, [dateRange])
 
     const { colors } = useContext(ThemeColors)
@@ -124,35 +110,12 @@ const Home = () => {
     function handleDateRangeSelect(ranges) {
         if (ranges) {
             setDateRange(ranges)
-
-            isObjEmpty(router.query)
-                ? router.push(
-                      `/home?from=${moment(ranges[0]).format('YYYY-MM-DD')}&to=${moment(ranges[1]).format(
-                          'YYYY-MM-DD'
-                      )}&state=All`
-                  )
-                : router.push(
-                      `/home?from=${moment(ranges[0]).format('YYYY-MM-DD')}&to=${moment(ranges[1]).format(
-                          'YYYY-MM-DD'
-                      )}&state=${selectedState}`
-                  )
         }
     }
 
     function onStateChange(state) {
         if (state) {
             setSelectedState(state)
-            isObjEmpty(router.query)
-                ? router.push(
-                      `/home?from=${moment().subtract(1, 'years').format('YYYY-MM-DD')}&to=${moment().format(
-                          'YYYY-MM-DD'
-                      )}&state=${state}`
-                  )
-                : router.push(
-                      `/home?from=${moment(router.query.from).format('YYYY-MM-DD')}&to=${moment(router.query.to).format(
-                          'YYYY-MM-DD'
-                      )}&state=${state}`
-                  )
         }
     }
 
