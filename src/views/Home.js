@@ -90,13 +90,13 @@ const Home = () => {
     useEffect(() => {
         loadData(true)
 
-        // if (router.history.location.search) {
         router.history.listen((location) => {
             // get history search params, split 'from' and 'to'
             setDateRange([
                 moment(JSON.stringify(router.history.location.search).split('&')[0].split('=')[1]).toDate(),
                 moment(JSON.stringify(router.history.location.search).split('&')[1].split('=')[1]).toDate()
             ])
+            // get history state
             const getStateHistory = JSON.stringify(router.history.location.search)
                 .split('&')[2]
                 .split('=')[1]
