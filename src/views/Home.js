@@ -16,7 +16,7 @@ import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
-
+import {getValidState} from '../utility/Utils';
 const Home = () => {
     const router = useRouter()
 
@@ -25,7 +25,7 @@ const Home = () => {
         : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
 
     const [incidents, setIncidents] = useState([])
-    const [selectedState, setSelectedState] = useState(router.query.state)
+    const [selectedState, setSelectedState] = useState(getValidState(router.query.state))
     const [dateRange, setDateRange] = useState(defaultDateRange)
     const [incidentTimeSeries, setIncidentTimeSeries] = useState([])
     const [incidentAggregated, setIncidentAggregated] = useState([])

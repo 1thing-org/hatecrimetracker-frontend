@@ -204,7 +204,7 @@ const STATES_SHORT_TO_FULL = {
   "AK": "Alaska",
   "AZ": "Arizona",
   "AR": "Arkansas",
-  "AS": " American Samoa",
+  // "AS": " American Samoa",
   "CA": "California",
   "CO": "Colorado",
   "CT": "Connecticut",
@@ -212,7 +212,7 @@ const STATES_SHORT_TO_FULL = {
   "DE": "Delaware",
   "FL": "Florida",
   "GA": "Georgia",
-  "GU": "Guam",
+  // "GU": "Guam",
   "HI": "Hawaii",
   "ID": "Idaho",
   "IL": "Illinois",
@@ -228,7 +228,7 @@ const STATES_SHORT_TO_FULL = {
   "MN": "Minnesota",
   "MS": "Mississippi",
   "MO": "Missouri",
-  "MP": "Northern Mariana Islands",
+  // "MP": "Northern Mariana Islands",
   "MT": "Montana",
   "NE": "Nebraska",
   "NV": "Nevada",
@@ -247,7 +247,7 @@ const STATES_SHORT_TO_FULL = {
   "SD": "South Dakota",
   "TN": "Tennessee",
   "TX": "Texas",
-  "VI": "U.S. Virgin Islands",
+  // "VI": "U.S. Virgin Islands",
   "UT": "Utah",
   "VT": "Vermont",
   "VA": "Virginia",
@@ -258,7 +258,10 @@ const STATES_SHORT_TO_FULL = {
   "CANADA": "Canada",
   "ONLINE": "Online"
 }
-
+export const getValidState = (state) => {
+  state = state?.toUpperCase();
+  return state in STATES_SHORT_TO_FULL ? state : ''
+};
 export const formatIncidentRate = (rate) => (rate > 0.0001) ? rate.toFixed(2) : "N/A";
 export const getStateIncidentPerM = (incidentCount, state) => (incidentCount / StatePopulation[state] * 1000000);
 export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / ASIAN_POPULATION[state] * 1000000;
