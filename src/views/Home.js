@@ -16,18 +16,22 @@ import IncidentMap from './IncidentMap'
 import StateSelection from './StateSelection'
 import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
-import {getValidState} from '../utility/Utils';
+import { getValidState } from '../utility/Utils';
+import { withRouter } from "react-router-dom";
 const Home = () => {
     const router = useRouter()
 
-    const defaultDateRange = isObjEmpty(router.query)
-        ? [moment().subtract(1, 'years').toDate(), new Date()]
-        : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
-
     const [incidents, setIncidents] = useState([])
-    const [selectedState, setSelectedState] = useState(getValidState(router.query.state))
-    const [dateRange, setDateRange] = useState(defaultDateRange)
-    const [incidentTimeSeries, setIncidentTimeSeries] = useState([])
+    const [selectedState, setSelectedState] = useState()
+    const [dateRange, setDateRange] = useState()
+    const [incidentTimeSeries, setIncidentTimeSeries] = useState([
+        {
+            monthly_cases: 0,
+            key: moment().format('YYYY-MM-DD'),
+            value: 0
+        }
+
+    ])
     const [incidentAggregated, setIncidentAggregated] = useState([])
     const [loading, setLoading] = useState(false)
 
@@ -65,7 +69,7 @@ const Home = () => {
         return new_stats
     }
     const loadData = (updateMap = false) => {
-        if (dateRange.length != 2) return
+        if (dateRange?.length != 2) return
 
         setLoading(true)
         incidentsService
@@ -80,18 +84,38 @@ const Home = () => {
         })
     }
 
+    const isParameterChanged = () => {
+        if (dateRange?.length != 2) {
+            return true;
+        }
+        const cururl = `/home?from=${moment(router.query.from).format('YYYY-MM-DD')}&to=${moment(router.query.to).format('YYYY-MM-DD')}${router.query.state ? "&state=" + router.query.state.toUpperCase() : ''}`;
+        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
+        return cururl !== newurl
+    }
     const saveHistory = () => {
+        if (!dateRange || !selectedState) return;
         //if date ranger or state is changed, save in router history
-        if (selectedState?.toLowerCase() == router.query.state?.toLowerCase()
-            && moment(dateRange[0]) == moment(router.query.from)
-            && moment(dateRange[1]) == moment(router.query.to)) {
+        if (!isParameterChanged()) {
             return;
         }
+        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
 
-        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState?"&state="+selectedState.toUpperCase():''}`;
-        router.push(newurl);
+        router.history.push(newurl);
+        console.log("pushed:" + newurl)
     }
 
+    useEffect(() => {
+        console.log("Router changed:" + selectedState);
+        if (isParameterChanged()) {
+            const defaultDateRange = isObjEmpty(router.query)
+                ? [moment().subtract(1, 'years').toDate(), new Date()]
+                : [moment(router.query.from).toDate(), moment(router.query.to).toDate()];
+
+            setSelectedState(getValidState(router.query.state));
+            setDateRange(defaultDateRange);
+        }
+
+    }, [router])
     useEffect(() => {
         loadData()
         saveHistory();
@@ -186,4 +210,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default withRouter(Home)
