@@ -5,7 +5,7 @@ import * as am4maps from '@amcharts/amcharts4/maps'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
-import { getStateIncidentPerM, formatIncidentRate, stateFullName, forEachState } from '../utility/Utils'
+import { getStateIncidentPerM, formatIncidentRate, forEachState } from '../utility/Utils'
 am4core.useTheme(am4themes_animated)
 
 /*
@@ -93,22 +93,8 @@ const IncidentMap = (props) => {
         map.seriesContainer.resizable = false
         map.maxZoomLevel = 0.5
         let polygonSeries = map.series.push(new am4maps.MapPolygonSeries())
+
         polygonSeries.useGeodata = true
-        polygonSeries.heatRules.push({
-            property: 'fill',
-            target: polygonSeries.mapPolygons.template,
-            min: am4core.color('olive'), //minimal color
-            max: am4core.color('yellow')
-        })
-        // let heatLegend = map.createChild(am4maps.HeatLegend);
-        // heatLegend.series = polygonSeries;
-        // heatLegend.align = "right";
-        // heatLegend.width = am4core.percent(10);
-        // heatLegend.marginRight = am4core.percent(4);
-        // // heatLegend.minValue = 0;
-        // // heatLegend.maxValue = 20;
-        // heatLegend.valign = "bottom";
-        // // heatLegend.orientation = "vertical";
         polygonSeries.data = []
         polygonSeries.tooltip.getFillFromObject = false
         polygonSeries.tooltip.background.fill = am4core.color('#000000')
@@ -116,7 +102,23 @@ const IncidentMap = (props) => {
         polygonSeries.tooltip.stroke = am4core.color('#FEF753')
         let polygonTemplate = polygonSeries.mapPolygons.template
         polygonTemplate.tooltipHTML = '{tooltipText}'
-        polygonTemplate.fill = am4core.color('#AAAAAA')
+        // polygonTemplate.fillOpacity = 0.5;
+        polygonTemplate.adapter.add("fill", function (fill, target) {
+
+            if (target.dataItem.value > 10) {
+                return am4core.color("#FFF500");
+            }
+            if (target.dataItem.value > 5) {
+                return am4core.color("#D7CF00");
+            }
+            if (target.dataItem.value > 2) {
+                return am4core.color("#A9A403");
+            }
+            if (target.dataItem.value > 0) {
+                return am4core.color("#706C00");
+            }
+            return am4core.color("#313131");
+        })
         polygonTemplate.fillOpacity = 1
         polygonTemplate.clickable = true
         let hs = polygonTemplate.states.create('hover')
@@ -132,7 +134,7 @@ const IncidentMap = (props) => {
             }
         })
 
-        polygonTemplate.stroke = am4core.color('#6979C9')
+        polygonTemplate.stroke = am4core.color('#D1CFD7')
         polygonTemplate.strokeOpacity = 1
         setMapPolygonSeries(polygonSeries)
         setPolygonTemplate(polygonTemplate)
@@ -143,9 +145,6 @@ const IncidentMap = (props) => {
     return (
         <Card>
             <CardHeader>
-                {/* <div>
-        <CardTitle tag='h4'>Hate Crime Map</CardTitle>
-      </div> */}
             </CardHeader>
             <CardBody>
                 <div id='chartdiv' style={{ width: '100%', height: '400px' }}></div>
