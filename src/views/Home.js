@@ -18,12 +18,18 @@ import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
 import { getValidState } from '../utility/Utils';
 import { withRouter } from "react-router-dom";
+import { da } from 'date-fns/locale'
 const Home = () => {
     const router = useRouter()
 
+    const [filter, setFilter] = useState({
+        'state': router.query.state,
+        'dateRange': isObjEmpty(router.query)
+            ? [moment().subtract(1, 'years').toDate(), new Date()]
+            : [moment(router.query.from).toDate(), moment(router.query.to).toDate()]
+    })
     const [incidents, setIncidents] = useState([])
-    const [selectedState, setSelectedState] = useState()
-    const [dateRange, setDateRange] = useState()
+    const [strCurrDateRange, setStrCurrDateRange] = useState('')
     const [incidentTimeSeries, setIncidentTimeSeries] = useState([
         {
             monthly_cases: 0,
@@ -68,15 +74,29 @@ const Home = () => {
         }
         return new_stats
     }
+    const formatDate = (d) => d ? moment(d).format('YYYY-MM-DD') : '';
+    const toURL = (from, to, state) => {
+        const params = [];
+        if (from) {
+            params.push('from=' + formatDate(from));
+        }
+        if (to) {
+            params.push('to=' + formatDate(to));
+        }
+        if (state) {
+            params.push('state=' + state);
+        }
+        return "/home" + (params.length > 0 ? "?" + params.join("&") : "");
+    }
     const loadData = (updateMap = false) => {
-        if (dateRange?.length != 2) return
+        if (filter.dateRange?.length != 2) return
 
         setLoading(true)
         incidentsService
-            .getIncidents(dateRange[0], dateRange[1], selectedState)
+            .getIncidents(filter.dateRange[0], filter.dateRange[1], filter.state)
             .then((incidents) => setIncidents(incidents))
-        incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
-            setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1], stats.monthly_stats))
+        incidentsService.getStats(filter.dateRange[0], filter.dateRange[1], filter.state).then((stats) => {
+            setIncidentTimeSeries(mergeDate(stats.stats, filter.dateRange[0], filter.dateRange[1], stats.monthly_stats))
             if (updateMap) {
                 setIncidentAggregated(stats.total)
             }
@@ -85,59 +105,60 @@ const Home = () => {
     }
 
     const isParameterChanged = () => {
-        if (dateRange?.length != 2) {
-            return true;
-        }
-        const cururl = `/home?from=${moment(router.query.from).format('YYYY-MM-DD')}&to=${moment(router.query.to).format('YYYY-MM-DD')}${router.query.state ? "&state=" + router.query.state.toUpperCase() : ''}`;
-        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
+        const cururl = toURL(router.query.from, router.query.to, router.query.state);
+        const newurl = toURL(filter.dateRange?.[0], filter.dateRange?.[1], filter.state);
         return cururl !== newurl
     }
     const saveHistory = () => {
-        if (!dateRange || !selectedState) return;
         //if date ranger or state is changed, save in router history
         if (!isParameterChanged()) {
             return;
         }
-        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
+        const newurl = toURL(filter.dateRange?.[0], filter.dateRange?.[1], filter.state);
 
         router.history.push(newurl);
-        console.log("pushed:" + newurl)
     }
 
     useEffect(() => {
-        console.log("Router changed:" + selectedState);
         if (isParameterChanged()) {
             const defaultDateRange = isObjEmpty(router.query)
                 ? [moment().subtract(1, 'years').toDate(), new Date()]
                 : [moment(router.query.from).toDate(), moment(router.query.to).toDate()];
 
-            setSelectedState(getValidState(router.query.state));
-            setDateRange(defaultDateRange);
+            setFilter({
+                'state': getValidState(router.query.state),
+                'dateRange': defaultDateRange
+            });
         }
 
     }, [router])
-    useEffect(() => {
-        loadData()
-        saveHistory();
-    }, [selectedState])
 
-    //update both incidents and map
+
     useEffect(() => {
-        loadData(true)
+        const strNewDateRange = `${formatDate(filter.dateRange?.[0])} - ${formatDate(filter.dateRange?.[1])}`;
+        const refrehMap = strCurrDateRange !== strNewDateRange;
+        setStrCurrDateRange(strNewDateRange);
+        loadData(refrehMap)
         saveHistory();
-    }, [dateRange])
+    }, [filter])
 
     const { colors } = useContext(ThemeColors)
 
     // handle date change
     function handleDateRangeSelect(ranges) {
         if (ranges) {
-            setDateRange(ranges)
+            setFilter({
+                'state': filter.state,
+                'dateRange': ranges
+            })
         }
     }
 
     function onStateChange(state) {
-        setSelectedState(state)
+        setFilter({
+            'dateRange': filter.dateRange,
+            'state': state
+        })
     }
 
     return (
@@ -158,14 +179,14 @@ const Home = () => {
                                 <Row>
                                     <Col xs='12' sm='auto'>
                                         <Label>Location:</Label>{' '}
-                                        <StateSelection name='state' value={selectedState} onChange={onStateChange} />{' '}
+                                        <StateSelection name='state' value={filter.state} onChange={onStateChange} />{' '}
                                     </Col>
                                     <Col xs='12' sm='auto'>
                                         <Label>Time Period:</Label>{' '}
                                         <DateRangeSelector
                                             name='date'
                                             onChange={handleDateRangeSelect}
-                                            value={dateRange}
+                                            value={filter.dateRange}
                                         />
                                     </Col>
                                 </Row>
@@ -179,18 +200,18 @@ const Home = () => {
                             <BarChart
                                 color={colors.primary.main}
                                 chart_data={incidentTimeSeries}
-                                state={selectedState}
+                                state={filter.state}
                             />
                             <IncidentMap
                                 mapData={incidentAggregated}
-                                selectdState={selectedState}
+                                selectdState={filter.state}
                                 onChange={onStateChange}
                             />
                             <IncidentCountTable
                                 title={'Incident Count by State'}
                                 data={incidentAggregated}
-                                selectedState={selectedState}
-                                stateChanged={(state) => setSelectedState(state)}
+                                selectedState={filter.state}
+                                stateChanged={(state) => onStateChange(state)}
                             />
                         </div>
                     </Col>
