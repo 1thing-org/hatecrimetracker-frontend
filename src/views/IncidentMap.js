@@ -5,7 +5,7 @@ import * as am4maps from '@amcharts/amcharts4/maps'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
-import { getStateIncidentPerM, formatIncidentRate, forEachState } from '../utility/Utils'
+import { getStateIncidentPerM, formatIncidentRate, forEachState, getStateIncidentPer10kAsian } from '../utility/Utils'
 am4core.useTheme(am4themes_animated)
 
 /*
@@ -30,15 +30,11 @@ const IncidentMap = (props) => {
                 id: 'US-' + state,
                 value: count,
                 tooltipText:
-                    "<div class='maptooltip'><span class='state'>" +
-                    name +
-                    '</span><br/>' +
-                    "<div class='casenumber'>Case Number: " +
-                    (count ? count : 0) +
-                    '<br/>' +
-                    'Count/1MM: ' +
-                    (count ? formatIncidentRate(getStateIncidentPerM(count, state)) : 0) +
-                    '</div></div>'
+                    "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
+                    "<div class='casenumber'><table><tr><td>Cases:</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
+                    "<tr><td>Count/1MM:</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
+                    "<tr><td>Count/10K Asian:</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
+                    "</table></div></div>"
             })
         })
         mapPolygonSeries.data = data
