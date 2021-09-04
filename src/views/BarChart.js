@@ -87,7 +87,7 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
                 onMouseOver={() => setTooltip('monthly')} />
               <Bar name="Daily Count" dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}
                 onMouseOver={() => setTooltip('daily')} />
-              <Legend />
+              <Legend wrapperStyle={{position: 'relative', marginTop: '4px'}}/>
             </ComposedChart>
           </ResponsiveContainer>
         </div>
