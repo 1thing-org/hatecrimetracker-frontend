@@ -101,11 +101,9 @@ const Home = () => {
         const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
 
         router.history.push(newurl);
-        console.log("pushed:" + newurl)
     }
 
     useEffect(() => {
-        console.log("Router changed:" + selectedState);
         if (isParameterChanged()) {
             const defaultDateRange = isObjEmpty(router.query)
                 ? [moment().subtract(1, 'years').toDate(), new Date()]
