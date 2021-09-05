@@ -145,12 +145,15 @@ const Home = () => {
             <div>
                 <Row>
                     <Col xs='12'>
-                        <Container>
-                            <Row>
-                                <Col>
-                                    <h4 className='card-title'>
+                        <Container className='header'>
+                            <Row className="align-items-center">
+                                <Col sm='10' xs='12'>
+                                    <h4>
                                         <img src={logo} alt='logo' className='logo' /> Anti-Asian Hate Crime Tracker
                                     </h4>
+                                </Col>
+                                <Col sm='2' xs='12' align='right'>
+                                    <div><a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>Conact Us</a></div>
                                 </Col>
                             </Row>
 
@@ -205,6 +208,19 @@ const Home = () => {
                         </Card>
                     </Col>
                 </Row>
+            </div>
+            <div className="footer">
+                Disclaimers:
+                <div className="disclaimer">
+                    The Anti-Asian Hate Crime Tracker website is created and maintained by a group of volunteers, for the sole purpose to help raise awareness of Anti-Asian hate that is happening on a daily basis.
+                    <br />
+                    We collect anti-Asian hate incidents from publicly available sources online, which might not always have been authorized by the copyright owners. We believe this constitutes a "fair use" of any such copyrighted material as provided for in section 107 of the United States Copyright law.
+                    <br />
+                    We collect and aggregate the data with our best effort. But in no event shall we be liable for any special, incidental, indirect, or consequential damages whatsoever arising out of or in connection with your access or use or inability to access or use the website.
+                </div>
+                <div align='center'>
+                    Copyright &copy; {new Date().getFullYear()} Anti-Asian Hate Crime Tracker &nbsp;&nbsp;&nbsp; <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>Conact Us</a>
+                </div>
             </div>
         </UILoader>
     )
