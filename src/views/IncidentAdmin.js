@@ -55,7 +55,7 @@ const IncidentAdminPage = () => {
   function reloadIncidents(date) {
     //load incidents around the date -7 - 1 days
     console.log("reloading incidents around:" + date);
-    incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, true)
+    incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, 'en', true)
       .then(incidents => setData(incidents));
   }
   function dateChanged(event) {

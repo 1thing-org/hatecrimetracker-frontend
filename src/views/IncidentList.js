@@ -9,6 +9,22 @@ const IncidentList = (props) => {
     useEffect(() => {
         setVisibleCount(INCR_COUNT);
     }, [props.data])
+    const getTitle = (incident) => {
+        if ( incident?.title_translate ) {
+            for ( const [key, value] of Object.entries(incident.title_translate) ) {
+                return value;
+            }
+        }
+        return incident?.title;
+    }
+    const getAbstract = (incident) => {
+        if ( incident?.abstract_translate ) {
+            for ( const [key, value] of Object.entries(incident.abstract_translate) ) {
+                return value;
+            }
+        }
+        return incident?.abstract;
+    }
     return (
         <div>
             <div className='incident-list'>
@@ -16,12 +32,12 @@ const IncidentList = (props) => {
                     return (
                         <div className='incident' key={idx}>
                             <a className='title' href={d.url} target='_blank'>
-                                {d.title}
+                                {getTitle(d)}
                             </a>
                             <p className='location_time'>
                                 {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
                             </p>
-                            <p className='description'>{d.abstract}</p>
+                            <p className='description'>{getAbstract(d)}</p>
                         </div>
                     )
                 })

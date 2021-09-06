@@ -21,6 +21,7 @@ import { withRouter } from "react-router-dom";
 const Home = () => {
     const router = useRouter()
 
+    const [lang, setLang] = useState(router.query.lang?router.query.lang:'en')
     const [incidents, setIncidents] = useState([])
     const [selectedState, setSelectedState] = useState()
     const [dateRange, setDateRange] = useState()
@@ -73,7 +74,7 @@ const Home = () => {
 
         setLoading(true)
         incidentsService
-            .getIncidents(dateRange[0], dateRange[1], selectedState)
+            .getIncidents(dateRange[0], dateRange[1], selectedState, lang)
             .then((incidents) => setIncidents(incidents))
         incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
             setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1], stats.monthly_stats))
