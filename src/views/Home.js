@@ -20,7 +20,7 @@ import { getValidState } from '../utility/Utils';
 import { withRouter } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import {getBrowserLang, SUPPORTED_LANGUAGES} from '../utility/Languages';
-import Select from 'react-select'
+import {SelectPicker} from 'rsuite'
 
 const Home = () => {
     const router = useRouter()
@@ -54,9 +54,8 @@ const Home = () => {
     const [loading, setLoading] = useState(false)
 
     const setSelectedLang = (lang_code) => {
-        setSelectedLangCode(lang_code);
         setCookie('lang', lang_code);
-        loadData();
+        setSelectedLangCode(lang_code);
     }
     // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
     // Remove date out of the range, and insert days that does not have data
@@ -108,6 +107,7 @@ const Home = () => {
     }
 
     const isParameterChanged = () => {
+        return true;
         if (dateRange?.length != 2) {
             return true;
         }
@@ -121,7 +121,8 @@ const Home = () => {
         if (!isParameterChanged()) {
             return;
         }
-        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`;
+        const newurl = `/home?from=${moment(dateRange[0]).format('YYYY-MM-DD')}&to=${moment(dateRange[1]).format('YYYY-MM-DD')}${selectedState ? "&state=" + selectedState.toUpperCase() : ''}`
+        + `${selectedLangCode ? "&lang=" + selectedLangCode : ''}`;
 
         router.history.push(newurl);
     }
@@ -140,8 +141,8 @@ const Home = () => {
     useEffect(() => {
         loadData()
         saveHistory();
-    }, [selectedState])
-
+    }, [selectedState, selectedLangCode])
+    
     //update both incidents and map
     useEffect(() => {
         loadData(true)
@@ -175,10 +176,9 @@ const Home = () => {
                                 </Col>
                                 <Col sm='2' xs='12' align='right'>
                                     <div><a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>Conact Us</a></div>
-                                    Current lang: {""+selectedLangCode}
                                 </Col>
                                 <Col sm='2' xs='12' align='right'>
-                                    <Select options={support_languages} defaultValue={selectedLangCode} onChange={(value) => setSelectedLang(value.value)} />
+                                    <SelectPicker data={support_languages} cleanable={false} defaultValue={selectedLangCode} style={{ width: 224 }} onChange={(value) => setSelectedLang(value)} />
                                 </Col>
                             </Row>
 
