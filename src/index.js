@@ -16,6 +16,8 @@ import Spinner from './@core/components/spinner/Fallback-spinner'
 // ** Ripple Button
 import './@core/components/ripple-button'
 
+import { CookiesProvider } from "react-cookie";
+
 // ** PrismJS
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
@@ -53,16 +55,18 @@ hotjar.initialize(2563128, 6)
 const LazyApp = lazy(() => import('./App'))
 
 ReactDOM.render(
-    <UserProvider>
-        <Provider store={store}>
-            <Suspense fallback={<Spinner />}>
-                <ThemeContext>
-                    <LazyApp />
-                    <ToastContainer newestOnTop />
-                </ThemeContext>
-            </Suspense>
-        </Provider>
-    </UserProvider>,
+    <CookiesProvider>
+        <UserProvider>
+            <Provider store={store}>
+                <Suspense fallback={<Spinner />}>
+                    <ThemeContext>
+                        <LazyApp />
+                        <ToastContainer newestOnTop />
+                    </ThemeContext>
+                </Suspense>
+            </Provider>
+        </UserProvider>
+    </CookiesProvider>,
     document.getElementById('root')
 )
 

@@ -18,10 +18,27 @@ import { useRouter } from '@hooks/useRouter'
 import { isObjEmpty } from '@utils'
 import { getValidState } from '../utility/Utils';
 import { withRouter } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import {getBrowserLang, SUPPORTED_LANGUAGES} from '../utility/Languages';
+import Select from 'react-select'
+
 const Home = () => {
     const router = useRouter()
 
-    const [lang, setLang] = useState(router.query.lang?router.query.lang:'en')
+    //get default lang
+    //parameter lang > cookie > browser default setting
+    const [cookies, setCookie] = useCookies(['lang']);
+    const lang_code = router.query.lang || cookies.lang || getBrowserLang();
+    const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
+    const support_languages = [];
+    
+    Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
+        support_languages.push({
+            value: lang_code,
+            label: lang_name
+        })
+    });
+
     const [incidents, setIncidents] = useState([])
     const [selectedState, setSelectedState] = useState()
     const [dateRange, setDateRange] = useState()
@@ -36,6 +53,11 @@ const Home = () => {
     const [incidentAggregated, setIncidentAggregated] = useState([])
     const [loading, setLoading] = useState(false)
 
+    const setSelectedLang = (lang_code) => {
+        setSelectedLangCode(lang_code);
+        setCookie('lang', lang_code);
+        loadData();
+    }
     // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
     // Remove date out of the range, and insert days that does not have data
     // start_date, end_date: Date
@@ -74,7 +96,7 @@ const Home = () => {
 
         setLoading(true)
         incidentsService
-            .getIncidents(dateRange[0], dateRange[1], selectedState, lang)
+            .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode)
             .then((incidents) => setIncidents(incidents))
         incidentsService.getStats(dateRange[0], dateRange[1], selectedState).then((stats) => {
             setIncidentTimeSeries(mergeDate(stats.stats, dateRange[0], dateRange[1], stats.monthly_stats))
@@ -146,13 +168,17 @@ const Home = () => {
                     <Col xs='12'>
                         <Container className='header'>
                             <Row className="align-items-center">
-                                <Col sm='10' xs='12'>
+                                <Col sm='8' xs='12'>
                                     <h4>
                                         <img src={logo} alt='logo' className='logo' /> Anti-Asian Hate Crime Tracker
                                     </h4>
                                 </Col>
                                 <Col sm='2' xs='12' align='right'>
                                     <div><a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>Conact Us</a></div>
+                                    Current lang: {""+selectedLangCode}
+                                </Col>
+                                <Col sm='2' xs='12' align='right'>
+                                    <Select options={support_languages} defaultValue={selectedLangCode} onChange={(value) => setSelectedLang(value.value)} />
                                 </Col>
                             </Row>
 
