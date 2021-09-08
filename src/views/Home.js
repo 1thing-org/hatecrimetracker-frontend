@@ -5,7 +5,7 @@ import '@styles/react/libs/charts/recharts.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
 import moment from 'moment'
 import { useContext, useEffect, useState } from 'react'
-import { Card, CardBody, Col, Container, FormGroup, Label, Row } from 'reactstrap'
+import { Card, CardBody, Col, Container, FormGroup, Label, Row, Button } from 'reactstrap'
 import 'rsuite/dist/styles/rsuite-dark.css'
 import * as incidentsService from '../services/incidents'
 import BarChart from './BarChart'
@@ -160,14 +160,12 @@ const Home = () => {
                                         </h4>
                                     </Col>
                                     <Col sm='2' xs='12' align='right'>
-                                        <div>
-                                            <a
-                                                href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                                                target='_blank'
-                                            >
-                                                Conact Us
-                                            </a>
-                                        </div>
+                                        <a
+                                            href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
+                                            target='_blank'
+                                        >
+                                            Conact Us
+                                        </a>
                                     </Col>
                                 </Row>
 
@@ -242,15 +240,24 @@ const Home = () => {
                         any special, incidental, indirect, or consequential damages whatsoever arising out of or in
                         connection with your access or use or inability to access or use the website.
                     </div>
-                    <div align='center'>
-                        Copyright &copy; {new Date().getFullYear()} Anti-Asian Hate Crime Tracker &nbsp;&nbsp;&nbsp;{' '}
-                        <a
-                            href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                            target='_blank'
-                        >
-                            Conact Us
-                        </a>
-                    </div>
+                    <Row>
+                        <Col sm='12' md={{ size: 6, offset: 3 }}>
+                            <Row>
+                                <Col sm={{ size: 'auto', offset: 1 }}>
+                                    Copyright &copy; {new Date().getFullYear()}{' '}
+                                    <a href='https://hatecrimetracker.1thing.org'> Anti-Asian Hate Crime Tracker </a>
+                                </Col>
+                                <Col sm={{ size: 'auto', offset: 1 }}>
+                                    <a
+                                        href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
+                                        target='_blank'
+                                    >
+                                        Conact Us
+                                    </a>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
                 </div>
             </UILoader>
         </>
