@@ -2,38 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import { formatIncidentRate, getStateIncidentPerM, getStateIncidentPer10kAsian, stateFullName } from '../utility/Utils';
-const columns = [
-    {
-        name: 'State',
-        selector: 'state_name',
-        sortable: true,
-    },
-    {
-        name: 'Count',
-        selector: 'count',
-        sortable: true,
-        maxWidth: '20%',
-        right: true,
-    },
-    {
-        name: 'Count/10K Asian',
-        selector: 'count_rate_asian',
-        sortable: true,
-        wrap: true,
-        maxWidth: '20%',
-        right: true,
-        format: (row) => formatIncidentRate(row.count_rate_asian)
-    },
-    {
-        name: 'Count/1MM',
-        selector: 'count_rate',
-        sortable: true,
-        wrap: true,
-        maxWidth: '20%',
-        right: true,
-        format: (row) => formatIncidentRate(row.count_rate)
-    }
-];
+import { useTranslation } from 'react-i18next';
 
 const toIncidentCount = (data) => {
     const result = [];
@@ -51,9 +20,43 @@ const toIncidentCount = (data) => {
 }
 //data is map of state to count
 const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
+    const { t } = useTranslation();
     const [incidentCountData, setIncidentCountData] = useState(toIncidentCount(data));
     const [currState, setCurrState] = useState(selectedState);
     const [totalCases, setTotalCases] = useState(0);
+
+    const columns = [
+        {
+            name: t("incident_table.state"),
+            selector: 'state_name',
+            sortable: true,
+        },
+        {
+            name: t("incident_table.count"),
+            selector: 'count',
+            sortable: true,
+            maxWidth: '20%',
+            right: true,
+        },
+        {
+            name: t("incident_table.count_10k_asian"),
+            selector: 'count_rate_asian',
+            sortable: true,
+            wrap: true,
+            maxWidth: '20%',
+            right: true,
+            format: (row) => formatIncidentRate(row.count_rate_asian)
+        },
+        {
+            name: t("incident_table.count_1mm"),
+            selector: 'count_rate',
+            sortable: true,
+            wrap: true,
+            maxWidth: '20%',
+            right: true,
+            format: (row) => formatIncidentRate(row.count_rate)
+        }
+    ];
     //** ComponentDidMount
     useEffect(() => {
         setIncidentCountData(toIncidentCount(data));
@@ -91,7 +94,7 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
     return (<Card>
         <CardHeader>
             <div>
-                <CardTitle tag='h4'>{title} - Total {totalCases} Incidents</CardTitle>
+                <CardTitle tag='h4'>{t("incident_count_by_state")} - {t("incident_table.total_incident", {count:totalCases})}</CardTitle>
             </div>
         </CardHeader>
         <CardBody>

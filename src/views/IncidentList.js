@@ -2,9 +2,11 @@ import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { stateFullName } from '../utility/Utils.js'
 import { Button } from 'reactstrap'
+import { useTranslation } from 'react-i18next';
 
 const INCR_COUNT = 10;
 const IncidentList = (props) => {
+    const { t } = useTranslation();
     const [visibleCount, setVisibleCount] = useState(20);
     useEffect(() => {
         setVisibleCount(INCR_COUNT);
@@ -44,7 +46,7 @@ const IncidentList = (props) => {
                 }
             </div>
             {visibleCount < props.data.length ?
-                (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleCount(visibleCount + INCR_COUNT) }>Load More...</Button></div>)
+                (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleCount(visibleCount + INCR_COUNT) }>{t('load_more')}.</Button></div>)
                 : null}
         </div>
     )

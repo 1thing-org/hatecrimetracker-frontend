@@ -6,6 +6,8 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
 import { getStateIncidentPerM, formatIncidentRate, forEachState, getStateIncidentPer10kAsian } from '../utility/Utils'
+import { useTranslation } from 'react-i18next';
+
 am4core.useTheme(am4themes_animated)
 
 /*
@@ -17,6 +19,7 @@ https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 
 //mapData is result from api/stats.total
 const IncidentMap = (props) => {
+    const { t } = useTranslation();
     const [mapPolygonSeries, setMapPolygonSeries] = useState()
     const [polygonTemplate, setPolygonTemplate] = useState()
     const [selectedState, setSelectedState] = useState()
@@ -31,9 +34,9 @@ const IncidentMap = (props) => {
                 value: count,
                 tooltipText:
                     "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
-                    "<div class='casenumber'><table><tr><td>Cases:</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
-                    "<tr><td>Count/1MM:</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
-                    "<tr><td>Count/10K Asian:</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
+                    "<div class='casenumber'><table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
+                    "<tr><td>"+t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
+                    "<tr><td>"+t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
                     "</table></div></div>"
             })
         })

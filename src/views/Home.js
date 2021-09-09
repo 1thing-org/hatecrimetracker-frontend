@@ -22,9 +22,14 @@ import { getBrowserLang, SUPPORTED_LANGUAGES } from '../utility/Languages';
 import { SelectPicker } from 'rsuite'
 import { withRouter } from 'react-router-dom'
 import Head from './components/head'
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
     const router = useRouter()
+    const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
 
     //get default lang
     //parameter lang > cookie > browser default setting
@@ -143,7 +148,8 @@ const Home = () => {
         }
     }, [router])
     useEffect(() => {
-        loadData()
+        changeLanguage(selectedLangCode);
+        loadData();
         saveHistory();
     }, [selectedState, selectedLangCode])
     //update both incidents and map
@@ -176,20 +182,20 @@ const Home = () => {
                                 <Row className="align-items-center">
                                     <Col sm='10' xs='12'>
                                         <h4>
-                                            <img src={logo} alt='logo' className='logo' /> Anti-Asian Hate Crime Tracker
+                                            <img src={logo} alt='logo' className='logo' /> {t('website.name')}
                                         </h4>
                                     </Col>
                                     <Col sm='2' xs='12' align='right'>
                                         <SelectPicker data={support_languages} searchable={false} cleanable={false} defaultValue={selectedLangCode} style={{ width: 120 }} onChange={(value) => setSelectedLang(value)} />
                                         &nbsp;&nbsp;
-                                        <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>Conact Us</a>
+                                        <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>{t('contact_us')}</a>
                                     </Col>
                                 </Row>
                                 
                                 <FormGroup>
                                     <Row>
                                         <Col xs='12' sm='auto'>
-                                            <Label>Location:</Label>{' '}
+                                            <Label>{t('location')}:</Label>{' '}
                                             <StateSelection
                                                 name='state'
                                                 value={selectedState}
@@ -197,7 +203,7 @@ const Home = () => {
                                             />{' '}
                                         </Col>
                                         <Col xs='12' sm='auto'>
-                                            <Label>Time Period:</Label>{' '}
+                                            <Label>{t('date_range')}:</Label>{' '}
                                             <DateRangeSelector
                                                 name='date'
                                                 onChange={handleDateRangeSelect}
@@ -247,15 +253,15 @@ const Home = () => {
                         <Col sm='12' md={{ size: 6, offset: 3 }}>
                             <Row>
                                 <Col sm={{ size: 'auto', offset: 1 }}>
-                                    Copyright &copy; {new Date().getFullYear()}{' '}
-                                    <a href='https://hatecrimetracker.1thing.org'> Anti-Asian Hate Crime Tracker </a>
+                                    {t('copyright')} &copy; {new Date().getFullYear()}{' '}
+                                    <a href='https://hatecrimetracker.1thing.org'> {t('website.name')} </a>
                                 </Col>
                                 <Col sm={{ size: 'auto', offset: 1 }}>
                                     <a
                                         href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                                         target='_blank'
                                     >
-                                        Conact Us
+                                        {t('contact_us')}
                                     </a>
                                 </Col>
                             </Row>
@@ -265,14 +271,13 @@ const Home = () => {
                         Disclaimer:
                         <ul>
                             <li>
-                                The Anti-Asian Hate Crime Tracker website is created and maintained by a group of volunteers, for the sole purpose of raising the awareness of anti-Asian behavior that is happening on a daily basis.
+                                {t('disclaimer.1')}
                             </li>
                             <li>
-                                We collect anti-Asian incidents from online public sources and provide hyperlinks (accompanied by titles and brief excerpts of the reports) that direct you to the original sources of information. We believe our use of any copyrighted materials is permitted as “fair use” under 17 U.S.C. § 107. 
-                        If you have any questions or concerns with any such use, please contact us <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>here</a>. 
+                                {t('disclaimer.2')}<a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0">{t("disclaimer.here")}</a>.
                             </li>
                             <li>
-                        We collect and aggregate the data with our best effort. The information herein is provided with the understanding that we are not engaged in rendering legal or other professional advice or services. In no event shall we be liable for any consequences whatsoever arising out of or in connection with your access to or use of the website.
+                            {t('disclaimer.3')}
                             </li>
                         </ul>
                     </div>

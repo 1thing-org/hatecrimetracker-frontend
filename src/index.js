@@ -43,6 +43,9 @@ import { hotjar } from 'react-hotjar'
 
 import GA4React from 'ga-4-react'
 
+// import i18n (needs to be bundled ;))
+import './i18n';
+
 try {
     setTimeout((_) => {
         const ga4react = new GA4React('G-XS3NGG7FZS')

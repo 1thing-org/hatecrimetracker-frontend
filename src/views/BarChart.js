@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { stateFullName } from '../utility/Utils';
+import { useTranslation } from 'react-i18next';
 
 const SimpleBarChart = ({ color, chart_data, state }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
     const d = moment(tickVal, "YYYY-MM-DD")
     return d.format("M/D/YY");
   }
+  const { t } = useTranslation();
   const [xticks, setXTicks] = useState([]);
   const [totalCases, setTotalCases] = useState(0);
   const [tooltip, setTooltip] = useState(); //decide which tooltip to show
@@ -49,14 +51,14 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
       return tooltip !== 'daily' ? (
         <div className='recharts-custom-tooltip'>
           <p>{d.format("MMM YYYY")}</p>
-          <p><strong>{monthly + " total " + (monthly > 1 ? 'cases' : 'case')}</strong></p>
+          <p><strong>{t("incident_chart.total_monthly_cases", {count:monthly})}</strong></p>
         </div>
       ) :
         (
           <div className='recharts-custom-tooltip'>
             <p>{d.format("M/D/YYYY")}</p>
-            <p><strong>{daily + " " + (daily ? 'cases' : 'case')}</strong></p>
-            <p><strong>{monthly + " monthly " + (monthly > 1 ? 'cases' : 'case')}</strong></p>
+            <p><strong>{t("incident_chart.total_daily_cases", {count:daily})}</strong></p>
+            <p><strong>{t("incident_chart.total_monthly_cases", {count:monthly})}</strong></p>
           </div>
         )
     }
@@ -66,7 +68,7 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
     <Card>
       <CardHeader>
         <div>
-          <CardTitle tag='h4'>Hate Crime Incident Trend - Total {totalCases} Incidents {state ? "in " + stateFullName(state) : ""}</CardTitle>
+          <CardTitle tag='h4'>{t("incident_chart.trend")} - {t("incident_chart.total_cases", {count:totalCases})}{state ? " : " + stateFullName(state) : ""}</CardTitle>
         </div>
       </CardHeader>
 
@@ -79,13 +81,13 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
               <YAxis allowDecimals={false} orientation="left" interval="preserveStartEnd"
                 type="number"
                 domain={[0, 'dataMax + 3']}
-                label={{ value: 'Daily Count', angle: -90, position: 'insideLeft' }} />
+                label={{ value: t("daily_count"), angle: -90, position: 'insideLeft' }} />
               <YAxis yAxisId="right" orientation="right" allowDecimals={false} interval="preserveStartEnd"
-                label={{ value: 'Monthly Count', angle: 90, position: 'insideRight' }} />
+                label={{ value: t("monthly_count"), angle: 90, position: 'insideRight' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Area name="Monthly Count" type="monotone" dataKey="monthly_cases" fill="#8884d8" stroke="#8884d8" yAxisId="right"
+              <Area name={t("monthly_count")} type="monotone" dataKey="monthly_cases" fill="#8884d8" stroke="#8884d8" yAxisId="right"
                 onMouseOver={() => setTooltip('monthly')} />
-              <Bar name="Daily Count" dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}
+              <Bar name={t("daily_count")} dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}
                 onMouseOver={() => setTooltip('daily')} />
               <Legend wrapperStyle={{position: 'relative', marginTop: '4px'}}/>
             </ComposedChart>
