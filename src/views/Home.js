@@ -243,20 +243,6 @@ const Home = () => {
                     </Row>
                 </div>
                 <div className='footer'>
-                    Disclaimers:
-                    <div className='disclaimer'>
-                        The Anti-Asian Hate Crime Tracker website is created and maintained by a group of volunteers,
-                        for the sole purpose to help raise awareness of Anti-Asian hate that is happening on a daily
-                        basis.
-                        <br />
-                        We collect anti-Asian hate incidents from publicly available sources online, which might not
-                        always have been authorized by the copyright owners. We believe this constitutes a "fair use" of
-                        any such copyrighted material as provided for in section 107 of the United States Copyright law.
-                        <br />
-                        We collect and aggregate the data with our best effort. But in no event shall we be liable for
-                        any special, incidental, indirect, or consequential damages whatsoever arising out of or in
-                        connection with your access or use or inability to access or use the website.
-                    </div>
                     <Row>
                         <Col sm='12' md={{ size: 6, offset: 3 }}>
                             <Row>
@@ -275,6 +261,22 @@ const Home = () => {
                             </Row>
                         </Col>
                     </Row>
+                    <div className='disclaimer'>
+                        Disclaimer:
+                        <ul>
+                            <li>
+                                The Anti-Asian Hate Crime Tracker website is created and maintained by a group of volunteers, for the sole purpose of raising the awareness of anti-Asian behavior that is happening on a daily basis.
+                            </li>
+                            <li>
+                                We collect anti-Asian incidents from online public sources and provide hyperlinks (accompanied by titles and brief excerpts of the reports) that direct you to the original sources of information. We believe our use of any copyrighted materials is permitted as “fair use” under 17 U.S.C. § 107. 
+                        If you have any questions or concerns with any such use, please contact us <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>here</a>. 
+                            </li>
+                            <li>
+                        We collect and aggregate the data with our best effort. The information herein is provided with the understanding that we are not engaged in rendering legal or other professional advice or services. In no event shall we be liable for any consequences whatsoever arising out of or in connection with your access to or use of the website.
+                            </li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </UILoader>
         </>
