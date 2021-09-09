@@ -4,7 +4,7 @@
   },
   "location" : "地点",
   "date_range" : "日期范围",
-  "incident_count_by_state" : "州事件计数",
+  "incident_count_by_state" : "各州事件计数",
   "daily_count" : "单日总计",
   "monthly_count" : "月总计",
   "load_more" : "加载更多",

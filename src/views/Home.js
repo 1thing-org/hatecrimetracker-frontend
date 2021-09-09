@@ -268,7 +268,7 @@ const Home = () => {
                         </Col>
                     </Row>
                     <div className='disclaimer'>
-                        Disclaimer:
+                    {t('disclaimer.title')}:
                         <ul>
                             <li>
                                 {t('disclaimer.1')}
