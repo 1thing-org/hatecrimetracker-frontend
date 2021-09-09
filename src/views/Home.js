@@ -107,7 +107,6 @@ const Home = () => {
     }
 
     const isParameterChanged = () => {
-        return true;
         if (dateRange?.length != 2) {
             return true
         }
