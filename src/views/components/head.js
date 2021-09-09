@@ -5,7 +5,7 @@ const Head = () => {
     return (
         <div className='wrapper'>
             <MetaTags>
-                <meta charset='UTF-8' />
+                <meta charSet='UTF-8' />
                 <meta name='viewport' content='width=device-width, initial-scale=1' />
                 <title>Anti-Asian Hate Crime Tracker</title>
                 <meta name='type' property='og:type' content='website' />
