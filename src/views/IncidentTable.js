@@ -21,7 +21,6 @@ const IncidentTable = ({ data, title, onDelete }) => {
       name: 'Title',
       selector: 'title',
       sortable: true,
-      max_width: "600px",
       wrap: true,
       format: (row) => {
         if (row.url) {
@@ -29,6 +28,13 @@ const IncidentTable = ({ data, title, onDelete }) => {
         }
         return row.title;
       }
+    },
+    {
+      name: 'Entered By',
+      selector: 'created_by',
+      sortable: true,
+      max_width: "100px",
+      wrap: false      
     },
   ];
 
