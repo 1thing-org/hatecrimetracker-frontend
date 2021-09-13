@@ -23,6 +23,7 @@ import { SelectPicker } from 'rsuite'
 import { withRouter } from 'react-router-dom'
 import Head from './components/head'
 import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 const Home = () => {
     const router = useRouter()
@@ -274,7 +275,9 @@ const Home = () => {
                                 {t('disclaimer.1')}
                             </li>
                             <li>
-                                {t('disclaimer.2')}<a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0">{t("disclaimer.here")}</a>.
+                                <Trans i18nKey='disclaimer.2'>
+                                    disclaimer.2 <a href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0' target="_blank">here.</a>
+                                </Trans>
                             </li>
                             <li>
                             {t('disclaimer.3')}
