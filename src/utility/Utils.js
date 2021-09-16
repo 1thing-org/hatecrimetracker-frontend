@@ -264,6 +264,6 @@ export const getValidState = (state) => {
 };
 export const formatIncidentRate = (rate) => (rate > 0.0001) ? rate.toFixed(2) : "N/A";
 export const getStateIncidentPerM = (incidentCount, state) => (incidentCount / StatePopulation[state] * 1000000);
-export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / ASIAN_POPULATION[state] * 1000000;
+export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / ASIAN_POPULATION[state] * 10000;
 export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort] ? STATES_SHORT_TO_FULL[stateShort] : stateShort;
 export const forEachState = (callback) => Object.entries(STATES_SHORT_TO_FULL).forEach(([state, name]) => callback(state, name));
