@@ -181,12 +181,12 @@ const Home = () => {
                         <Col xs='12'>
                             <Container className='header'>
                                 <Row className="align-items-center">
-                                    <Col sm='10' xs='12'>
+                                    <Col sm='8' xs='12'>
                                         <h4>
                                             <img src={logo} alt='logo' className='logo' /> {t('website.name')}
                                         </h4>
                                     </Col>
-                                    <Col sm='2' xs='12' align='right'>
+                                    <Col sm='4' xs='12' align='right'>
                                         <SelectPicker data={support_languages} searchable={false} cleanable={false} defaultValue={selectedLangCode} style={{ width: 120 }} onChange={(value) => setSelectedLang(value)} />
                                         &nbsp;&nbsp;
                                         <a href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0" target='_blank'>{t('contact_us')}</a>
