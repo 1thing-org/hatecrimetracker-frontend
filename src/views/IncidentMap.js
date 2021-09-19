@@ -36,7 +36,7 @@ const IncidentMap = (props) => {
                     "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
                     (count ? 
                         "<div class='casenumber'>" + 
-                        "<table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
+                        "<table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + count + "</td></tr>" + 
                         "<tr><td>"+t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
                         "<tr><td>"+t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
                         "</table>"
@@ -49,7 +49,7 @@ const IncidentMap = (props) => {
     }
     useEffect(() => {
         updateMap(props.mapData)
-    }, [props.mapData])
+    }, [props.mapData, props.lang])
 
     useEffect(() => {
         setSelectedState(props.selectdState)
