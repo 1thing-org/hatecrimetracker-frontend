@@ -94,7 +94,13 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
     return (<Card>
         <CardHeader>
             <div>
-                <CardTitle tag='h4'>{t("incident_count_by_state")} - {t("incident_table.total_incident", {count:totalCases})}</CardTitle>
+                <CardTitle tag='h4'>{t("incident_count_by_state")}&nbsp;-&nbsp;
+                    { totalCases?
+                    t("incident_table.total_incident", {count:totalCases})
+                    : t("incident_table.no_data")
+                    }
+                </CardTitle>
+                
             </div>
         </CardHeader>
         <CardBody>

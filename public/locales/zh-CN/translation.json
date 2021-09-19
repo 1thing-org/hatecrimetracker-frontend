@@ -2,42 +2,43 @@
   "website": {
     "name": "反亚裔仇恨犯罪追踪"
   },
-  "location" : "地点",
-  "date_range" : "日期范围",
-  "incident_count_by_state" : "各州事件计数",
-  "daily_count" : "单日总计",
-  "monthly_count" : "月总计",
-  "load_more" : "加载更多",
-  "incident_table" : {
-    "total_incident" : "共{{count}}起",
-    "total_incident_plural" : "共{{count}}起",
-    "state" : "州",
-    "count" : "总计",
-    "count_10k_asian" : "每万名亚裔",
-    "count_1mm" : "每百万人口"
+  "location": "地点",
+  "date_range": "日期范围",
+  "incident_count_by_state": "各州事件计数",
+  "daily_count": "单日总计",
+  "monthly_count": "月总计",
+  "load_more": "加载更多",
+  "incident_table": {
+    "total_incident": "共{{count}}起",
+    "no_data": "没有收集到数据",
+    "total_incident_plural": "共{{count}}起",
+    "state": "州",
+    "count": "总计",
+    "count_10k_asian": "每万名亚裔",
+    "count_1mm": "每百万人口"
   },
-  "incident_map" : {
-    "cases" : "总数",
-    "count_10k_asian" : "每万名亚裔",
-    "count_1mm" : "每百万人口"
+  "incident_map": {
+    "cases": "总数",
+    "no_data": "没有收集到数据",
+    "count_10k_asian": "每万名亚裔",
+    "count_1mm": "每百万人口"
   },
-  "incident_chart" : {
-    "total_monthly_cases" : "月总计{{count}}例",
-    "total_monthly_cases_plural" : "月总计{{count}}例",
-    "total_daily_cases" : "日总计{{count}}例",
-    "total_daily_cases_plural" : "日总计{{count}}例",
-    "trend" : "反亚裔仇恨犯罪事件趋势图",
-    "total_cases" : "总计{{count}}起",
-    "total_cases_plural" : "总计{{count}}起"
+  "incident_chart": {
+    "total_monthly_cases": "月总计{{count}}例",
+    "total_monthly_cases_plural": "月总计{{count}}例",
+    "total_daily_cases": "日总计{{count}}例",
+    "total_daily_cases_plural": "日总计{{count}}例",
+    "trend": "反亚裔仇恨犯罪事件趋势图",
+    "no_data": "没有收集到数据",
+    "total_cases": "总计{{count}}起",
+    "total_cases_plural": "总计{{count}}起"
   },
-  
-  "contact_us" : "联系我们",
-  "copyright" : "版权所有",
-  
-  "disclaimer" : {
-    "title" : "声明",
-    "1" : "反亚裔仇恨犯罪追踪网站由一群志愿者创建和维护，其唯一目的是提高人们对每天发生的反亚裔行为的认识。",
-    "2" : "我们从在线公共资源收集反亚裔事件，并提供超链接（附有标题和报告的简短摘录），将您引导至原始信息来源。 我们相信我们对任何受版权保护的材料的使用皆在 17 U.S.C. § 107允許範圍之內. 如果有任何疑问或疑虑，请点击<1>此处</1>与我们联系。",
-    "3" : "我们尽最大努力收集和汇总数据。 此处提供的信息是基于我们不从事提供法律或其他专业建议或服务的理解。 在任何情况下，对于因您访问或使用本网站而引起或与之相关的任何后果，我们概不负责。"
+  "contact_us": "联系我们",
+  "copyright": "版权所有",
+  "disclaimer": {
+    "title": "声明",
+    "1": "反亚裔仇恨犯罪追踪网站由一群志愿者创建和维护，其唯一目的是提高人们对每天发生的反亚裔行为的认识。",
+    "2": "我们从在线公共资源收集反亚裔事件，并提供超链接（附有标题和报告的简短摘录），将您引导至原始信息来源。 我们相信我们对任何受版权保护的材料的使用皆在 17 U.S.C. § 107允許範圍之內. 如果有任何疑问或疑虑，请点击<1>此处</1>与我们联系。",
+    "3": "我们尽最大努力收集和汇总数据。 此处提供的信息是基于我们不从事提供法律或其他专业建议或服务的理解。 在任何情况下，对于因您访问或使用本网站而引起或与之相关的任何后果，我们概不负责。"
   }
 }

@@ -10,6 +10,7 @@
   "load_more" : "加載更多",
   "incident_table" : {
     "total_incident" : "共{{count}}起",
+    "no_data" : "沒有收集到數據",
     "total_incident_plural" : "共{{count}}起",
     "state" : "州",
     "count" : "總計",
@@ -18,6 +19,7 @@
   },
   "incident_map" : {
     "cases" : "總數",
+    "no_data" : "沒有收集到數據",
     "count_10k_asian" : "每萬名亞裔",
     "count_1mm" : "每百萬人口"
   },
@@ -28,6 +30,7 @@
     "total_daily_cases_plural" : "日總計{{count}}例",
     "trend" : "反亞洲仇恨犯罪事件趨勢圖",
     "total_cases" : "總計{{count}}起",
+    "no_data" : "沒有收集到數據",
     "total_cases_plural" : "總計{{count}}起"
   },
   

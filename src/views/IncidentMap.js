@@ -34,10 +34,14 @@ const IncidentMap = (props) => {
                 value: count,
                 tooltipText:
                     "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
-                    "<div class='casenumber'><table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
-                    "<tr><td>"+t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
-                    "<tr><td>"+t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
-                    "</table></div></div>"
+                    (count ? 
+                        "<div class='casenumber'>" + 
+                        "<table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + (count ? count : '0') + "</td></tr>" + 
+                        "<tr><td>"+t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
+                        "<tr><td>"+t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
+                        "</table>"
+                    : "<br/>" + t("incident_map.no_data"))
+                    + "</div></div>"
             })
         })
         mapPolygonSeries.data = data

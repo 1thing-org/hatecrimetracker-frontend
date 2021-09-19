@@ -11,6 +11,7 @@
   "incident_table": {
     "total_incident": "合計{{count}}件",
     "total_incident_plural": "合計{{count}}件",
+    "no_data" : "データは収集されませんでした",
     "state": "州",
     "count": "合計件数",
     "count_10k_asian": "アジア系人1万人当たり",
@@ -18,12 +19,14 @@
   },
   "incident_map": {
     "cases": "合計件数",
+    "no_data" : "データは収集されませんでした",
     "count_10k_asian": "アジア系人1万人当たり",
     "count_1mm": "人口100万人当たり"
   },
   "incident_chart": {
     "total_monthly_cases": "月合計{{count}}件",
     "total_monthly_cases_plural": "月合計{{count}}件",
+    "no_data" : "データは収集されませんでした",
     "total_daily_cases": "合計{{count}}件",
     "total_daily_cases_plural": "合計{{count}}件",
     "trend": "アンチアジアン犯罪事件数の推移",

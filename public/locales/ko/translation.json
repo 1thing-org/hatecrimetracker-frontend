@@ -11,6 +11,7 @@
   "incident_table": {
     "total_incident": "총 {{count}}건",
     "total_incident_plural": "총 {{count}}건",
+    "no_data" : "수집된 데이터가 없습니다",
     "state": "주",
     "count": "수",
     "count_10k_asian": "만 아시아인 당 사건",
@@ -18,12 +19,14 @@
   },
   "incident_map": {
     "cases": "사건",
+    "no_data" : "수집된 데이터가 없습니다",
     "count_10k_asian": "만 아시아인 당 사건",
     "count_1mm": "백만 명당 사건"
   },
   "incident_chart": {
     "total_monthly_cases": "월별 {{count}}건",
     "total_monthly_cases_plural": "월별 {{count}}건",
+    "no_data" : "수집된 데이터가 없습니다",
     "total_daily_cases": "일일 {{count}}건",
     "total_daily_cases_plural": "일일 {{count}}건",
     "trend": "증오범죄 사건 경향",

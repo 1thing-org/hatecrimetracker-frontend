@@ -51,14 +51,14 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
       return tooltip !== 'daily' ? (
         <div className='recharts-custom-tooltip'>
           <p>{d.format("MMM YYYY")}</p>
-          <p><strong>{t("incident_chart.total_monthly_cases", {count:monthly})}</strong></p>
+          <p><strong>{t("incident_chart.total_monthly_cases", { count: monthly })}</strong></p>
         </div>
       ) :
         (
           <div className='recharts-custom-tooltip'>
             <p>{d.format("M/D/YYYY")}</p>
-            <p><strong>{t("incident_chart.total_daily_cases", {count:daily})}</strong></p>
-            <p><strong>{t("incident_chart.total_monthly_cases", {count:monthly})}</strong></p>
+            <p><strong>{t("incident_chart.total_daily_cases", { count: daily })}</strong></p>
+            <p><strong>{t("incident_chart.total_monthly_cases", { count: monthly })}</strong></p>
           </div>
         )
     }
@@ -68,7 +68,13 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
     <Card>
       <CardHeader>
         <div>
-          <CardTitle tag='h4'>{t("incident_chart.trend")} - {t("incident_chart.total_cases", {count:totalCases})}{state ? " : " + stateFullName(state) : ""}</CardTitle>
+          <CardTitle tag='h4'>
+            {t("incident_chart.trend")}&nbsp;-&nbsp;
+            {(totalCases > 0) ? t("incident_chart.total_cases", { count: totalCases })
+              : t("incident_chart.no_data")
+            }
+            {state ? " : " + stateFullName(state) : ""}
+          </CardTitle>
         </div>
       </CardHeader>
 
@@ -89,7 +95,7 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
                 onMouseOver={() => setTooltip('monthly')} />
               <Bar name={t("daily_count")} dataKey='value' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}
                 onMouseOver={() => setTooltip('daily')} />
-              <Legend wrapperStyle={{position: 'relative', marginTop: '4px'}}/>
+              <Legend wrapperStyle={{ position: 'relative', marginTop: '4px' }} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>

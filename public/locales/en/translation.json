@@ -10,6 +10,7 @@
   "incident_count_by_state" : "Incident Count By State",
   "incident_table" : {
     "total_incident" : "Total {{count}} Incident",
+    "no_data" : "No data collected",
     "total_incident_plural" : "Total {{count}} Incidents",
     "state" : "State",
     "count" : "Count",
@@ -18,6 +19,7 @@
   },
   "incident_map" : {
     "cases" : "Cases",
+    "no_data" : "No data collected",
     "count_10k_asian" : "Count/10K Asian",
     "count_1mm" : "Count/1MM"
   },
@@ -27,6 +29,7 @@
     "total_daily_cases" : "Total {{count}} daily case",
     "total_daily_cases_plural" : "Total {{count}} daily cases",
     "trend" : "Hate Crime Incident Trend",
+    "no_data" : "No data collected",
     "total_cases" : "Total {{count}} Incident",
     "total_cases_plural" : "Total {{count}} Incidents"
   },
