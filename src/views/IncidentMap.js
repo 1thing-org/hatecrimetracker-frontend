@@ -95,6 +95,8 @@ const IncidentMap = (props) => {
         map.seriesContainer.draggable = false
         map.seriesContainer.resizable = false
         map.maxZoomLevel = 0.5
+        map.cursorOverStyle = am4core.MouseCursorStyle.pointer
+        
         let polygonSeries = map.series.push(new am4maps.MapPolygonSeries())
 
         polygonSeries.useGeodata = true
