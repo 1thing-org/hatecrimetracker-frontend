@@ -30,3 +30,12 @@ When configure Google Cloud Bucket to hold static files, make sure in the websit
 set 404 page to index.html too. Otherwise you will get NoKey error when loading any page like /home,/admin, etc.
 
 Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/
+
+# How to contribute
+
+1. Create your own GitHub account
+2. Fork the repository
+3. Make changes and commit to your forked repository
+4. Create Pull Request to https://github.com/lima01/hatecrimetracker-frontend
+5. Wait for reviewer to review and merge the PR
+ 
