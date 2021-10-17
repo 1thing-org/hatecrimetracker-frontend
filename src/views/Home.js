@@ -133,10 +133,12 @@ const Home = () => {
       });
   };
 
-  const generateUrl = (from, to, state) => {
+  const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format('YYYY-MM-DD')}&to=${moment(
       to
-    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}`;
+    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${
+      lang ? '&lang=' + lang : ''
+    }`;
   };
 
   const isParameterChanged = () => {
@@ -146,16 +148,27 @@ const Home = () => {
     const cururl = generateUrl(
       router.query.from,
       router.query.to,
-      router.query.state
+      router.query.state,
+      router.query.lang
     );
-    const newurl = generateUrl(dateRange[0], dateRange[1], selectedState);
+    const newurl = generateUrl(
+      dateRange[0],
+      dateRange[1],
+      selectedState,
+      selectedLangCode
+    );
     return cururl !== newurl;
   };
   const saveHistory = () => {
     if (!dateRange) return;
     //if date ranger or state is changed, save in router history
     if (!isParameterChanged()) return;
-    const newurl = generateUrl(dateRange[0], dateRange[1], selectedState);
+    const newurl = generateUrl(
+      dateRange[0],
+      dateRange[1],
+      selectedState,
+      selectedLangCode
+    );
 
     router.history.push(newurl);
   };
