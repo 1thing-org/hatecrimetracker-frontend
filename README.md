@@ -35,7 +35,6 @@ Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template
 
 1. Create your own GitHub account
 2. Fork the repository
-3. Make changes and commit to your forked repository
-4. Create Pull Request to https://github.com/lima01/hatecrimetracker-frontend
+3. Make changes and commit to your forked repository. The changes can be in main or any branches in your own fork.
+4. Create Pull Request from your own fork to https://github.com/lima01/hatecrimetracker-frontend
 5. Wait for reviewer to review and merge the PR
- 
