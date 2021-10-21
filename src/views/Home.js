@@ -17,7 +17,7 @@ import {
 } from 'reactstrap';
 import 'rsuite/dist/styles/rsuite-dark.css';
 import * as incidentsService from '../services/incidents';
-import BarChart from './BarChart';
+import IncidentChart from './IncidentChart';
 import DateRangeSelector from './DateRangeSelector';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentList from './IncidentList';
@@ -266,7 +266,7 @@ const Home = () => {
           <Row className='match-height'>
             <Col xl='8' lg='8' md='6' xs='12'>
               <div>
-                <BarChart
+                <IncidentChart
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}

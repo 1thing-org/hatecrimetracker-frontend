@@ -5,7 +5,7 @@ import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, T
 import { stateFullName } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
 
-const SimpleBarChart = ({ color, chart_data, state }) => {
+const IncidentChart = ({ color, chart_data, state }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
     const d = moment(tickVal, "YYYY-MM-DD")
     return d.format("M/D/YY");
@@ -103,4 +103,4 @@ const SimpleBarChart = ({ color, chart_data, state }) => {
     </Card>
   )
 }
-export default SimpleBarChart
+export default IncidentChart
