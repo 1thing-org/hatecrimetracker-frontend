@@ -8,8 +8,7 @@ export const BROWSER_LANGUAGES = {
     'ja': 'ja',
     'ko': 'ko',
     'hi': 'hi',
-    'fil-PH' :'tl',
-    'tl-PH' : 'tl'
+    'si' :'si',
 };
 
 //Supported language id to native name
@@ -20,13 +19,7 @@ export const SUPPORTED_LANGUAGES = {
     'ja': '日本語',
     'ko': '한국어',
     'hi': 'हिन्दी',
-    'bn-BD': 'বাংলা',
-    'my-MM': 'မြန်မာ',
-    'tl' : 'Filipino',
-    'km-KH': 'ខ្មែរ',
-    'lo-LA': 'ພາສາລາວ',
-    'th-TH': 'ไทย',
-    'vi-VN': 'Tiếng Việt',    
+    'si': 'සිංහල',
 };
 
 export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || 'en';
