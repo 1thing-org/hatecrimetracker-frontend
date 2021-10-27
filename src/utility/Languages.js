@@ -9,17 +9,19 @@ export const BROWSER_LANGUAGES = {
     'ko': 'ko',
     'hi': 'hi',
     'si' :'si',
+    'my-MM': 'my-MM'
 };
 
 //Supported language id to native name
 export const SUPPORTED_LANGUAGES = {
     'en': 'English',
-    'zh-CN': '简体中文', 
-    'zh-TW': '繁體中文',
-    'ja': '日本語',
-    'ko': '한국어',
-    'hi': 'हिन्दी',
-    'si': 'සිංහල',
+    'zh-CN': '简体中文 (Chinese Simplified)', 
+    'zh-TW': '繁體中文 (Chinese Tranditional)',
+    'ja': '日本語 (Japanese)',
+    'ko': '한국어 (Korean)',
+    'hi': 'हिन्दी (Hindi)',
+    'si': 'සිංහල (Sinhalese)',
+    'my-MM': 'မြန်မာ (Myanmar)'
 };
 
 export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || 'en';
