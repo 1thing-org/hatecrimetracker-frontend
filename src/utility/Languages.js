@@ -2,14 +2,7 @@
 export const BROWSER_LANGUAGES = {
     'en-US': 'en',
     'en-GB': 'en',
-    'zh-CN': 'zh-CN', 
-    'zh-TW': 'zh-TW',
     'zh-HK': 'zh-TW',
-    'ja': 'ja',
-    'ko': 'ko',
-    'hi': 'hi',
-    'si' :'si',
-    'my-MM': 'my-MM'
 };
 
 //Supported language id to native name
@@ -24,4 +17,4 @@ export const SUPPORTED_LANGUAGES = {
     'my-MM': 'မြန်မာ (Myanmar)'
 };
 
-export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || 'en';
+export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || navigator.language || 'en';
