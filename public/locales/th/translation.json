@@ -9,9 +9,9 @@
   "load_more": "โหลดเพิ่ม",
   "incident_count_by_state": "จำนวนเหตุการณ์ที่เกิดในแต่ละเมือง",
   "incident_table": {
-    "total_incident": "ทั้งหมด {{นับ}} เหตุการณ์",
+    "total_incident": "ทั้งหมด {{count}} เหตุการณ์",
     "no_data": "ไม่มีการเก็บข้อมูล",
-    "total_incident_plural": "ทั้งหมด {{นับ}} เหตุการณ์",
+    "total_incident_plural": "ทั้งหมด {{count}} เหตุการณ์",
     "state": "เมือง",
     "count": "จำนวนนับ",
     "count_10k_asian": "จำนวนต่อ/หมื่น คนเอเชีย",
@@ -24,14 +24,14 @@
     "count_1mm": "จำนวนต่อ/1ล้านคน"
   },
   "incident_chart": {
-    "total_monthly_cases": "ทั้งหมด {{นับ}} คดีรายเดือน",
-    "total_monthly_cases_plural": "ทั้งหมด {{นับ}} คดีรายเดือน",
-    "total_daily_cases": "ทั้งหมด {{นับ}} คดีรายวัน",
-    "total_daily_cases_plural": "ทั้งหมด {{นับ}} คดีรายวัน",
+    "total_monthly_cases": "ทั้งหมด {{count}} คดีรายเดือน",
+    "total_monthly_cases_plural": "ทั้งหมด {{count}} คดีรายเดือน",
+    "total_daily_cases": "ทั้งหมด {{count}} คดีรายวัน",
+    "total_daily_cases_plural": "ทั้งหมด {{count}} คดีรายวัน",
     "trend": "แนวโน้มเหตุอาชญกรรมจากความเกลียดชัง",
     "no_data": "ไม่มีการเก็บข้อมูล",
-    "total_cases": "ทั้งหมด {{นับ}} เหตุการณ์",
-    "total_cases_plural": "ทั้งหมด {{นับ}} เหตุการณ์"
+    "total_cases": "ทั้งหมด {{count}} เหตุการณ์",
+    "total_cases_plural": "ทั้งหมด {{count}} เหตุการณ์"
   },
   "contact_us": "ติดต่อเรา",
   "copyright": "ลิขสิทธิ์",
