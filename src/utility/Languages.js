@@ -8,13 +8,14 @@ export const BROWSER_LANGUAGES = {
 //Supported language id to native name
 export const SUPPORTED_LANGUAGES = {
     'en': 'English',
-    'zh-CN': '简体中文 (Chinese Simplified)', 
-    'zh-TW': '繁體中文 (Chinese Tranditional)',
-    'ja': '日本語 (Japanese)',
-    'ko': '한국어 (Korean)',
-    'hi': 'हिन्दी (Hindi)',
-    'si': 'සිංහල (Sinhalese)',
-    'my-MM': 'မြန်မာ (Myanmar)'
+    'zh-CN': '简体中文', 
+    'zh-TW': '繁體中文',
+    'ja': '日本語',
+    'ko': '한국어',
+    'hi': 'हिन्दी',
+    'si': 'සිංහල',
+    'my-MM': 'မြန်မာ',
+    'th': 'ภาษาไทย',
 };
 
 export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || navigator.language || 'en';
