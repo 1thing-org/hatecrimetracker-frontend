@@ -221,7 +221,7 @@ const Home = () => {
                       {t('website.name')}
                     </h4>
                   </Col>
-                  <Col sm='4' xs='12' align='right'>
+                  <Col sm='4' xs='12'>
                     <SelectPicker
                       data={support_languages}
                       searchable={false}
@@ -324,15 +324,9 @@ const Home = () => {
             <ul>
               <li>{t('disclaimer.1')}</li>
               <li>
-                <Trans i18nKey='disclaimer.2'>
-                  disclaimer.2{' '}
-                  <a
-                    href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                    target='_blank'
-                  >
-                    here.
-                  </a>
-                </Trans>
+              <Trans i18nKey='disclaimer.2'>
+                  disclaimer.2 <a href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0' target="_blank">here.</a>
+              </Trans>
               </li>
               <li>{t('disclaimer.3')}</li>
             </ul>
