@@ -14,10 +14,14 @@ import {
   Label,
   Row,
   Button,
+  Nav,
+  NavItem,
+  NavLink 
 } from 'reactstrap';
 import 'rsuite/dist/styles/rsuite-dark.css';
 import * as incidentsService from '../services/incidents';
 import IncidentChart from './IncidentChart';
+import IncidentChartPer10kAsian from './IncidentChartPer10kAsian';
 import DateRangeSelector from './DateRangeSelector';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentList from './IncidentList';
@@ -33,6 +37,7 @@ import { withRouter } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import DataDisplaySwitcher from './DataDisplaySwitcher'
 
 const Home = () => {
   const router = useRouter();
@@ -55,6 +60,7 @@ const Home = () => {
     });
   });
 
+  const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false)
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
@@ -242,7 +248,7 @@ const Home = () => {
 
                 <FormGroup>
                   <Row>
-                    <Col xs='12' sm='auto'>
+                    <Col xs='6' sm='auto'>
                       <Label>{t('location')}:</Label>{' '}
                       <StateSelection
                         name='state'
@@ -250,13 +256,17 @@ const Home = () => {
                         onChange={setSelectedState}
                       />{' '}
                     </Col>
-                    <Col xs='12' sm='auto'>
+                    <Col xs='6' sm='auto'>
                       <Label>{t('date_range')}:</Label>{' '}
                       <DateRangeSelector
                         name='date'
                         onChange={handleDateRangeSelect}
                         value={dateRange}
                       />
+                    </Col>
+                    <Col xs='6' sm='auto'>
+                      <Label>{t('data_display')}:</Label>{' '}
+                      <DataDisplaySwitcher isShowPer10kAsian={isShowPer10kAsian} onClick={() => setIsShowPer10kAsian(!isShowPer10kAsian)} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -266,11 +276,7 @@ const Home = () => {
           <Row className='match-height'>
             <Col xl='8' lg='8' md='6' xs='12'>
               <div>
-                <IncidentChart
-                  color={colors.primary.main}
-                  chart_data={incidentTimeSeries}
-                  state={selectedState}
-                />
+                {isShowPer10kAsian ? <IncidentChartPer10kAsian color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState} /> : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectdState={selectedState}

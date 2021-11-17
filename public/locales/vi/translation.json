@@ -4,8 +4,10 @@
   },
   "location" : "Vị trí",
   "date_range" : "Phạm vi ngày",
+  "data_display" : "Loại dữ liệu",
   "daily_count" : "Số lượng theo ngày",
   "monthly_count" : "Số lượng theo tháng",
+  "monthly_per_10k_asian": "Hàng tháng trên 10 nghìn dân Châu Á",
   "load_more" : "Xem thêm",
   "incident_count_by_state" : "Số lượng sự cố theo bang",
   "incident_table" : {
@@ -25,12 +27,14 @@
   },
   "incident_chart" : {
     "total_monthly_cases" : "Tổng {{count}} trường hợp mỗi",
+    "total_monthly_cases_per_10k_Asian" : "Tỉ lệ {{count}} trường hợp mỗi tháng trên 10 nghìn dân Châu Á",
     "total_monthly_cases_plural" : "Tổng {{count}} trường hợp mỗi tháng",
     "total_daily_cases" : "Tổng {{count}} trường hợp mỗi ngày",
     "total_daily_cases_plural" : "Tổng {{count}} trường hợp mỗi ngày",
     "trend" : "Xu hương sự cố chống dân Châu Á",
     "no_data" : "Chưa có dữ liệu được thu thập",
     "total_cases" : "Tổng {{count}} trường hợp",
+    "average_cases" : "Trung bình {{count}} trường hợp trên 10 nghìn dân Châu Á",
     "total_cases_plural" : "Tổng {{count}} trường hợp"
   },
   "contact_us" : "Liên hệ",
