@@ -71,6 +71,7 @@ const Home = () => {
       value: 0,
     },
   ]);
+  const [monthlyCount, setMonthlyCount] = useState([]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -132,6 +133,7 @@ const Home = () => {
             stats.monthly_stats
           )
         );
+        setMonthlyCount(stats.monthly_stats);
         if (updateMap) {
           setIncidentAggregated(stats.total);
         }
@@ -276,7 +278,8 @@ const Home = () => {
           <Row className='match-height'>
             <Col xl='8' lg='8' md='6' xs='12'>
               <div>
-                {isShowPer10kAsian ? <IncidentChartPer10kAsian color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState} /> : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
+                {isShowPer10kAsian ? <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
+                  : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectdState={selectedState}

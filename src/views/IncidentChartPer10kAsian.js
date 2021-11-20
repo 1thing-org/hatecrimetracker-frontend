@@ -1,50 +1,57 @@
-import moment from 'moment';
+import * as dateFns from 'date-fns';
 import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import { ComposedChart, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { stateFullName } from '../utility/Utils';
+import { BarChart, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { stateFullName, getStateIncidentPer10kAsian, formatIncidentRate } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
 
-const IncidentChartPer10kAsian = ({ color, chart_data, state }) => {
+// monthly_data={'2021-01':100, '2021-02': 50...}
+const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) => {
     const formatXAxis = (tickVal) => {
-        const d = moment(tickVal, "YYYY-MM")
-        return d.format("M/YY");
+        const d = dateFns.parse(tickVal, "yyyy-MM", new Date())
+        return dateFns.format(d, "M/yyyy");
     }
 
     const [monthlyData, setMonthlyData] = useState([])
     const { t } = useTranslation();
-    const [xticks, setXTicks] = useState([]);
     const [averageCases, setAverageCases] = useState(0);
 
     useEffect(() => {
-        const map_data = chart_data.map(item => {
-            return ({
-                "key"   : moment(item.key, "YYYY-MM-DD").format("YYYY-MM"), 
-                "cases" : item.monthly_cases/1000
-            })
-        })
-        const mapped_data = map_data.filter( (ele, ind) => ind === map_data.findIndex( elem => elem.key === ele.key && elem.cases === ele.cases))
-        setMonthlyData(mapped_data)
-        const newXTicks = [];
-        let total = 0;
-        let count_month = 0
-        for (let i = 0; i < mapped_data.length; i++) {
-            count_month += 1
-            total += mapped_data[i].cases;
-            newXTicks.push(mapped_data[i].key)
+        //calc incident ration per 10k asian
+        let monthly_data = [];
+        let startDate = dateFns.set(date_range[0], {date:1}); //set to first day of the month
+        let lastDate = dateFns.set(date_range[1], {date:1});
+        lastDate = dateFns.addMonths(lastDate, 1); //set to first day of next the month
+        for (let x_day = startDate; x_day < lastDate; x_day = dateFns.addMonths(x_day, 1)) {
+            let month = dateFns.format(x_day, "yyyy-MM");
+            if (monthly_stats[month]) {
+                monthly_data.push({
+                    "key"   : month, //yyyy-MM
+                    "cases" : monthly_stats[month],
+                    "cases_per_10k" : formatIncidentRate(getStateIncidentPer10kAsian(monthly_stats[month], state))
+                })
+            }
+            else {
+                monthly_data.push({
+                    "key"   : month, //yyyy-MM
+                    "cases" : 0,
+                    "cases_per_10k" : 0
+                })
+            }            
         }
-        setAverageCases((total/count_month).toFixed(2))
-        setXTicks(newXTicks);
-    }, [chart_data]);
+        setMonthlyData(monthly_data)
+    }, [monthly_stats]);
 
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload[0] && payload[0].value) {
-        const d = moment(payload[0].payload.key, "YYYY-MM")
+        const d = dateFns.parse(payload[0].payload.key, "yyyy-MM", new Date())
         const monthly = payload[0].payload.cases;
+        const monthly_10k_asian = payload[0].payload.cases_per_10k;
         return (
             <div className='recharts-custom-tooltip'>
-            <p>{d.format("MMM YYYY")}</p>
+            <p>{dateFns.format(d, "MMM yyyy")}</p>
             <p><strong>{t("incident_chart.total_monthly_cases_per_10k_Asian", { count: monthly })}</strong></p>
+            <p><strong>{t("incident_map.count_10k_asian") + " : " + monthly_10k_asian }</strong></p>
             </div>
         )
         }
@@ -67,17 +74,19 @@ const IncidentChartPer10kAsian = ({ color, chart_data, state }) => {
         <CardBody>
             <div className='recharts-wrapper'>
             <ResponsiveContainer>
-                <ComposedChart height={300} data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd" ticks={xticks} />
-                <YAxis allowDecimals={false} orientation="left" interval="preserveStartEnd"
+                <BarChart height={300} data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />                
+                <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd"/>
+                <YAxis orientation="left" interval="preserveStartEnd"
                     type="number"
-                    domain={[0, 'dataMax+0.01']}
+                    tickCount={5} 
+                    allowDecimals={true}
+                    domain={[0, 'auto']}
                     label={{ value: t("monthly_per_10k_asian"), angle: -90, position: 'insideLeft' }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar name={t("monthly_per_10k_asian")} dataKey='cases' stroke={chart_data.length > 60 ? color : undefined} fill={color} strokeWidth={3}/>
+                <Bar name={t("monthly_per_10k_asian")} dataKey='cases_per_10k' stroke={monthlyData.length > 60 ? color : undefined} fill={color} strokeWidth={3}/>
                 <Legend wrapperStyle={{ position: 'relative', marginTop: '4px' }} />
-                </ComposedChart>
+                </BarChart>
             </ResponsiveContainer>
             </div>
         </CardBody>   
