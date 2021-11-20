@@ -14,7 +14,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
 
     const [monthlyData, setMonthlyData] = useState([])
     const { t } = useTranslation();
-    const [averageCases, setAverageCases] = useState(0);
+    const [totalCases, setTotalCases] = useState(0);
 
     useEffect(() => {
         //calc incident ration per 10k asian
@@ -22,9 +22,11 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
         let startDate = dateFns.set(date_range[0], {date:1}); //set to first day of the month
         let lastDate = dateFns.set(date_range[1], {date:1});
         lastDate = dateFns.addMonths(lastDate, 1); //set to first day of next the month
+        let total = 0;
         for (let x_day = startDate; x_day < lastDate; x_day = dateFns.addMonths(x_day, 1)) {
             let month = dateFns.format(x_day, "yyyy-MM");
             if (monthly_stats[month]) {
+                total += monthly_stats[month];
                 monthly_data.push({
                     "key"   : month, //yyyy-MM
                     "cases" : monthly_stats[month],
@@ -39,7 +41,8 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
                 })
             }            
         }
-        setMonthlyData(monthly_data)
+        setMonthlyData(monthly_data);
+        setTotalCases(total);
     }, [monthly_stats]);
 
     const CustomTooltip = ({ active, payload }) => {
@@ -63,7 +66,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
             <div>
             <CardTitle tag='h4'>
                 {t("incident_chart.trend")}&nbsp;-&nbsp;
-                {(averageCases > 0) ? t("incident_chart.average_cases", { count: averageCases })
+                {(totalCases > 0) ? t("incident_chart.total_cases", { count: totalCases })
                 : t("incident_chart.no_data")
                 }
                 {state ? " : " + stateFullName(state) : ""}
@@ -76,7 +79,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
             <ResponsiveContainer>
                 <BarChart height={300} data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" />                
-                <XAxis dataKey='key' tickFormatter={formatXAxis} interval="preserveStartEnd"/>
+                <XAxis dataKey='key' tickFormatter={formatXAxis}/>
                 <YAxis orientation="left" interval="preserveStartEnd"
                     type="number"
                     tickCount={5} 
