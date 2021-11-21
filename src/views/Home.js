@@ -284,6 +284,7 @@ const Home = () => {
                   mapData={incidentAggregated}
                   selectdState={selectedState}
                   lang={i18n.language}
+                  showPer10KAsian={isShowPer10kAsian}
                   onChange={setSelectedState}
                 />
                 <IncidentCountTable

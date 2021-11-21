@@ -23,15 +23,65 @@ const IncidentMap = (props) => {
     const [mapPolygonSeries, setMapPolygonSeries] = useState()
     const [polygonTemplate, setPolygonTemplate] = useState()
     const [selectedState, setSelectedState] = useState()
+    const [maxValue, setMaxValue] = useState(0)
+    const [showPer10KAsian, setShowPer10KAsian] = useState(props.showPer10KAsian)
+
+    
+    // const MAP_COLORS = [
+    //     [.75, "#FFF500"], //when > , color
+    //     [.5, "#D7CF00"],
+    //     [.25, "#A9A403"],
+    //     [.00001, "#706C00"],
+    //     [0, "#313131"],
+    // ];
+    const MAP_COLOR_COUNT = [
+        [10, "#FFF500"], //when >= , color        
+        [5, "#D7CF00"],
+        [2, "#A9A403"],
+        [1, "#706C00"],
+        [0, "#313131"],
+    ];
+    const MAP_COLOR_RATE = [
+        [0.5, "#FFF500"], //when >= , color        
+        [0.1, "#D7CF00"],
+        [0.06, "#A9A403"],
+        [0.01, "#706C00"],
+        [0, "#313131"],
+    ];
+    const getMapColor = (value) => {
+        console.log(maxValue);
+        console.log(showPer10KAsian);
+        if ( value ) {
+            const colors = props.showPer10KAsian ? MAP_COLOR_RATE:MAP_COLOR_COUNT
+            for ( const i in colors ) {
+                if (value >= colors[i][0]) {
+                    return colors[i][1];
+                }    
+            }
+        }
+        return "#313131";
+    }
+    
 
     const updateMap = (mapStatistics) => {
         if (!mapPolygonSeries) return
+        
+        //calc max value from the input map data
+        let max = 0
+        Object.values(mapStatistics).forEach((value) => max = value > max ? value : max);
+        setMaxValue(max);
         let data = []
         forEachState((state, name) => {
-            const count = mapStatistics[state] ? mapStatistics[state] : null
+            const count = mapStatistics[state];
+            const value = !mapStatistics[state] ? 
+                null :
+                    (!props.showPer10KAsian ? mapStatistics[state] 
+                        : getStateIncidentPer10kAsian(mapStatistics[state], state)
+                    )
+
             data.push({
                 id: 'US-' + state,
-                value: count,
+                value: value,
                 tooltipText:
                     "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
                     (count ? 
@@ -48,8 +98,9 @@ const IncidentMap = (props) => {
         selectState(selectedState)
     }
     useEffect(() => {
+        setShowPer10KAsian(props.showPer10KAsian);
         updateMap(props.mapData)
-    }, [props.mapData, props.lang])
+    }, [props.mapData, props.lang, props.showPer10KAsian])
 
     useEffect(() => {
         setSelectedState(props.selectdState)
@@ -109,20 +160,14 @@ const IncidentMap = (props) => {
         polygonTemplate.tooltipHTML = '{tooltipText}'
         // polygonTemplate.fillOpacity = 0.5;
         polygonTemplate.adapter.add("fill", function (fill, target) {
-
-            if (target.dataItem.value > 10) {
-                return am4core.color("#FFF500");
-            }
-            if (target.dataItem.value > 5) {
-                return am4core.color("#D7CF00");
-            }
-            if (target.dataItem.value > 2) {
-                return am4core.color("#A9A403");
-            }
-            if (target.dataItem.value > 0) {
-                return am4core.color("#706C00");
-            }
-            return am4core.color("#313131");
+            return am4core.color(getMapColor(target.dataItem.value));
+            // const colors = props.showPer10KAsian?MAP_COLOR_RATE:MAP_COLOR_COUNT;
+            // for ( const i in colors ) {
+            //     if (target.dataItem.value >= colors[i][0]) {
+            //         return am4core.color(colors[i][1]);
+            //     }    
+            // }
+            // return am4core.color("#313131");
         })
         polygonTemplate.fillOpacity = 1
         polygonTemplate.clickable = true
