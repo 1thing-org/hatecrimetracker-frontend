@@ -33,6 +33,7 @@ import { withRouter } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import './Home.css'
 
 const Home = () => {
   const router = useRouter();
@@ -55,6 +56,8 @@ const Home = () => {
     });
   });
 
+  const isMobile = (window.innerWidth <= 786)
+  const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false)
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
@@ -215,13 +218,22 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                  <Col sm='8' xs='12'>
-                    <h4>
-                      <img src={logo} alt='logo' className='logo' />{' '}
+                <Col xs='12' sm='12' md='auto'>
+                    <p className='title'>
+                      <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
-                    </h4>
+                    </p>
                   </Col>
-                  <Col sm='4' xs='12'>
+                  <Col xs='12' sm='12' md='auto'>
+                    <div className='OneRowItem'>
+                    <a
+                      href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
+                      target='_blank'
+                      className='SimpleLabel'
+                    >
+                      {t('contact_us')}
+                    </a>
+                    &nbsp;&nbsp;
                     <SelectPicker
                       data={support_languages}
                       searchable={false}
@@ -230,32 +242,27 @@ const Home = () => {
                       style={{ width: 120 }}
                       onChange={(value) => setSelectedLang(value)}
                     />
-                    &nbsp;&nbsp;
-                    <a
-                      href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                      target='_blank'
-                    >
-                      {t('contact_us')}
-                    </a>
+                    </div>
                   </Col>
                 </Row>
 
                 <FormGroup>
                   <Row>
-                    <Col xs='12' sm='auto'>
-                      <Label>{t('location')}:</Label>{' '}
+                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
+                      <Label className='SimpleLabel'>{t('location')}:</Label>{' '}
                       <StateSelection
                         name='state'
                         value={selectedState}
                         onChange={setSelectedState}
                       />{' '}
                     </Col>
-                    <Col xs='12' sm='auto'>
-                      <Label>{t('date_range')}:</Label>{' '}
+                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
+                      <Label className='SimpleLabel'>{t('date_range')}:</Label>{' '}
                       <DateRangeSelector
                         name='date'
                         onChange={handleDateRangeSelect}
                         value={dateRange}
+                        isMobile={isMobile}
                       />
                     </Col>
                   </Row>
