@@ -13,6 +13,17 @@
     flex-direction: row;
 }
 
+@media (max-width: 786px) {
+    .RowButtonToggle {
+        width: 16rem;
+        align-items: stretch;
+    }
+
+    .Switcher10KButton {
+        width: 100%;
+    }
+}
+
 .dark-layout .nav-pills .nav-item .nav-link.active {
     color:black;
 }
