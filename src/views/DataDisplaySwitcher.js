@@ -21,7 +21,7 @@ const DataDisplaySwitcher = ({isShowPer10kAsian, onClick}) => {
                     <NavLink active={!isShowPer10kAsian} onClick={TotalButton}>
                         Total
                     </NavLink>
-                    <NavLink active={isShowPer10kAsian} onClick={Per10KAsianButton}>
+                    <NavLink className='Switcher10KButton' active={isShowPer10kAsian} onClick={Per10KAsianButton}>
                         Per 10K Asian
                     </NavLink>
                 </NavItem>

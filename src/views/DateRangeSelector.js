@@ -31,9 +31,9 @@ const dateRanges = [
     value: [dateFns.startOfYear(new Date()), new Date()]
   },
 ];
-const DateRangeSelector = ({ onChange, value }) => {
+const DateRangeSelector = ({ onChange, value, isMobile }) => {
     return (
-      <DateRangePicker ranges={dateRanges} disabledDate={afterToday()} onChange={onChange} value={value} />
+      <DateRangePicker placement="auto" showOneCalendar={isMobile} ranges={dateRanges} disabledDate={afterToday()} onChange={onChange} value={value} />
     )
 }
 
