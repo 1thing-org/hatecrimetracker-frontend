@@ -84,7 +84,11 @@ const IncidentChart = ({ color, chart_data, state }) => {
         <div className='recharts-wrapper'>
           {totalCases === 0 ?  (
             <>
-              <p className='add-data-button'>There is no data collected in the selected location and date range yet. <a target="_blank" href="https://www.google.com/" className='report-button'>Click here</a> to let us report incidents.</p>
+              <p className='add-data-button'>
+                There is no data collected in the selected location and date range yet. 
+                Please <a target="_blank" href="https://forms.gle/HRkVKW2Sfp7BytXj8" className='report-button'>Click here</a> 
+                &nbsp;to report incidents to us.
+              </p>
               <div className='drop-down'/>
             </>
           ) : null}
