@@ -274,6 +274,7 @@ const Home = () => {
             <Col xl='8' lg='8' md='6' xs='12'>
               <div>
                 <IncidentChart
+                  className="behind-relative"
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}

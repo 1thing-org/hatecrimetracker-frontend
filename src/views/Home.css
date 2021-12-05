@@ -22,3 +22,8 @@
 .title {
     font-size: 2rem;
 }
+
+.behind-relative {
+    position: relative;
+    z-index: 1;
+}

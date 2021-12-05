@@ -1,0 +1,47 @@
+
+.drop-down {
+    background-color: grey;
+    position: absolute;
+    width: 100%;
+    height: 85%;
+    z-index: 2;
+    opacity: 0.5;
+}
+
+
+
+.add-data-button {
+    color: white;
+    margin-top: 12rem;
+    margin-left: 25rem;
+    z-index: 3;
+    position: absolute;
+}
+
+.report-button {
+    color: yellow !important;
+    text-decoration: underline !important;
+}
+
+.report-button:hover{
+    text-shadow: 2px #FFFFFF;
+}
+
+
+@media (max-width: 811px) {
+    .add-data-button {
+        margin-top: 40%;
+        margin-left: 5%;
+        z-index: 3;
+        position: absolute;
+    }
+}
+
+@media (min-width: 812px) {
+    .add-data-button {
+        margin-top: 13%;
+        margin-left: 15%;
+        z-index: 3;
+        position: absolute;
+    }
+} 

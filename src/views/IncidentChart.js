@@ -4,6 +4,8 @@ import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { stateFullName } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
+import './IncidentChartNoData.css'
+import Button from 'reactstrap/lib/Button';
 
 const IncidentChart = ({ color, chart_data, state }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
@@ -80,6 +82,12 @@ const IncidentChart = ({ color, chart_data, state }) => {
 
       <CardBody>
         <div className='recharts-wrapper'>
+          {totalCases === 0 ?  (
+            <>
+              <p className='add-data-button'>There is no data collected in the selected location and date range yet. <a target="_blank" href="https://www.google.com/" className='report-button'>Click here</a> to let us report incidents.</p>
+              <div className='drop-down'/>
+            </>
+          ) : null}
           <ResponsiveContainer>
             <ComposedChart height={300} data={chart_data}>
               <CartesianGrid strokeDasharray="3 3" />
