@@ -41,5 +41,6 @@
     "3": "Kinokolekta at pinagsama-sama namin ang data sa aming pinakamahusay na pagsisikap. Ang impormasyon na kalakip nito ay ibinigay kasama ang pag-unawa na hindi kami nakikibahagi sa pagbibigay ng legal o iba pang propesyonal na payo o serbisyo. Sa anumang pagkakataon ay hindi kami mananagot para sa anumang mga kahihinatnan na magmumula sa o may kaugnayan sa iyong pag-access o paggamit ng website.",
     "title": "Pagtatatuwa",
     "here": "dito"
-  }
+  },
+  "no_data_please_report": "Wala pang nakolektang data sa napiling lokasyon at hanay ng petsa. Mangyaring <a target=\"_blank\" href=\"https://forms.gle/HRkVKW2Sfp7BytXj8\" className='report-button'>Mag-click dito</a> &nbsp; upang iulat sa amin ang mga pangyayari."
 }

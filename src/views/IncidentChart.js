@@ -85,9 +85,7 @@ const IncidentChart = ({ color, chart_data, state }) => {
           {totalCases === 0 ?  (
             <>
               <p className='add-data-button'>
-                There is no data collected in the selected location and date range yet. 
-                Please <a target="_blank" href="https://forms.gle/HRkVKW2Sfp7BytXj8" className='report-button'>Click here</a> 
-                &nbsp;to report incidents to us.
+                t('no_data_please_report')
               </p>
               <div className='drop-down'/>
             </>
