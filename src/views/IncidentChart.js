@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { stateFullName } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import './IncidentChartNoData.css'
 import Button from 'reactstrap/lib/Button';
 
@@ -85,7 +86,11 @@ const IncidentChart = ({ color, chart_data, state }) => {
           {totalCases === 0 ?  (
             <>
               <p className='add-data-button'>
-                t('no_data_please_report')
+                <Trans i18nKey='no_data_please_report'>
+                  There is no data collected in the selected location and date range yet. Please click 
+                    <a href='https://forms.gle/HRkVKW2Sfp7BytXj8' target='_blank'>here</a>
+                    to report incidents to us.
+                </Trans>
               </p>
               <div className='drop-down'/>
             </>

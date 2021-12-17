@@ -42,5 +42,5 @@
     "title": "声明",
     "here": "連絡先"
   },
-  "no_data_please_report": "選択した場所と日付範囲で収集されたデータはまだありません。 <a target=\"_blank\" href=\"https://forms.gle/HRkVKW2Sfp7BytXj8\" className='report-button'>ここをクリック</a>してください＆nbsp; インシデントを私たちに報告します。"
+  "no_data_please_report": "選択した場所と日付範囲で収集されたデータはまだありません。\nインシデントを報告するには、<1>こちら</ 1>をクリックしてください。"
 }

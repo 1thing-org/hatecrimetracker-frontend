@@ -42,5 +42,5 @@
     "title": "Disclaimer",
     "here": "here"
   },
-  "no_data_please_report": "There is no data collected in the selected location and date range yet. Please <a target=\"_blank\" href=\"https://forms.gle/HRkVKW2Sfp7BytXj8\" className='report-button'>Click here</a> &nbsp; to report incidents to us."
+  "no_data_please_report": "There is no data collected in the selected location and date range yet. Please click <1>here</1> to report incidents to us."
 }

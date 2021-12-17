@@ -41,5 +41,5 @@
     "3": "我们尽最大努力收集和汇总数据。 此处提供的信息是基于我们不从事提供法律或其他专业建议或服务的理解。 在任何情况下，对于因您访问或使用本网站而引起或与之相关的任何后果，我们概不负责。",
     "title": "声明"
   },
-  "no_data_please_report": "尚未在所选位置和日期范围内收集到数据。请<a target=\"_blank\" href=\"https://forms.gle/HRkVKW2Sfp7BytXj8\" className='report-button'>点击此处</a>向我们告知事件。"
+  "no_data_please_report": "尚未在所选位置和日期范围内收集数据。\n请点击<1>此处</1>向我们报告事件。"
 }

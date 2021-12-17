@@ -42,5 +42,5 @@
     "title": "부인 성명",
     "here": "여기"
   },
-  "no_data_please_report": "선택한 위치 및 날짜 범위에서 아직 수집된 데이터가 없습니다. <a target=\"_blank\" href=\"https://forms.gle/HRkVKW2Sfp7BytXj8\" className='report-button'>여기를 클릭</a>하십시오. &nbsp; 우리에게 사건을보고합니다."
+  "no_data_please_report": "선택한 위치 및 날짜 범위에서 아직 수집된 데이터가 없습니다. \n사고를 신고하려면 <1>여기</1>를 클릭하십시오."
 }
