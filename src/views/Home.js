@@ -218,13 +218,13 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                <Col xs='12' sm='12' md='auto'>
+                <Col xs='12' sm='12' md='10' lg='10' xl='10'>
                     <p className='title'>
                       <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
                     </p>
                   </Col>
-                  <Col xs='12' sm='12' md='auto'>
+                  <Col xs='12' sm='12' md='2' lg='2' xl='2'>
                     <div className='OneRowItem'>
                     <a
                       href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
