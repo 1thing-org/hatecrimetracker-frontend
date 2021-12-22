@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { stateFullName } from '../utility/Utils.js'
 import { Button } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
+import {Input} from 'rsuite';
 
 const INCR_COUNT = 10;
 const IncidentList = (props) => {
@@ -27,10 +28,30 @@ const IncidentList = (props) => {
         }
         return incident?.abstract;
     }
+
+
+    const [searchTerm, setSearchTerm] = useState('')
     return (
         <div>
+            <input 
+            type='text'
+            placeholder="Search keywords & url..." 
+            onChange={event => {setSearchTerm(event.target.value)}}/>
+
             <div className='incident-list'>
-                {props.data.filter((d, idx) => idx < visibleCount).map(function (d, idx) {
+                {props.data.filter((d, idx) => { idx < visibleCount
+                {
+                    if (searchTerm ==""){return d}                   
+                    else if (d.title.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.incident_location.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.incident_time.includes(searchTerm)||
+                             d.abstract.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.url.toLowerCase().includes(searchTerm.toLowerCase())
+                            ){return d}
+                }
+               
+            
+            }).map(function (d, idx) {
                     return (
                         <div className='incident' key={idx}>
                             <a className='title' href={d.url} target='_blank'>
