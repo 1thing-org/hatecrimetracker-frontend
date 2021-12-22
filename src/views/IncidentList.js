@@ -30,13 +30,14 @@ const IncidentList = (props) => {
     }
 
 
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState("")
+
     return (
         <div>
-            <input 
-            type='text'
-            placeholder="Search keywords & url..." 
-            onChange={event => {setSearchTerm(event.target.value)}}/>
+            <Input 
+            type="text"
+            placeholder="Search keywords/url..." 
+            onChange={(value) => {setSearchTerm(value)}}/>
 
             <div className='incident-list'>
                 {props.data.filter((d, idx) => { idx < visibleCount
@@ -50,7 +51,6 @@ const IncidentList = (props) => {
                             ){return d}
                 }
                
-            
             }).map(function (d, idx) {
                     return (
                         <div className='incident' key={idx}>
