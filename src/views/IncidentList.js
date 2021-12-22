@@ -37,13 +37,14 @@ const IncidentList = (props) => {
             <Input 
             type="text"
             placeholder="Search keywords/url..." 
-            onChange={(value) => {setSearchTerm(value)}}/>
+            onChange={(value) => {setSearchTerm(value)
+                                  setVisibleCount(INCR_COUNT)}}/>
 
             <div className='incident-list'>
-            
                 {props.data.filter((d, idx) => idx < visibleCount).map(function (d, idx) {
                     if (searchTerm =="")
-                    {return (
+                    {
+                    return (
                         <div className='incident' key={idx}>
                             <a className='title' href={d.url} target='_blank'>
                                 {getTitle(d)}
@@ -54,13 +55,15 @@ const IncidentList = (props) => {
                             <p className='description'>{getAbstract(d)}</p>
                         </div>
                     )}
-                 else if (d.title.toLowerCase().includes(searchTerm.toLowerCase())||
+                 else if (   
+                             d.title.toLowerCase().includes(searchTerm.toLowerCase())||
                              d.incident_location.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.incident_time.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.incident_time.includes(searchTerm)||
                              d.abstract.toLowerCase().includes(searchTerm.toLowerCase())||
                              d.url.toLowerCase().includes(searchTerm.toLowerCase())
                             )
-                        {return (
+                        {
+                        return (
                             <div className='incident' key={idx}>
                                 <a className='title' href={d.url} target='_blank'>
                                     {getTitle(d)}
@@ -70,7 +73,7 @@ const IncidentList = (props) => {
                                 </p>
                                 <p className='description'>{getAbstract(d)}</p>
                             </div>)
-                            }        
+                            }   
                 })
                 }
             </div>
