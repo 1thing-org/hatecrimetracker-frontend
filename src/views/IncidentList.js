@@ -40,19 +40,10 @@ const IncidentList = (props) => {
             onChange={(value) => {setSearchTerm(value)}}/>
 
             <div className='incident-list'>
-                {props.data.filter((d, idx) => { idx < visibleCount
-                {
-                    if (searchTerm ==""){return d}                   
-                    else if (d.title.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.incident_location.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.incident_time.includes(searchTerm)||
-                             d.abstract.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.url.toLowerCase().includes(searchTerm.toLowerCase())
-                            ){return d}
-                }
-               
-            }).map(function (d, idx) {
-                    return (
+            
+                {props.data.filter((d, idx) => idx < visibleCount).map(function (d, idx) {
+                    if (searchTerm =="")
+                    {return (
                         <div className='incident' key={idx}>
                             <a className='title' href={d.url} target='_blank'>
                                 {getTitle(d)}
@@ -62,7 +53,24 @@ const IncidentList = (props) => {
                             </p>
                             <p className='description'>{getAbstract(d)}</p>
                         </div>
-                    )
+                    )}
+                 else if (d.title.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.incident_location.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.incident_time.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.abstract.toLowerCase().includes(searchTerm.toLowerCase())||
+                             d.url.toLowerCase().includes(searchTerm.toLowerCase())
+                            )
+                        {return (
+                            <div className='incident' key={idx}>
+                                <a className='title' href={d.url} target='_blank'>
+                                    {getTitle(d)}
+                                </a>
+                                <p className='location_time'>
+                                    {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
+                                </p>
+                                <p className='description'>{getAbstract(d)}</p>
+                            </div>)
+                            }        
                 })
                 }
             </div>
