@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { stateFullName } from '../utility/Utils.js'
 import { Button } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
+import {Input} from 'rsuite';
 
 const INCR_COUNT = 10;
 const IncidentList = (props) => {
@@ -27,10 +28,22 @@ const IncidentList = (props) => {
         }
         return incident?.abstract;
     }
+
+
+    const [searchTerm, setSearchTerm] = useState("")
+
     return (
         <div>
+            <Input 
+            type="text"
+            placeholder="Search keywords..." 
+            onChange={(value) => {setSearchTerm(value)
+                                  setVisibleCount(INCR_COUNT)}}/>
+
             <div className='incident-list'>
                 {props.data.filter((d, idx) => idx < visibleCount).map(function (d, idx) {
+                    if (searchTerm =="")
+                    {
                     return (
                         <div className='incident' key={idx}>
                             <a className='title' href={d.url} target='_blank'>
@@ -41,7 +54,22 @@ const IncidentList = (props) => {
                             </p>
                             <p className='description'>{getAbstract(d)}</p>
                         </div>
-                    )
+                    )}
+                 else if (   getTitle(d).toLowerCase().includes(searchTerm.toLowerCase())||
+                             getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())
+                            )
+                        {
+                        return (
+                            <div className='incident' key={idx}>
+                                <a className='title' href={d.url} target='_blank'>
+                                    {getTitle(d)}
+                                </a>
+                                <p className='location_time'>
+                                    {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
+                                </p>
+                                <p className='description'>{getAbstract(d)}</p>
+                            </div>)
+                            }   
                 })
                 }
             </div>
