@@ -36,7 +36,7 @@ const IncidentList = (props) => {
         <div>
             <Input 
             type="text"
-            placeholder="Search keywords/url..." 
+            placeholder="Search keywords..." 
             onChange={(value) => {setSearchTerm(value)
                                   setVisibleCount(INCR_COUNT)}}/>
 
@@ -55,12 +55,8 @@ const IncidentList = (props) => {
                             <p className='description'>{getAbstract(d)}</p>
                         </div>
                     )}
-                 else if (   
-                             d.title.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.incident_location.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.incident_time.includes(searchTerm)||
-                             d.abstract.toLowerCase().includes(searchTerm.toLowerCase())||
-                             d.url.toLowerCase().includes(searchTerm.toLowerCase())
+                 else if (   getTitle(d).toLowerCase().includes(searchTerm.toLowerCase())||
+                             getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())
                             )
                         {
                         return (
