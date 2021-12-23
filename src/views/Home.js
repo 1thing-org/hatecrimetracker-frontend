@@ -218,14 +218,14 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                <Col xs='12' sm='12' md='10' lg='10' xl='10'>
+                <Col xs='12' sm='12' md='8'>
                     <p className='title'>
                       <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
                     </p>
                   </Col>
-                  <Col xs='12' sm='12' md='2' lg='2' xl='2'>
-                    <div className='OneRowItem'>
+                  <Col xs='12' sm='12' md='4'>
+                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
                     <a
                       href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                       target='_blank'
@@ -233,7 +233,7 @@ const Home = () => {
                     >
                       {t('contact_us')}
                     </a>
-                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <SelectPicker
                       data={support_languages}
                       searchable={false}
