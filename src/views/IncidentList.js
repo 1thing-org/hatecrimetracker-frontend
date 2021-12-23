@@ -46,7 +46,7 @@ const IncidentList = (props) => {
             <div className='incident-list'>
                 {
                     props.data.map(function (d, idx) {
-                        if (visibleCount >= visibleLimit) return;
+                        if (searchTerm == "" && visibleCount >= visibleLimit) return;
                         if (searchTerm == "" || getTitle(d).toLowerCase().includes(searchTerm.toLowerCase()) ||
                             getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())) {
                             visibleCount++;
@@ -65,7 +65,7 @@ const IncidentList = (props) => {
                     })
                 }
             </div>
-            {visibleLimit < props.data.length ?
+            {visibleLimit < props.data.length && searchTerm == ""?
                 (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleLimit(visibleLimit + INCR_COUNT)}>{t('load_more')}.</Button></div>)
                 : null}
         </div>
