@@ -15,7 +15,9 @@
     "state": "Estado",
     "count": "Bilang",
     "count_10k_asian": "Bilang/10K Asyano",
-    "count_1mm": "Bilang/1MM"
+    "count_1mm": "Bilang/1MM",
+    "asian_population": "Populasyon ng Asya",
+    "state_population": "Populasyon ng Estado"
   },
   "incident_map": {
     "cases": "Mga Kaso",
@@ -39,8 +41,7 @@
     "1": "Ang website ng Anti-Asian Hate Crime Tracker ay nilikha at pinananatili ng isang grupo ng mga boluntaryo, para sa nag-iisang layunin na pataasin ang kamalayan sa pag-uugali na anti-Asian [kontra sa Asyano] na nangyayari sa pang-araw-araw.",
     "2": "Kinolekta namin ang mga insidente sa anti-Asian mula sa online na pampublikong mapagkukunan at magbigay ng mga hyperlink (sinamahan ng mga pamagat at maikling mga sipi ng mga ulat) na direkta sa iyo mula sa orihinal na pinagkunan ng impormasyon. Naniniwala kami na ang aming paggamit ng anumang naka-copyright na materyal ay pinahihintulutan bilang isang \"patas na paggamit\" sa ilalim ng 17 U.S.C. § 107. Kung may mga katanungan ka o alalahanin sa anumang naturang paggamit, mangyaring makipag-ugnayan sa amin <1>dito</1>.",
     "3": "Kinokolekta at pinagsama-sama namin ang data sa aming pinakamahusay na pagsisikap. Ang impormasyon na kalakip nito ay ibinigay kasama ang pag-unawa na hindi kami nakikibahagi sa pagbibigay ng legal o iba pang propesyonal na payo o serbisyo. Sa anumang pagkakataon ay hindi kami mananagot para sa anumang mga kahihinatnan na magmumula sa o may kaugnayan sa iyong pag-access o paggamit ng website.",
-    "title": "Pagtatatuwa",
-    "here": "dito"
+    "title": "Pagtatatuwa"
   },
   "no_data_please_report": "Wala pang nakolektang data sa napiling lokasyon at hanay ng petsa. \nMangyaring mag-click <1>dito</1> upang mag-ulat ng mga insidente sa amin.",
   "search": "Hanapin..."
