@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
-import { formatIncidentRate, getStateIncidentPerM, getStateIncidentPer10kAsian, stateFullName } from '../utility/Utils';
-import { useTranslation } from 'react-i18next';
+import { formatIncidentRate, getStateIncidentPerM, getStateIncidentPer10kAsian, stateFullName, statePopulation, asianPopulation } from '../utility/Utils';
+import { useTranslation, getI18n} from 'react-i18next';
 
 const toIncidentCount = (data) => {
     const result = [];
@@ -35,7 +35,6 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
             name: t("incident_table.count"),
             selector: 'count',
             sortable: true,
-            maxWidth: '20%',
             right: true,
         },
         {
@@ -43,19 +42,33 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
             selector: 'count_rate_asian',
             sortable: true,
             wrap: true,
-            maxWidth: '20%',
             right: true,
             format: (row) => formatIncidentRate(row.count_rate_asian)
+        },
+        {
+            name: t("incident_table.asian_population"),
+            selector: 'state',
+            sortable: true,
+            wrap: true,
+            right: true,
+            format: (row) => asianPopulation(row.state).toLocaleString(getI18n().language)
         },
         {
             name: t("incident_table.count_1mm"),
             selector: 'count_rate',
             sortable: true,
             wrap: true,
-            maxWidth: '20%',
             right: true,
             format: (row) => formatIncidentRate(row.count_rate)
-        }
+        },
+        {
+            name: t("incident_table.state_population"),
+            selector: 'state',
+            sortable: true,
+            wrap: true,
+            right: true,
+            format: (row) => statePopulation(row.state).toLocaleString(getI18n().language)
+        },
     ];
     //** ComponentDidMount
     useEffect(() => {

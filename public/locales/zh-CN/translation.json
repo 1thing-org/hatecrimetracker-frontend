@@ -15,7 +15,9 @@
     "state": "州",
     "count": "总计",
     "count_10k_asian": "每万名亚裔",
-    "count_1mm": "每百万人口"
+    "count_1mm": "每百万人口",
+    "asian_population": "亚裔人口",
+    "state_population": "州人口"
   },
   "incident_map": {
     "cases": "总数",
