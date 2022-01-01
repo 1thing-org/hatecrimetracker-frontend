@@ -22,7 +22,7 @@ const selectorStatePopulation = (row) => statePopulation(row.state);
 const selectorAsianPopulation = (row) => asianPopulation(row.state);
 
 //data is map of state to count
-const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
+const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
     const { t } = useTranslation();
     const [incidentCountData, setIncidentCountData] = useState(toIncidentCount(data));
     const [currState, setCurrState] = useState(selectedState);
@@ -105,7 +105,7 @@ const IncidentCountTable = ({ data, title, selectedState, stateChanged }) => {
         },
     ];
     const updateState = useCallback((row) => {
-        stateChanged(row.state);
+        stateToggled(row.state);
     });
     return (<Card>
         <CardHeader>

@@ -52,8 +52,8 @@ const IncidentMap = (props) => {
     }, [props.mapData, props.lang])
 
     useEffect(() => {
-        setSelectedState(props.selectdState)
-    }, [props.selectdState])
+        setSelectedState(props.selectedState)
+    }, [props.selectedState])
 
     useEffect(() => {
         selectState(selectedState)
@@ -134,9 +134,9 @@ const IncidentMap = (props) => {
             if (ev.target?.dataItem?.dataContext?.id) {
                 newState = ev.target.dataItem.dataContext.id.split('-')[1]
             }
-            if (newState != props.selectdState) {
-                props.onChange(newState)
-            }
+            // if (newState != props.selectedState) {
+                props.stateToggled(newState)
+            // }
         })
 
         polygonTemplate.stroke = am4core.color('#D1CFD7')

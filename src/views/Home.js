@@ -190,6 +190,7 @@ const Home = () => {
     }
   }, [router]);
   useEffect(() => {
+    // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
@@ -207,6 +208,13 @@ const Home = () => {
     if (ranges) {
       setDateRange(ranges);
     }
+  }
+
+  const stateToggled = (state) => {
+    // console.log("This is:" + this);
+    const newState = state == selectedState ? null : state
+    // console.log("Toggle state:" + state + " selectedState:" + selectedState + " new state:" + newState)
+    setSelectedState(newState);
   }
 
   return (
@@ -281,15 +289,15 @@ const Home = () => {
                 />
                 <IncidentMap
                   mapData={incidentAggregated}
-                  selectdState={selectedState}
+                  selectedState={selectedState}
                   lang={i18n.language}
-                  onChange={setSelectedState}
+                  stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={'Incident Count by State'}
                   data={incidentAggregated}
                   selectedState={selectedState}
-                  stateChanged={(state) => setSelectedState(state)}
+                  stateToggled={stateToggled}
                 />
               </div>
             </Col>
