@@ -15,7 +15,7 @@ const IncidentTable = ({ data, title, onDelete }) => {
       name: 'Location',
       selector: 'incident_location',
       sortable: true,
-      width: "80px"
+      width: "100px"
     },
     {
       name: 'Title',
@@ -34,28 +34,28 @@ const IncidentTable = ({ data, title, onDelete }) => {
       selector: 'created_by',
       sortable: true,
       max_width: "100px",
-      wrap: false      
+      wrap: false
     },
   ];
 
   if (onDelete) {
     columns.push(
-    {
-      name: 'Action',
-      grow: 1,
-      selector: "url",
-      width:"120px",
-      format: (row) => {
-        return <Button.Ripple color='warning' block onClick={() => onDelete(row)} >
-          Delete
-        </Button.Ripple>;
+      {
+        name: 'Action',
+        grow: 1,
+        selector: "url",
+        width: "120px",
+        format: (row) => {
+          return <Button.Ripple color='warning' block onClick={() => onDelete(row)} >
+            Delete
+          </Button.Ripple>;
+        }
       }
-    }
     );
   }
-  
+
   return (
-    <DataTable  title={title} columns={columns} data={data} theme="dark"/>
+    <DataTable title={title} columns={columns} data={data} theme="dark" />
   )
 }
 export default IncidentTable
