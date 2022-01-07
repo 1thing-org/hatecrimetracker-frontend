@@ -21,6 +21,7 @@ const IncidentAdminPage = () => {
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+
   // form validation rules 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -29,9 +30,11 @@ const IncidentAdminPage = () => {
       .default(function () {
         return new Date();
       }),
-    incident_location: Yup.string()
-      .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
-      .required('Incident location is required'),
+    // because I will include CANADA and ONLINE, so the constriant is not correct
+    // ??? remove select
+    // incident_location: Yup.string()
+    //   .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
+    //   .required('Incident location is required'),
     url: Yup.string().url(),
     abstract: Yup.string()
       .required('incident abstract is required')
@@ -105,15 +108,13 @@ const IncidentAdminPage = () => {
   const statesAbbreviation = [];
   if (statesAbbreviation.length === 0) {
     forEachState((state, name) => {
-      if (state.length == 2) {
-        // only the abbreviation will be added to statesAbbreviation
-        statesAbbreviation.push(state);
-      }
+      // create format as "New York - NY", "Canada - CANADA", "Online - ONLINE"
+      statesAbbreviation.push([state, name + " - " + state]);
     });
   }
   // stateAbbrOptions is all options will be displayed on location  
   const stateAbbrOptions = (
-    <>{statesAbbreviation.map(abbr => <option>{abbr}</option>)}</>
+    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
   );
 
 
