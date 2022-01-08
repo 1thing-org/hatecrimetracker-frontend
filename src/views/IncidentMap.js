@@ -17,8 +17,10 @@ https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 
 */
 
+let global_props;
 //mapData is result from api/stats.total
 const IncidentMap = (props) => {
+    global_props = props;
     const { t } = useTranslation();
     const [mapPolygonSeries, setMapPolygonSeries] = useState()
     const [polygonTemplate, setPolygonTemplate] = useState()
@@ -135,7 +137,9 @@ const IncidentMap = (props) => {
                 newState = ev.target.dataItem.dataContext.id.split('-')[1]
             }
             // if (newState != props.selectedState) {
-                props.stateToggled(newState)
+            if ( global_props && global_props.stateToggled) {   
+                global_props.stateToggled(newState)
+            }
             // }
         })
 
