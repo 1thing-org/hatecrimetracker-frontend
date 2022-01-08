@@ -30,8 +30,6 @@ const IncidentAdminPage = () => {
       .default(function () {
         return new Date();
       }),
-    // because I will include CANADA and ONLINE, so the constriant is not correct
-    // ??? remove select
     incident_location: Yup.string()
       .required('Incident location is required'),
     url: Yup.string().url(),
