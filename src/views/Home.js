@@ -33,6 +33,11 @@ import { withRouter } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import config from "../configs/appConfig";
+
+const data_url = () => {
+  return config.api_endpoint + "/get_csv";
+}
 
 const Home = () => {
   const router = useRouter();
@@ -136,9 +141,8 @@ const Home = () => {
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format('YYYY-MM-DD')}&to=${moment(
       to
-    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${
-      lang ? '&lang=' + lang : ''
-    }`;
+    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${lang ? '&lang=' + lang : ''
+      }`;
   };
 
   const isParameterChanged = () => {
@@ -178,9 +182,9 @@ const Home = () => {
       const defaultDateRange = isObjEmpty(router.query)
         ? [moment().subtract(1, 'years').toDate(), new Date()]
         : [
-            moment(router.query.from).toDate(),
-            moment(router.query.to).toDate(),
-          ];
+          moment(router.query.from).toDate(),
+          moment(router.query.to).toDate(),
+        ];
 
       setSelectedState(getValidState(router.query.state));
       setDateRange(defaultDateRange);
@@ -236,7 +240,8 @@ const Home = () => {
                       target='_blank'
                     >
                       {t('contact_us')}
-                    </a>
+                    </a> <br />
+                    <a href={data_url()}>Download Data</a>
                   </Col>
                 </Row>
 
