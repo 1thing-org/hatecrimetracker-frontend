@@ -1,0 +1,29 @@
+@media (max-width: 786px) {
+    .OneRowItem {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 1rem;
+    }
+    
+    .rs-picker-toggle-wrapper {
+        width: 16rem
+    }
+    
+    .SimpleLabel {
+        margin-top: 1rem;
+    }
+
+    .title {
+        font-size: 1rem !important; 
+    }
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.behind-relative {
+    position: relative;
+    z-index: 1;
+}

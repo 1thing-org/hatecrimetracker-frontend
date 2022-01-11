@@ -9,8 +9,10 @@ import { auth } from "../firebase";
 import { UserContext } from "../providers/UserProvider";
 import * as incidentsService from "../services/incidents";
 import IncidentTable from './IncidentTable';
-import {Button } from 'reactstrap'
-import {signInWithGoogle} from '../firebase'
+import { Button } from 'reactstrap'
+import { signInWithGoogle } from '../firebase'
+// to get states abbreviation
+import { forEachState } from '../utility/Utils';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
@@ -18,6 +20,7 @@ const IncidentAdminPage = () => {
 
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -28,7 +31,6 @@ const IncidentAdminPage = () => {
         return new Date();
       }),
     incident_location: Yup.string()
-      .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
       .required('Incident location is required'),
     url: Yup.string().url(),
     abstract: Yup.string()
@@ -98,6 +100,21 @@ const IncidentAdminPage = () => {
     </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
+
+  // statesAbbreviation stores all abbreviation of US states
+  const statesAbbreviation = [];
+  if (statesAbbreviation.length === 0) {
+    forEachState((state, name) => {
+      // create format as "New York - NY", "Canada - CANADA", "Online - ONLINE"
+      statesAbbreviation.push([state, name + " - " + state]);
+    });
+  }
+  // stateAbbrOptions is all options will be displayed on location  
+  const stateAbbrOptions = (
+    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
+  );
+
+
   return (
     <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
       <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
@@ -124,7 +141,11 @@ const IncidentAdminPage = () => {
           </div>
           <div className="form-group col-1">
             <label>Location</label>
-            <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} />
+            {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} /> */}
+            <select name="incident_location" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`}>
+              <option value={""}>select</option>
+              {stateAbbrOptions}
+            </select>
             <div className="invalid-feedback">{errors.incident_location?.message}</div>
           </div>
           <div className="form-group col-9">

@@ -38,6 +38,7 @@ import config from "../configs/appConfig";
 const data_url = () => {
   return config.api_endpoint + "/get_csv";
 }
+import './Home.css'
 
 const Home = () => {
   const router = useRouter();
@@ -60,6 +61,8 @@ const Home = () => {
     });
   });
 
+  const isMobile = (window.innerWidth <= 786)
+  const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false)
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
@@ -191,6 +194,7 @@ const Home = () => {
     }
   }, [router]);
   useEffect(() => {
+    // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
@@ -210,6 +214,13 @@ const Home = () => {
     }
   }
 
+  const stateToggled = (state) => {
+    // console.log("This is:" + this);
+    const newState = state == selectedState ? null : state
+    // console.log("Toggle state:" + state + " selectedState:" + selectedState + " new state:" + newState)
+    setSelectedState(newState);
+  }
+
   return (
     <>
       <Head />
@@ -219,48 +230,53 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                  <Col sm='8' xs='12'>
-                    <h4>
+                  <Col xs='12' sm='12' md='8'>
+                    <p className='title'>
                       <img src={logo} alt='logo' className='logo' />{' '}
                       {t('website.name')}
-                    </h4>
+                    </p>
                   </Col>
-                  <Col sm='4' xs='12' align='right'>
-                    <SelectPicker
-                      data={support_languages}
-                      searchable={false}
-                      cleanable={false}
-                      defaultValue={selectedLangCode}
-                      style={{ width: 120 }}
-                      onChange={(value) => setSelectedLang(value)}
-                    />
-                    &nbsp;&nbsp;
-                    <a
-                      href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                      target='_blank'
-                    >
-                      {t('contact_us')}
-                    </a> <br />
-                    <a href={data_url()}>Download Data</a>
+                  <Col xs='12' sm='12' md='4'>
+                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                      <a
+                        href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
+                        target='_blank'
+                        className='SimpleLabel'
+                      >
+                        {t('contact_us')}
+                      </a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a href={data_url()}>Download Data</a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <SelectPicker
+                        data={support_languages}
+                        searchable={false}
+                        cleanable={false}
+                        defaultValue={selectedLangCode}
+                        style={{ width: 120 }}
+                        onChange={(value) => setSelectedLang(value)}
+                      />
+                    </div>
                   </Col>
                 </Row>
 
                 <FormGroup>
                   <Row>
-                    <Col xs='12' sm='auto'>
-                      <Label>{t('location')}:</Label>{' '}
+                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
+                      <Label className='SimpleLabel'>{t('location')}:</Label>{' '}
                       <StateSelection
                         name='state'
                         value={selectedState}
                         onChange={setSelectedState}
                       />{' '}
                     </Col>
-                    <Col xs='12' sm='auto'>
-                      <Label>{t('date_range')}:</Label>{' '}
+                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
+                      <Label className='SimpleLabel'>{t('date_range')}:</Label>{' '}
                       <DateRangeSelector
                         name='date'
                         onChange={handleDateRangeSelect}
                         value={dateRange}
+                        isMobile={isMobile}
                       />
                     </Col>
                   </Row>
@@ -272,21 +288,22 @@ const Home = () => {
             <Col xl='8' lg='8' md='6' xs='12'>
               <div>
                 <IncidentChart
+                  className="behind-relative"
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
                 />
                 <IncidentMap
                   mapData={incidentAggregated}
-                  selectdState={selectedState}
+                  selectedState={selectedState}
                   lang={i18n.language}
-                  onChange={setSelectedState}
+                  stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={'Incident Count by State'}
                   data={incidentAggregated}
                   selectedState={selectedState}
-                  stateChanged={(state) => setSelectedState(state)}
+                  stateToggled={stateToggled}
                 />
               </div>
             </Col>
@@ -330,13 +347,7 @@ const Home = () => {
               <li>{t('disclaimer.1')}</li>
               <li>
                 <Trans i18nKey='disclaimer.2'>
-                  disclaimer.2{' '}
-                  <a
-                    href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                    target='_blank'
-                  >
-                    here.
-                  </a>
+                  disclaimer.2 <a href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0' target="_blank">here.</a>
                 </Trans>
               </li>
               <li>{t('disclaimer.3')}</li>

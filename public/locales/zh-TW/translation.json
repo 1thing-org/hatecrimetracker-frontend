@@ -2,46 +2,47 @@
   "website": {
     "name": "反亞裔仇恨犯罪追蹤"
   },
-  "location" : "地點",
-  "date_range" : "日期範圍",
-  "incident_count_by_state" : "各州事件計數",
-  "daily_count" : "單日總計",
-  "monthly_count" : "月總計",
-  "load_more" : "加載更多",
-  "incident_table" : {
-    "total_incident" : "共{{count}}起",
-    "no_data" : "沒有收集到數據",
-    "total_incident_plural" : "共{{count}}起",
-    "state" : "州",
-    "count" : "總計",
-    "count_10k_asian" : "每萬名亞裔",
-    "count_1mm" : "每百萬人口"
+  "location": "地點",
+  "date_range": "日期範圍",
+  "incident_count_by_state": "各州事件計數",
+  "daily_count": "單日總計",
+  "monthly_count": "月總計",
+  "load_more": "加載更多",
+  "incident_table": {
+    "total_incident": "共{{count}}起",
+    "no_data": "沒有收集到數據",
+    "total_incident_plural": "共{{count}}起",
+    "state": "州",
+    "count": "總計",
+    "count_10k_asian": "每萬名亞裔",
+    "count_1mm": "每百萬人口",
+    "asian_population": "亞裔人口",
+    "state_population": "州人口"
   },
-  "incident_map" : {
-    "cases" : "總數",
-    "no_data" : "沒有收集到數據",
-    "count_10k_asian" : "每萬名亞裔",
-    "count_1mm" : "每百萬人口"
+  "incident_map": {
+    "cases": "總數",
+    "no_data": "沒有收集到數據",
+    "count_10k_asian": "每萬名亞裔",
+    "count_1mm": "每百萬人口"
   },
-  "incident_chart" : {
-    "total_monthly_cases" : "月總計{{count}}例",
-    "total_monthly_cases_plural" : "月總計{{count}}例",
-    "total_daily_cases" : "日總計{{count}}例",
-    "total_daily_cases_plural" : "日總計{{count}}例",
-    "trend" : "反亞洲仇恨犯罪事件趨勢圖",
-    "total_cases" : "總計{{count}}起",
-    "no_data" : "沒有收集到數據",
-    "total_cases_plural" : "總計{{count}}起"
+  "incident_chart": {
+    "total_monthly_cases": "月總計{{count}}例",
+    "total_monthly_cases_plural": "月總計{{count}}例",
+    "total_daily_cases": "日總計{{count}}例",
+    "total_daily_cases_plural": "日總計{{count}}例",
+    "trend": "反亞洲仇恨犯罪事件趨勢圖",
+    "total_cases": "總計{{count}}起",
+    "no_data": "沒有收集到數據",
+    "total_cases_plural": "總計{{count}}起"
   },
-  
-  "contact_us" : "聯系我們",
-  "copyright" : "版權所有",
-  
-  "disclaimer" : {
-    "title" : "聲明",
-    "here" : "聯系方式",
-    "1" : "反亞裔仇恨犯罪追蹤網站由一群志願者創建和維護，其唯一目的是提高人們對每天發生的反亞裔行為的認識。",
-    "2" : "我們從互聯網公共資源收集資料，並提供超鏈接（附有標題和報告的簡短摘錄），將您引導至原始信息來源。我們相信我們對任何受版權保護的材料的使用皆在 17 U.S.C. § 107允許範圍之內。如果您有任何疑問或疑慮，請點擊<1>此處</1>與我們聯系。",
-    "3" : "我們盡最大努力收集和匯總數據。 此處提供的信息是基於我們不從事提供法律或其他專業建議或服務的理解。 在任何情況下，對於因您訪問或使用本網站而引起或與之相關的任何後果，我們概不負責。"
-  }
+  "contact_us": "聯系我們",
+  "copyright": "版權所有",
+  "disclaimer": {
+    "1": "反亞裔仇恨犯罪追蹤網站由一群志願者創建和維護，其唯一目的是提高人們對每天發生的反亞裔行為的認識。",
+    "2": "我們從互聯網公共資源收集資料，並提供超鏈接（附有標題和報告的簡短摘錄），將您引導至原始信息來源。我們相信我們對任何受版權保護的材料的使用皆在 17 U.S.C. § 107允許範圍之內。如果您有任何疑問或疑慮，請點擊<1>此處</1>與我們聯系。",
+    "3": "我們盡最大努力收集和匯總數據。 此處提供的信息是基於我們不從事提供法律或其他專業建議或服務的理解。 在任何情況下，對於因您訪問或使用本網站而引起或與之相關的任何後果，我們概不負責。",
+    "title": "聲明"
+  },
+  "no_data_please_report": "尚未在所選位置和日期範圍內收集數據。\n請點擊<1>此處</1>向我們報告事件。",
+  "search": "搜索 ..."
 }
