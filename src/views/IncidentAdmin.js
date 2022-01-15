@@ -30,11 +30,8 @@ const IncidentAdminPage = () => {
       .default(function () {
         return new Date();
       }),
-    // because I will include CANADA and ONLINE, so the constriant is not correct
-    // ??? remove select
-    // incident_location: Yup.string()
-    //   .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
-    //   .required('Incident location is required'),
+    incident_location: Yup.string()
+      .required('Incident location is required'),
     url: Yup.string().url(),
     abstract: Yup.string()
       .required('incident abstract is required')
@@ -146,7 +143,7 @@ const IncidentAdminPage = () => {
             <label>Location</label>
             {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} /> */}
             <select name="incident_location" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`}>
-              <option>select</option>
+              <option value={""}>select</option>
               {stateAbbrOptions}
             </select>
             <div className="invalid-feedback">{errors.incident_location?.message}</div>
