@@ -65,7 +65,7 @@ const IncidentList = (props) => {
                     })
                 }
             </div>
-            {visibleLimit < props.data.length && searchTerm == ""?
+            {visibleLimit < props.data.length && searchTerm == "" ?
                 (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleLimit(visibleLimit + INCR_COUNT)}>{t('load_more')}.</Button></div>)
                 : null}
         </div>

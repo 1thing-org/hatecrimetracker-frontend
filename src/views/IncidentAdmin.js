@@ -34,7 +34,9 @@ const IncidentAdminPage = () => {
       .required('Incident location is required'),
     url: Yup.string().url(),
     abstract: Yup.string()
-      .required('incident abstract is required')
+      .required('incident abstract is required'),
+    donation_link: Yup.string().url(),
+    police_tip_line: Yup.string().phoneNumber()
   });
 
   // functions to build form returned by useForm() hook
@@ -50,6 +52,9 @@ const IncidentAdminPage = () => {
       setValue("incident_location", "");
       setValue("url", "");
       setValue("abstract", "");
+      setValue("donation_link", "");
+      setValue("police_tip_line", "");
+      setValue("help_the_victim", "");
       reloadIncidents(data.incident_time);
     });
   }
@@ -166,6 +171,25 @@ const IncidentAdminPage = () => {
             <label>Abstract</label>
             <textarea name="abstract" rows="4" ref={register} className={`form-control ${errors.abstract ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors.abstract?.message}</div>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-8">
+            <label>Donation</label>
+            <input name="donation_link" type="text" ref={register} className={`form-control ${errors.donation_link ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.donation_link?.message}</div>
+          </div>
+          <div className="form-group col-4">
+            <label>Police Tip Line</label>
+            <input name="police_tip_line" type="text" ref={register} className={`form-control ${errors.police_tip_line ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.police_tip_line?.message}</div>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-12">
+            <label>Help the victim</label>
+            <textarea name="help_the_victim" rows="4" ref={register} className={`form-control ${errors.help_the_victim ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.help_the_victim?.message}</div>
           </div>
         </div>
         <div className="form-group">
