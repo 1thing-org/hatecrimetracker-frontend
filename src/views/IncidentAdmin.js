@@ -24,12 +24,6 @@ const IncidentAdminPage = () => {
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // const checkPhoneNumber = (value) => {
-  //   if (!value || !phoneRegex.test(value)) {
-  //     callbacks("Please input valid phone number")
-  //   }
-  // }
-
   // form validation rules 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
