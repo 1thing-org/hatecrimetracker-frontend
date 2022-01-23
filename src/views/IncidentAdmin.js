@@ -38,7 +38,7 @@ const IncidentAdminPage = () => {
     abstract: Yup.string()
       .required('incident abstract is required'),
     donation_link: Yup.string().url(),
-    police_tip_line: Yup.string().matches(phoneRegex, "Please input valid phone number")
+    police_tip_line: Yup.string().matches(phoneRegex, "Please input valid phone number: xxx-xxx-xxxx"),
   });
 
   // functions to build form returned by useForm() hook
