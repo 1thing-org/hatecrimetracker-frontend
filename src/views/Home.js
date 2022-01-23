@@ -61,6 +61,7 @@ const Home = () => {
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
+  const [isFirstLoadData, setIsFirstLoadData] = useState(true)
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
@@ -133,6 +134,7 @@ const Home = () => {
           setIncidentAggregated(stats.total);
         }
         setLoading(false);
+        setIsFirstLoadData(false)
       });
   };
 
@@ -286,6 +288,7 @@ const Home = () => {
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
+                  isFirstLoadData={isFirstLoadData}
                 />
                 <IncidentMap
                   mapData={incidentAggregated}
