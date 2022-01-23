@@ -3,8 +3,9 @@ import { Fragment } from 'react'
 import Proptypes from 'prop-types'
 import classnames from 'classnames'
 import { Spinner } from 'reactstrap'
-
+import ReactDOM from 'react-dom';
 import './ui-loader.scss'
+import './spinner.css'
 
 const UILoader = props => {
   const { children, blocking, loader, className, tag, overlayColor } = props
@@ -33,7 +34,7 @@ export default UILoader
 UILoader.defaultProps = {
   tag: 'div',
   blocking: false,
-  loader: <Spinner color='primary' />
+  loader: ReactDOM.createPortal(<div className='loader'><Spinner color='primary' /></div>, document.getElementById("spinning"))
 }
 
 UILoader.propTypes = {
