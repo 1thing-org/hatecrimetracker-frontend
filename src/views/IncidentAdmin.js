@@ -19,7 +19,7 @@ const IncidentAdminPage = () => {
   const user = useContext(UserContext);
   const isAddMode = true;
 
-  const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
 
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
