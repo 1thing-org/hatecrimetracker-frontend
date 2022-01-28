@@ -49,8 +49,6 @@ const IncidentMap = (props) => {
         [0, "#313131"],
     ];
     const getMapColor = (value) => {
-        console.log(maxValue);
-        console.log(showPer10KAsian);
         if ( value ) {
             const colors = props.showPer10KAsian ? MAP_COLOR_RATE:MAP_COLOR_COUNT
             for ( const i in colors ) {
@@ -147,8 +145,69 @@ const IncidentMap = (props) => {
         map.seriesContainer.resizable = false
         map.maxZoomLevel = 0.5
         map.cursorOverStyle = am4core.MouseCursorStyle.pointer
-        
+
         let polygonSeries = map.series.push(new am4maps.MapPolygonSeries())
+
+let legend = new am4maps.Legend();
+legend.parent = map.chartContainer;
+let markerTemplate = legend.markers.template;
+markerTemplate.width = 12;
+markerTemplate.height = 12;
+let marker = legend.markers.template.children.getIndex(0);
+marker.cornerRadius(0, 0, 0, 0);
+
+let legendLabel = legend.createChild(am4core.Label);
+legendLabel.text = "Incident Count";
+legendLabel.fontSize = "10px";
+
+legend.background.fill = am4core.color("#000");
+legend.background.fillOpacity = 0.05;
+legend.fontSize =  "10px";
+legend.width = 100;
+legend.valign = "middle";
+legend.align = "left";
+// legend.position = "left";
+legend.data = [{
+  "name": ">= 10",
+  "fill":"#FFF500"
+}, {
+  "name": "5-10",
+  "fill": "#D7CF00"
+}, {
+  "name": "2-5",
+  "fill": "#A9A403"
+},
+{
+    "name": "1",
+    "fill": "#706C00"
+},
+{
+    "name": "0",
+    "fill": "#313131"
+}
+
+];
+
+/*
+[10, "#FFF500"], //when >= , color        
+        [5, "#D7CF00"],
+        [2, "#A9A403"],
+        [1, "#706C00"],
+        [0, "#313131"],*/
+// let legendLabel = legend.createChild(am4core.Label);
+// legendLabel.text = "Count/10K Asian";
+
+// // Create a container child
+// let colors = new am4core.ColorSet();
+// for (let i = 0; i < 6; i++) {
+//   let rect = legend.createChild(am4core.Rectangle);
+//   rect.width = am4core.percent(100);
+//   rect.height = am4core.percent(100);
+//   rect.fill = colors.next();
+//   rect.fillOpacity = 0.8;
+// }
+
+// circle.toFront();
 
         polygonSeries.useGeodata = true
         polygonSeries.data = []
@@ -188,6 +247,7 @@ const IncidentMap = (props) => {
         polygonTemplate.strokeOpacity = 1
         setMapPolygonSeries(polygonSeries)
         setPolygonTemplate(polygonTemplate)
+
         return () => {
             map.dispose()
         }
