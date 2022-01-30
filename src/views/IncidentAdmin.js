@@ -108,6 +108,7 @@ const IncidentAdminPage = () => {
       if (result.isConfirmed) {
         incidentsService.deleteIncident(incident.id).then(() => {
           Swal.fire("Incident has been delete successfully!")
+          setCurrIncidentId(null);
           reloadIncidents(selectedDate);
         })
       }
