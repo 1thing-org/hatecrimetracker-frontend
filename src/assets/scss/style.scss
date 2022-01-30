@@ -25,6 +25,7 @@ body.dark-layout {
 	line-height: 120%;
 	color:#FEF753;
 	margin-top:8px;
+	margin-right:5px;
 }
 
 .incident-list .incident {
@@ -48,6 +49,10 @@ body.dark-layout {
 	line-height: 16px;
 	color: #FFFFFF;
 	margin-top:4px;
+}
+
+.incident-list .icon {
+	height: 12px;
 }
 
 // .rdt_TableCell{
