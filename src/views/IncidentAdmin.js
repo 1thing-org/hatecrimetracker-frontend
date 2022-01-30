@@ -13,14 +13,16 @@ import { Button } from 'reactstrap'
 import { signInWithGoogle } from '../firebase'
 // to get states abbreviation
 import { forEachState } from '../utility/Utils';
+import { Callbacks } from 'jquery';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
   const isAddMode = true;
 
+  const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
+
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -36,7 +38,7 @@ const IncidentAdminPage = () => {
     abstract: Yup.string()
       .required('incident abstract is required'),
     donation_link: Yup.string().url(),
-    police_tip_line: Yup.string()
+    police_tip_line: Yup.string().matches(phoneRegex, "Please input valid phone number: xxx-xxx-xxxx"),
   });
 
   // functions to build form returned by useForm() hook

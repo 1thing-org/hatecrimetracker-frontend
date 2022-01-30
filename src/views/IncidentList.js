@@ -4,6 +4,9 @@ import { stateFullName } from '../utility/Utils.js'
 import { Button } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
 import { Input } from 'rsuite';
+import donationIcon from '@src/assets/images/icons/donation.svg';
+import policeTipLineIcon from '@src/assets/images/icons/police-line.svg';
+import helpTheVictimIcon from '@src/assets/images/icons/victim-support.svg';
 
 const INCR_COUNT = 10;
 const IncidentList = (props) => {
@@ -27,6 +30,24 @@ const IncidentList = (props) => {
             }
         }
         return incident?.abstract;
+    }
+    const maybeGetDonationLink = (incident) => {
+        if (incident?.donation_link) {
+            return (<img className='icon' src={donationIcon} alt='donation link' />)
+        }
+        return;
+    }
+    const maybeGetPoliceTipLine = (incident) => {
+        if (incident?.police_tip_line) {
+            return (<img className='icon' src={policeTipLineIcon} alt='police tip line' />)
+        }
+        return;
+    }
+    const maybeGetHelpTheVictim = (incident) => {
+        if (incident?.help_the_victim) {
+            return (<img className='icon' src={helpTheVictimIcon} alt='help the victim' />)
+        }
+        return;
     }
     let visibleCount = 0;
 
@@ -55,6 +76,9 @@ const IncidentList = (props) => {
                                     <a className='title' href={d.url} target='_blank'>
                                         {getTitle(d)}
                                     </a>
+                                    {maybeGetDonationLink(d)}
+                                    {maybeGetPoliceTipLine(d)}
+                                    {maybeGetHelpTheVictim(d)}
                                     <p className='location_time'>
                                         {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
                                     </p>
