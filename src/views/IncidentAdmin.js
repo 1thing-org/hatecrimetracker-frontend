@@ -21,7 +21,8 @@ const IncidentAdminPage = () => {
 
   const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
 
-  const [data, setData] = useState([]);
+  const [currIncidentId, setCurrIncidentId] = useState(null);
+  const [recentIncidents, setRecentIncidents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   // form validation rules 
@@ -46,9 +47,10 @@ const IncidentAdminPage = () => {
     resolver: yupResolver(validationSchema)
   });
 
-  function onSubmit(data) {
-    data.created_by = user.email;
-    incidentsService.createIncident(data).then((incident_id) => {
+  function onSubmit(incident) {
+    incident.id = currIncidentId;
+    incident.created_by = user.email;
+    incidentsService.createIncident(incident).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
       setValue("title", "");
       setValue("incident_location", "");
@@ -57,7 +59,8 @@ const IncidentAdminPage = () => {
       setValue("donation_link", "");
       setValue("police_tip_line", "");
       setValue("help_the_victim", "");
-      reloadIncidents(data.incident_time);
+      setCurrIncidentId(null);
+      reloadIncidents(incident.incident_time);
     });
   }
 
@@ -65,7 +68,7 @@ const IncidentAdminPage = () => {
     //load incidents around the date -7 - 1 days
     console.log("reloading incidents around:" + date);
     incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, 'en', true)
-      .then(incidents => setData(incidents));
+      .then(incidents => setRecentIncidents(incidents));
   }
   function dateChanged(event) {
     // setData(FAKE_DATA.incidents);
@@ -74,6 +77,19 @@ const IncidentAdminPage = () => {
     reloadIncidents(date);
   }
 
+  const editIncident = (incident) => {
+    setCurrIncidentId(incident.id);
+    reset({
+      incident_time: moment(incident.incident_time).format('YYYY-MM-DD'),
+      title: incident.title,
+      incident_location: incident.incident_location,
+      url: incident.url,
+      abstract: incident.abstract,
+      donation_link: incident.donation_link,
+      police_tip_line: incident.police_tip_line,
+      help_the_victim: incident.help_the_victim,
+    });
+  }
   const deleteIncident = (incident) => {
     Swal.fire({
       title: 'Are you sure you want to delete this incident?',
@@ -204,7 +220,8 @@ const IncidentAdminPage = () => {
       </form>
       <IncidentTable className="col-12"
         title="Incidents Around the Same Time Period"
-        data={data}
+        data={recentIncidents}
+        onEdit={editIncident}
         onDelete={deleteIncident}
       />
     </div>

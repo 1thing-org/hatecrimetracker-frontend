@@ -37,8 +37,7 @@ export function getStats( startDate, endDate, state = null) {
         return response.data;
     });
 }
-
-export function createIncident(incident) {
+export function upsertIncident(incident) {
     const incidentAPIUrl = config.api_endpoint + "/incidents";
     if ( !incident.incident_source ){
         incident.incident_source = "MANUAL";
@@ -50,6 +49,9 @@ export function createIncident(incident) {
                 "strict-origin-when-cross-origin": "false"
             }
         }).then((response) => { return response.incident_id; });
+}
+export function createIncident(incident) {
+    return upsertIncident(incident);
 }
 
 export function deleteIncident(id) {
