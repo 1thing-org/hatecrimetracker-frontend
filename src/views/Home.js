@@ -33,11 +33,6 @@ import { withRouter } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import config from "../configs/appConfig";
-
-const data_url = () => {
-  return config.api_endpoint + "/get_csv";
-}
 import './Home.css'
 
 const Home = () => {
@@ -146,8 +141,9 @@ const Home = () => {
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format('YYYY-MM-DD')}&to=${moment(
       to
-    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${lang ? '&lang=' + lang : ''
-      }`;
+    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${
+      lang ? '&lang=' + lang : ''
+    }`;
   };
 
   const isParameterChanged = () => {
@@ -187,9 +183,9 @@ const Home = () => {
       const defaultDateRange = isObjEmpty(router.query)
         ? [moment().subtract(1, 'years').toDate(), new Date()]
         : [
-          moment(router.query.from).toDate(),
-          moment(router.query.to).toDate(),
-        ];
+            moment(router.query.from).toDate(),
+            moment(router.query.to).toDate(),
+          ];
 
       setSelectedState(getValidState(router.query.state));
       setDateRange(defaultDateRange);
@@ -232,32 +228,30 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                  <Col xs='12' sm='12' md='8'>
+                <Col xs='12' sm='12' md='8'>
                     <p className='title'>
-                      <img src={logo} alt='logo' className='logo' />{' '}
+                      <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
                     </p>
                   </Col>
                   <Col xs='12' sm='12' md='4'>
                     <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
-                      <a
-                        href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                        target='_blank'
-                        className='SimpleLabel'
-                      >
-                        {t('contact_us')}
-                      </a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href={data_url()}>Download Data</a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <SelectPicker
-                        data={support_languages}
-                        searchable={false}
-                        cleanable={false}
-                        defaultValue={selectedLangCode}
-                        style={{ width: 120 }}
-                        onChange={(value) => setSelectedLang(value)}
-                      />
+                    <a
+                      href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
+                      target='_blank'
+                      className='SimpleLabel'
+                    >
+                      {t('contact_us')}
+                    </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <SelectPicker
+                      data={support_languages}
+                      searchable={false}
+                      cleanable={false}
+                      defaultValue={selectedLangCode}
+                      style={{ width: 120 }}
+                      onChange={(value) => setSelectedLang(value)}
+                    />
                     </div>
                   </Col>
                 </Row>
@@ -349,9 +343,9 @@ const Home = () => {
             <ul>
               <li>{t('disclaimer.1')}</li>
               <li>
-                <Trans i18nKey='disclaimer.2'>
+              <Trans i18nKey='disclaimer.2'>
                   disclaimer.2 <a href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0' target="_blank">here.</a>
-                </Trans>
+              </Trans>
               </li>
               <li>{t('disclaimer.3')}</li>
             </ul>
