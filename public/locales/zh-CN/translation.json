@@ -44,5 +44,8 @@
     "title": "声明"
   },
   "no_data_please_report": "尚未在所选位置和日期范围内收集数据。\n请点击<1>此处</1>向我们报告事件。",
-  "search": "搜索 ..."
+  "search": "搜索 ...",
+  "donate_to_support": "捐款支持仇恨犯罪受害者",
+  "tips_needed_from_police": "警方需要给嫌疑人的提示",
+  "provide_addtional_support": "提供额外的支持"
 }

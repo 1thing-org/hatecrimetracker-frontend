@@ -44,5 +44,8 @@
     "title": "부인 성명"
   },
   "no_data_please_report": "선택한 위치 및 날짜 범위에서 아직 수집된 데이터가 없습니다. \n사고를 신고하려면 <1>여기</1>를 클릭하십시오.",
-  "search": "찾다 ..."
+  "search": "찾다 ...",
+  "donate_to_support": "증오 범죄 피해자를 지원하기 위해 기부",
+  "tips_needed_from_police": "용의자에 대한 경찰의 조언",
+  "provide_addtional_support": "추가 지원 제공"
 }
