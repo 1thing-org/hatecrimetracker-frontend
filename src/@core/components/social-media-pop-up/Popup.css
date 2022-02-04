@@ -1,0 +1,94 @@
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.modaltest {
+    display: flex;
+    flex-direction: column;
+    background: rgb(44, 44, 44);
+    border-radius: 15px;
+    position: fixed;
+    top: 30vh;
+    left: 35% ;
+    width: 35%;
+    z-index: 10;
+    border-top: 1rem solid #FEF753;
+    padding: 1rem;
+}
+
+
+.modalPhone {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 15px;
+  position: fixed;
+  top: 80%;
+  left: 10% ;
+  width: 80%;
+  z-index: 10;
+  padding: 1rem;
+}
+
+.modalPhone p {
+  color: black;
+  font-size: 1rem;
+}
+
+.modaltest p {
+  color: white;
+  
+}
+
+
+.modal-title {
+  font-weight: bold;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: white;
+  text-align: center;
+  font-size: 1.5vw;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.modal-input {
+  background-color: #8E8E8E;
+  color: white;
+  width: 90%;
+  border: none
+}
+
+.modal-media {
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+  align-self: center;
+}
+
+.modal-link {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #8E8E8E;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  padding: 0.7rem;
+}
+
+.copy-button {
+  background-color: transparent;
+  size:"25";
+  color: "yellow";
+}
+
+.copy-button:active {
+  transform: translateY(4px);
+}
