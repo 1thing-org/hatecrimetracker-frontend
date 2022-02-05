@@ -257,7 +257,7 @@ legend.data = [{
             <CardHeader>
             </CardHeader>
             <CardBody>
-                <div id='chartdiv' style={{ width: '100%', height: '400px' }}></div>
+                <div id='chartdiv' className='incident-map-container' style={{align:"center"}}></div>
             </CardBody>
         </Card>
     )

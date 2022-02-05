@@ -282,7 +282,7 @@ const Home = () => {
             </Col>
           </Row>
           <Row className='match-height'>
-            <Col xl='8' lg='8' md='6' xs='12'>
+            <Col xl='8' lg='6' md='12'>
               <div>
                 {isShowPer10kAsian ? <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
                   : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
@@ -301,7 +301,7 @@ const Home = () => {
                 />
               </div>
             </Col>
-            <Col xl='4' lg='4' md='6' xs='12'>
+            <Col xl='4' lg='6' md='12'>
               <Card>
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>

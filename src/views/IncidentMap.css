@@ -1,0 +1,40 @@
+
+
+.incident-map-container {
+    display: flex;
+    height: 300px;
+    width: 100%;
+}
+
+@media screen and (max-width: 576) {
+    .incident-map-container {
+        display: flex;
+        height: 300px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .incident-map-container {
+        display: flex;
+        height: 400px;
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 992px) {
+    .incident-map-container {
+        display: flex;
+        height: 300px;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .incident-map-container {
+        display: flex;
+        height: 400px;
+        width: 100%;
+    }
+}
