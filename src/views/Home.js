@@ -34,6 +34,9 @@ import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import './Home.css'
+import { RiShareForwardFill } from 'react-icons/ri';
+import SocialMedia from '@components/social-media'
+import SociaMediaPopup from '@components/social-media-pop-up'
 
 const Home = () => {
   const router = useRouter();
@@ -62,6 +65,7 @@ const Home = () => {
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
   const [isFirstLoadData, setIsFirstLoadData] = useState(true)
+  const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
@@ -71,7 +75,7 @@ const Home = () => {
   ]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [isShare, setIsShare] = useState(false)
   const setSelectedLang = (lang_code) => {
     setCookie('lang', lang_code);
     setSelectedLangCode(lang_code);
@@ -203,6 +207,12 @@ const Home = () => {
     saveHistory();
   }, [dateRange]);
 
+  useEffect(() => {
+    const resizeW = () => changeDeviceSize(window.innerWidth);
+
+    window.addEventListener("resize", resizeW); // Update the width on resize
+    return () => window.removeEventListener("resize", resizeW);
+  });
   const { colors } = useContext(ThemeColors);
 
   // handle date change
@@ -221,6 +231,19 @@ const Home = () => {
 
   return (
     <>
+      {deviceSize < 786 && <> 
+        {/* <div className='wrapper-floatting-button'>
+          <div className='floating-button-top' onClick={() => setIsShare(true)}>
+              <p className='floating-text'>Follow Us</p>
+          </div>
+        </div> */}
+        <div className='wrapper-floatting-button'>
+          <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
+              <p className='floating-text'>Share</p>
+          </div>
+        </div> </>
+      }
+      {isShare && <SociaMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
       <Head />
       <UILoader blocking={loading}>
         <div>
@@ -236,6 +259,13 @@ const Home = () => {
                   </Col>
                   <Col xs='12' sm='12' md='4'>
                     <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                    {deviceSize >= 786 && <> 
+                      <SocialMedia size={35}  bgStyle={{fill: "#000000"}} iconFillColor={"yellow"} />
+                      &nbsp;
+                      <button className="button-no-background" onClick={() => setIsShare(true)}>
+                        <RiShareForwardFill size={25}/>
+                      </button>
+                    &nbsp;&nbsp; </>}
                     <a
                       href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                       target='_blank'
