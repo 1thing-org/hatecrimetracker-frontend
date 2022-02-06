@@ -41,7 +41,7 @@ const ModalPhoneOverlay = (props) => {
     </div>
   );
   };
-const SociaMediaPopup = ({setIsSharing, deviceSize}) => {
+const SocialMediaPopup = ({setIsSharing, deviceSize}) => {
   console.log(deviceSize)
   return (
     <React.Fragment>
@@ -56,4 +56,4 @@ const SociaMediaPopup = ({setIsSharing, deviceSize}) => {
   );
 };
 
-export default SociaMediaPopup;
+export default SocialMediaPopup;
