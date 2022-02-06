@@ -44,5 +44,8 @@
     "title": "声明"
   },
   "no_data_please_report": "選択した場所と日付範囲で収集されたデータはまだありません。\nインシデントを報告するには、<1>こちら</ 1>をクリックしてください。",
-  "search": "検索 ..."
+  "search": "検索 ...",
+  "donate_to_support": "ヘイトクライムの被害者を支援するために寄付する",
+  "tips_needed_from_police": "容疑者のために警察から必要なヒント",
+  "provide_addtional_support": "追加のサポートを提供する"
 }

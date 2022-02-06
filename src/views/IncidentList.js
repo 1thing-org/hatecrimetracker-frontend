@@ -89,6 +89,22 @@ const IncidentList = (props) => {
                     })
                 }
             </div>
+            {props.data.length ?
+                (<div className='icon-description'>
+                    <div className='col'>
+                        <img className='icon' src={donationIcon} alt='donation link' />
+                        <p className='description'>{t('donate_to_support')}</p>
+                    </div>
+                    <div className='col'>
+                        <img className='icon' src={policeTipLineIcon} alt='police tip line' />
+                        <p className='description'>{t('tips_needed_from_police')}</p>
+                    </div>
+                    <div className='col'>
+                        <img className='icon' src={helpTheVictimIcon} alt='help the victim' />
+                        <p className='description'>{t('provide_addtional_support')}</p>
+                    </div>
+                </div>)
+                : null}
             {visibleLimit < props.data.length && searchTerm == "" ?
                 (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleLimit(visibleLimit + INCR_COUNT)}>{t('load_more')}.</Button></div>)
                 : null}
