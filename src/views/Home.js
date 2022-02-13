@@ -362,13 +362,13 @@ const Home = () => {
                   <a
                     href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                     target='_blank'
-                    class="contact_us"
+                    className="contact_us"
                   >
                     {t('contact_us')}
                   </a>
                 </Col>
               </Row>
-            </Col>
+            </Col>z
           </Row>
           <div className='disclaimer'>
             {t('disclaimer.title')}:

@@ -4,21 +4,23 @@ import { MdOutlineContentCopy } from 'react-icons/md';
 import './Popup.css'
 import { IconContext } from "react-icons";
 import SocialMedia from '../social-media'
+import { useTranslation } from 'react-i18next';
 
 const Backdrop = ({setIsSharing}) => {
   return <div onClick={() => {setIsSharing(false)}} className="backdrop" />;
 };
 
 const ModalOverlay = (props) => {
+    const { t } = useTranslation();
     return (
       <div className="modaltest">
-        <p className='modal-title'>t("social.share")</p>
+        <p className='modal-title'>{t("social.share")}</p>
         <div className="modal-media">
           <SocialMedia size={47}  bgStyle={{fill: "#000000"}} iconFillColor={"white"} isShare={true}/>
         </div>
-        <p>t("social.copy_link")</p>
+        <p>{t("social.copy_link")}</p>
         <div className='modal-link'>
-          <input className='modal-input' type="text" name={"link_input"} value={'https://hatecrimetracker.1thing.org'}/>
+          <input className='modal-input' type="text" name={"link_input"} defaultValue={'https://hatecrimetracker.1thing.org'}/>
           
           <IconContext.Provider value={{ size:"25", color: "yellow"}}>
             <button className="copy-button" onClick={() => {navigator.clipboard.writeText('https://hatecrimetracker.1thing.org')}}>
