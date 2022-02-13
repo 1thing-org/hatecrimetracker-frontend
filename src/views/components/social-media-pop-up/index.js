@@ -36,7 +36,7 @@ const ModalOverlay = (props) => {
 const ModalPhoneOverlay = (props) => {
   return (
     <div className="modalPhone">
-      <p className='modal-title'>t("social.follow_us")</p>
+      <p className='modal-title'>{t("social.follow_us")}</p>
       <div className="modal-media">
           <SocialMedia size={47}  bgStyle={{fill: "white"}} iconFillColor={"black"}/>
         </div>
