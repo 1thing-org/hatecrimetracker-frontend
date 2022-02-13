@@ -35,8 +35,8 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import './Home.css'
 import { RiShareForwardFill } from 'react-icons/ri';
-import SocialMedia from '@components/social-media'
-import SociaMediaPopup from '@components/social-media-pop-up'
+import SocialMedia from './components/social-media'
+import SocialMediaPopup from './components/social-media-pop-up'
 
 const Home = () => {
   const router = useRouter();
@@ -244,7 +244,7 @@ const Home = () => {
         </div>  */}
         </>
       }
-      {isShare && <SociaMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
+      {isShare && <SocialMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
       <Head />
       <UILoader blocking={loading}>
         <div>

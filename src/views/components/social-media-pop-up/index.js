@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { MdOutlineContentCopy } from 'react-icons/md';
 import './Popup.css'
 import { IconContext } from "react-icons";
-import SocialMedia from '@components/social-media'
+import SocialMedia from '../social-media'
 
 const Backdrop = ({setIsSharing}) => {
   return <div onClick={() => {setIsSharing(false)}} className="backdrop" />;
@@ -42,7 +42,7 @@ const ModalPhoneOverlay = (props) => {
   );
 };
 
-const SociaMediaPopup = ({setIsSharing, deviceSize}) => {
+const SocialMediaPopup = ({setIsSharing, deviceSize}) => {
   // console.log(deviceSize)
   return (
     <React.Fragment>
@@ -57,4 +57,4 @@ const SociaMediaPopup = ({setIsSharing, deviceSize}) => {
   );
 };
 
-export default SociaMediaPopup;
+export default SocialMediaPopup;
