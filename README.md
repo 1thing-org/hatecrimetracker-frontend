@@ -38,3 +38,42 @@ Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template
 3. Make changes and commit to your forked repository. The changes can be in main or any branches in your own fork.
 4. Create Pull Request from your own fork to https://github.com/lima01/hatecrimetracker-frontend
 5. Wait for reviewer to review and merge the PR
+
+# Develop on MacBook with M1 Chip
+
+1. Install HomeBrew:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+2. Use HomeBrew to install NodeJS V14
+```
+brew install node@14
+```
+3. Set PATH:
+    * Open ~/.zshrc
+    * Add the following lines and save:
+```
+export PATH=/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
+```    
+    * Make .zshrc executable
+```
+chmod +x ~/.zshrc
+```
+4. Install Yarn
+```
+npm install yarn
+```
+5. Make sure git is installed properly
+    * Run git in a terminal, it might ask you to install Command Line Tools. Hit Install to install it.
+6. Install XCode from AppStore
+7. Install vscode
+    * Go to https://code.visualstudio.com, download and install vscode.
+    * Optionally install the following plugins:
+        * React
+        * Python
+        * GitHub Copilot, need to sign in to GitHub when install
+8. Clone repository
+9. Build
+    * Open a terminal, go to a hatecrimtracker-frontend folder
+    * Run `yarn; yarn start`

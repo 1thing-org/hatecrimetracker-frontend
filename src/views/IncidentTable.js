@@ -2,7 +2,7 @@ import DataTable from 'react-data-table-component';
 import moment from 'moment';
 import { Button } from 'reactstrap';
 
-const IncidentTable = ({ data, title, onDelete }) => {
+const IncidentTable = ({ data, title, onEdit, onDelete }) => {
   let columns = [
     {
       name: 'Date',
@@ -41,7 +41,22 @@ const IncidentTable = ({ data, title, onDelete }) => {
   if (onDelete) {
     columns.push(
       {
-        name: 'Action',
+        name: '',
+        grow: 1,
+        selector: "url",
+        width: "100px",
+        format: (row) => {
+          return <Button.Ripple color='danger' block onClick={() => onEdit(row)} >
+            Edit
+          </Button.Ripple>;
+        }
+      }
+    );
+  }
+  if (onDelete) {
+    columns.push(
+      {
+        name: '',
         grow: 1,
         selector: "url",
         width: "120px",
