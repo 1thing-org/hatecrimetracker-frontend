@@ -56,6 +56,35 @@ body.dark-layout {
 	margin-bottom: 2px;
 }
 
+.icon-description {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-between;
+	gap: 24px;
+	margin-top: 24px;
+	margin-bottom: 32px;
+}
+
+.icon-description .col {
+	display: flex;
+	flex-direction: row !important;
+	padding: 0px;
+}
+
+.icon-description .icon {
+	height: 18px;
+	margin-right: 8px;
+	margin-bottom: 2px;
+}
+
+.icon-description .description {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	color: #FFFFFF;
+}
 // .rdt_TableCell{
 // 	background:#000;
 // 	font-family: Helvetica;
