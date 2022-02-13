@@ -47,5 +47,10 @@
   "search": "ค้นหา ...",
   "donate_to_support": "บริจาคสนับสนุนเหยื่ออาชญากรรมจากความเกลียดชัง",
   "tips_needed_from_police": "ให้คำแนะนำตำรวจ",
-  "provide_addtional_support": "ให้การสนับสนุนเพิ่มเติม"
+  "provide_addtional_support": "ให้การสนับสนุนเพิ่มเติม",
+  "social": {
+    "copy_link": "หรือคัดลอก url",
+    "follow_us": "ติดตามเราบนโซเชียลมีเดีย",
+    "share": "แชร์ Hate Crime Tracker กับชุมชนโซเชียลมีเดียของคุณ"
+  }
 }

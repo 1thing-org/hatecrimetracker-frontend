@@ -12,16 +12,16 @@ const Backdrop = ({setIsSharing}) => {
 const ModalOverlay = (props) => {
     return (
       <div className="modaltest">
-        <p className='modal-title'>Share hate crime tracker with your social Community</p>
+        <p className='modal-title'>t("social.share")</p>
         <div className="modal-media">
           <SocialMedia size={47}  bgStyle={{fill: "#000000"}} iconFillColor={"white"} isShare={true}/>
         </div>
-        <p>or copy link</p>
+        <p>t("social.copy_link")</p>
         <div className='modal-link'>
-          <input className='modal-input' type="text" name={"link_input"} value={'https://hatecrimetracker.1thing.org/home'}/>
+          <input className='modal-input' type="text" name={"link_input"} value={'https://hatecrimetracker.1thing.org'}/>
           
           <IconContext.Provider value={{ size:"25", color: "yellow"}}>
-            <button className="copy-button" onClick={() => {navigator.clipboard.writeText('https://hatecrimetracker.1thing.org/home')}}>
+            <button className="copy-button" onClick={() => {navigator.clipboard.writeText('https://hatecrimetracker.1thing.org')}}>
               <MdOutlineContentCopy/>
             </button>
           </IconContext.Provider>
@@ -34,7 +34,7 @@ const ModalOverlay = (props) => {
 const ModalPhoneOverlay = (props) => {
   return (
     <div className="modalPhone">
-      <p className='modal-title'>Follow us on social media</p>
+      <p className='modal-title'>t("social.follow_us")</p>
       <div className="modal-media">
           <SocialMedia size={47}  bgStyle={{fill: "white"}} iconFillColor={"black"}/>
         </div>

@@ -47,5 +47,10 @@
   "search": "Hanapin...",
   "donate_to_support": "Mag-donate para suportahan ang biktima ng hate-crime",
   "tips_needed_from_police": "Magbigay ng mga tip para sa pulis",
-  "provide_addtional_support": "Magbigay ng karagdagang suporta"
+  "provide_addtional_support": "Magbigay ng karagdagang suporta",
+  "social": {
+    "copy_link": "o kopyahin ang url",
+    "follow_us": "Sundan kami sa social media",
+    "share": "Ibahagi ang Hate Crime Tracker sa iyong social media community"
+  }
 }

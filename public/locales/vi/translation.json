@@ -47,5 +47,10 @@
   "search": "Tìm kiếm ...",
   "donate_to_support": "Đóng góp để hỗ trợ nạn nhân của tội ác thù hận",
   "tips_needed_from_police": "Cung cấp lời khuyên cho cảnh sát",
-  "provide_addtional_support": "Cung cấp hỗ trợ bổ sung"
+  "provide_addtional_support": "Cung cấp hỗ trợ bổ sung",
+  "social": {
+    "copy_link": "hoặc sao chép url",
+    "follow_us": "Theo dõi chúng tôi trên mạng xã hội",
+    "share": "Chia sẻ Trình theo dõi tội phạm căm thù với cộng đồng mạng xã hội của bạn"
+  }
 }

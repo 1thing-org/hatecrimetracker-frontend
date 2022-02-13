@@ -15,7 +15,7 @@ const Head = () => {
                 <meta name='site_name' property='og:site_name' content={site_title} />
                 <meta name='keywords' content={site_title} />
                 <meta name='url' property='og:url' content={site_url} />
-                <meta name="image" property='og:image' content='//images/hatecrimetracker_image.png'/>
+                <meta name="image" property='og:image' content='/images/hatecrimetracker_image.png'/>
                 <meta name="description" property='og:description' content={site_desc}/>
                 
                 <meta name="twitter:card" content="Anti-Asian Hate Crime Trend"/>
@@ -23,7 +23,7 @@ const Head = () => {
                 <meta name="twitter:creator" content="@1Thing_Org"/>
                 <meta name="twitter:title" content={site_title}/>
                 <meta name="twitter:description" content={site_desc}/>
-                <meta name="twitter:image" content="//images/hatecrimetracker_twitter.png"/>
+                <meta name="twitter:image" content="/images/hatecrimetracker_twitter.png"/>
             </MetaTags>
         </div>
     )

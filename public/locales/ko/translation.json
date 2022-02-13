@@ -47,5 +47,10 @@
   "search": "찾다 ...",
   "donate_to_support": "증오 범죄 피해자를 지원하기 위해 기부",
   "tips_needed_from_police": "경찰을 위한 팁 제공",
-  "provide_addtional_support": "추가 지원 제공"
+  "provide_addtional_support": "추가 지원 제공",
+  "social": {
+    "copy_link": "또는 URL을 복사",
+    "follow_us": "소셜 미디어에서 팔로우",
+    "share": "Hate Crime Tracker를 소셜 미디어 커뮤니티와 공유하십시오."
+  }
 }

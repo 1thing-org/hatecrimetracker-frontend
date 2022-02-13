@@ -47,5 +47,10 @@
   "search": "検索 ...",
   "donate_to_support": "ヘイトクライムの被害者を支援するために寄付する",
   "tips_needed_from_police": "警察にヒントを提供する",
-  "provide_addtional_support": "追加のサポートを提供する"
+  "provide_addtional_support": "追加のサポートを提供する",
+  "social": {
+    "copy_link": "またはURLをコピーします",
+    "follow_us": "ソーシャルメディアでフォローしてください",
+    "share": "ヘイトクライムトラッカーをソーシャルメディアコミュニティと共有する"
+  }
 }
