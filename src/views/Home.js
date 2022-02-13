@@ -270,7 +270,7 @@ const Home = () => {
                     <a
                       href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                       target='_blank'
-                      className='SimpleLabel'
+                      className='contact_us'
                     >
                       {t('contact_us')}
                     </a>
@@ -362,6 +362,7 @@ const Home = () => {
                   <a
                     href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                     target='_blank'
+                    class="contact_us"
                   >
                     {t('contact_us')}
                   </a>
