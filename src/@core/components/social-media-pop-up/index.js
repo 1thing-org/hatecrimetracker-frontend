@@ -14,7 +14,7 @@ const ModalOverlay = (props) => {
       <div className="modaltest">
         <p className='modal-title'>Share hate crime tracker with your social Community</p>
         <div className="modal-media">
-          <SocialMedia size={47}  bgStyle={{fill: "#000000"}} iconFillColor={"white"}/>
+          <SocialMedia size={47}  bgStyle={{fill: "#000000"}} iconFillColor={"white"} isShare={true}/>
         </div>
         <p>or copy link</p>
         <div className='modal-link'>
@@ -40,9 +40,10 @@ const ModalPhoneOverlay = (props) => {
         </div>
     </div>
   );
-  };
-const SocialMediaPopup = ({setIsSharing, deviceSize}) => {
-  console.log(deviceSize)
+};
+
+const SociaMediaPopup = ({setIsSharing, deviceSize}) => {
+  // console.log(deviceSize)
   return (
     <React.Fragment>
       {ReactDOM.createPortal(
@@ -56,4 +57,4 @@ const SocialMediaPopup = ({setIsSharing, deviceSize}) => {
   );
 };
 
-export default SocialMediaPopup;
+export default SociaMediaPopup;

@@ -39,7 +39,7 @@ import * as serviceWorker from './serviceWorker'
 
 import UserProvider from './providers/UserProvider'
 
-import { hotjar } from 'react-hotjar'
+// import { hotjar } from 'react-hotjar'   Temporary comment out Feedback feature
 
 import GA4React from 'ga-4-react'
 
@@ -53,7 +53,7 @@ try {
     }, 4000)
 } catch (err) {}
 
-hotjar.initialize(2563128, 6)
+// hotjar.initialize(2563128, 6)       Temporary comment out Feedback feature
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 

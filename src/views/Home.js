@@ -36,7 +36,7 @@ import { Trans } from 'react-i18next';
 import './Home.css'
 import { RiShareForwardFill } from 'react-icons/ri';
 import SocialMedia from '@components/social-media'
-import SocialMediaPopup from '@components/social-media-pop-up'
+import SociaMediaPopup from '@components/social-media-pop-up'
 
 const Home = () => {
   const router = useRouter();
@@ -232,18 +232,19 @@ const Home = () => {
   return (
     <>
       {deviceSize < 786 && <> 
-        {/* <div className='wrapper-floatting-button'>
+        <div className='wrapper-floatting-button'>
           <div className='floating-button-top' onClick={() => setIsShare(true)}>
               <p className='floating-text'>Follow Us</p>
           </div>
-        </div> */}
-        <div className='wrapper-floatting-button'>
+        </div>
+        {/* <div className='wrapper-floatting-button'>
           <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
               <p className='floating-text'>Share</p>
           </div>
-        </div> </>
+        </div>  */}
+        </>
       }
-      {isShare && <SocialMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
+      {isShare && <SociaMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
       <Head />
       <UILoader blocking={loading}>
         <div>
