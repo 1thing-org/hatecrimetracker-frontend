@@ -232,16 +232,17 @@ const Home = () => {
   return (
     <>
       {deviceSize < 786 && <> 
-        {/* <div className='wrapper-floatting-button'>
+        <div className='wrapper-floatting-button'>
           <div className='floating-button-top' onClick={() => setIsShare(true)}>
               <p className='floating-text'>Follow Us</p>
           </div>
-        </div> */}
-        <div className='wrapper-floatting-button'>
+        </div>
+        {/* <div className='wrapper-floatting-button'>
           <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
               <p className='floating-text'>Share</p>
           </div>
-        </div> </>
+        </div>  */}
+        </>
       }
       {isShare && <SociaMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
       <Head />

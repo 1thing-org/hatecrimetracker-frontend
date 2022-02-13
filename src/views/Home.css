@@ -41,7 +41,7 @@
 .floating-button-top {
     font-size: 1rem;
     position: fixed;
-    padding: 12px 14px 12px 9px;
+    padding: 20px 14px 20px 9px;
     cursor: pointer;
     background-color: #FFFF00 !important;
     width: 100%;
@@ -50,7 +50,6 @@
     top: 24%;
     z-index: 10;
     font-weight: bold;
-    color: white;
 }
 
 .floating-button-bottom {
@@ -64,7 +63,6 @@
     border-bottom-left-radius: 5px;
     top: 35%;
     z-index: 10;
-    font-weight: bold;
 }
 
 .floating-text{
