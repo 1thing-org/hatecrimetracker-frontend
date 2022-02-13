@@ -18,14 +18,15 @@ const SocialMediaSharing = ({size, bgStyle, iconFillColor}) => {
             >
             <LinkedinIcon round size={size} bgStyle={bgStyle} iconFillColor={iconFillColor}/>
             </LinkedinShareButton>
-            {/* &nbsp;
+            &nbsp;
             <FacebookShareButton
+                disabled={true} 
                 url={"https://hatecrimetracker.1thing.org/"}
                 quote={"Hate crime tracker"}
                 hashtag={"1thing"}
                 description={"This is the hate crime tracker page"}>
                 <FacebookIcon round size={size} bgStyle={bgStyle} iconFillColor={iconFillColor}/>
-            </FacebookShareButton> */}
+            </FacebookShareButton>
         </>
 }
 
@@ -39,10 +40,10 @@ const SocialMediaLink = ({size, bgStyle, iconFillColor}) => {
             <button className={"button-no-background"} onClick={() => window.open("https://www.linkedin.com/company/1-thing-org")}>
             <LinkedinIcon round size={size} bgStyle={bgStyle} iconFillColor={iconFillColor}/>
             </button>
-            {/* &nbsp; */}
-            {/* <button className={"button-no-background"} onClick={() => window.open("")}>
+            &nbsp;
+            <button disabled={true} className={"button-no-background"} onClick={() => window.open("")}>
                 <FacebookIcon round size={size} bgStyle={bgStyle} iconFillColor={iconFillColor}/>
-            </button> */}
+            </button>
         </>
 }
 
