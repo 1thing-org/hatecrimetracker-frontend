@@ -34,6 +34,7 @@ const ModalOverlay = (props) => {
 
   
 const ModalPhoneOverlay = (props) => {
+  const { t } = useTranslation();
   return (
     <div className="modalPhone">
       <p className='modal-title'>{t("social.follow_us")}</p>
