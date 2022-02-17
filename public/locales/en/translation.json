@@ -52,5 +52,10 @@
     "share": "Share the Hate Crime Tracker with your social media community",
     "copy_link": "or copy the url",
     "follow_us": "Follow us on social media"
-  }
+  },
+  "link_to_news_source": "Link to News Source",
+  "how_to_help": "How to Help",
+  "make_a_donation": "Make a Donation",
+  "police_tip_line": "Police Tip Line",
+  "other_ways_to_help": "Other Ways to Help"
 }

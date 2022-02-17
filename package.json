@@ -71,6 +71,7 @@
     "react-intl": "^5.24.0",
     "react-leaflet": "3.1.0",
     "react-meta-tags": "^1.0.1",
+    "react-modal": "^3.14.4",
     "react-paginate": "7.0.0",
     "react-perfect-scrollbar": "1.5.5",
     "react-player": "2.6.2",
