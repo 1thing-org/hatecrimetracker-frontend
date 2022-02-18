@@ -23,8 +23,7 @@ const IncidentList = (props) => {
         else return '50%';
     }
     const getModalHeight = () => {
-        const screenHeight = window.innerHeight;
-        if (screenHeight < 1000) return '95%';
+        if (window.innerWidth < 600 && window.innerHeight < 1000) return '95%';
         else return;
     }
     const modalStyle = {
