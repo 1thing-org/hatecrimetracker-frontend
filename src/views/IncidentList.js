@@ -33,7 +33,7 @@ const IncidentList = (props) => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(255, 255, 255, 0.75)'
+            backgroundColor: 'rgba(0, 0, 0, 0.75)'
         },
         content: {
             position: 'fixed',
@@ -42,7 +42,6 @@ const IncidentList = (props) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            border: '1px solid #ccc',
             background: '#292D33',
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch',
