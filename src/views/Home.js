@@ -368,7 +368,7 @@ const Home = () => {
                   </a>
                 </Col>
               </Row>
-            </Col>z
+            </Col>
           </Row>
           <div className='disclaimer'>
             {t('disclaimer.title')}:
