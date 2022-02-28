@@ -33,7 +33,8 @@
     "total_daily_cases_plural": "合計{{count}}件",
     "trend": "アンチアジアン犯罪事件数の推移",
     "total_cases": "合計{{count}}件",
-    "total_cases_plural": "合計{{count}}件"
+    "total_cases_plural": "合計{{count}}件",
+    "monthly_per_10k_asian": "10kアジア人あたりの月間カウント"
   },
   "contact_us": "お問い合わせ",
   "copyright": "コピーライト",
@@ -47,7 +48,6 @@
   "search": "検索 ...",
   "donate_to_support": "ヘイトクライムの被害者を支援するために寄付する",
   "tips_needed_from_police": "警察にヒントを提供する",
-  "provide_addtional_support": "追加のサポートを提供する",
   "social": {
     "copy_link": "またはURLをコピーします",
     "follow_us": "ソーシャルメディアでフォローしてください",
@@ -57,5 +57,9 @@
   "link_to_news_source": "ニュースソースへのリンク",
   "make_a_donation": "寄付をします",
   "police_tip_line": "警察のヒントライン",
-  "other_ways_to_help": "助ける他の方法"
+  "other_ways_to_help": "助ける他の方法",
+  "provide_additional_support": "追加のサポートを提供する",
+  "data_display": "データ・タイプ",
+  "per_10k_asian": "10kアジア人あたり",
+  "total_incidents": "総インシデント数"
 }

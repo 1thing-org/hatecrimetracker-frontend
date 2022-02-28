@@ -33,7 +33,8 @@
     "trend": "Xu hương sự cố chống dân Châu Á",
     "no_data": "Chưa có dữ liệu được thu thập",
     "total_cases": "Tổng {{count}} trường hợp",
-    "total_cases_plural": "Tổng {{count}} trường hợp"
+    "total_cases_plural": "Tổng {{count}} trường hợp",
+    "monthly_per_10k_asian": "Tổng số hàng tháng trên 10k người Châu Á"
   },
   "contact_us": "Liên hệ",
   "copyright": "Copyright",
@@ -47,7 +48,6 @@
   "search": "Tìm kiếm ...",
   "donate_to_support": "Đóng góp để hỗ trợ nạn nhân của tội ác thù hận",
   "tips_needed_from_police": "Cung cấp lời khuyên cho cảnh sát",
-  "provide_addtional_support": "Cung cấp hỗ trợ bổ sung",
   "social": {
     "copy_link": "hoặc sao chép url",
     "follow_us": "Theo dõi chúng tôi trên mạng xã hội",
@@ -57,5 +57,9 @@
   "link_to_news_source": "Liên kết đến Nguồn tin tức",
   "make_a_donation": "Đóng góp",
   "police_tip_line": "Dòng lời khuyên của cảnh sát",
-  "other_ways_to_help": "Các cách khác để trợ giúp"
+  "other_ways_to_help": "Các cách khác để trợ giúp",
+  "provide_additional_support": "Cung cấp hỗ trợ bổ sung",
+  "data_display": "Loại dữ liệu",
+  "per_10k_asian": "Trên 10k Châu Á",
+  "total_incidents": "Tổng số sự cố"
 }

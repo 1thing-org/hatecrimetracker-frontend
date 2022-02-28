@@ -33,7 +33,8 @@
     "trend": "Үзэн ядалтаас үүдсэн гэмт хэргийн төлөв",
     "no_data": "Мэдээлэл байхгүй",
     "total_cases": "Нийт {{count}} хэрэг",
-    "total_cases_plural": "Нийт {{count}} хэргүүд"
+    "total_cases_plural": "Нийт {{count}} хэргүүд",
+    "monthly_per_10k_asian": "Азийн 10 мянган хүнд ногдох сарын тоо"
   },
   "contact_us": "Холбоо барих",
   "copyright": "Зохиогчийн эрх",
@@ -47,7 +48,6 @@
   "search": "Хайх ...",
   "donate_to_support": "Үзэн ядалтын гэмт хэргийн хохирогчийг дэмжихийн тулд хандив өргө",
   "tips_needed_from_police": "Цагдаа нарт зөвлөгөө өгнө үү",
-  "provide_addtional_support": "Нэмэлт дэмжлэг үзүүлэх",
   "social": {
     "copy_link": "эсвэл url-г хуулна уу",
     "follow_us": "Нийгмийн сүлжээгээр биднийг дагаж мөрдөөрэй",
@@ -57,5 +57,9 @@
   "link_to_news_source": "Мэдээний эх сурвалжийн холбоос",
   "make_a_donation": "Хандив хий",
   "police_tip_line": "Цагдаагийн зөвлөгөөний шугам",
-  "other_ways_to_help": "Туслах бусад аргууд"
+  "other_ways_to_help": "Туслах бусад аргууд",
+  "provide_additional_support": "Нэмэлт дэмжлэг үзүүлэх",
+  "data_display": "Өгөгдлийн төрөл",
+  "per_10k_asian": "Азийн 10 мянган хүнд ногдох",
+  "total_incidents": "Нийт тохиолдлууд"
 }

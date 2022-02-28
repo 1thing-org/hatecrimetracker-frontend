@@ -33,7 +33,8 @@
     "total_daily_cases_plural": "일일 {{count}}건",
     "trend": "증오범죄 사건 경향",
     "total_cases": "총 {{count}}건",
-    "total_cases_plural": "총 {{count}}건"
+    "total_cases_plural": "총 {{count}}건",
+    "monthly_per_10k_asian": "아시아인 10,000당 월별 수"
   },
   "contact_us": "문의하기",
   "copyright": "저작권",
@@ -47,7 +48,6 @@
   "search": "찾다 ...",
   "donate_to_support": "증오 범죄 피해자를 지원하기 위해 기부",
   "tips_needed_from_police": "경찰을 위한 팁 제공",
-  "provide_addtional_support": "추가 지원 제공",
   "social": {
     "copy_link": "또는 URL을 복사",
     "follow_us": "소셜 미디어에서 팔로우",
@@ -57,5 +57,9 @@
   "link_to_news_source": "뉴스 출처 링크",
   "make_a_donation": "기부하세요",
   "police_tip_line": "경찰 정보 라인",
-  "other_ways_to_help": "도움을 줄 수 있는 다른 방법"
+  "other_ways_to_help": "도움을 줄 수 있는 다른 방법",
+  "provide_additional_support": "추가 지원 제공",
+  "data_display": "데이터 형식",
+  "per_10k_asian": "10,000 아시아 당",
+  "total_incidents": "총 사고"
 }

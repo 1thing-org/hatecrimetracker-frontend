@@ -151,7 +151,7 @@ const IncidentMap = (props) => {
         legend.align = "left";
         // legend.position = "left";
         if (!props.showPer10KAsian) {
-            legendLabel.text = "Incident Count";
+            legendLabel.text = t("incident_map.cases");
 
             legend.data = [{
                 "name": ">= 10",
@@ -175,7 +175,7 @@ const IncidentMap = (props) => {
             ];
         }
         else {
-            legendLabel.text = "Incident/10k Asian";
+            legendLabel.text = t("incident_map.count_10k_asian");
             legend.data = [{
                 "name": ">= 1",
                 "fill": "#FFF500"

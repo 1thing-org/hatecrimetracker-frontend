@@ -33,7 +33,8 @@
     "trend": "និន្នាការនៃបទឧក្រិដ្ឋដែលប្រព្រឹត្តឡើងដោយការស្អប់",
     "no_data": "មិនមានទិន្នន័យ",
     "total_cases": "សរុប{{count}}ករណី",
-    "total_cases_plural": "សរុប{{count}}ករណី"
+    "total_cases_plural": "សរុប{{count}}ករណី",
+    "monthly_per_10k_asian": "ការរាប់ប្រចាំខែក្នុង 10k អាស៊ី"
   },
   "contact_us": "ទាក់ទង​យើង",
   "copyright": "រក្សាសិទ្ធិ",
@@ -47,7 +48,6 @@
   "search": "ស្វែងរក...",
   "donate_to_support": "បរិច្ចាកដើម្បីជួយជនរងគ្រោះដោយឧក្រិដ្ឋកម្មស្អប់",
   "tips_needed_from_police": "ផ្តល់ដំបូន្មានដល់ប៉ូលីស",
-  "provide_addtional_support": "ផ្តល់ការគាំទ្របន្ថែម",
   "social": {
     "copy_link": "ឬចម្លង url",
     "follow_us": "តាមដានពួកយើងនៅលើប្រព័ន្ធផ្សព្វផ្សាយសង្គម",
@@ -57,5 +57,9 @@
   "link_to_news_source": "ភ្ជាប់ទៅប្រភពព័ត៌មាន",
   "make_a_donation": "ធ្វើការបរិច្ចាគ",
   "police_tip_line": "បន្ទាត់ព័ត៌មានប៉ូលីស",
-  "other_ways_to_help": "វិធីផ្សេងទៀតដើម្បីជួយ"
+  "other_ways_to_help": "វិធីផ្សេងទៀតដើម្បីជួយ",
+  "provide_additional_support": "ផ្តល់ការគាំទ្របន្ថែម",
+  "data_display": "ប្រភេទ​ទិន្នន័យ",
+  "per_10k_asian": "ក្នុង 10k អាស៊ី",
+  "total_incidents": "ឧប្បត្តិហេតុសរុប"
 }

@@ -33,7 +33,8 @@
     "trend": "হেইট ক্রাইম ঘটনার প্রবণতা",
     "no_data": "কোন তথ্য পাওয়া যায়নি",
     "total_cases": "সর্বমোট {{count}} ঘটনা",
-    "total_cases_plural": "সর্বমোট {{count}} ঘটনা"
+    "total_cases_plural": "সর্বমোট {{count}} ঘটনা",
+    "monthly_per_10k_asian": "প্রতি 10k এশিয়ান মাসিক গণনা"
   },
   "contact_us": "আমাদের সাথে যোগাযোগ করুন",
   "copyright": "কপিরাইট",
@@ -47,7 +48,6 @@
   "search": "অনুসন্ধান...",
   "donate_to_support": "ঘৃণা-অপরাধের শিকারকে সমর্থন করতে দান করুন",
   "tips_needed_from_police": "পুলিশের জন্য টিপস প্রদান",
-  "provide_addtional_support": "অতিরিক্ত সমর্থন প্রদান",
   "social": {
     "copy_link": "অথবা ইউআরএল কপি করুন",
     "follow_us": "সামাজিক মিডিয়াতে আমাদের অনুসরণ করুন",
@@ -57,5 +57,9 @@
   "link_to_news_source": "সংবাদ উত্স লিঙ্ক",
   "make_a_donation": "উচ্চ স্বরে পড়া",
   "police_tip_line": "পুলিশ টিপ লাইন",
-  "other_ways_to_help": "সাহায্য করার অন্যান্য উপায়"
+  "other_ways_to_help": "সাহায্য করার অন্যান্য উপায়",
+  "provide_additional_support": "অতিরিক্ত সমর্থন প্রদান",
+  "data_display": "ডেটা টাইপ",
+  "per_10k_asian": "প্রতি 10k এশিয়ান",
+  "total_incidents": "মোট ঘটনা"
 }

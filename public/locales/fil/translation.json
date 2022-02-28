@@ -33,7 +33,8 @@
     "trend": "Pagdami ng Insidente ng Krimen sa Pagkamuhi",
     "no_data": "Walang nakolektang data",
     "total_cases": "Kabuuang {{count}} Insidente",
-    "total_cases_plural": "Kabuuang mga {{count}} Insidente"
+    "total_cases_plural": "Kabuuang mga {{count}} Insidente",
+    "monthly_per_10k_asian": "Buwanang Bilang Bawat 10k Asian"
   },
   "contact_us": "Makipag-ungayan sa Amin",
   "copyright": "Kopirayt",
@@ -47,7 +48,6 @@
   "search": "Hanapin...",
   "donate_to_support": "Mag-donate para suportahan ang biktima ng hate-crime",
   "tips_needed_from_police": "Magbigay ng mga tip para sa pulis",
-  "provide_addtional_support": "Magbigay ng karagdagang suporta",
   "social": {
     "copy_link": "o kopyahin ang url",
     "follow_us": "Sundan kami sa social media",
@@ -57,5 +57,9 @@
   "link_to_news_source": "Link sa Pinagmulan ng Balita",
   "make_a_donation": "Magbigay ng Donasyon",
   "police_tip_line": "Police Tip Line",
-  "other_ways_to_help": "Iba pang Mga Paraan para Tumulong"
+  "other_ways_to_help": "Iba pang Mga Paraan para Tumulong",
+  "provide_additional_support": "Magbigay ng karagdagang suporta",
+  "data_display": "Uri ng datos",
+  "per_10k_asian": "Bawat 10k Asian",
+  "total_incidents": "Kabuuang Insidente"
 }

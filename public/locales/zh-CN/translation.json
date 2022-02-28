@@ -33,7 +33,8 @@
     "trend": "反亚裔仇恨犯罪事件趋势图",
     "no_data": "没有收集到数据",
     "total_cases": "总计{{count}}起",
-    "total_cases_plural": "总计{{count}}起"
+    "total_cases_plural": "总计{{count}}起",
+    "monthly_per_10k_asian": "每 10k 亚洲人的每月计数"
   },
   "contact_us": "联系我们",
   "copyright": "版权所有",
@@ -47,7 +48,6 @@
   "search": "搜索 ...",
   "donate_to_support": "为仇恨犯罪受害者捐款",
   "tips_needed_from_police": "向警方提供线索",
-  "provide_addtional_support": "提供其他的支持",
   "social": {
     "copy_link": "或复制网址",
     "follow_us": "在社交媒体上关注我们",
@@ -57,5 +57,9 @@
   "link_to_news_source": "链接到新闻来源",
   "make_a_donation": "做捐献",
   "police_tip_line": "警察提示线",
-  "other_ways_to_help": "其他帮助方式"
+  "other_ways_to_help": "其他帮助方式",
+  "provide_additional_support": "提供其他的支持",
+  "data_display": "数据类型",
+  "per_10k_asian": "每 10k 亚洲人",
+  "total_incidents": "总事故"
 }

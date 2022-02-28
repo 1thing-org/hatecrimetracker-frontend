@@ -33,7 +33,8 @@
     "trend": "घृणा अपराध घटना प्रवृत्ति",
     "no_data": "कोई डेटा एकत्र नहीं किया गया",
     "total_cases": "कुल {{count}} घटना",
-    "total_cases_plural": "कुल {{count}} घटनाएं"
+    "total_cases_plural": "कुल {{count}} घटनाएं",
+    "monthly_per_10k_asian": "प्रति 10k एशियाई मासिक गणना"
   },
   "contact_us": "संपर्क करें",
   "copyright": "कॉपीराइट",
@@ -47,7 +48,6 @@
   "search": "खोज ...",
   "donate_to_support": "घृणा-अपराध पीड़ित का समर्थन करने के लिए दान करें",
   "tips_needed_from_police": "पुलिस के लिए सुझाव प्रदान करें",
-  "provide_addtional_support": "अतिरिक्त सहायता प्रदान करें",
   "social": {
     "copy_link": "या यूआरएल कॉपी करें",
     "follow_us": "सामाजिक मीडिया पर हमारा अनुसरण करें",
@@ -57,5 +57,9 @@
   "link_to_news_source": "समाचार स्रोत से लिंक करें",
   "make_a_donation": "एक दान करें",
   "police_tip_line": "पुलिस टिप लाइन",
-  "other_ways_to_help": "मदद करने के अन्य तरीके"
+  "other_ways_to_help": "मदद करने के अन्य तरीके",
+  "provide_additional_support": "अतिरिक्त सहायता प्रदान करें",
+  "data_display": "तथ्य प्रकार",
+  "per_10k_asian": "प्रति 10k एशियाई",
+  "total_incidents": "कुल घटनाएं"
 }

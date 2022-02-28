@@ -53,7 +53,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
         return (
             <div className='recharts-custom-tooltip'>
             <p>{dateFns.format(d, "MMM yyyy")}</p>
-            <p><strong>{t("incident_chart.total_monthly_cases_per_10k_Asian", { count: monthly })}</strong></p>
+            <p><strong>{t("incident_chart.total_monthly_cases", { count: monthly })}</strong></p>
             <p><strong>{t("incident_map.count_10k_asian") + " : " + monthly_10k_asian }</strong></p>
             </div>
         )
@@ -85,9 +85,9 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
                     tickCount={5} 
                     allowDecimals={true}
                     domain={[0, 'auto']}
-                    label={{ value: t("monthly_per_10k_asian"), angle: -90, position: 'insideLeft' }} />
+                    />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar name={t("monthly_per_10k_asian")} dataKey='cases_per_10k' stroke={monthlyData.length > 60 ? color : undefined} fill={color} strokeWidth={3}/>
+                <Bar name={t("incident_chart.monthly_per_10k_asian")} dataKey='cases_per_10k' stroke={monthlyData.length > 60 ? color : undefined} fill={color} strokeWidth={3}/>
                 <Legend wrapperStyle={{ position: 'relative', marginTop: '4px' }} />
                 </BarChart>
             </ResponsiveContainer>
