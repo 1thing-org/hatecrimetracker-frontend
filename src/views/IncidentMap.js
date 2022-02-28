@@ -7,7 +7,7 @@ import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
 import { getStateIncidentPerM, formatIncidentRate, forEachState, getStateIncidentPer10kAsian } from '../utility/Utils'
 import { useTranslation } from 'react-i18next';
-
+import './IncidentMap.css'
 am4core.useTheme(am4themes_animated)
 
 /*
@@ -257,7 +257,10 @@ legend.data = [{
             <CardHeader>
             </CardHeader>
             <CardBody>
-                <div id='chartdiv' className='incident-map-container' style={{align:"center"}}></div>
+                <div id='' className='incident-map'>
+                     <div id='chartdiv' style={{ width: '100%', height: '100%'}}>
+                     </div>
+                 </div>
             </CardBody>
         </Card>
     )
