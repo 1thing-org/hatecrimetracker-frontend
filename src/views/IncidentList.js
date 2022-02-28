@@ -195,7 +195,7 @@ const IncidentList = (props) => {
                     </div>
                     <div className='col'>
                         <img className='icon' src={helpTheVictimIcon} alt='help the victim' />
-                        <p className='description'>{t('provide_addtional_support')}</p>
+                        <p className='description'>{t('provide_additional_support')}</p>
                     </div>
                 </div>)
                 : null}
