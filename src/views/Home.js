@@ -259,7 +259,7 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                <Col xs='12' sm='12' md='auto'>
+                <Col xs='12' sm='12' md='8'>
                     <p className='title'>
                       <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
