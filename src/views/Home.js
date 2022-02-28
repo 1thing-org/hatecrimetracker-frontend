@@ -14,10 +14,14 @@ import {
   Label,
   Row,
   Button,
+  Nav,
+  NavItem,
+  NavLink 
 } from 'reactstrap';
 import 'rsuite/dist/styles/rsuite-dark.css';
 import * as incidentsService from '../services/incidents';
 import IncidentChart from './IncidentChart';
+import IncidentChartPer10kAsian from './IncidentChartPer10kAsian';
 import DateRangeSelector from './DateRangeSelector';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentList from './IncidentList';
@@ -37,6 +41,7 @@ import './Home.css'
 import { RiShareForwardFill } from 'react-icons/ri';
 import SocialMedia from './components/social-media'
 import SocialMediaPopup from './components/social-media-pop-up'
+import DataDisplaySwitcher from './DataDisplaySwitcher'
 
 const Home = () => {
   const router = useRouter();
@@ -73,6 +78,7 @@ const Home = () => {
       value: 0,
     },
   ]);
+  const [monthlyCount, setMonthlyCount] = useState([]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false)
@@ -134,6 +140,7 @@ const Home = () => {
             stats.monthly_stats
           )
         );
+        setMonthlyCount(stats.monthly_stats);
         if (updateMap) {
           setIncidentAggregated(stats.total);
         }
@@ -252,7 +259,7 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                <Col xs='12' sm='12' md='8'>
+                <Col xs='12' sm='12' md='auto'>
                     <p className='title'>
                       <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
@@ -306,26 +313,27 @@ const Home = () => {
                         isMobile={isMobile}
                       />
                     </Col>
+                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
+                      <Label className='SimpleLabel'>{t('data_display')}:</Label>{' '}
+                      <DataDisplaySwitcher isShowPer10kAsian={isShowPer10kAsian} onClick={() => setIsShowPer10kAsian(!isShowPer10kAsian)} />
+                    </Col>
                   </Row>
                 </FormGroup>
               </Container>
             </Col>
           </Row>
           <Row className='match-height'>
-            <Col xl='8' lg='8' md='6' xs='12'>
+            <Col xl='8' lg='6' md='12'>
               <div>
-                <IncidentChart
-                  className="behind-relative"
-                  color={colors.primary.main}
-                  chart_data={incidentTimeSeries}
-                  state={selectedState}
-                  isFirstLoadData={isFirstLoadData}
-                />
+                {isShowPer10kAsian ? 
+                  <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange} isFirstLoadData={isFirstLoadData}/> 
+                  : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState} isFirstLoadData={isFirstLoadData}/>}
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
                   lang={i18n.language}
                   stateToggled={stateToggled}
+                  showPer10KAsian={isShowPer10kAsian}
                 />
                 <IncidentCountTable
                   title={'Incident Count by State'}
@@ -335,7 +343,7 @@ const Home = () => {
                 />
               </div>
             </Col>
-            <Col xl='4' lg='4' md='6' xs='12'>
+            <Col xl='4' lg='6' md='12'>
               <Card>
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"name": "hatecrimetracker",
+			"path": "../../../../../hatecrimetracker"
+		}
+	],
+	"settings": {
+		"i18n-ally.localesPaths": [
+			"public/locales",
+			"src/assets/data/locales",
+			"src/@core/assets/data/locales"
+		],
+		"i18n-ally.keystyle": "nested"
+	}
+}

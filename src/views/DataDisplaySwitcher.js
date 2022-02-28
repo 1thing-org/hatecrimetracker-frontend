@@ -1,0 +1,30 @@
+import {  Nav, NavItem, NavLink } from 'reactstrap';
+import './DataDisplaySwitcher.css';
+
+const DataDisplaySwitcher = ({isShowPer10kAsian, onClick}) => {
+    const TotalButton = () => {
+        if (isShowPer10kAsian === true) {
+            onClick()
+        }
+    }
+    const Per10KAsianButton = () => {
+        if (isShowPer10kAsian !== true) {
+            onClick()
+        }
+    }
+
+    return (
+            <Nav className= "ButtonToggle" pills>
+                <NavItem className="RowButtonToggle">
+                    <NavLink active={!isShowPer10kAsian} onClick={TotalButton}>
+                        Total
+                    </NavLink>
+                    <NavLink className='Switcher10KButton' active={isShowPer10kAsian} onClick={Per10KAsianButton}>
+                        Per 10K Asian
+                    </NavLink>
+                </NavItem>
+            </Nav>
+    )
+}
+
+export default DataDisplaySwitcher
