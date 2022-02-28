@@ -284,11 +284,12 @@ const Home = () => {
           <Row className='match-height'>
             <Col xl='8' lg='6' md='12'>
               <div>
-                {isShowPer10kAsian ? <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
+                {isShowPer10kAsian ? 
+                  <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
                   : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
                 <IncidentMap
                   mapData={incidentAggregated}
-                  selectdState={selectedState}
+                  selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
                   onChange={setSelectedState}
