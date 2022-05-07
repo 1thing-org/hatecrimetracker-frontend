@@ -312,7 +312,7 @@ const Home = () => {
             </Col>
           </Row>
           <Row className='match-height'>
-            <Col xl='8' lg='8' md='6' xs='12'>
+            <Col>
               <div>
                 <IncidentChart
                   className="behind-relative"
@@ -334,16 +334,6 @@ const Home = () => {
                   stateToggled={stateToggled}
                 />
               </div>
-            </Col>
-            <Col xl='4' lg='4' md='6' xs='12'>
-              <Card>
-                {/* <CardHeader>
-                            <CardTitle>Hate Crime Incidents</CardTitle>
-                        </CardHeader> */}
-                <CardBody>
-                  <IncidentList data={incidents} />
-                </CardBody>
-              </Card>
             </Col>
           </Row>
         </div>
