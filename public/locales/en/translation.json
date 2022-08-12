@@ -18,7 +18,7 @@
     "state" : "State",
     "count" : "Count",
     "count_10k_asian" : "Count/10K Asian",
-    "count_1mm" : "Count/1MM"
+    "count_1mm" : "Count/1MM",
     "asian_population": "Asian Population",
     "state_population": "State Population"
 
