@@ -5,6 +5,10 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
     <meta name="theme-color" content="#000000" />
+
+    <!-- For sharing on social media iamge -->
+    <!-- <meta property="og:image:url" content="http://my.website.com/images/thumb.png" />  -->
+    
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -25,9 +29,27 @@
     />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" crossorigin="" />
     <title>Anti-Asian Hate Crime Tracker</title>
+    <meta name='type' property='og:type' content='website' />
+    <meta name='title' property='og:title' content="Anti-Asian Hate Crime Tracker" />
+    <meta name='site_name' property='og:site_name' content="Anti-Asian Hate Crime Tracker" />
+    <meta name='keywords' content="Anti-Asian Hate Crime Tracker" />
+    <meta name='url' property='og:url' content="https://hatecrimetracker.1thing.org" />
+    <meta name="image" property='og:image' content="https://hatecrimetracker.1thing.org/images/hatecrimetracker_image.png"/>
+    <meta name="description" property='og:description' content="Even though the anti-Asian hate is not under the spotlight in today’s news, the violence and hate is still happening on a daily basis."/>
+    
+    <meta name="twitter:card" content="Anti-Asian Hate Crime Trend"/>
+    <meta name="twitter:site" content="https://hatecrimetracker.1thing.org"/>
+    <meta name="twitter:creator" content="@1Thing_Org"/>
+    <meta name="twitter:title" content="Anti-Asian Hate Crime Tracker"/>
+    <meta name="twitter:description" content="Even though the anti-Asian hate is not under the spotlight in today’s news, the violence and hate is still happening on a daily basis."/>
+    <meta name="twitter:image" content="https://hatecrimetracker.1thing.org/images/hatecrimetracker_twitter.png"/>
   </head>
   <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-modal/3.14.3/react-modal.min.js" integrity="sha512-MY2jfK3DBnVzdS2V8MXo5lRtr0mNRroUI9hoLVv2/yL3vrJTam3VzASuKQ96fLEpyYIT4a8o7YgtUs5lPjiLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div id="spinning"></div>
     <div id="root"></div>
+    <div id="backdrop-root"></div>
+    <div id="overlay-root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

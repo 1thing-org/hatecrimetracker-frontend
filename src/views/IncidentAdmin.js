@@ -9,14 +9,20 @@ import { auth } from "../firebase";
 import { UserContext } from "../providers/UserProvider";
 import * as incidentsService from "../services/incidents";
 import IncidentTable from './IncidentTable';
-import {Button } from 'reactstrap'
-import {signInWithGoogle} from '../firebase'
+import { Button } from 'reactstrap'
+import { signInWithGoogle } from '../firebase'
+// to get states abbreviation
+import { forEachState } from '../utility/Utils';
+import { Callbacks } from 'jquery';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
   const isAddMode = true;
 
-  const [data, setData] = useState([]);
+  const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
+
+  const [currIncidentId, setCurrIncidentId] = useState(null);
+  const [recentIncidents, setRecentIncidents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   // form validation rules 
@@ -28,11 +34,12 @@ const IncidentAdminPage = () => {
         return new Date();
       }),
     incident_location: Yup.string()
-      .max(2, "Location should be in short form of state, such as NJ, NY, CA, etc.")
       .required('Incident location is required'),
     url: Yup.string().url(),
     abstract: Yup.string()
-      .required('incident abstract is required')
+      .required('incident abstract is required'),
+    donation_link: Yup.string().url(),
+    police_tip_line: Yup.string(),
   });
 
   // functions to build form returned by useForm() hook
@@ -40,15 +47,20 @@ const IncidentAdminPage = () => {
     resolver: yupResolver(validationSchema)
   });
 
-  function onSubmit(data) {
-    data.created_by = user.email;
-    incidentsService.createIncident(data).then((incident_id) => {
+  function onSubmit(incident) {
+    incident.id = currIncidentId;
+    incident.created_by = user.email;
+    incidentsService.createIncident(incident).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
       setValue("title", "");
       setValue("incident_location", "");
       setValue("url", "");
       setValue("abstract", "");
-      reloadIncidents(data.incident_time);
+      setValue("donation_link", "");
+      setValue("police_tip_line", "");
+      setValue("help_the_victim", "");
+      setCurrIncidentId(null);
+      reloadIncidents(incident.incident_time);
     });
   }
 
@@ -56,7 +68,7 @@ const IncidentAdminPage = () => {
     //load incidents around the date -7 - 1 days
     console.log("reloading incidents around:" + date);
     incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, 'en', true)
-      .then(incidents => setData(incidents));
+      .then(incidents => setRecentIncidents(incidents));
   }
   function dateChanged(event) {
     // setData(FAKE_DATA.incidents);
@@ -65,6 +77,19 @@ const IncidentAdminPage = () => {
     reloadIncidents(date);
   }
 
+  const editIncident = (incident) => {
+    setCurrIncidentId(incident.id);
+    reset({
+      incident_time: moment(incident.incident_time).format('YYYY-MM-DD'),
+      title: incident.title,
+      incident_location: incident.incident_location,
+      url: incident.url,
+      abstract: incident.abstract,
+      donation_link: incident.donation_link,
+      police_tip_line: incident.police_tip_line,
+      help_the_victim: incident.help_the_victim,
+    });
+  }
   const deleteIncident = (incident) => {
     Swal.fire({
       title: 'Are you sure you want to delete this incident?',
@@ -83,6 +108,7 @@ const IncidentAdminPage = () => {
       if (result.isConfirmed) {
         incidentsService.deleteIncident(incident.id).then(() => {
           Swal.fire("Incident has been delete successfully!")
+          setCurrIncidentId(null);
           reloadIncidents(selectedDate);
         })
       }
@@ -98,6 +124,21 @@ const IncidentAdminPage = () => {
     </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
+
+  // statesAbbreviation stores all abbreviation of US states
+  const statesAbbreviation = [];
+  if (statesAbbreviation.length === 0) {
+    forEachState((state, name) => {
+      // create format as "New York - NY", "Canada - CANADA", "Online - ONLINE"
+      statesAbbreviation.push([state, name + " - " + state]);
+    });
+  }
+  // stateAbbrOptions is all options will be displayed on location  
+  const stateAbbrOptions = (
+    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
+  );
+
+
   return (
     <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
       <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
@@ -124,7 +165,11 @@ const IncidentAdminPage = () => {
           </div>
           <div className="form-group col-1">
             <label>Location</label>
-            <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} />
+            {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} /> */}
+            <select name="incident_location" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`}>
+              <option value={""}>select</option>
+              {stateAbbrOptions}
+            </select>
             <div className="invalid-feedback">{errors.incident_location?.message}</div>
           </div>
           <div className="form-group col-9">
@@ -147,6 +192,25 @@ const IncidentAdminPage = () => {
             <div className="invalid-feedback">{errors.abstract?.message}</div>
           </div>
         </div>
+        <div className="form-row">
+          <div className="form-group col-8">
+            <label>Donation</label>
+            <input name="donation_link" type="text" ref={register} className={`form-control ${errors.donation_link ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.donation_link?.message}</div>
+          </div>
+          <div className="form-group col-4">
+            <label>Police Tip Line</label>
+            <input name="police_tip_line" type="text" ref={register} className={`form-control ${errors.police_tip_line ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.police_tip_line?.message}</div>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-12">
+            <label>Help the victim</label>
+            <textarea name="help_the_victim" rows="4" ref={register} className={`form-control ${errors.help_the_victim ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.help_the_victim?.message}</div>
+          </div>
+        </div>
         <div className="form-group">
           <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary">
             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
@@ -157,7 +221,8 @@ const IncidentAdminPage = () => {
       </form>
       <IncidentTable className="col-12"
         title="Incidents Around the Same Time Period"
-        data={data}
+        data={recentIncidents}
+        onEdit={editIncident}
         onDelete={deleteIncident}
       />
     </div>

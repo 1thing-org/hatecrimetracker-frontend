@@ -11,22 +11,24 @@
   "incident_table": {
     "total_incident": "총 {{count}}건",
     "total_incident_plural": "총 {{count}}건",
-    "no_data" : "수집된 데이터가 없습니다",
+    "no_data": "수집된 데이터가 없습니다",
     "state": "주",
     "count": "수",
     "count_10k_asian": "만 아시아인 당 사건",
-    "count_1mm": "백만 명당 사건"
+    "count_1mm": "백만 명당 사건",
+    "asian_population": "아시아 인구",
+    "state_population": "주 인구"
   },
   "incident_map": {
     "cases": "사건",
-    "no_data" : "수집된 데이터가 없습니다",
+    "no_data": "수집된 데이터가 없습니다",
     "count_10k_asian": "만 아시아인 당 사건",
     "count_1mm": "백만 명당 사건"
   },
   "incident_chart": {
     "total_monthly_cases": "월별 {{count}}건",
     "total_monthly_cases_plural": "월별 {{count}}건",
-    "no_data" : "수집된 데이터가 없습니다",
+    "no_data": "수집된 데이터가 없습니다",
     "total_daily_cases": "일일 {{count}}건",
     "total_daily_cases_plural": "일일 {{count}}건",
     "trend": "증오범죄 사건 경향",
@@ -36,10 +38,24 @@
   "contact_us": "문의하기",
   "copyright": "저작권",
   "disclaimer": {
-    "title": "부인 성명",
-    "here": "여기",
     "1": "동양 증오 범죄 추적자 웹사이트는 일상적으로 일어나고 있는 반아시아적 행동에 대한 인식을 높이려고 자원 봉사 그룹이 이 사이트를 만들고 유지하고 있읍니다.",
     "2": "온라인 공개 소스에서 반아시아인 사건을 수집하고 정보의 원래 소스로 안내하는 사이트를 제공합니다. 저작권 자료의 사용이 17 U.S.C.§ 107 에 따라 '공정 사용'으로 허용된다고 믿습니다. 사용에 대해 질문이나 사항이 있는 경우에는 <1>여기에</1> 문의하세요.",
-    "3": "최선의 노력을 다해 데이터를 수집하고 집계합니다. 여기에 있는 정보는 법적 또는 전문적인 조언이나 서비스를 제공하는 데 관여하지 않는다는 이해 하에 제공됩니다. 어떠한 경우에도 웹사이트 액세스 또는 사용 관련이 발생하는 결과에 책임을 지지 않습니다."
-  }
+    "3": "최선의 노력을 다해 데이터를 수집하고 집계합니다. 여기에 있는 정보는 법적 또는 전문적인 조언이나 서비스를 제공하는 데 관여하지 않는다는 이해 하에 제공됩니다. 어떠한 경우에도 웹사이트 액세스 또는 사용 관련이 발생하는 결과에 책임을 지지 않습니다.",
+    "title": "부인 성명"
+  },
+  "no_data_please_report": "선택한 위치 및 날짜 범위에서 아직 수집된 데이터가 없습니다. \n사고를 신고하려면 <1>여기</1>를 클릭하십시오.",
+  "search": "찾다 ...",
+  "donate_to_support": "증오 범죄 피해자를 지원하기 위해 기부",
+  "tips_needed_from_police": "경찰을 위한 팁 제공",
+  "provide_addtional_support": "추가 지원 제공",
+  "social": {
+    "copy_link": "또는 URL을 복사",
+    "follow_us": "소셜 미디어에서 팔로우",
+    "share": "Hate Crime Tracker를 소셜 미디어 커뮤니티와 공유하십시오."
+  },
+  "how_to_help": "도움을 주는 방법",
+  "link_to_news_source": "뉴스 출처 링크",
+  "make_a_donation": "기부하세요",
+  "police_tip_line": "경찰 정보 라인",
+  "other_ways_to_help": "도움을 줄 수 있는 다른 방법"
 }

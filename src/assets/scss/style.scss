@@ -17,37 +17,184 @@ body.dark-layout {
 	color: #b4b7bd;
 	background-color: #000000; }
 	
-.incident-list .title {
+.incident-list .incident-title {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: bold;
 	font-size: 14px;
 	line-height: 120%;
 	color:#FEF753;
-	margin-top:8px;
+}
+
+.incident-list .incident-title:hover {
+	text-decoration: underline;
+}
+
+.incident-list .help-icons {
+	margin-left: 5px;
+}
+
+.incident-list .icon {
+	height: 18px;
+	margin-bottom: 2px;
 }
 
 .incident-list .incident {
-	margin-bottom: 16px;
+	margin-bottom: 24px;
 }
-.incident-list .location_time{
+.incident-list .location-time {
 	font-family: Helvetica;
 	font-style: normal;
-	font-weight: bold;
+	font-weight: normal;
 	font-size: 12px;
 	line-height: 18px;
-	margin-top:2px;
+	margin-top: 2px;
 	color: rgba(255, 255, 255, 0.7);
 }
 
-.incident-list .description{
+.incident-list .description {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	line-height: 16px;
 	color: #FFFFFF;
-	margin-top:4px;
+	margin-top: 8px;
+}
+
+.icon-description {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-between;
+	gap: 24px;
+	margin-top: 24px;
+	margin-bottom: 32px;
+}
+
+.icon-description .col {
+	display: flex;
+	flex-direction: row !important;
+	padding: 0px;
+}
+
+.icon-description .icon {
+	height: 18px;
+	margin-right: 8px;
+	margin-bottom: 2px;
+}
+
+.icon-description .description {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	color: #FFFFFF;
+}
+
+.details-modal .incident-title {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 120%;
+	color:#FEF753;
+}
+
+.details-modal .location-time {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 18px;
+	margin-top: 2px;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.details-modal .close-modal-button {
+	height: 20px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+.details-modal .close-modal-button:hover {
+	height: 24px;
+	top: 18px;
+	right: 18px;
+}
+
+.details-modal .description {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 18px;
+	color: #FFFFFF;
+	padding: 0px;
+	align-self: center;
+}
+
+.details-modal .open-in-new {
+	height: 12px;
+	color: #52A5D7;
+	margin-left: 2px;
+	margin-bottom: 0px;
+}
+
+.details-modal .link-text {
+	font-family: Helvetica;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 12px;
+	text-decoration: underline;
+	color: #52A5D7;
+}
+
+.details-modal .link-text:hover {
+	color: #52A5D7;
+	font-weight: bold;
+}
+
+.details-modal .support .title {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin-right: 8px;
+	flex-grow: 0;
+}
+
+.details-modal .title-with-line {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 36px;
+	margin-bottom: 12px;
+}
+
+.details-modal .divider{
+	flex-grow: 1;
+	height: 1px;
+	background-color:#FFFFFF;
+}
+
+.details-modal .support .icon {
+	height: 18px;
+	width: 18px;
+	padding: 0px;
+	flex: 0;
+	margin-right: 8px;
+	margin-bottom: 2px;
+}
+
+.details-modal .support .row {
+	margin: 4px 0px;
+}
+
+.details-modal .support .col {
+	padding: 0px;
 }
 
 // .rdt_TableCell{
@@ -141,4 +288,7 @@ body.dark-layout {
 	font-size: small;
 	padding: 0.8rem;
 	color:lightgray;
+}
+.contact_us {
+	color: #FEF753 !important;
 }

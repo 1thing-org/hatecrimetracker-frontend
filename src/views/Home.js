@@ -39,6 +39,10 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import DataDisplaySwitcher from './DataDisplaySwitcher'
 import './Home.css'
+import { RiShareForwardFill } from 'react-icons/ri';
+import SocialMedia from './components/social-media'
+import SocialMediaPopup from './components/social-media-pop-up'
+
 
 const Home = () => {
   const router = useRouter();
@@ -66,6 +70,8 @@ const Home = () => {
   const [incidents, setIncidents] = useState([]);
   const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
+  const [isFirstLoadData, setIsFirstLoadData] = useState(true)
+  const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
@@ -76,7 +82,7 @@ const Home = () => {
   const [monthlyCount, setMonthlyCount] = useState([]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [isShare, setIsShare] = useState(false)
   const setSelectedLang = (lang_code) => {
     setCookie('lang', lang_code);
     setSelectedLangCode(lang_code);
@@ -140,6 +146,7 @@ const Home = () => {
           setIncidentAggregated(stats.total);
         }
         setLoading(false);
+        setIsFirstLoadData(false)
       });
   };
 
@@ -197,6 +204,7 @@ const Home = () => {
     }
   }, [router]);
   useEffect(() => {
+    // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
@@ -207,6 +215,12 @@ const Home = () => {
     saveHistory();
   }, [dateRange]);
 
+  useEffect(() => {
+    const resizeW = () => changeDeviceSize(window.innerWidth);
+
+    window.addEventListener("resize", resizeW); // Update the width on resize
+    return () => window.removeEventListener("resize", resizeW);
+  });
   const { colors } = useContext(ThemeColors);
 
   // handle date change
@@ -216,8 +230,29 @@ const Home = () => {
     }
   }
 
+  const stateToggled = (state) => {
+    // console.log("This is:" + this);
+    const newState = state == selectedState ? null : state
+    // console.log("Toggle state:" + state + " selectedState:" + selectedState + " new state:" + newState)
+    setSelectedState(newState);
+  }
+
   return (
     <>
+      {deviceSize < 786 && <> 
+        <div className='wrapper-floatting-button'>
+          <div className='floating-button-top' onClick={() => setIsShare(true)}>
+              <p className='floating-text'>Follow Us</p>
+          </div>
+        </div>
+        {/* <div className='wrapper-floatting-button'>
+          <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
+              <p className='floating-text'>Share</p>
+          </div>
+        </div>  */}
+        </>
+      }
+      {isShare && <SocialMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
       <Head />
       <UILoader blocking={loading}>
         <div>
@@ -225,22 +260,32 @@ const Home = () => {
             <Col xs='12'>
               <Container className='header'>
                 <Row className='align-items-center'>
-                <Col xs='12' sm='12' md='auto'>
+
+                <Col xs='12' sm='12' md='8'>
                     <p className='title'>
                       <img src={logo} alt='logo' className='logo'  />{' '}
                       {t('website.name')}
                     </p>
                   </Col>
-                  <Col xs='12' sm='12' md='auto'>
-                    <div className='OneRowItem'>
+
+                  <Col xs='12' sm='12' md='4'>
+                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                    {deviceSize >= 786 && <> 
+                      <SocialMedia size={35}  bgStyle={{fill: "#000000"}} iconFillColor={"yellow"} />
+                      &nbsp;
+                      <button className="button-no-background" onClick={() => setIsShare(true)}>
+                        <RiShareForwardFill size={25}/>
+                      </button>
+                    &nbsp;&nbsp; </>}
                     <a
                       href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                       target='_blank'
-                      className='SimpleLabel'
+                      className='contact_us'
                     >
                       {t('contact_us')}
                     </a>
-                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    
                     <SelectPicker
                       data={support_languages}
                       searchable={false}
@@ -284,9 +329,11 @@ const Home = () => {
           <Row className='match-height'>
             <Col xl='8' lg='6' md='12'>
               <div>
+
                 {isShowPer10kAsian ? 
                   <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
                   : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
+
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
@@ -298,7 +345,7 @@ const Home = () => {
                   title={'Incident Count by State'}
                   data={incidentAggregated}
                   selectedState={selectedState}
-                  stateChanged={(state) => setSelectedState(state)}
+                  stateToggled={stateToggled}
                 />
               </div>
             </Col>
@@ -329,6 +376,7 @@ const Home = () => {
                   <a
                     href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
                     target='_blank'
+                    className="contact_us"
                   >
                     {t('contact_us')}
                   </a>

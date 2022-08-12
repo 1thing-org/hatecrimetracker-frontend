@@ -4,8 +4,11 @@ import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
 import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { stateFullName } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
+import './IncidentChartNoData.css'
+import Button from 'reactstrap/lib/Button';
 
-const IncidentChart = ({ color, chart_data, state }) => {
+const IncidentChart = ({ color, chart_data, state, isFirstLoadData }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021
     const d = moment(tickVal, "YYYY-MM-DD")
     return d.format("M/D/YY");
@@ -80,6 +83,18 @@ const IncidentChart = ({ color, chart_data, state }) => {
 
       <CardBody>
         <div className='recharts-wrapper'>
+          {(totalCases === 0 && !isFirstLoadData) ?  (
+            <>
+              <p className='add-data-button'>
+                <Trans i18nKey='no_data_please_report'>
+                  There is no data collected in the selected location and date range yet. Please click 
+                    <a href='https://forms.gle/HRkVKW2Sfp7BytXj8' target='_blank'>here</a>
+                    to report incidents to us.
+                </Trans>
+              </p>
+              <div className='drop-down'/>
+            </>
+          ) : null}
           <ResponsiveContainer>
             <ComposedChart height={300} data={chart_data}>
               <CartesianGrid strokeDasharray="3 3" />

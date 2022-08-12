@@ -18,7 +18,9 @@ export const SUPPORTED_LANGUAGES = {
     'th': 'ภาษาไทย',
     'km': 'កម្ពុជា',
     'mn' : 'Монгол',
-    'vi' : 'Tiếng Việt'
+    'vi' : 'Tiếng Việt',
+    'fil' : 'Filipino',
+    'bn' : 'বাংলা',
 };
 
 export const getBrowserLang = () => BROWSER_LANGUAGES[navigator.language] || navigator.language || 'en';
