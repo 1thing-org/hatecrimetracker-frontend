@@ -1,0 +1,33 @@
+.ButtonToggle {
+    border: 1px solid grey;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    border-radius: 0.358rem;
+    position: relative;
+    
+}
+
+.RowButtonToggle {
+    display: flex;
+    flex-direction: row;
+}
+
+@media (max-width: 786px) {
+    .RowButtonToggle {
+        width: 16rem;
+        align-items: stretch;
+    }
+
+    .Switcher10KButton {
+        width: 100%;
+    }
+}
+
+.dark-layout .nav-pills .nav-item .nav-link.active {
+    color:black;
+}
+
+.nav-pills{
+    margin-bottom: 0rem;
+}

@@ -2,22 +2,26 @@
   "website": {
     "name": "Bảng theo dõi tội phạm chống người châu Á"
   },
-  "location": "Vị trí",
-  "date_range": "Phạm vi ngày",
-  "daily_count": "Số lượng theo ngày",
-  "monthly_count": "Số lượng theo tháng",
-  "load_more": "Xem thêm",
-  "incident_count_by_state": "Số lượng sự cố theo bang",
-  "incident_table": {
-    "total_incident": "Tổng {{count}} sự cố",
-    "no_data": "Chưa có dữ liệu được thu thập",
-    "total_incident_plural": "Tổng {{count}} sự cố",
-    "state": "Bang",
-    "count": "Số lượng",
-    "count_10k_asian": "Số lượng/10 nghìn dân Châu Á",
-    "count_1mm": "Số lượng/1 triệu",
+
+  "location" : "Vị trí",
+  "date_range" : "Phạm vi ngày",
+  "data_display" : "Loại dữ liệu",
+  "daily_count" : "Số lượng theo ngày",
+  "monthly_count" : "Số lượng theo tháng",
+  "monthly_per_10k_asian": "Hàng tháng trên 10 nghìn dân Châu Á",
+  "load_more" : "Xem thêm",
+  "incident_count_by_state" : "Số lượng sự cố theo bang",
+  "incident_table" : {
+    "total_incident" : "Tổng {{count}} sự cố",
+    "no_data" : "Chưa có dữ liệu được thu thập",
+    "total_incident_plural" : "Tổng {{count}} sự cố",
+    "state" : "Bang",
+    "count" : "Số lượng",
+    "count_10k_asian" : "Số lượng/10 nghìn dân Châu Á",
+    "count_1mm" : "Số lượng/1 triệu"
     "asian_population": "Dân số Châu Á",
     "state_population": "Dân số Tiểu bang"
+
   },
   "incident_map": {
     "cases": "Trường hợp",
@@ -25,16 +29,20 @@
     "count_10k_asian": "Số lượng/10 nghìn dân Châu Á",
     "count_1mm": "Số lượng/1 triệu"
   },
-  "incident_chart": {
-    "total_monthly_cases": "Tổng {{count}} trường hợp mỗi",
-    "total_monthly_cases_plural": "Tổng {{count}} trường hợp mỗi tháng",
-    "total_daily_cases": "Tổng {{count}} trường hợp mỗi ngày",
-    "total_daily_cases_plural": "Tổng {{count}} trường hợp mỗi ngày",
-    "trend": "Xu hương sự cố chống dân Châu Á",
-    "no_data": "Chưa có dữ liệu được thu thập",
-    "total_cases": "Tổng {{count}} trường hợp",
-    "total_cases_plural": "Tổng {{count}} trường hợp"
+
+  "incident_chart" : {
+    "total_monthly_cases" : "Tổng {{count}} trường hợp mỗi",
+    "total_monthly_cases_per_10k_Asian" : "Tỉ lệ {{count}} trường hợp mỗi tháng trên 10 nghìn dân Châu Á",
+    "total_monthly_cases_plural" : "Tổng {{count}} trường hợp mỗi tháng",
+    "total_daily_cases" : "Tổng {{count}} trường hợp mỗi ngày",
+    "total_daily_cases_plural" : "Tổng {{count}} trường hợp mỗi ngày",
+    "trend" : "Xu hương sự cố chống dân Châu Á",
+    "no_data" : "Chưa có dữ liệu được thu thập",
+    "total_cases" : "Tổng {{count}} trường hợp",
+    "average_cases" : "Trung bình {{count}} trường hợp trên 10 nghìn dân Châu Á",
+    "total_cases_plural" : "Tổng {{count}} trường hợp"
   },
+  
   "contact_us": "Liên hệ",
   "copyright": "Copyright",
   "disclaimer": {
