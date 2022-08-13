@@ -8,7 +8,7 @@
 3. Install git (should already be installed on MacOSX)
 4. Clone code from GitHub:
     
-    `git clone https://github.com/lima01/hatecrimetracker-frontend.git`
+    `git clone https://github.com/1thing-org/hatecrimetracker-frontend.git`
 
 5. Change configuration in `hatecrimetracker-frontend/src/configs/appConfig.js`
 
@@ -36,7 +36,7 @@ Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template
 1. Create your own GitHub account
 2. Fork the repository
 3. Make changes and commit to your forked repository. The changes can be in main or any branches in your own fork.
-4. Create Pull Request from your own fork to https://github.com/lima01/hatecrimetracker-frontend
+4. Create Pull Request from your own fork to https://github.com/1thing-org/hatecrimetracker-frontend
 5. Wait for reviewer to review and merge the PR
 
 # Develop on MacBook with M1 Chip
