@@ -1,9 +1,8 @@
-import { ThemeColors } from '@src/utility/context/ThemeColors'
 import am4geodata_usaHigh from '@amcharts/amcharts4-geodata/usaHigh'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4maps from '@amcharts/amcharts4/maps'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
-import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardHeader } from 'reactstrap'
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
 import { getStateIncidentPerM, formatIncidentRate, forEachState, getStateIncidentPer10kAsian } from '../utility/Utils'
 import { useTranslation } from 'react-i18next';
@@ -104,7 +103,6 @@ const IncidentMap = (props) => {
         selectState(selectedState)
     }, [selectedState])
 
-    const { colors } = useContext(ThemeColors)
     const selectState = (state) => {
         if (!mapPolygonSeries || !polygonTemplate) {
             return

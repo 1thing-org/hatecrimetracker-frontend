@@ -31,18 +31,18 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
     const columns = [
         {
             name: t("incident_table.state"),
-            selector: 'state_name',
+            selector: row => row['state_name'],
             sortable: true,
         },
         {
             name: t("incident_table.count"),
-            selector: 'count',
+            selector: row => row['count'],
             sortable: true,
             right: true,
         },
         {
             name: t("incident_table.count_10k_asian"),
-            selector: 'count_rate_asian',
+            selector: row => row['count_rate_asian'],
             sortable: true,
             wrap: true,
             right: true,
@@ -58,7 +58,7 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
         },
         {
             name: t("incident_table.count_1mm"),
-            selector: 'count_rate',
+            selector: row => row['count_rate'],
             sortable: true,
             wrap: true,
             right: true,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component, createContext } from "react";
 import { auth } from "../firebase";
-import useJwt from '@src/auth/jwt/useJwt'
+// import useJwt from '@src/auth/jwt/useJwt'
 import appConfig from "../configs/appConfig";
 export const UserContext = createContext({ user: null });
 class UserProvider extends Component {
@@ -16,7 +16,7 @@ class UserProvider extends Component {
                 let user = null
                 const { email, displayName, photoURL } = userAuth;
                 userAuth.getIdToken().then( (token) => {
-                    useJwt.setToken(token);
+                    // useJwt.setToken(token);
                     user = { email, displayName, photoURL };
                     axios.get(appConfig.api_endpoint + "/isadmin",
                     {

@@ -13,13 +13,10 @@ import { Button } from 'reactstrap'
 import { signInWithGoogle } from '../firebase'
 // to get states abbreviation
 import { forEachState } from '../utility/Utils';
-import { Callbacks } from 'jquery';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
   const isAddMode = true;
-
-  const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
 
   const [currIncidentId, setCurrIncidentId] = useState(null);
   const [recentIncidents, setRecentIncidents] = useState([]);

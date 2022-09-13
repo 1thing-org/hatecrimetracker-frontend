@@ -1,8 +1,5 @@
-import UILoader from '@components/ui-loader';
-import logo from '@src/assets/images/logo/logo.png';
-import { ThemeColors } from '@src/utility/context/ThemeColors';
-import '@styles/react/libs/charts/recharts.scss';
-import '@styles/react/libs/flatpickr/flatpickr.scss';
+import UILoader from './components/ui-loader';
+import logo from '../assets/images/logo/logo.png';
 import moment from 'moment';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -13,12 +10,8 @@ import {
   FormGroup,
   Label,
   Row,
-  Button,
-  Nav,
-  NavItem,
-  NavLink 
 } from 'reactstrap';
-import 'rsuite/dist/styles/rsuite-dark.css';
+import 'rsuite/dist/rsuite.min.css';
 import * as incidentsService from '../services/incidents';
 import IncidentChart from './IncidentChart';
 import IncidentChartPer10kAsian from './IncidentChartPer10kAsian';
@@ -27,13 +20,12 @@ import IncidentCountTable from './IncidentCountTable';
 import IncidentList from './IncidentList';
 import IncidentMap from './IncidentMap';
 import StateSelection from './StateSelection';
-import { useRouter } from '@hooks/useRouter';
-import { isObjEmpty } from '@utils';
-import { getValidState } from '../utility/Utils';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getValidState, isObjEmpty } from '../utility/Utils';
 import { useCookies } from 'react-cookie';
 import { getBrowserLang, SUPPORTED_LANGUAGES } from '../utility/Languages';
 import { SelectPicker } from 'rsuite';
-import { withRouter } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -45,7 +37,9 @@ import SocialMediaPopup from './components/social-media-pop-up'
 
 
 const Home = () => {
-  const router = useRouter();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation()
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -54,7 +48,7 @@ const Home = () => {
   //get default lang
   //parameter lang > cookie > browser default setting
   const [cookies, setCookie] = useCookies(['lang']);
-  const lang_code = router.query.lang || cookies.lang || getBrowserLang();
+  const lang_code = searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
 
@@ -163,10 +157,10 @@ const Home = () => {
       return true;
     }
     const cururl = generateUrl(
-      router.query.from,
-      router.query.to,
-      router.query.state,
-      router.query.lang
+      searchParams.get("from"),
+      searchParams.get("to"),
+      searchParams.get("state"),
+      searchParams.get("lang")
     );
     const newurl = generateUrl(
       dateRange[0],
@@ -187,22 +181,22 @@ const Home = () => {
       selectedLangCode
     );
 
-    router.history.push(newurl);
+    navigate(newurl);
   };
 
   useEffect(() => {
     if (isParameterChanged()) {
-      const defaultDateRange = isObjEmpty(router.query)
+      const defaultDateRange = isObjEmpty(searchParams.get("from"))
         ? [moment().subtract(1, 'years').toDate(), new Date()]
         : [
-            moment(router.query.from).toDate(),
-            moment(router.query.to).toDate(),
+            moment(searchParams.get("from"),).toDate(),
+            moment(searchParams.get("to"),).toDate(),
           ];
 
-      setSelectedState(getValidState(router.query.state));
+      setSelectedState(getValidState(searchParams.get("state"),));
       setDateRange(defaultDateRange);
     }
-  }, [router]);
+  }, [location]);
   useEffect(() => {
     // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
@@ -221,7 +215,11 @@ const Home = () => {
     window.addEventListener("resize", resizeW); // Update the width on resize
     return () => window.removeEventListener("resize", resizeW);
   });
-  const { colors } = useContext(ThemeColors);
+  const colors = {
+    primary: {
+      main: '#FEF753'
+    }
+  };
 
   // handle date change
   function handleDateRangeSelect(ranges) {
@@ -292,6 +290,7 @@ const Home = () => {
                       cleanable={false}
                       defaultValue={selectedLangCode}
                       style={{ width: 120 }}
+                      className = {"rs-theme-dark"}
                       onChange={(value) => setSelectedLang(value)}
                     />
                     </div>
@@ -402,4 +401,4 @@ const Home = () => {
   );
 };
 
-export default withRouter(Home);
+export default /*withRouter*/(Home);
