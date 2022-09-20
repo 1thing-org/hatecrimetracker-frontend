@@ -1,0 +1,35 @@
+//  ================================================================================================
+//  ? TIP:  It is recommended to use this file for overriding bootstrap variables.
+//  ================================================================================================
+$primary: #FEF753; // Changing primary color
+$dark: #000000; // Changing dark color
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 100% // Custom xxl size
+) !default;
+
+$body-bg: #161d31 !default;
+$body-color: #b4b7bd !default;
+$border-color: #3b4253 !default;
+$custom-control-border-color: #44405e !default;
+
+// Variables
+$border-width: 1px !default;
+// $border-color: #ebe9f1 !default;
+$border-radius: 0.357rem !default;
+$border-radius-lg: 0.6rem !default;
+$border-radius-sm: 0.25rem !default;
+
+//Card
+$theme-dark-card-bg: #283046 !default;
+$theme-dark-box-shadow: 0 4px 24px 0 rgba(black, 0.24);
+
+//Body
+$theme-dark-body-bg: #161d31 !default;
+$theme-dark-body-color: #b4b7bd !default;
+$theme-dark-border-color: #3b4253 !default;
+$theme-dark-custom-control-border-color: #44405e !default;

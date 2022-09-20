@@ -34,6 +34,7 @@ import './Home.css'
 import { RiShareForwardFill } from 'react-icons/ri';
 import SocialMedia from './components/social-media'
 import SocialMediaPopup from './components/social-media-pop-up'
+import '../assets/scss/charts/recharts.scss';
 
 
 const Home = () => {
