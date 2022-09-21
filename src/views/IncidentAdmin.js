@@ -149,63 +149,63 @@ const IncidentAdminPage = () => {
           className="border border-blue-300 col-2"
         ></div>
         <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
-        <p><Link onClick={() => auth.signOut()}>Sign Out</Link></p>
+        <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
         <div className="form-row">
           <div className="form-group col-2">
             <label>Incident Time</label>
-            <input name="incident_time" type="date" ref={register} className={`form-control ${errors?.incident_time ? 'is-invalid' : ''}`}
+            <input {...register("incident_time")} type="date"  className={`form-control ${errors?.incident_time ? 'is-invalid' : ''}`}
               onChange={dateChanged} />
-            <div className="invalid-feedback">${errors?.incident_time?.message}</div>
+            <div className="invalid-feedback">{errors?.incident_time?.message}</div>
           </div>
           <div className="form-group col-1">
             <label>Location</label>
             {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`} /> */}
-            <select name="incident_location" ref={register} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`}>
+            <select {...register("incident_location")} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`}>
               <option value={""}>select</option>
               {stateAbbrOptions}
             </select>
-            <div className="invalid-feedback">${errors?.incident_location?.message}</div>
+            <div className="invalid-feedback">{errors?.incident_location?.message}</div>
           </div>
           <div className="form-group col-9">
             <label>Title</label>
-            <input name="title" type="text" ref={register} className={`form-control ${errors?.title ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.title?.message}</div>
+            <input {...register("title")} type="text" className={`form-control ${errors?.title ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.title?.message}</div>
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col-12">
             <label>URL</label>
-            <input name="url" type="text" ref={register} className={`form-control ${errors?.url ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.url?.message}</div>
+            <input {...register("url")} type="text" className={`form-control ${errors?.url ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.url?.message}</div>
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col-12">
             <label>Abstract</label>
-            <textarea name="abstract" rows="4" ref={register} className={`form-control ${errors?.abstract ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.abstract?.message}</div>
+            <textarea {...register("abstract")} rows="4" className={`form-control ${errors?.abstract ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.abstract?.message}</div>
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col-8">
             <label>Donation</label>
-            <input name="donation_link" type="text" ref={register} className={`form-control ${errors?.donation_link ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.donation_link?.message}</div>
+            <input {...register("donation_link")} type="text" className={`form-control ${errors?.donation_link ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.donation_link?.message}</div>
           </div>
           <div className="form-group col-4">
             <label>Police Tip Line</label>
-            <input name="police_tip_line" type="text" ref={register} className={`form-control ${errors?.police_tip_line ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.police_tip_line?.message}</div>
+            <input {...register("police_tip_line")} type="text" className={`form-control ${errors?.police_tip_line ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.police_tip_line?.message}</div>
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col-12">
             <label>Help the victim</label>
-            <textarea name="help_the_victim" rows="4" ref={register} className={`form-control ${errors?.help_the_victim ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">${errors?.help_the_victim?.message}</div>
+            <textarea {...register("help_the_victim")} rows="4" className={`form-control ${errors?.help_the_victim ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.help_the_victim?.message}</div>
           </div>
         </div>
         <div className="form-group">
