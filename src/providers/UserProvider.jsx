@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { Component, createContext } from "react";
 import { auth } from "../firebase";
-// import useJwt from '@src/auth/jwt/useJwt'
+import useJwt from '../utility/auth/jwt/useJwt'
 import appConfig from "../configs/appConfig";
 export const UserContext = createContext({ user: null });
+const { jwt } = useJwt({})
 class UserProvider extends Component {
     state = {
         user: null
@@ -16,7 +17,7 @@ class UserProvider extends Component {
                 let user = null
                 const { email, displayName, photoURL } = userAuth;
                 userAuth.getIdToken().then( (token) => {
-                    // useJwt.setToken(token);
+                    jwt.setToken(token);
                     user = { email, displayName, photoURL };
                     axios.get(appConfig.api_endpoint + "/isadmin",
                     {
@@ -29,7 +30,9 @@ class UserProvider extends Component {
                             user.isadmin = true;
                         }
                         this.setState({ user });
-                    })
+                    }).catch(e => {
+                        console.log("Error checking if current user is admin:" + e);
+                    });
                 })                
             }
             else {

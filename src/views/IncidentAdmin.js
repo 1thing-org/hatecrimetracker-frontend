@@ -112,12 +112,12 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button.Ripple tag={Link} to='/admin' color='secondary' block
+    return (<div className="col-2"><Button tag={Link} to='/admin' color='secondary' block
       onClick={() => {
         signInWithGoogle();
       }}>
       Sign in with Google
-    </Button.Ripple>
+    </Button>
     </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
