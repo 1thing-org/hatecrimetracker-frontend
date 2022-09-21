@@ -4,18 +4,18 @@ import { auth } from "../firebase";
 import useJwt from '../utility/auth/jwt/useJwt'
 import appConfig from "../configs/appConfig";
 export const UserContext = createContext({ user: null });
-const { jwt } = useJwt({})
 class UserProvider extends Component {
     state = {
         user: null
     };
-
+    
     async componentDidMount() {
         auth.onAuthStateChanged(async userAuth => {
 
             if (userAuth) {
                 let user = null
                 const { email, displayName, photoURL } = userAuth;
+                const { jwt } = useJwt({})
                 userAuth.getIdToken().then( (token) => {
                     jwt.setToken(token);
                     user = { email, displayName, photoURL };
