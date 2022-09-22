@@ -132,7 +132,7 @@ const IncidentAdminPage = () => {
   }
   // stateAbbrOptions is all options will be displayed on location  
   const stateAbbrOptions = (
-    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
+    <>{statesAbbreviation.map(abbr => <option key={abbr[0]} value={abbr[0]}>{abbr[1]}</option>)}</>
   );
 
 
