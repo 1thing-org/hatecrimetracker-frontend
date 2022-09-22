@@ -132,7 +132,7 @@ const IncidentAdminPage = () => {
   }
   // stateAbbrOptions is all options will be displayed on location  
   const stateAbbrOptions = (
-    <>{statesAbbreviation.forEach(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
+    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
   );
 
 
@@ -153,62 +153,61 @@ const IncidentAdminPage = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
-        <div className="form-row">
-          <div className="form-group col-2">
+        <div className="row">
+          <div className="mb-3 col-2">
             <label>Incident Time</label>
             <input {...register("incident_time")} type="date"  className={`form-control ${errors?.incident_time ? 'is-invalid' : ''}`}
               onChange={dateChanged} />
             <div className="invalid-feedback">{errors?.incident_time?.message}</div>
           </div>
-          <div className="form-group col-1">
+          <div className="mb-3 col-2">
             <label>Location</label>
-            {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`} /> */}
             <select {...register("incident_location")} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`}>
-              <option value={""}>select</option>
+              <option value={""}>Select</option>
               {stateAbbrOptions}
             </select>
             <div className="invalid-feedback">{errors?.incident_location?.message}</div>
           </div>
-          <div className="form-group col-9">
+          <div className="mb-3 col-8">
             <label>Title</label>
             <input {...register("title")} type="text" className={`form-control ${errors?.title ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.title?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-12">
+        <div className="row">
+          <div className="mb-3 col-12">
             <label>URL</label>
             <input {...register("url")} type="text" className={`form-control ${errors?.url ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.url?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-12">
+        <div className="row">
+          <div className="mb-3 col-12">
             <label>Abstract</label>
             <textarea {...register("abstract")} rows="4" className={`form-control ${errors?.abstract ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.abstract?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-8">
+        <div className="row">
+          <div className="mb-3 col-8">
             <label>Donation</label>
             <input {...register("donation_link")} type="text" className={`form-control ${errors?.donation_link ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.donation_link?.message}</div>
           </div>
-          <div className="form-group col-4">
+          <div className="mb-3 col-4">
             <label>Police Tip Line</label>
             <input {...register("police_tip_line")} type="text" className={`form-control ${errors?.police_tip_line ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.police_tip_line?.message}</div>
           </div>
         </div>
         <div className="form-row">
-          <div className="form-group col-12">
+          <div className="mb-3 col-12">
             <label>Help the victim</label>
             <textarea {...register("help_the_victim")} rows="4" className={`form-control ${errors?.help_the_victim ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.help_the_victim?.message}</div>
           </div>
         </div>
-        <div className="form-group">
+        <div className="mb-3">
           <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary">
             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
             Save

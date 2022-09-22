@@ -284,3 +284,17 @@ body.dark-layout {
 .container{
     max-width: 100%;
 }
+
+input.form-control, textarea.form-control {
+    background-color: #283046;
+	color: #b4b7bd;
+	font-size: 1rem;
+}
+select.form-control {
+    background-color: #283046;
+    border-color: #3b4253;
+	color: #b4b7bd;
+}
+.h1, h1 {
+    font-size: 2rem;
+}
