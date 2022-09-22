@@ -339,7 +339,7 @@ const Home = () => {
                   selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
-                  onChange={setSelectedState}
+                  stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={'Incident Count by State'}
