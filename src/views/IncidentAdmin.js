@@ -16,11 +16,12 @@ import { forEachState } from '../utility/Utils';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
-  const isAddMode = true;
-
+  
   const [currIncidentId, setCurrIncidentId] = useState(null);
   const [recentIncidents, setRecentIncidents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const isAddMode = () => !currIncidentId;
+
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -152,7 +153,7 @@ const IncidentAdminPage = () => {
         <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-        <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
+        <h1>{isAddMode() ? 'Add Incident' : 'Edit Incident'}</h1>
         <div className="row">
           <div className="mb-3 col-2">
             <label>Incident Time</label>
@@ -212,7 +213,7 @@ const IncidentAdminPage = () => {
             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
             Save
           </button>
-          <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
+          <Link to={isAddMode() ? '.' : '..'} className="btn btn-link">Cancel</Link>
         </div>
       </form>
       <IncidentTable className="col-12"
