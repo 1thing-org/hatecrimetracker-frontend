@@ -29,7 +29,6 @@ import { useSearchParams } from 'react-router-dom';
 import Head from './components/head';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import DataDisplaySwitcher from './DataDisplaySwitcher'
 import './Home.css'
 import { RiShareForwardFill } from 'react-icons/ri';
 import SocialMedia from './components/social-media'
@@ -317,10 +316,6 @@ const Home = () => {
                         isMobile={isMobile}
                       />
                     </Col>
-                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
-                      <Label className='SimpleLabel'>{t('data_display')}:</Label>{' '}
-                      <DataDisplaySwitcher isShowPer10kAsian={isShowPer10kAsian} onClick={() => setIsShowPer10kAsian(!isShowPer10kAsian)} />
-                    </Col>
                   </Row>
                 </FormGroup>
               </Container>
@@ -330,9 +325,7 @@ const Home = () => {
             <Col xl='8' lg='6' md='12'>
               <div>
 
-                {isShowPer10kAsian ? 
-                  <IncidentChartPer10kAsian color={colors.primary.main} monthly_stats={monthlyCount} state={selectedState} date_range={dateRange}/> 
-                  : <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>}
+                <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>
 
                 <IncidentMap
                   mapData={incidentAggregated}
