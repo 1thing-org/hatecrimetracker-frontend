@@ -135,6 +135,11 @@ const IncidentMap = (props) => {
         let markerTemplate = legend.markers.template;
         markerTemplate.width = 12;
         markerTemplate.height = 12;
+
+        legend.itemContainers.template.clickable = false;
+        legend.itemContainers.template.focusable = false;
+        legend.itemContainers.template.cursorOverStyle = am4core.MouseCursorStyle.default;
+
         let marker = legend.markers.template.children.getIndex(0);
         marker.cornerRadius(0, 0, 0, 0);
 
@@ -147,6 +152,9 @@ const IncidentMap = (props) => {
         legend.width = 100;
         legend.valign = "middle";
         legend.align = "left";
+        legendLabel.clickable = false;
+        legendLabel.focusable = false;
+        legendLabel.cursorOverStyle  = am4core.MouseCursorStyle.default;
         // legend.position = "left";
         if (!props.showPer10KAsian) {
             legendLabel.text = "Incident Count";
