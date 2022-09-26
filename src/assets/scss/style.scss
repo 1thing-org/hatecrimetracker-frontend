@@ -1,5 +1,7 @@
 body{
 	background:#000000;
+	font-size: 12px;
+	font-weight: 400;
 }
 body.dark-layout {
 	color: #b4b7bd;
@@ -9,7 +11,7 @@ body.dark-layout {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 120%;
 	color:#FEF753;
 }
@@ -249,7 +251,9 @@ body.dark-layout {
 
 .dark-layout .card-title {
 	color:#FEF753;
-}
+	font-weight: 500;
+	font-size: 1.285rem;
+}	
   
 .dark-layout .card .card-footer {
 	border-color: #000000; 
