@@ -23,7 +23,8 @@
     "cases": "Mga Kaso",
     "no_data": "Walang nakolektang data",
     "count_10k_asian": "Bilang/10K Asyano",
-    "count_1mm": "Bilang/1MM"
+    "count_1mm": "Bilang/1MM",
+    "incident_count": "Bilang ng Insidente"
   },
   "incident_chart": {
     "total_monthly_cases": "Kabuuang {{count}} buwanang kaso",
@@ -33,7 +34,9 @@
     "trend": "Pagdami ng Insidente ng Krimen sa Pagkamuhi",
     "no_data": "Walang nakolektang data",
     "total_cases": "Kabuuang {{count}} Insidente",
-    "total_cases_plural": "Kabuuang mga {{count}} Insidente"
+    "total_cases_plural": "Kabuuang mga {{count}} Insidente",
+    "average_cases": "Average na {{count}} Insidente Bawat 10k Asian",
+    "total_monthly_cases_per_10k_Asian": "Proporsyon {{count}} buwanang rate sa bawat 10k Asian"
   },
   "contact_us": "Makipag-ungayan sa Amin",
   "copyright": "Kopirayt",
@@ -57,5 +60,7 @@
   "link_to_news_source": "Link sa Pinagmulan ng Balita",
   "make_a_donation": "Magbigay ng Donasyon",
   "police_tip_line": "Police Tip Line",
-  "other_ways_to_help": "Iba pang Mga Paraan para Tumulong"
+  "other_ways_to_help": "Iba pang Mga Paraan para Tumulong",
+  "data_display": "Data na Ipapakita",
+  "monthly_per_10k_asian": "Buwanang Bawat 10k Asian"
 }

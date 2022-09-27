@@ -23,7 +23,8 @@
     "cases": "Хэргүүд",
     "no_data": "Мэдээлэл байхгүй",
     "count_10k_asian": "Тоо/10K Азиуд",
-    "count_1mm": "Тоо/1MM"
+    "count_1mm": "Тоо/1MM",
+    "incident_count": "Ослын тоо"
   },
   "incident_chart": {
     "total_monthly_cases": "Сард нийт {{count}} хэрэг",
@@ -33,7 +34,9 @@
     "trend": "Үзэн ядалтаас үүдсэн гэмт хэргийн төлөв",
     "no_data": "Мэдээлэл байхгүй",
     "total_cases": "Нийт {{count}} хэрэг",
-    "total_cases_plural": "Нийт {{count}} хэргүүд"
+    "total_cases_plural": "Нийт {{count}} хэргүүд",
+    "average_cases": "Азийн 10 мянган хүнд дунджаар {{count}} тохиолдол",
+    "total_monthly_cases_per_10k_Asian": "10к Ази хүнд ногдох сарын хувь хэмжээ {{count}} байна"
   },
   "contact_us": "Холбоо барих",
   "copyright": "Зохиогчийн эрх",
@@ -57,5 +60,7 @@
   "link_to_news_source": "Мэдээний эх сурвалжийн холбоос",
   "make_a_donation": "Хандив хий",
   "police_tip_line": "Цагдаагийн зөвлөгөөний шугам",
-  "other_ways_to_help": "Туслах бусад аргууд"
+  "other_ways_to_help": "Туслах бусад аргууд",
+  "data_display": "Үзүүлэх өгөгдөл",
+  "monthly_per_10k_asian": "Сар бүр 10к Ази"
 }

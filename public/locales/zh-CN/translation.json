@@ -23,7 +23,8 @@
     "cases": "总数",
     "no_data": "没有收集到数据",
     "count_10k_asian": "每万名亚裔",
-    "count_1mm": "每百万人口"
+    "count_1mm": "每百万人口",
+    "incident_count": "事件数"
   },
   "incident_chart": {
     "total_monthly_cases": "月总计{{count}}例",
@@ -33,7 +34,9 @@
     "trend": "反亚裔仇恨犯罪事件趋势图",
     "no_data": "没有收集到数据",
     "total_cases": "总计{{count}}起",
-    "total_cases_plural": "总计{{count}}起"
+    "total_cases_plural": "总计{{count}}起",
+    "average_cases": "每一万亚洲人平均有 {{count}} 个事件",
+    "total_monthly_cases_per_10k_Asian": "每 10k 亚洲人的比例 {{count}} 月费率"
   },
   "contact_us": "联系我们",
   "copyright": "版权所有",
@@ -57,5 +60,7 @@
   "link_to_news_source": "链接到新闻来源",
   "make_a_donation": "做捐献",
   "police_tip_line": "警察提示线",
-  "other_ways_to_help": "其他帮助方式"
+  "other_ways_to_help": "其他帮助方式",
+  "data_display": "显示数据",
+  "monthly_per_10k_asian": "每月每 10k 亚洲人"
 }
