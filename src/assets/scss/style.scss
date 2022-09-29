@@ -259,6 +259,13 @@ body.dark-layout {
 	border-color: #000000; 
 }
 
+.dark-layout label {
+    color: #d0d2d6;
+}
+.mb-1, [dir] .my-1 {
+    margin-bottom: 1rem!important;
+}
+
 .dark-layout .btn-loadmore {
 	background-color:  #FEF753 !important;
 	color: #000000 !important;
