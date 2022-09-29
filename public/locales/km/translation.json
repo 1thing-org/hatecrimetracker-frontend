@@ -23,7 +23,8 @@
     "cases": "ចំនួនករណី",
     "no_data": "មិនមានទិន្នន័យ",
     "count_10k_asian": "ចំនួនករណី/ជនជាតិអាស៊ីមួយម៉ឺននាក់",
-    "count_1mm": "ចំនួនករណី/មួយលាននាក់"
+    "count_1mm": "ចំនួនករណី/មួយលាននាក់",
+    "incident_count": "ចំនួនឧប្បត្តិហេតុ"
   },
   "incident_chart": {
     "total_monthly_cases": "សរុប{{count}}ករណីក្នុងមួយខែ",
@@ -33,7 +34,9 @@
     "trend": "និន្នាការនៃបទឧក្រិដ្ឋដែលប្រព្រឹត្តឡើងដោយការស្អប់",
     "no_data": "មិនមានទិន្នន័យ",
     "total_cases": "សរុប{{count}}ករណី",
-    "total_cases_plural": "សរុប{{count}}ករណី"
+    "total_cases_plural": "សរុប{{count}}ករណី",
+    "average_cases": "ឧប្បត្តិហេតុជាមធ្យម {{count}} ក្នុង 10k អាស៊ី",
+    "total_monthly_cases_per_10k_Asian": "សមាមាត្រ {{count}} អត្រាប្រចាំខែក្នុង 10k អាស៊ី"
   },
   "contact_us": "ទាក់ទង​យើង",
   "copyright": "រក្សាសិទ្ធិ",
@@ -57,5 +60,7 @@
   "link_to_news_source": "ភ្ជាប់ទៅប្រភពព័ត៌មាន",
   "make_a_donation": "ធ្វើការបរិច្ចាគ",
   "police_tip_line": "បន្ទាត់ព័ត៌មានប៉ូលីស",
-  "other_ways_to_help": "វិធីផ្សេងទៀតដើម្បីជួយ"
+  "other_ways_to_help": "វិធីផ្សេងទៀតដើម្បីជួយ",
+  "data_display": "ទិន្នន័យដែលត្រូវបង្ហាញ",
+  "monthly_per_10k_asian": "ប្រចាំខែក្នុង 10k អាស៊ី"
 }

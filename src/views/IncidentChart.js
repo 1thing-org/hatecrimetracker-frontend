@@ -5,8 +5,8 @@ import { ComposedChart, Area, Bar, Legend, CartesianGrid, ResponsiveContainer, T
 import { stateFullName } from '../utility/Utils';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import i18n from "i18next";
 import './IncidentChartNoData.css'
-import Button from 'reactstrap/lib/Button';
 
 const IncidentChart = ({ color, chart_data, state, isFirstLoadData }) => {
   const formatXAxis = (tickVal) => { //yyyy-mm-dd to mm/dd/2021

@@ -13,17 +13,15 @@ import { Button } from 'reactstrap'
 import { signInWithGoogle } from '../firebase'
 // to get states abbreviation
 import { forEachState } from '../utility/Utils';
-import { Callbacks } from 'jquery';
 
 const IncidentAdminPage = () => {
   const user = useContext(UserContext);
-  const isAddMode = true;
-
-  const phoneRegex = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}|^$|^\s)$/im;
-
+  
   const [currIncidentId, setCurrIncidentId] = useState(null);
   const [recentIncidents, setRecentIncidents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const isAddMode = () => !currIncidentId;
+
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -115,12 +113,12 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button.Ripple tag={Link} to='/admin' color='secondary' block
+    return (<div className="col-2"><Button tag={Link} to='/admin' color='secondary' block
       onClick={() => {
         signInWithGoogle();
       }}>
       Sign in with Google
-    </Button.Ripple>
+    </Button>
     </div>);
   }
   const { photoURL, displayName, email, isadmin } = user;
@@ -135,7 +133,7 @@ const IncidentAdminPage = () => {
   }
   // stateAbbrOptions is all options will be displayed on location  
   const stateAbbrOptions = (
-    <>{statesAbbreviation.map(abbr => <option value={abbr[0]}>{abbr[1]}</option>)}</>
+    <>{statesAbbreviation.map(abbr => <option key={abbr[0]} value={abbr[0]}>{abbr[1]}</option>)}</>
   );
 
 
@@ -152,71 +150,70 @@ const IncidentAdminPage = () => {
           className="border border-blue-300 col-2"
         ></div>
         <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
-        <p><Link onClick={() => auth.signOut()}>Sign Out</Link></p>
+        <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-        <h1>{isAddMode ? 'Add Incident' : 'Edit Incident'}</h1>
-        <div className="form-row">
-          <div className="form-group col-2">
+        <h1>{isAddMode() ? 'Add Incident' : 'Edit Incident'}</h1>
+        <div className="row">
+          <div className="mb-3 col-2">
             <label>Incident Time</label>
-            <input name="incident_time" type="date" ref={register} className={`form-control ${errors.incident_time ? 'is-invalid' : ''}`}
+            <input {...register("incident_time")} type="date"  className={`form-control ${errors?.incident_time ? 'is-invalid' : ''}`}
               onChange={dateChanged} />
-            <div className="invalid-feedback">{errors.incident_time?.message}</div>
+            <div className="invalid-feedback">{errors?.incident_time?.message}</div>
           </div>
-          <div className="form-group col-1">
+          <div className="mb-3 col-2">
             <label>Location</label>
-            {/* <input name="incident_location" type="text" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`} /> */}
-            <select name="incident_location" ref={register} className={`form-control ${errors.incident_location ? 'is-invalid' : ''}`}>
-              <option value={""}>select</option>
+            <select {...register("incident_location")} className={`form-control ${errors?.incident_location ? 'is-invalid' : ''}`}>
+              <option value={""}>Select</option>
               {stateAbbrOptions}
             </select>
-            <div className="invalid-feedback">{errors.incident_location?.message}</div>
+            <div className="invalid-feedback">{errors?.incident_location?.message}</div>
           </div>
-          <div className="form-group col-9">
+          <div className="mb-3 col-8">
             <label>Title</label>
-            <input name="title" type="text" ref={register} className={`form-control ${errors.title ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.title?.message}</div>
+            <input {...register("title")} type="text" className={`form-control ${errors?.title ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.title?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-12">
+        <div className="row">
+          <div className="mb-3 col-12">
             <label>URL</label>
-            <input name="url" type="text" ref={register} className={`form-control ${errors.url ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.url?.message}</div>
+            <input {...register("url")} type="text" className={`form-control ${errors?.url ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.url?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-12">
+        <div className="row">
+          <div className="mb-3 col-12">
             <label>Abstract</label>
-            <textarea name="abstract" rows="4" ref={register} className={`form-control ${errors.abstract ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.abstract?.message}</div>
+            <textarea {...register("abstract")} rows="4" className={`form-control ${errors?.abstract ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.abstract?.message}</div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-8">
+        <div className="row">
+          <div className="mb-3 col-8">
             <label>Donation</label>
-            <input name="donation_link" type="text" ref={register} className={`form-control ${errors.donation_link ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.donation_link?.message}</div>
+            <input {...register("donation_link")} type="text" className={`form-control ${errors?.donation_link ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.donation_link?.message}</div>
           </div>
-          <div className="form-group col-4">
+          <div className="mb-3 col-4">
             <label>Police Tip Line</label>
-            <input name="police_tip_line" type="text" ref={register} className={`form-control ${errors.police_tip_line ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.police_tip_line?.message}</div>
+            <input {...register("police_tip_line")} type="text" className={`form-control ${errors?.police_tip_line ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.police_tip_line?.message}</div>
           </div>
         </div>
         <div className="form-row">
-          <div className="form-group col-12">
+          <div className="mb-3 col-12">
             <label>Help the victim</label>
-            <textarea name="help_the_victim" rows="4" ref={register} className={`form-control ${errors.help_the_victim ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.help_the_victim?.message}</div>
+            <textarea {...register("help_the_victim")} rows="4" className={`form-control ${errors?.help_the_victim ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors?.help_the_victim?.message}</div>
           </div>
         </div>
-        <div className="form-group">
+        <div className="mb-3">
           <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary">
             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
             Save
           </button>
-          <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
+          <Link to={isAddMode() ? '.' : '..'} className="btn btn-link">Cancel</Link>
         </div>
       </form>
       <IncidentTable className="col-12"

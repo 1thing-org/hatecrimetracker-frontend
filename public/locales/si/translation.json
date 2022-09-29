@@ -23,7 +23,8 @@
     "cases": "සිදුවීම්",
     "no_data": "දත්ත නොමැත",
     "count_10k_asian": "ගණන/ආසියාතිකයන් දස දහසකට",
-    "count_1mm": "ගණන/ආසියාතිකයන් මිලියනයකට"
+    "count_1mm": "ගණන/ආසියාතිකයන් මිලියනයකට",
+    "incident_count": "සිදුවීම් ගණන"
   },
   "incident_chart": {
     "total_monthly_cases": "මුළු මාසික සිදුවීම් {{count}} ",
@@ -33,7 +34,9 @@
     "trend": "අපරාධ සිදුවීමේ ප්‍රවණතාවය",
     "no_data": "දත්ත නොමැත",
     "total_cases": "මුළු සිදුවීම් {{count}} ",
-    "total_cases_plural": "මුළු සිදුවීම් {{count}} "
+    "total_cases_plural": "මුළු සිදුවීම් {{count}} ",
+    "average_cases": "10k ආසියාතිකයින් සඳහා සාමාන්‍ය {{count}} සිදුවීම",
+    "total_monthly_cases_per_10k_Asian": "ආසියානු 10k සඳහා {{count}} අනුපාතය මාසික ගාස්තුව"
   },
   "contact_us": "අප අමතන්න",
   "copyright": "කතුහිමිකම (Copyright)",
@@ -57,5 +60,7 @@
   "link_to_news_source": "පුවත් මූලාශ්‍රය වෙත සබැඳිය",
   "make_a_donation": "පරිත්‍යාගයක් කරන්න",
   "police_tip_line": "පොලිස් ඉඟි රේඛාව",
-  "other_ways_to_help": "උදව් කිරීමට වෙනත් මාර්ග"
+  "other_ways_to_help": "උදව් කිරීමට වෙනත් මාර්ග",
+  "data_display": "ප්රදර්ශනය කිරීමට දත්ත",
+  "monthly_per_10k_asian": "ආසියානුවන් 10kකට මාසිකව"
 }

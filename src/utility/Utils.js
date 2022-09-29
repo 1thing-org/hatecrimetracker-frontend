@@ -1,5 +1,5 @@
 // ** Checks if an object is empty (returns boolean)
-export const isObjEmpty = obj => Object.keys(obj).length === 0
+export const isObjEmpty = obj => !obj||Object.keys(obj).length === 0
 
 // ** Returns K format from a number
 export const kFormatter = num => (num > 999 ? `${(num / 1000).toFixed(1)}k` : num)
@@ -137,7 +137,10 @@ const StatePopulation = {
   "WI": 5893718,
   "WY": 576851
 }
-
+var total_population = 0;
+Object.entries(StatePopulation).forEach(function ([key, value]) {
+  total_population += value;
+});
 //2019
 //https://worldpopulationreview.com/state-rankings/asian-population
 const ASIAN_POPULATION = {
@@ -198,6 +201,11 @@ const ASIAN_POPULATION = {
   "WV": 19794,
   "WY": 8996
 };
+
+var toatl_asian = 0;
+Object.entries(ASIAN_POPULATION).forEach(function ([key, value]) {
+  toatl_asian += value;
+});
 
 const STATES_SHORT_TO_FULL = {
   "AL": "Alabama",
@@ -262,9 +270,9 @@ export const getValidState = (state) => {
   state = state?.toUpperCase();
   return state in STATES_SHORT_TO_FULL ? state : ''
 };
-export const formatIncidentRate = (rate) => (rate > 0.0001) ? rate.toFixed(2) : "N/A";
-export const getStateIncidentPerM = (incidentCount, state) => (incidentCount / StatePopulation[state] * 1000000);
-export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / ASIAN_POPULATION[state] * 10000;
+export const formatIncidentRate = (rate) => (rate > 0.00001) ? Number(rate).toFixed(4) : "N/A";
+export const getStateIncidentPerM = (incidentCount, state) => (incidentCount / (state ? StatePopulation[state] : total_population) * 1000000);
+export const getStateIncidentPer10kAsian = (incidentCount, state) => incidentCount / (state ? ASIAN_POPULATION[state] : toatl_asian) * 10000;
 export const stateFullName = (stateShort) => STATES_SHORT_TO_FULL[stateShort] ? STATES_SHORT_TO_FULL[stateShort] : stateShort;
 export const forEachState = (callback) => Object.entries(STATES_SHORT_TO_FULL).forEach(([state, name]) => callback(state, name));
 export const statePopulation = (state) => StatePopulation[state] || 0;

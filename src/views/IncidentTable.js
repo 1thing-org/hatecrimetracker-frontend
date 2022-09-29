@@ -6,20 +6,20 @@ const IncidentTable = ({ data, title, onEdit, onDelete }) => {
   let columns = [
     {
       name: 'Date',
-      selector: 'incident_time',
+      selector: row => row['incident_time'],
       sortable: true,
       format: row => moment(row.incident_time).format('MM/DD/YYYY'),
       width: "120px"
     },
     {
       name: 'Location',
-      selector: 'incident_location',
+      selector: row => row['incident_location'],
       sortable: true,
       width: "100px"
     },
     {
       name: 'Title',
-      selector: 'title',
+      selector: row => row['title'],
       sortable: true,
       wrap: true,
       format: (row) => {
@@ -31,7 +31,7 @@ const IncidentTable = ({ data, title, onEdit, onDelete }) => {
     },
     {
       name: 'Entered By',
-      selector: 'created_by',
+      selector: row => row['created_by'],
       sortable: true,
       max_width: "100px",
       wrap: false
@@ -43,12 +43,12 @@ const IncidentTable = ({ data, title, onEdit, onDelete }) => {
       {
         name: '',
         grow: 1,
-        selector: "url",
+        selector: row => row['url'],
         width: "100px",
         format: (row) => {
-          return <Button.Ripple color='danger' block onClick={() => onEdit(row)} >
+          return <Button color='danger' block onClick={() => onEdit(row)} >
             Edit
-          </Button.Ripple>;
+          </Button>;
         }
       }
     );
@@ -58,12 +58,12 @@ const IncidentTable = ({ data, title, onEdit, onDelete }) => {
       {
         name: '',
         grow: 1,
-        selector: "url",
+        selector: row => row['url'],
         width: "120px",
         format: (row) => {
-          return <Button.Ripple color='warning' block onClick={() => onDelete(row)} >
+          return <Button color='warning' block onClick={() => onDelete(row)} >
             Delete
-          </Button.Ripple>;
+          </Button>;
         }
       }
     );

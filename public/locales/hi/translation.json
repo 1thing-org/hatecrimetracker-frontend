@@ -23,7 +23,8 @@
     "cases": "मामलों",
     "no_data": "कोई डेटा एकत्र नहीं किया गया",
     "count_10k_asian": "गिनती/१०के एशियाई",
-    "count_1mm": "गणना / 1 मिमी"
+    "count_1mm": "गणना / 1 मिमी",
+    "incident_count": "घटना गणना"
   },
   "incident_chart": {
     "total_monthly_cases": "कुल {{count}} मासिक मामला",
@@ -33,7 +34,9 @@
     "trend": "घृणा अपराध घटना प्रवृत्ति",
     "no_data": "कोई डेटा एकत्र नहीं किया गया",
     "total_cases": "कुल {{count}} घटना",
-    "total_cases_plural": "कुल {{count}} घटनाएं"
+    "total_cases_plural": "कुल {{count}} घटनाएं",
+    "average_cases": "औसत {{गिनती}} घटना प्रति 10k एशियाई",
+    "total_monthly_cases_per_10k_Asian": "अनुपात {{गिनती}} मासिक दर प्रति 10k एशियाई"
   },
   "contact_us": "संपर्क करें",
   "copyright": "कॉपीराइट",
@@ -57,5 +60,7 @@
   "link_to_news_source": "समाचार स्रोत से लिंक करें",
   "make_a_donation": "एक दान करें",
   "police_tip_line": "पुलिस टिप लाइन",
-  "other_ways_to_help": "मदद करने के अन्य तरीके"
+  "other_ways_to_help": "मदद करने के अन्य तरीके",
+  "data_display": "प्रदर्शित करने के लिए डेटा",
+  "monthly_per_10k_asian": "मासिक प्रति 10k एशियाई"
 }

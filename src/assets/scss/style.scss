@@ -1,17 +1,7 @@
-/*================================================================================
-	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-	Version: 2.0
-	Author: PIXINVENT
-	Author URL: http://www.themeforest.net/user/pixinvent
-================================================================================
-
-NOTE:
-------
-PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
-WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
-
 body{
 	background:#000000;
+	font-size: 12px;
+	font-weight: 400;
 }
 body.dark-layout {
 	color: #b4b7bd;
@@ -21,13 +11,14 @@ body.dark-layout {
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 120%;
 	color:#FEF753;
 }
 
 .incident-list .incident-title:hover {
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 .incident-list .help-icons {
@@ -260,10 +251,19 @@ body.dark-layout {
 
 .dark-layout .card-title {
 	color:#FEF753;
-}
+	font-weight: 500;
+	font-size: 1.285rem;
+}	
   
 .dark-layout .card .card-footer {
 	border-color: #000000; 
+}
+
+.dark-layout label {
+    color: #d0d2d6;
+}
+.mb-1, [dir] .my-1 {
+    margin-bottom: 1rem!important;
 }
 
 .dark-layout .btn-loadmore {
@@ -291,4 +291,22 @@ body.dark-layout {
 }
 .contact_us {
 	color: #FEF753 !important;
+}
+
+.container{
+    max-width: 100%;
+}
+
+input.form-control, textarea.form-control {
+    background-color: #283046;
+	color: #b4b7bd;
+	font-size: 1rem;
+}
+select.form-control {
+    background-color: #283046;
+    border-color: #3b4253;
+	color: #b4b7bd;
+}
+.h1, h1 {
+    font-size: 2rem;
 }

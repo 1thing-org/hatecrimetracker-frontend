@@ -23,7 +23,8 @@
     "cases": "사건",
     "no_data": "수집된 데이터가 없습니다",
     "count_10k_asian": "만 아시아인 당 사건",
-    "count_1mm": "백만 명당 사건"
+    "count_1mm": "백만 명당 사건",
+    "incident_count": "사건 수"
   },
   "incident_chart": {
     "total_monthly_cases": "월별 {{count}}건",
@@ -33,7 +34,9 @@
     "total_daily_cases_plural": "일일 {{count}}건",
     "trend": "증오범죄 사건 경향",
     "total_cases": "총 {{count}}건",
-    "total_cases_plural": "총 {{count}}건"
+    "total_cases_plural": "총 {{count}}건",
+    "average_cases": "아시아인 10,000명당 평균 {{count}} 건",
+    "total_monthly_cases_per_10k_Asian": "10,000 아시아인당 비율 {{count}} 월 요금"
   },
   "contact_us": "문의하기",
   "copyright": "저작권",
@@ -57,5 +60,7 @@
   "link_to_news_source": "뉴스 출처 링크",
   "make_a_donation": "기부하세요",
   "police_tip_line": "경찰 정보 라인",
-  "other_ways_to_help": "도움을 줄 수 있는 다른 방법"
+  "other_ways_to_help": "도움을 줄 수 있는 다른 방법",
+  "data_display": "표시할 데이터",
+  "monthly_per_10k_asian": "10,000 아시아 당 월간"
 }

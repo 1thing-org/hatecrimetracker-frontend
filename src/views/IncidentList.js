@@ -5,11 +5,11 @@ import { stateFullName } from '../utility/Utils.js'
 import { Button } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
 import { Input } from 'rsuite';
-import donationIcon from '@src/assets/images/icons/donation.svg';
-import policeTipLineIcon from '@src/assets/images/icons/police-line.svg';
-import helpTheVictimIcon from '@src/assets/images/icons/victim-support.svg';
-import openInNewTab from '@src/assets/images/icons/launch_black_24dp.svg';
-import closeIcon from '@src/assets/images/icons/close_black_24dp.svg';
+import donationIcon from '../assets/images/icons/donation.svg';
+import policeTipLineIcon from '../assets/images/icons/police-line.svg';
+import helpTheVictimIcon from '../assets/images/icons/victim-support.svg';
+import openInNewTab from '../assets/images/icons/launch_black_24dp.svg';
+import closeIcon from '../assets/images/icons/close_black_24dp.svg';
 
 const INCR_COUNT = 10;
 const IncidentList = (props) => {
