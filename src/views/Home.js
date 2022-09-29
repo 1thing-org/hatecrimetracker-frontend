@@ -73,7 +73,6 @@ const Home = () => {
       value: 0,
     },
   ]);
-  const [monthlyCount, setMonthlyCount] = useState([]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false)
@@ -135,7 +134,6 @@ const Home = () => {
             stats.monthly_stats
           )
         );
-        setMonthlyCount(stats.monthly_stats);
         if (updateMap) {
           setIncidentAggregated(stats.total);
         }
@@ -229,9 +227,7 @@ const Home = () => {
   }
 
   const stateToggled = (state) => {
-    // console.log("This is:" + this);
     const newState = state == selectedState ? null : state
-    // console.log("Toggle state:" + state + " selectedState:" + selectedState + " new state:" + newState)
     setSelectedState(newState);
   }
 
