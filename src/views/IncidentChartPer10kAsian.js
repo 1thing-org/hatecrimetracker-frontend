@@ -17,7 +17,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
     const [totalCases, setTotalCases] = useState(0);
 
     useEffect(() => {
-        //calc incident ration per 10k asian
+        //calc incident ratio per 10k asian
         let monthly_data = [];
         let startDate = dateFns.set(date_range[0], {date:1}); //set to first day of the month
         let lastDate = dateFns.set(date_range[1], {date:1});
