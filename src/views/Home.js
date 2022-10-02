@@ -1,7 +1,7 @@
 import UILoader from './components/ui-loader';
 import logo from '../assets/images/logo/logo.png';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -14,14 +14,13 @@ import {
 import 'rsuite/dist/rsuite.min.css';
 import * as incidentsService from '../services/incidents';
 import IncidentChart from './IncidentChart';
-import IncidentChartPer10kAsian from './IncidentChartPer10kAsian';
 import DateRangeSelector from './DateRangeSelector';
 import IncidentCountTable from './IncidentCountTable';
 import IncidentList from './IncidentList';
 import IncidentMap from './IncidentMap';
 import StateSelection from './StateSelection';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getValidState, isObjEmpty } from '../utility/Utils';
+import { useNavigate } from 'react-router-dom';
+import { isObjEmpty } from '../utility/Utils';
 import { useCookies } from 'react-cookie';
 import { getBrowserLang, SUPPORTED_LANGUAGES } from '../utility/Languages';
 import { SelectPicker } from 'rsuite';
@@ -37,21 +36,28 @@ import '../assets/scss/charts/recharts.scss';
 
 
 const Home = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation()
+  let [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
+  
   //get default lang
   //parameter lang > cookie > browser default setting
   const [cookies, setCookie] = useCookies(['lang']);
-  const lang_code = searchParams.get("lang") || cookies.lang || getBrowserLang();
-  const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
-  const support_languages = [];
+  const init_lang_code = searchParams.get("lang") || cookies.lang || getBrowserLang() || "en";
+  const initDateRange = isObjEmpty(searchParams.get("from"))
+        ? [moment().subtract(1, 'years').toDate(), new Date()]
+        : [
+            moment(searchParams.get("from"),).toDate(),
+            moment(searchParams.get("to"),).toDate(),
+          ];
 
+  const [parameters, setParameters] = useState({
+    date_range: initDateRange,
+    lang : init_lang_code,
+    state : searchParams.get("state")
+  });
+
+  const support_languages = [];
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
     support_languages.push({
       value: lang_code,
@@ -62,8 +68,6 @@ const Home = () => {
   const isMobile = (window.innerWidth <= 786)
   const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false)
   const [incidents, setIncidents] = useState([]);
-  const [selectedState, setSelectedState] = useState();
-  const [dateRange, setDateRange] = useState();
   const [isFirstLoadData, setIsFirstLoadData] = useState(true)
   const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
@@ -76,10 +80,6 @@ const Home = () => {
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false)
-  const setSelectedLang = (lang_code) => {
-    setCookie('lang', lang_code);
-    setSelectedLangCode(lang_code);
-  };
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   // Remove date out of the range, and insert days that does not have data
   // start_date, end_date: Date
@@ -101,7 +101,7 @@ const Home = () => {
           stats.pop();
           continue; //skip data that is out of range
         }
-        if (stats[stats.length - 1].key == strDate) {
+        if (stats[stats.length - 1].key === strDate) {
           //found the date in stats, use it
           new_stats.push({
             monthly_cases: monthlyData,
@@ -116,21 +116,19 @@ const Home = () => {
     }
     return new_stats;
   };
-  const loadData = (updateMap = false) => {
-    if (dateRange?.length != 2) return;
-
+  
+  const loadData = (params, updateMap = false) => {
     setLoading(true);
     incidentsService
-      .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode)
+      .getIncidents(params.date_range[0], params.date_range[1], params.state, params.lang)
       .then((incidents) => setIncidents(incidents));
     incidentsService
-      .getStats(dateRange[0], dateRange[1], selectedState)
+      .getStats(params.date_range[0], params.date_range[1], params.state)
       .then((stats) => {
         setIncidentTimeSeries(
           mergeDate(
             stats.stats,
-            dateRange[0],
-            dateRange[1],
+            params.date_range[0], params.date_range[1],
             stats.monthly_stats
           )
         );
@@ -150,85 +148,73 @@ const Home = () => {
     }`;
   };
 
-  const isParameterChanged = () => {
-    if (dateRange?.length != 2) {
-      return true;
-    }
-    const cururl = generateUrl(
-      searchParams.get("from"),
-      searchParams.get("to"),
-      searchParams.get("state"),
-      searchParams.get("lang")
-    );
+  const saveHistory = (params) => {
     const newurl = generateUrl(
-      dateRange[0],
-      dateRange[1],
-      selectedState,
-      selectedLangCode
-    );
-    return cururl !== newurl;
-  };
-  const saveHistory = () => {
-    if (!dateRange) return;
-    //if date ranger or state is changed, save in router history
-    if (!isParameterChanged()) return;
-    const newurl = generateUrl(
-      dateRange[0],
-      dateRange[1],
-      selectedState,
-      selectedLangCode
+      params.date_range[0], params.date_range[1], params.state,
+      params.lang
     );
 
     navigate(newurl);
   };
 
   useEffect(() => {
-    if (isParameterChanged()) {
-      const defaultDateRange = isObjEmpty(searchParams.get("from"))
-        ? [moment().subtract(1, 'years').toDate(), new Date()]
-        : [
-            moment(searchParams.get("from"),).toDate(),
-            moment(searchParams.get("to"),).toDate(),
-          ];
-
-      setSelectedState(getValidState(searchParams.get("state"),));
-      setDateRange(defaultDateRange);
-    }
-  }, [location]);
-  useEffect(() => {
-    // console.log("selectedState:" + selectedState)
-    changeLanguage(selectedLangCode);
-    loadData();
-    saveHistory();
-  }, [selectedState, selectedLangCode]);
-  //update both incidents and map
-  useEffect(() => {
-    loadData(true);
-    saveHistory();
-  }, [dateRange]);
-
-  useEffect(() => {
     const resizeW = () => changeDeviceSize(window.innerWidth);
 
     window.addEventListener("resize", resizeW); // Update the width on resize
+    loadData(parameters, true);
     return () => window.removeEventListener("resize", resizeW);
-  });
+  }, []);
   const colors = {
     primary: {
       main: '#FEF753'
     }
   };
 
+  //Handle lang change
+  function handleLangChange(newLangCode) {
+    i18n.changeLanguage(newLangCode);
+    setCookie('lang', newLangCode);
+    //setSelectedLangCode(newLangCode);
+    const newParams = {
+      ...parameters,
+      ...{lang:newLangCode}
+    };
+    setParameters(newParams)
+    loadData(newParams);
+    saveHistory(newParams);
+  }
   // handle date change
-  function handleDateRangeSelect(ranges) {
-    if (ranges) {
-      setDateRange(ranges);
+  function handleDateRangeSelect(range) {
+    if (range) {
+      const newParams = {
+        ...parameters,
+        ...{date_range:range}
+      };
+      setParameters(newParams)
+      loadData(newParams, true);
+      saveHistory(newParams);
     }
+  }
+  // handle state change
+  function handleStateChange(newState) {
+    const newParams = {
+      ...parameters,
+      ...{state:newState}
+    };
+    setParameters(newParams)
+    loadData(newParams);
+    saveHistory(newParams);
   }
 
   const stateToggled = (state) => {
-    const newState = state == selectedState ? null : state
-    setSelectedState(newState);
+    const newState = state === parameters.state ? null : state
+    const newParams = {
+      ...parameters,
+      ...{state:newState}
+    };
+    setParameters(newParams)
+    loadData(newParams);
+    saveHistory(newParams);
   }
 
   return (
@@ -239,11 +225,6 @@ const Home = () => {
               <p className='floating-text'>Follow Us</p>
           </div>
         </div>
-        {/* <div className='wrapper-floatting-button'>
-          <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
-              <p className='floating-text'>Share</p>
-          </div>
-        </div>  */}
         </>
       }
       {isShare && <SocialMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
@@ -284,10 +265,10 @@ const Home = () => {
                       data={support_languages}
                       searchable={false}
                       cleanable={false}
-                      defaultValue={selectedLangCode}
+                      defaultValue={parameters.lang}
                       style={{ width: 120 }}
                       className = {"rs-theme-dark"}
-                      onChange={(value) => setSelectedLang(value)}
+                      onChange={value => handleLangChange(value)}
                     />
                     </div>
                   </Col>
@@ -299,8 +280,8 @@ const Home = () => {
                       <Label className='SimpleLabel'>{t('location')}:</Label>{' '}
                       <StateSelection
                         name='state'
-                        value={selectedState}
-                        onChange={setSelectedState}
+                        value={parameters.state}
+                        onChange={handleStateChange}
                       />{' '}
                     </Col>
                     <Col xs='12' sm='12' md='auto' className='OneRowItem'>
@@ -308,7 +289,7 @@ const Home = () => {
                       <DateRangeSelector
                         name='date'
                         onChange={handleDateRangeSelect}
-                        value={dateRange}
+                        value={parameters.date_range}
                         isMobile={isMobile}
                       />
                     </Col>
@@ -321,11 +302,10 @@ const Home = () => {
             <Col xl='8' lg='6' md='12'>
               <div>
 
-                <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>
-
+                <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={parameters.state}/>
                 <IncidentMap
                   mapData={incidentAggregated}
-                  selectedState={selectedState}
+                  selectedState={parameters.state}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
                   stateToggled={stateToggled}
@@ -333,16 +313,13 @@ const Home = () => {
                 <IncidentCountTable
                   title={'Incident Count by State'}
                   data={incidentAggregated}
-                  selectedState={selectedState}
+                  selectedState={parameters.state}
                   stateToggled={stateToggled}
                 />
               </div>
             </Col>
             <Col xl='4' lg='6' md='12'>
               <Card>
-                {/* <CardHeader>
-                            <CardTitle>Hate Crime Incidents</CardTitle>
-                        </CardHeader> */}
                 <CardBody>
                   <IncidentList data={incidents} />
                 </CardBody>
