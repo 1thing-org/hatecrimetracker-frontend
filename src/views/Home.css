@@ -12,13 +12,23 @@
     
     .SimpleLabel {
         margin-top: 1rem;
+        color:#FFFF00;
     }
 
     .title {
         font-size: 1rem !important; 
     }
 }
-
+.header{
+    background-color: #000000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000000;
+    padding-left: 0px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
 .title {
     font-size: 2rem;
 }
@@ -71,6 +81,12 @@
     color: #000000 !important;
 }
 
+.sticky{
+    position: fixed;
+    top: 0; 
+    width: 100%;
+    z-index: 1000000;
+}
 
 @media (max-width: 786px) {
     .floating-button-top {
@@ -80,6 +96,13 @@
 
     .floating-button-bottom {
         top: 33%;
+    }
+
+    .hamburger {
+        margin-top: 10px; 
+        padding-top:5px;
+        margin-left:12px;
+        z-index: 10;
     }
     
 }

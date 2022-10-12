@@ -11,16 +11,30 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import { IonCard, IonCardContent, IonRow, IonCol } from "@ionic/react";
+import {
+  IonCard,
+  IonCardContent,
+  IonRow,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonMenu,
+  IonMenuButton,
+  IonNavbar,
+} from "@ionic/react";
 import "rsuite/dist/rsuite.min.css";
 import * as incidentsService from "../services/incidents";
-import IncidentChart from "./IncidentChart";
-import IncidentChartPer10kAsian from "./IncidentChartPer10kAsian";
-import DateRangeSelector from "./DateRangeSelector";
-import IncidentCountTable from "./IncidentCountTable";
-import IncidentList from "./IncidentList";
-import IncidentMap from "./IncidentMap";
-import StateSelection from "./StateSelection";
+import IncidentChart from "./components/IncidentChart";
+import IncidentChartPer10kAsian from "./components/IncidentChartPer10kAsian";
+import DateRangeSelector from "./components/DateRangeSelector";
+import IncidentCountTable from "./components/IncidentCountTable";
+import IncidentList from "./components/IncidentList";
+import IncidentMap from "./components/IncidentMap";
+import StateSelection from "./components/StateSelection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getValidState, isObjEmpty } from "../utility/Utils";
 import { useCookies } from "react-cookie";
@@ -34,6 +48,7 @@ import "./Home.css";
 import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
+import Hamburger from "./components/hamburger";
 import "../assets/scss/charts/recharts.scss";
 
 const Home = () => {
@@ -78,6 +93,13 @@ const Home = () => {
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+  const toggleHamburger = () => {
+    setHamburgerOpen(!hamburgerOpen);
+    console.log(hamburgerOpen);
+  };
+
   const setSelectedLang = (lang_code) => {
     setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
@@ -266,90 +288,109 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <IonRow>
-            <IonCol xs="12">
-              <Container className="header">
-                <IonRow className="align-items-center">
-                  <IonCol xs="12" sm="12" md="8">
-                    <p className="title">
-                      <img src={logo} alt="logo" className="logo" />{" "}
-                      {t("website.name")}
-                    </p>
-                  </IonCol>
-
-                  <IonCol xs="12" sm="12" md="4">
-                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
-                      {deviceSize >= 786 && (
-                        <>
-                          <SocialMedia
-                            size={35}
-                            bgStyle={{ fill: "#000000" }}
-                            iconFillColor={"yellow"}
-                          />
-                          &nbsp;
-                          <button
-                            className="button-no-background"
-                            onClick={() => setIsShare(true)}
-                          >
-                            <RiShareForwardFill size={25} />
-                          </button>
-                          &nbsp;&nbsp;{" "}
-                        </>
-                      )}
-                      <a
-                        href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                        target="_blank"
-                        className="contact_us"
-                      >
-                        {t("contact_us")}
-                      </a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <SelectPicker
-                        data={support_languages}
-                        searchable={false}
-                        cleanable={false}
-                        defaultValue={selectedLangCode}
-                        style={{ width: 120 }}
-                        className={"rs-theme-dark"}
-                        onChange={(value) => setSelectedLang(value)}
+          {/* <IonRow>
+            <IonCol xs="12"> */}
+          {deviceSize < 786 && (
+            <Container className="header">
+              <>
+                <IonToolbar color={"black"}>
+                  <IonTitle className="px-0" text="left">
+                    <div onClick={toggleHamburger}>
+                      <Hamburger
+                      // isOpen={hamburgerOpen}
                       />
                     </div>
-                  </IonCol>
-                </IonRow>
+                    <p className="title">
+                      <img src={logo} alt="logo" className="logo" />
+                      {t("website.name")}
+                    </p>
+                  </IonTitle>
+                </IonToolbar>
+              </>
+            </Container>
+          )}
+          {deviceSize >= 786 && (
+            <>
+              <IonRow className="align-items-center">
+                <IonCol xs="12" sm="12" md="8">
+                  <p className="title">
+                    <img src={logo} alt="logo" className="logo" />{" "}
+                    {t("website.name")}
+                  </p>
+                </IonCol>
 
-                <FormGroup>
-                  <IonRow>
-                    <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
-                      <Label className="SimpleLabel">{t("location")}:</Label>{" "}
-                      <StateSelection
-                        name="state"
-                        value={selectedState}
-                        onChange={setSelectedState}
-                      />{" "}
-                    </IonCol>
-                    <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
-                      <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
-                      <DateRangeSelector
-                        name="date"
-                        onChange={handleDateRangeSelect}
-                        value={dateRange}
-                        isMobile={isMobile}
-                      />
-                    </IonCol>
-                  </IonRow>
-                </FormGroup>
-              </Container>
-            </IonCol>
-          </IonRow>
+                <IonCol xs="12" sm="12" md="4">
+                  <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                    {deviceSize >= 786 && (
+                      <>
+                        <SocialMedia
+                          size={35}
+                          bgStyle={{ fill: "#000000" }}
+                          iconFillColor={"yellow"}
+                        />
+                        &nbsp;
+                        <button
+                          className="button-no-background"
+                          onClick={() => setIsShare(true)}
+                        >
+                          <RiShareForwardFill size={25} />
+                        </button>
+                        &nbsp;&nbsp;{" "}
+                      </>
+                    )}
+                    <a
+                      href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                      target="_blank"
+                      className="contact_us"
+                    >
+                      {t("contact_us")}
+                    </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <SelectPicker
+                      data={support_languages}
+                      searchable={false}
+                      cleanable={false}
+                      defaultValue={selectedLangCode}
+                      style={{ width: 120 }}
+                      className={"rs-theme-dark"}
+                      onChange={(value) => setSelectedLang(value)}
+                    />
+                  </div>
+                </IonCol>
+              </IonRow>
+            </>
+          )}
+          <FormGroup
+            style={
+              deviceSize < 786 ? { paddingTop: "65px" } : { paddingTop: "0px" }
+            }
+          >
+            <IonRow>
+              <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
+                <Label className="SimpleLabel">{t("location")}:</Label>{" "}
+                <StateSelection
+                  name="state"
+                  value={selectedState}
+                  onChange={setSelectedState}
+                />{" "}
+              </IonCol>
+              <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
+                <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
+                <DateRangeSelector
+                  name="date"
+                  onChange={handleDateRangeSelect}
+                  value={dateRange}
+                  isMobile={isMobile}
+                />
+              </IonCol>
+            </IonRow>
+          </FormGroup>
+          {/* </Container> */}
+          {/* </IonCol>
+          </IonRow> */}
           <IonRow className="match-height">
             <IonCol xl="8" lg="6" md="12">
               <div>
-                <IncidentChart
-                  color={colors.primary.main}
-                  chart_data={incidentTimeSeries}
-                  state={selectedState}
-                />
-
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
@@ -357,12 +398,19 @@ const Home = () => {
                   showPer10KAsian={isShowPer10kAsian}
                   stateToggled={stateToggled}
                 />
-                <IncidentCountTable
-                  title={"Incident Count by State"}
-                  data={incidentAggregated}
-                  selectedState={selectedState}
-                  stateToggled={stateToggled}
+                <IncidentChart
+                  color={colors.primary.main}
+                  chart_data={incidentTimeSeries}
+                  state={selectedState}
                 />
+                {deviceSize >= 786 && (
+                  <IncidentCountTable
+                    title={"Incident Count by State"}
+                    data={incidentAggregated}
+                    selectedState={selectedState}
+                    stateToggled={stateToggled}
+                  />
+                )}
               </div>
             </IonCol>
             <IonCol xl="4" lg="6" md="12">
@@ -371,6 +419,7 @@ const Home = () => {
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
                 <IonCardContent>
+                  <h1 style={{ fontWeight: "bold" }}>News</h1>
                   <IncidentList data={incidents} />
                 </IonCardContent>
               </IonCard>
