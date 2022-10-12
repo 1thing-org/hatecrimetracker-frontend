@@ -4,10 +4,6 @@ import HomePage from "./views/Home";
 import IncidentAdminPage from "./views/IncidentAdmin";
 import "./assets/scss/style.scss";
 
-// Components
-import Sidedrawer from "./views/components/sidedrawer";
-import Backdrop from "./views/components/backdrop";
-
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -24,20 +20,22 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import { setupIonicReact } from "@ionic/react";
+import About from "./views/About";
+import DataExplorer from "./views/DataExplorer";
+import Contact from "./views/Contact";
 
 setupIonicReact();
 
 export default function App() {
-  const [sideToggle, setSideToggle] = useState(false);
-
   return (
     <BrowserRouter>
-      <Sidedrawer show={sideToggle} click={() => {}} />
-      <Backdrop show={sideToggle} click={() => setSideToggle(false)} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="admin" element={<IncidentAdminPage />} />
+        <Route path="/dataexplorer" element={<DataExplorer />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
   );

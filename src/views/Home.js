@@ -50,6 +50,7 @@ import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
 import Hamburger from "./components/hamburger";
 import "../assets/scss/charts/recharts.scss";
+import Sidedrawer from "./components/sidedrawer";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -94,11 +95,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-
-  const toggleHamburger = () => {
-    setHamburgerOpen(!hamburgerOpen);
-    console.log(hamburgerOpen);
-  };
 
   const setSelectedLang = (lang_code) => {
     setCookie("lang", lang_code);
@@ -285,20 +281,19 @@ const Home = () => {
           deviceSize={deviceSize}
         />
       )}
+      {hamburgerOpen && (
+        <Sidedrawer setHamburgerOpen={setHamburgerOpen} show={hamburgerOpen} />
+      )}
       <Head />
       <UILoader blocking={loading}>
         <div>
-          {/* <IonRow>
-            <IonCol xs="12"> */}
           {deviceSize < 786 && (
             <Container className="header">
               <>
                 <IonToolbar color={"black"}>
                   <IonTitle className="px-0" text="left">
-                    <div onClick={toggleHamburger}>
-                      <Hamburger
-                      // isOpen={hamburgerOpen}
-                      />
+                    <div onClick={() => setHamburgerOpen(true)}>
+                      <Hamburger />
                     </div>
                     <p className="title">
                       <img src={logo} alt="logo" className="logo" />
@@ -362,7 +357,7 @@ const Home = () => {
           )}
           <FormGroup
             style={
-              deviceSize < 786 ? { paddingTop: "65px" } : { paddingTop: "0px" }
+              deviceSize < 786 ? { paddingTop: "80px" } : { paddingTop: "0px" }
             }
           >
             <IonRow>
@@ -385,9 +380,6 @@ const Home = () => {
               </IonCol>
             </IonRow>
           </FormGroup>
-          {/* </Container> */}
-          {/* </IonCol>
-          </IonRow> */}
           <IonRow className="match-height">
             <IonCol xl="8" lg="6" md="12">
               <div>

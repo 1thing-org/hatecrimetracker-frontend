@@ -1,33 +1,57 @@
+import React from "react";
+import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import "./sidedrawer.css";
+import { MdOutlineCancel } from "react-icons/md";
 
-const Sidedrawer = ({ show, click }) => {
-  const sideDrawerClass = ["sidedrawer"];
-  if (show) {
-    sideDrawerClass.push("show");
-  }
-
+const Backdrop = ({ setHamburgerOpen }) => {
   return (
-    <div className={sideDrawerClass.join(" ")}>
-      <ul className="sidedrawer_links" onClick={click}>
+    <div
+      onClick={() => {
+        setHamburgerOpen(false);
+      }}
+      className="backdrop"
+    />
+  );
+};
+
+const SidedrawerOverlay = ({ setHamburgerOpen }) => {
+  return (
+    <div className="sidedrawer">
+      <ul className="sidedrawer_links">
         <li>
-          <Link to="/">Home</Link>
+          <MdOutlineCancel
+            className="cancel"
+            size={30}
+            onClick={() => setHamburgerOpen(false)}
+          />
         </li>
         <li>
-          <Link to="/cart">Cart</Link>
+          <Link to="/dataexplorer">Data Explorer</Link>
         </li>
         <li>
-          <Link to="/shop"> Shop</Link>
-        </li>
-        <li>
-          <Link to="/faq"> FAQ</Link>
+          <Link to="/about">About</Link>
         </li>
         <li>
           <Link to="/contact">Contact</Link>
         </li>
       </ul>
     </div>
+  );
+};
+
+const Sidedrawer = ({ setHamburgerOpen }) => {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Backdrop setHamburgerOpen={setHamburgerOpen} />,
+        document.getElementById("backdrop-root")
+      )}
+      {ReactDOM.createPortal(
+        <SidedrawerOverlay setHamburgerOpen={setHamburgerOpen} />,
+        document.getElementById("overlay-root")
+      )}
+    </React.Fragment>
   );
 };
 
