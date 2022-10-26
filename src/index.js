@@ -17,6 +17,7 @@ import reportWebVitals from "./reportWebVitals";
 import UserProvider from "./providers/UserProvider";
 import "./i18n";
 import "./assets/scss/style.scss";
+import { ContextProvider } from "./contexts/ContextProvider";
 
 try {
   setTimeout((_) => {
@@ -36,7 +37,9 @@ root.render(
       {/* <Provider store={store}> */}
       <Suspense fallback={<Spinner />}>
         {/* <ThemeContext> */}
-        <LazyApp />
+        <ContextProvider>
+          <LazyApp />
+        </ContextProvider>
         <ToastContainer newestOnTop />
         {/* </ThemeContext> */}
       </Suspense>

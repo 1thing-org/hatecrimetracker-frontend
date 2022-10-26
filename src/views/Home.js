@@ -52,6 +52,10 @@ import Hamburger from "./components/hamburger";
 import "../assets/scss/charts/recharts.scss";
 import Sidedrawer from "./components/sidedrawer";
 
+import { useStateContext } from "../contexts/ContextProvider";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -76,13 +80,25 @@ const Home = () => {
     });
   });
 
+  const {
+    deviceSize,
+    changeDeviceSize,
+    incidents,
+    setIncidents,
+    selectedState,
+    setSelectedState,
+    incidentAggregated,
+    setIncidentAggregated,
+    hamburgerOpen,
+    setHamburgerOpen,
+  } = useStateContext();
   const isMobile = window.innerWidth <= 786;
   const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false);
-  const [incidents, setIncidents] = useState([]);
-  const [selectedState, setSelectedState] = useState();
+  // const [incidents, setIncidents] = useState([]);
+  // const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
   const [isFirstLoadData, setIsFirstLoadData] = useState(true);
-  const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
+  // const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
@@ -91,10 +107,10 @@ const Home = () => {
     },
   ]);
   const [monthlyCount, setMonthlyCount] = useState([]);
-  const [incidentAggregated, setIncidentAggregated] = useState([]);
+  // const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
-  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  // const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const setSelectedLang = (lang_code) => {
     setCookie("lang", lang_code);
@@ -287,23 +303,7 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          {deviceSize < 786 && (
-            <Container className="header">
-              <>
-                <IonToolbar color={"black"}>
-                  <IonTitle className="px-0" text="left">
-                    <div onClick={() => setHamburgerOpen(true)}>
-                      <Hamburger />
-                    </div>
-                    <p className="title">
-                      <img src={logo} alt="logo" className="logo" />
-                      {t("website.name")}
-                    </p>
-                  </IonTitle>
-                </IonToolbar>
-              </>
-            </Container>
-          )}
+          {deviceSize < 786 && <Navbar setHamburgerOpen={setHamburgerOpen} />}
           {deviceSize >= 786 && (
             <>
               <IonRow className="align-items-center">
@@ -460,6 +460,7 @@ const Home = () => {
             </ul>
           </div>
         </div>
+        {deviceSize < 786 && <Footer />}
       </UILoader>
     </>
   );

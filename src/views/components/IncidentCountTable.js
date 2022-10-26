@@ -10,6 +10,7 @@ import {
   asianPopulation,
 } from "../../utility/Utils";
 import { useTranslation, getI18n } from "react-i18next";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const toIncidentCount = (data) => {
   const result = [];
@@ -31,6 +32,7 @@ const selectorAsianPopulation = (row) => asianPopulation(row.state);
 //data is map of state to count
 const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
   const { t } = useTranslation();
+  const { deviceSize } = useStateContext();
   const [incidentCountData, setIncidentCountData] = useState(
     toIncidentCount(data)
   );
@@ -119,7 +121,9 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
     stateToggled(row.state);
   });
   return (
-    <Card>
+    <Card
+      style={deviceSize < 786 ? { paddingTop: "30px" } : { paddingTop: "0px" }}
+    >
       <CardHeader>
         <div>
           <CardTitle tag="h4">

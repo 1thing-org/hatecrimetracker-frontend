@@ -20,7 +20,7 @@
     }
 }
 .header{
-    background-color: #000000;
+    background-color: black;
     position: fixed;
     top: 0;
     width: 100%;
@@ -29,6 +29,7 @@
     padding-top: 10px;
     padding-bottom: 5px;
 }
+
 .title {
     font-size: 2rem;
 }

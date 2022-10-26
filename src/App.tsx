@@ -23,6 +23,7 @@ import { setupIonicReact } from "@ionic/react";
 import About from "./views/About";
 import DataExplorer from "./views/DataExplorer";
 import Contact from "./views/Contact";
+import News from "./views/News";
 
 setupIonicReact();
 
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="admin" element={<IncidentAdminPage />} />
+        <Route path="/news" element={<News />} />
         <Route path="/dataexplorer" element={<DataExplorer />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

@@ -18,19 +18,26 @@ const Backdrop = ({ setHamburgerOpen }) => {
 const SidedrawerOverlay = ({ setHamburgerOpen }) => {
   return (
     <div className="sidedrawer">
-      <ul className="sidedrawer_links">
+      <ul className="sidedrawer_links" onClick={() => setHamburgerOpen(false)}>
         <li>
           <MdOutlineCancel
             className="cancel"
             size={30}
             onClick={() => setHamburgerOpen(false)}
+            style={{ cursor: "pointer" }}
           />
+        </li>
+        <li>
+          <Link to="/">Home</Link>
         </li>
         <li>
           <Link to="/dataexplorer">Data Explorer</Link>
         </li>
         <li>
           <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/news">News</Link>
         </li>
         <li>
           <Link to="/contact">Contact</Link>
