@@ -2,29 +2,15 @@ import UILoader from "./components/ui-loader";
 import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  FormGroup,
-  Label,
-  Row,
-} from "reactstrap";
+import { Container, FormGroup, Row } from "reactstrap";
 import {
   IonCard,
   IonCardContent,
   IonRow,
   IonCol,
-  IonContent,
   IonGrid,
-  IonHeader,
   IonToolbar,
   IonTitle,
-  IonButtons,
-  IonMenu,
-  IonMenuButton,
-  IonNavbar,
 } from "@ionic/react";
 import "rsuite/dist/rsuite.min.css";
 import * as incidentsService from "../services/incidents";
@@ -48,7 +34,6 @@ import "./Home.css";
 import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
-import Hamburger from "./components/hamburger";
 import "../assets/scss/charts/recharts.scss";
 import Sidedrawer from "./components/sidedrawer";
 
@@ -110,6 +95,7 @@ const Home = () => {
   // const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
+  const [trendTab, setTrendTab] = useState(1);
   // const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const setSelectedLang = (lang_code) => {
@@ -153,7 +139,7 @@ const Home = () => {
     return new_stats;
   };
   const loadData = (updateMap = false) => {
-    if (dateRange?.length != 2) return;
+    if (dateRange?.length !== 2) return;
 
     setLoading(true);
     incidentsService
@@ -188,7 +174,7 @@ const Home = () => {
   };
 
   const isParameterChanged = () => {
-    if (dateRange?.length != 2) {
+    if (dateRange?.length !== 2) {
       return true;
     }
     const cururl = generateUrl(
@@ -361,16 +347,16 @@ const Home = () => {
             }
           >
             <IonRow>
-              <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
-                <Label className="SimpleLabel">{t("location")}:</Label>{" "}
+              <IonCol xs="12" sm="12" md="auto" className="">
+                {/* <Label className="SimpleLabel">{t("location")}:</Label>{" "} */}
                 <StateSelection
                   name="state"
                   value={selectedState}
                   onChange={setSelectedState}
                 />{" "}
               </IonCol>
-              <IonCol xs="12" sm="12" md="auto" className="OneRowItem">
-                <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
+              <IonCol xs="12" sm="12" md="auto" className="">
+                {/* <Label className="SimpleLabel">{t("date_range")}:</Label>{" "} */}
                 <DateRangeSelector
                   name="date"
                   onChange={handleDateRangeSelect}
@@ -380,42 +366,68 @@ const Home = () => {
               </IonCol>
             </IonRow>
           </FormGroup>
+          <IonToolbar color="black">
+            <IonTitle>
+              <IonGrid>
+                <IonRow style={{ fontSize: "16px" }}>
+                  <IonCol
+                    className="mobile-tabs"
+                    onClick={() => setTrendTab(1)}
+                  >
+                    Trends
+                  </IonCol>
+                  {/* <IonCol className="bottom-nav-col">Trend</IonCol> */}
+                  <IonCol
+                    className="mobile-tabs"
+                    onClick={() => setTrendTab(2)}
+                  >
+                    News
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonTitle>
+          </IonToolbar>
+
           <IonRow className="match-height">
-            <IonCol xl="8" lg="6" md="12">
-              <div>
-                <IncidentMap
-                  mapData={incidentAggregated}
-                  selectedState={selectedState}
-                  lang={i18n.language}
-                  showPer10KAsian={isShowPer10kAsian}
-                  stateToggled={stateToggled}
-                />
-                <IncidentChart
-                  color={colors.primary.main}
-                  chart_data={incidentTimeSeries}
-                  state={selectedState}
-                />
-                {deviceSize >= 786 && (
-                  <IncidentCountTable
-                    title={"Incident Count by State"}
-                    data={incidentAggregated}
+            {trendTab === 1 && (
+              <IonCol xl="8" lg="6" md="12">
+                <div>
+                  <IncidentMap
+                    mapData={incidentAggregated}
                     selectedState={selectedState}
+                    lang={i18n.language}
+                    showPer10KAsian={isShowPer10kAsian}
                     stateToggled={stateToggled}
                   />
-                )}
-              </div>
-            </IonCol>
-            <IonCol xl="4" lg="6" md="12">
-              <IonCard color={"black"}>
-                {/* <CardHeader>
+                  <IncidentChart
+                    color={colors.primary.main}
+                    chart_data={incidentTimeSeries}
+                    state={selectedState}
+                  />
+                  {deviceSize >= 786 && (
+                    <IncidentCountTable
+                      title={"Incident Count by State"}
+                      data={incidentAggregated}
+                      selectedState={selectedState}
+                      stateToggled={stateToggled}
+                    />
+                  )}
+                </div>
+              </IonCol>
+            )}
+            {trendTab === 2 && (
+              <IonCol xl="4" lg="6" md="12">
+                <IonCard color={"black"}>
+                  {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
-                <IonCardContent>
-                  <h1 style={{ fontWeight: "bold" }}>News</h1>
-                  <IncidentList data={incidents} />
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
+                  <IonCardContent>
+                    <h1 style={{ fontWeight: "bold" }}>News</h1>
+                    <IncidentList data={incidents} />
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            )}
           </IonRow>
         </div>
         <div className="footer">

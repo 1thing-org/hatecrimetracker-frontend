@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <Container className="bottom-navbar">
       <IonToolbar color="black">
-        <IonTitle className="space-between">
+        <IonTitle>
           <IonGrid>
             <IonRow>
               <IonCol className="bottom-nav-col">
