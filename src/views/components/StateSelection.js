@@ -21,7 +21,7 @@ const StateSelection = (props) => {
     <SelectPicker
       data={STATES}
       placeholder="All States"
-      style={{ width: "125px" }}
+      style={{ width: "180px" }}
       onChange={(value) => props.onChange(value)}
       value={value}
       onClean={() => props.onChange(null)}

@@ -1,8 +1,8 @@
 import UILoader from "./components/ui-loader";
 import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
-import { Container, FormGroup, Row } from "reactstrap";
+import { useEffect, useState } from "react";
+import { FormGroup, Label } from "reactstrap";
 import {
   IonCard,
   IonCardContent,
@@ -15,7 +15,7 @@ import {
 import "rsuite/dist/rsuite.min.css";
 import * as incidentsService from "../services/incidents";
 import IncidentChart from "./components/IncidentChart";
-import IncidentChartPer10kAsian from "./components/IncidentChartPer10kAsian";
+// import IncidentChartPer10kAsian from "./components/IncidentChartPer10kAsian";
 import DateRangeSelector from "./components/DateRangeSelector";
 import IncidentCountTable from "./components/IncidentCountTable";
 import IncidentList from "./components/IncidentList";
@@ -35,11 +35,8 @@ import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
 import "../assets/scss/charts/recharts.scss";
-import Sidedrawer from "./components/sidedrawer";
 
 import { useStateContext } from "../contexts/ContextProvider";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -74,16 +71,13 @@ const Home = () => {
     setSelectedState,
     incidentAggregated,
     setIncidentAggregated,
-    hamburgerOpen,
-    setHamburgerOpen,
+    // hamburgerOpen,
+    // setHamburgerOpen,
   } = useStateContext();
   const isMobile = window.innerWidth <= 786;
   const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false);
-  // const [incidents, setIncidents] = useState([]);
-  // const [selectedState, setSelectedState] = useState();
   const [dateRange, setDateRange] = useState();
   const [isFirstLoadData, setIsFirstLoadData] = useState(true);
-  // const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
@@ -92,16 +86,15 @@ const Home = () => {
     },
   ]);
   const [monthlyCount, setMonthlyCount] = useState([]);
-  // const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [trendTab, setTrendTab] = useState(1);
-  // const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const setSelectedLang = (lang_code) => {
     setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
   };
+
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   // Remove date out of the range, and insert days that does not have data
   // start_date, end_date: Date
@@ -138,6 +131,7 @@ const Home = () => {
     }
     return new_stats;
   };
+
   const loadData = (updateMap = false) => {
     if (dateRange?.length !== 2) return;
 
@@ -218,12 +212,14 @@ const Home = () => {
       setDateRange(defaultDateRange);
     }
   }, [location]);
+
   useEffect(() => {
     // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
   }, [selectedState, selectedLangCode]);
+
   //update both incidents and map
   useEffect(() => {
     loadData(true);
@@ -258,6 +254,8 @@ const Home = () => {
 
   return (
     <>
+      {/* Floating Social Media Button */}
+
       {deviceSize < 786 && (
         <>
           <div className="wrapper-floatting-button">
@@ -268,13 +266,11 @@ const Home = () => {
               <p className="floating-text">Follow Us</p>
             </div>
           </div>
-          {/* <div className='wrapper-floatting-button'>
-          <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
-              <p className='floating-text'>Share</p>
-          </div>
-        </div>  */}
         </>
       )}
+
+      {/* Social Media Pop Up */}
+
       {isShare && (
         <SocialMediaPopup
           setIsSharing={() => {
@@ -283,13 +279,14 @@ const Home = () => {
           deviceSize={deviceSize}
         />
       )}
-      {hamburgerOpen && (
+      {/* {hamburgerOpen && (
         <Sidedrawer setHamburgerOpen={setHamburgerOpen} show={hamburgerOpen} />
-      )}
+      )} */}
+
       <Head />
       <UILoader blocking={loading}>
         <div>
-          {deviceSize < 786 && <Navbar setHamburgerOpen={setHamburgerOpen} />}
+          {/* {deviceSize < 786 && <Navbar />} */}
           {deviceSize >= 786 && (
             <>
               <IonRow className="align-items-center">
@@ -322,6 +319,7 @@ const Home = () => {
                     <a
                       href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                       target="_blank"
+                      rel="noreferrer"
                       className="contact_us"
                     >
                       {t("contact_us")}
@@ -347,16 +345,32 @@ const Home = () => {
             }
           >
             <IonRow>
-              <IonCol xs="12" sm="12" md="auto" className="">
-                {/* <Label className="SimpleLabel">{t("location")}:</Label>{" "} */}
+              <IonCol
+                xs="12"
+                sm="12"
+                md="auto"
+                style={{ height: "40px", padding: "0px" }}
+              >
+                <Label className="SimpleLabel">{t("location")}:</Label>{" "}
+              </IonCol>
+              <IonCol
+                xs="12"
+                sm="12"
+                md="auto"
+                style={{ height: "40px", padding: "0px" }}
+              >
+                <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol xs="12" sm="12" md="auto" style={{ textAlign: "center" }}>
                 <StateSelection
                   name="state"
                   value={selectedState}
                   onChange={setSelectedState}
                 />{" "}
               </IonCol>
-              <IonCol xs="12" sm="12" md="auto" className="">
-                {/* <Label className="SimpleLabel">{t("date_range")}:</Label>{" "} */}
+              <IonCol xs="12" sm="12" md="auto" style={{ textAlign: "center" }}>
                 <DateRangeSelector
                   name="date"
                   onChange={handleDateRangeSelect}
@@ -372,11 +386,13 @@ const Home = () => {
                 <IonRow style={{ fontSize: "16px" }}>
                   <IonCol
                     className="mobile-tabs"
-                    onClick={() => setTrendTab(1)}
+                    onClick={() => {
+                      loadData(true);
+                      setTrendTab(1);
+                    }}
                   >
                     Trends
                   </IonCol>
-                  {/* <IonCol className="bottom-nav-col">Trend</IonCol> */}
                   <IonCol
                     className="mobile-tabs"
                     onClick={() => setTrendTab(2)}
@@ -418,9 +434,6 @@ const Home = () => {
             {trendTab === 2 && (
               <IonCol xl="4" lg="6" md="12">
                 <IonCard color={"black"}>
-                  {/* <CardHeader>
-                            <CardTitle>Hate Crime Incidents</CardTitle>
-                        </CardHeader> */}
                   <IonCardContent>
                     <h1 style={{ fontWeight: "bold" }}>News</h1>
                     <IncidentList data={incidents} />
@@ -445,6 +458,7 @@ const Home = () => {
                   <a
                     href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                     target="_blank"
+                    rel="noreferrer"
                     className="contact_us"
                   >
                     {t("contact_us")}
@@ -463,6 +477,7 @@ const Home = () => {
                   <a
                     href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     here.
                   </a>
@@ -472,7 +487,6 @@ const Home = () => {
             </ul>
           </div>
         </div>
-        {deviceSize < 786 && <Footer />}
       </UILoader>
     </>
   );

@@ -11,4 +11,9 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    color:#FFFF00;
+}
+.bottom-nav-col > a{
+    text-decoration: none;
+    color:#FFFF00;
 }

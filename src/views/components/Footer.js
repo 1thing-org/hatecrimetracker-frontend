@@ -1,14 +1,11 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import { AiOutlineHome, AiFillSetting } from "react-icons/ai";
 import { BiNews, BiBarChart } from "react-icons/bi";
-import { Container, Label } from "reactstrap";
+import { Container } from "reactstrap";
 import { IonToolbar, IonTitle, IonGrid, IonCol, IonRow } from "@ionic/react";
-import { useTranslation } from "react-i18next";
 
 const Footer = () => {
-  const { t } = useTranslation();
-
   return (
     <Container className="bottom-navbar">
       <IonToolbar color="black">
@@ -16,23 +13,39 @@ const Footer = () => {
           <IonGrid>
             <IonRow>
               <IonCol className="bottom-nav-col">
-                <AiOutlineHome />
+                <Link to="/">
+                  <AiOutlineHome />
+                </Link>
               </IonCol>
               <IonCol className="bottom-nav-col">
-                <BiNews />
+                <Link to="/about">
+                  <BiNews />
+                </Link>
               </IonCol>
               <IonCol className="bottom-nav-col">
-                <BiBarChart />
+                <Link to="/dataexplorer">
+                  <BiBarChart />
+                </Link>
               </IonCol>
               <IonCol className="bottom-nav-col">
-                <AiFillSetting />
+                <Link to="/settings">
+                  <AiFillSetting />
+                </Link>
               </IonCol>
             </IonRow>
             <IonRow style={{ fontSize: "10px" }}>
-              <IonCol className="bottom-nav-col">Home</IonCol>
-              <IonCol className="bottom-nav-col">News</IonCol>
-              <IonCol className="bottom-nav-col">Data</IonCol>
-              <IonCol className="bottom-nav-col">Settings</IonCol>
+              <IonCol className="bottom-nav-col">
+                <Link to="/">Home</Link>
+              </IonCol>
+              <IonCol className="bottom-nav-col">
+                <Link to="/about">News</Link>
+              </IonCol>
+              <IonCol className="bottom-nav-col">
+                <Link to="/dataexplorer">Data Explorer</Link>
+              </IonCol>
+              <IonCol className="bottom-nav-col">
+                <Link to="/setting">Settings</Link>
+              </IonCol>
             </IonRow>
           </IonGrid>
         </IonTitle>

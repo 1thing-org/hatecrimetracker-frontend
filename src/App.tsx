@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./views/Home";
 import IncidentAdminPage from "./views/IncidentAdmin";
@@ -24,12 +24,18 @@ import About from "./views/About";
 import DataExplorer from "./views/DataExplorer";
 import Contact from "./views/Contact";
 import News from "./views/News";
+import Navbar from "./views/components/Navbar";
+import Footer from "./views/components/Footer";
+
+import { useStateContext } from "./contexts/ContextProvider";
 
 setupIonicReact();
 
 export default function App() {
+  const { deviceSize } = useStateContext();
   return (
     <BrowserRouter>
+      {deviceSize < 786 && <Navbar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
@@ -39,6 +45,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+      {deviceSize < 786 && <Footer />}
     </BrowserRouter>
   );
 }
