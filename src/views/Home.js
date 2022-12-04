@@ -86,7 +86,6 @@ const Home = () => {
     },
   ]);
   const [monthlyCount, setMonthlyCount] = useState([]);
-  const [monthlyCount, setMonthlyCount] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [trendTab, setTrendTab] = useState(1);
