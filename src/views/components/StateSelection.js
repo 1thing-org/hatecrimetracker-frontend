@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { SelectPicker } from 'rsuite';
-import { forEachState } from '../utility/Utils';
+import React, { useState, useEffect } from "react";
+import { SelectPicker } from "rsuite";
+import { forEachState } from "../../utility/Utils";
 const STATES = [];
 const StateSelection = (props) => {
   const [value, setValue] = useState(props.value);
@@ -20,8 +20,8 @@ const StateSelection = (props) => {
   return (
     <SelectPicker
       data={STATES}
-      placeholder='All States'
-      style={{ width: 224 }}
+      placeholder="All States"
+      style={{ width: "180px" }}
       onChange={(value) => props.onChange(value)}
       value={value}
       onClean={() => props.onChange(null)}

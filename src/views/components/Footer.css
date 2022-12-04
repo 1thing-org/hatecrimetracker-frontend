@@ -1,0 +1,19 @@
+.bottom-navbar{
+    background-color: rgb(75, 72, 72);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    color:#FFFF00;
+}
+.bottom-nav-col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color:#FFFF00;
+}
+.bottom-nav-col > a{
+    text-decoration: none;
+    color:#FFFF00;
+}
