@@ -1,44 +1,46 @@
-import UILoader from './components/ui-loader';
-import logo from '../assets/images/logo/logo.png';
-import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import UILoader from "./components/ui-loader";
+import logo from "../assets/images/logo/logo.png";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { FormGroup, Label } from "reactstrap";
 import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  FormGroup,
-  Label,
-  Row,
-} from 'reactstrap';
-import 'rsuite/dist/rsuite.min.css';
-import * as incidentsService from '../services/incidents';
-import IncidentChart from './IncidentChart';
-import IncidentChartPer10kAsian from './IncidentChartPer10kAsian';
-import DateRangeSelector from './DateRangeSelector';
-import IncidentCountTable from './IncidentCountTable';
-import IncidentList from './IncidentList';
-import IncidentMap from './IncidentMap';
-import StateSelection from './StateSelection';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getValidState, isObjEmpty } from '../utility/Utils';
-import { useCookies } from 'react-cookie';
-import { getBrowserLang, SUPPORTED_LANGUAGES } from '../utility/Languages';
-import { SelectPicker } from 'rsuite';
-import { useSearchParams } from 'react-router-dom';
-import Head from './components/head';
-import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
-import './Home.css'
-import { RiShareForwardFill } from 'react-icons/ri';
-import SocialMedia from './components/social-media'
-import SocialMediaPopup from './components/social-media-pop-up'
-import '../assets/scss/charts/recharts.scss';
+  IonCard,
+  IonCardContent,
+  IonRow,
+  IonCol,
+  IonGrid,
+  IonToolbar,
+  IonTitle,
+} from "@ionic/react";
+import "rsuite/dist/rsuite.min.css";
+import * as incidentsService from "../services/incidents";
+import IncidentChart from "./components/IncidentChart";
+// import IncidentChartPer10kAsian from "./components/IncidentChartPer10kAsian";
+import DateRangeSelector from "./components/DateRangeSelector";
+import IncidentCountTable from "./components/IncidentCountTable";
+import IncidentList from "./components/IncidentList";
+import IncidentMap from "./components/IncidentMap";
+import StateSelection from "./components/StateSelection";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getValidState, isObjEmpty } from "../utility/Utils";
+import { useCookies } from "react-cookie";
+import { getBrowserLang, SUPPORTED_LANGUAGES } from "../utility/Languages";
+import { SelectPicker } from "rsuite";
+import { useSearchParams } from "react-router-dom";
+import Head from "./components/head";
+import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
+import "./Home.css";
+import { RiShareForwardFill } from "react-icons/ri";
+import SocialMedia from "./components/social-media";
+import SocialMediaPopup from "./components/social-media-pop-up";
+import "../assets/scss/charts/recharts.scss";
 
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation()
+  const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => {
@@ -47,8 +49,9 @@ const Home = () => {
 
   //get default lang
   //parameter lang > cookie > browser default setting
-  const [cookies, setCookie] = useCookies(['lang']);
-  const lang_code = searchParams.get("lang") || cookies.lang || getBrowserLang();
+  const [cookies, setCookie] = useCookies(["lang"]);
+  const lang_code =
+    searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
 
@@ -59,28 +62,40 @@ const Home = () => {
     });
   });
 
-  const isMobile = (window.innerWidth <= 786)
-  const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false)
-  const [incidents, setIncidents] = useState([]);
-  const [selectedState, setSelectedState] = useState();
+  const {
+    deviceSize,
+    changeDeviceSize,
+    incidents,
+    setIncidents,
+    selectedState,
+    setSelectedState,
+    incidentAggregated,
+    setIncidentAggregated,
+    // hamburgerOpen,
+    // setHamburgerOpen,
+  } = useStateContext();
+  const isMobile = window.innerWidth <= 786;
+  const [isShowPer10kAsian, setIsShowPer10kAsian] = useState(false);
   const [dateRange, setDateRange] = useState();
-  const [isFirstLoadData, setIsFirstLoadData] = useState(true)
-  const [deviceSize, changeDeviceSize] = useState(window.innerWidth);
+  const [isFirstLoadData, setIsFirstLoadData] = useState(true);
   const [incidentTimeSeries, setIncidentTimeSeries] = useState([
     {
       monthly_cases: 0,
-      key: moment().format('YYYY-MM-DD'),
+      key: moment().format("YYYY-MM-DD"),
       value: 0,
     },
   ]);
   const [monthlyCount, setMonthlyCount] = useState([]);
-  const [incidentAggregated, setIncidentAggregated] = useState([]);
+  const [monthlyCount, setMonthlyCount] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isShare, setIsShare] = useState(false)
+  const [isShare, setIsShare] = useState(false);
+  const [trendTab, setTrendTab] = useState(1);
+
   const setSelectedLang = (lang_code) => {
-    setCookie('lang', lang_code);
+    setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
   };
+
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
   // Remove date out of the range, and insert days that does not have data
   // start_date, end_date: Date
@@ -89,11 +104,11 @@ const Home = () => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
-    const strStartDate = start.format('YYYY-MM-DD');
-    const strEndDate = end.format('YYYY-MM-DD');
+    const strStartDate = start.format("YYYY-MM-DD");
+    const strEndDate = end.format("YYYY-MM-DD");
     while (start <= end) {
-      const strDate = start.format('YYYY-MM-DD');
-      const monthlyData = monthly[start.format('YYYY-MM')];
+      const strDate = start.format("YYYY-MM-DD");
+      const monthlyData = monthly[start.format("YYYY-MM")];
       if (stats.length > 0) {
         if (
           stats[stats.length - 1].key < strStartDate ||
@@ -113,12 +128,13 @@ const Home = () => {
         }
       }
       new_stats.push({ key: strDate, value: null, monthly_cases: monthlyData });
-      start.add(1, 'days');
+      start.add(1, "days");
     }
     return new_stats;
   };
+
   const loadData = (updateMap = false) => {
-    if (dateRange?.length != 2) return;
+    if (dateRange?.length !== 2) return;
 
     setLoading(true);
     incidentsService
@@ -140,20 +156,20 @@ const Home = () => {
           setIncidentAggregated(stats.total);
         }
         setLoading(false);
-        setIsFirstLoadData(false)
+        setIsFirstLoadData(false);
       });
   };
 
   const generateUrl = (from, to, state, lang) => {
-    return `/home?from=${moment(from).format('YYYY-MM-DD')}&to=${moment(
+    return `/home?from=${moment(from).format("YYYY-MM-DD")}&to=${moment(
       to
-    ).format('YYYY-MM-DD')}${state ? '&state=' + state.toUpperCase() : ''}${
-      lang ? '&lang=' + lang : ''
+    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${
+      lang ? "&lang=" + lang : ""
     }`;
   };
 
   const isParameterChanged = () => {
-    if (dateRange?.length != 2) {
+    if (dateRange?.length !== 2) {
       return true;
     }
     const cururl = generateUrl(
@@ -187,22 +203,24 @@ const Home = () => {
   useEffect(() => {
     if (isParameterChanged()) {
       const defaultDateRange = isObjEmpty(searchParams.get("from"))
-        ? [moment().subtract(1, 'years').toDate(), new Date()]
+        ? [moment().subtract(1, "years").toDate(), new Date()]
         : [
-            moment(searchParams.get("from"),).toDate(),
-            moment(searchParams.get("to"),).toDate(),
+            moment(searchParams.get("from")).toDate(),
+            moment(searchParams.get("to")).toDate(),
           ];
 
-      setSelectedState(getValidState(searchParams.get("state"),));
+      setSelectedState(getValidState(searchParams.get("state")));
       setDateRange(defaultDateRange);
     }
   }, [location]);
+
   useEffect(() => {
     // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
   }, [selectedState, selectedLangCode]);
+
   //update both incidents and map
   useEffect(() => {
     loadData(true);
@@ -217,8 +235,8 @@ const Home = () => {
   });
   const colors = {
     primary: {
-      main: '#FEF753'
-    }
+      main: "#FEF753",
+    },
   };
 
   // handle date change
@@ -230,57 +248,82 @@ const Home = () => {
 
   const stateToggled = (state) => {
     // console.log("This is:" + this);
-    const newState = state == selectedState ? null : state
+    const newState = state == selectedState ? null : state;
     // console.log("Toggle state:" + state + " selectedState:" + selectedState + " new state:" + newState)
     setSelectedState(newState);
-  }
+  };
 
   return (
     <>
-      {deviceSize < 786 && <> 
-        <div className='wrapper-floatting-button'>
-          <div className='floating-button-top' onClick={() => setIsShare(true)}>
-              <p className='floating-text'>Follow Us</p>
+      {/* Floating Social Media Button */}
+
+      {deviceSize < 786 && (
+        <>
+          <div className="wrapper-floatting-button">
+            <div
+              className="floating-button-top"
+              onClick={() => setIsShare(true)}
+            >
+              <p className="floating-text">Follow Us</p>
+            </div>
           </div>
-        </div>
-        {/* <div className='wrapper-floatting-button'>
-          <div className='floating-button-bottom' onClick={() => setIsShare(true)}>
-              <p className='floating-text'>Share</p>
-          </div>
-        </div>  */}
         </>
-      }
-      {isShare && <SocialMediaPopup setIsSharing={() => {setIsShare(false)}} deviceSize={deviceSize}/>}
+      )}
+
+      {/* Social Media Pop Up */}
+
+      {isShare && (
+        <SocialMediaPopup
+          setIsSharing={() => {
+            setIsShare(false);
+          }}
+          deviceSize={deviceSize}
+        />
+      )}
+      {/* {hamburgerOpen && (
+        <Sidedrawer setHamburgerOpen={setHamburgerOpen} show={hamburgerOpen} />
+      )} */}
+
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Row>
-            <Col xs='12'>
-              <Container className='header'>
-                <Row className='align-items-center'>
+          {/* {deviceSize < 786 && <Navbar />} */}
+          {deviceSize >= 786 && (
+            <>
+              <IonRow className="align-items-center">
+                <IonCol xs="12" sm="12" md="8">
+                  <p className="title">
+                    <img src={logo} alt="logo" className="logo" />{" "}
+                    {t("website.name")}
+                  </p>
+                </IonCol>
 
-                <Col xs='12' sm='12' md='8'>
-                    <p className='title'>
-                      <img src={logo} alt='logo' className='logo'  />{' '}
-                      {t('website.name')}
-                    </p>
-                  </Col>
-
-                  <Col xs='12' sm='12' md='4'>
-                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
-                    {deviceSize >= 786 && <> 
-                      <SocialMedia size={35}  bgStyle={{fill: "#000000"}} iconFillColor={"yellow"} />
-                      &nbsp;
-                      <button className="button-no-background" onClick={() => setIsShare(true)}>
-                        <RiShareForwardFill size={25}/>
-                      </button>
-                    &nbsp;&nbsp; </>}
+                <IonCol xs="12" sm="12" md="4">
+                  <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                    {deviceSize >= 786 && (
+                      <>
+                        <SocialMedia
+                          size={35}
+                          bgStyle={{ fill: "#000000" }}
+                          iconFillColor={"yellow"}
+                        />
+                        &nbsp;
+                        <button
+                          className="button-no-background"
+                          onClick={() => setIsShare(true)}
+                        >
+                          <RiShareForwardFill size={25} />
+                        </button>
+                        &nbsp;&nbsp;{" "}
+                      </>
+                    )}
                     <a
-                      href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                      target='_blank'
-                      className='contact_us'
+                      href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="contact_us"
                     >
-                      {t('contact_us')}
+                      {t("contact_us")}
                     </a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     
@@ -290,103 +333,159 @@ const Home = () => {
                       cleanable={false}
                       defaultValue={selectedLangCode}
                       style={{ width: 120 }}
-                      className = {"rs-theme-dark"}
+                      className={"rs-theme-dark"}
                       onChange={(value) => setSelectedLang(value)}
                     />
-                    </div>
-                  </Col>
-                </Row>
-
-                <FormGroup>
-                  <Row>
-                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
-                      <Label className='SimpleLabel'>{t('location')}:</Label>{' '}
-                      <StateSelection
-                        name='state'
-                        value={selectedState}
-                        onChange={setSelectedState}
-                      />{' '}
-                    </Col>
-                    <Col xs='12' sm='12' md='auto' className='OneRowItem'>
-                      <Label className='SimpleLabel'>{t('date_range')}:</Label>{' '}
-                      <DateRangeSelector
-                        name='date'
-                        onChange={handleDateRangeSelect}
-                        value={dateRange}
-                        isMobile={isMobile}
-                      />
-                    </Col>
-                  </Row>
-                </FormGroup>
-              </Container>
-            </Col>
-          </Row>
-          <Row className='match-height'>
-            <Col xl='8' lg='6' md='12'>
-              <div>
-
-                <IncidentChart color={colors.primary.main} chart_data={incidentTimeSeries} state={selectedState}/>
-
-                <IncidentMap
-                  mapData={incidentAggregated}
-                  selectedState={selectedState}
-                  lang={i18n.language}
-                  showPer10KAsian={isShowPer10kAsian}
-                  stateToggled={stateToggled}
+                  </div>
+                </IonCol>
+              </IonRow>
+            </>
+          )}
+          <FormGroup
+            style={
+              deviceSize < 786 ? { paddingTop: "80px" } : { paddingTop: "0px" }
+            }
+          >
+            <IonRow>
+              <IonCol
+                xs="12"
+                sm="12"
+                md="auto"
+                style={{ height: "40px", padding: "0px" }}
+              >
+                <Label className="SimpleLabel">{t("location")}:</Label>{" "}
+              </IonCol>
+              <IonCol
+                xs="12"
+                sm="12"
+                md="auto"
+                style={{ height: "40px", padding: "0px" }}
+              >
+                <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol xs="12" sm="12" md="auto" style={{ textAlign: "center" }}>
+                <StateSelection
+                  name="state"
+                  value={selectedState}
+                  onChange={setSelectedState}
+                />{" "}
+              </IonCol>
+              <IonCol xs="12" sm="12" md="auto" style={{ textAlign: "center" }}>
+                <DateRangeSelector
+                  name="date"
+                  onChange={handleDateRangeSelect}
+                  value={dateRange}
+                  isMobile={isMobile}
                 />
-                <IncidentCountTable
-                  title={'Incident Count by State'}
-                  data={incidentAggregated}
-                  selectedState={selectedState}
-                  stateToggled={stateToggled}
-                />
-              </div>
-            </Col>
-            <Col xl='4' lg='6' md='12'>
-              <Card>
-                {/* <CardHeader>
-                            <CardTitle>Hate Crime Incidents</CardTitle>
-                        </CardHeader> */}
-                <CardBody>
-                  <IncidentList data={incidents} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+              </IonCol>
+            </IonRow>
+          </FormGroup>
+          <IonToolbar color="black">
+            <IonTitle>
+              <IonGrid>
+                <IonRow style={{ fontSize: "16px" }}>
+                  <IonCol
+                    className="mobile-tabs"
+                    onClick={() => {
+                      loadData(true);
+                      setTrendTab(1);
+                    }}
+                  >
+                    Trends
+                  </IonCol>
+                  <IonCol
+                    className="mobile-tabs"
+                    onClick={() => setTrendTab(2)}
+                  >
+                    News
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonTitle>
+          </IonToolbar>
+
+          <IonRow className="match-height">
+            {trendTab === 1 && (
+              <IonCol xl="8" lg="6" md="12">
+                <div>
+                  <IncidentMap
+                    mapData={incidentAggregated}
+                    selectedState={selectedState}
+                    lang={i18n.language}
+                    showPer10KAsian={isShowPer10kAsian}
+                    stateToggled={stateToggled}
+                  />
+                  <IncidentChart
+                    color={colors.primary.main}
+                    chart_data={incidentTimeSeries}
+                    state={selectedState}
+                  />
+                  {deviceSize >= 786 && (
+                    <IncidentCountTable
+                      title={"Incident Count by State"}
+                      data={incidentAggregated}
+                      selectedState={selectedState}
+                      stateToggled={stateToggled}
+                    />
+                  )}
+                </div>
+              </IonCol>
+            )}
+            {trendTab === 2 && (
+              <IonCol xl="4" lg="6" md="12">
+                <IonCard color={"black"}>
+                  <IonCardContent>
+                    <h1 style={{ fontWeight: "bold" }}>News</h1>
+                    <IncidentList data={incidents} />
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            )}
+          </IonRow>
         </div>
-        <div className='footer'>
-          <Row>
-            <Col sm='12' md={{ size: 6, offset: 3 }}>
-              <Row>
-                <Col sm={{ size: 'auto', offset: 1 }}>
-                  {t('copyright')} &copy; {new Date().getFullYear()}{' '}
-                  <a href='https://hatecrimetracker.1thing.org'>
-                    {' '}
-                    {t('website.name')}{' '}
+        <div className="footer">
+          <IonRow>
+            <IonCol sm="12" md={{ size: 6, offset: 3 }}>
+              <IonRow>
+                <IonCol sm={{ size: "auto", offset: 1 }}>
+                  {t("copyright")} &copy; {new Date().getFullYear()}{" "}
+                  <a href="https://hatecrimetracker.1thing.org">
+                    {" "}
+                    {t("website.name")}{" "}
                   </a>
-                </Col>
-                <Col sm={{ size: 'auto', offset: 1 }}>
+                </IonCol>
+                <IonCol sm={{ size: "auto", offset: 1 }}>
                   <a
-                    href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0'
-                    target='_blank'
+                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                    target="_blank"
+                    rel="noreferrer"
                     className="contact_us"
                   >
-                    {t('contact_us')}
+                    {t("contact_us")}
                   </a>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <div className='disclaimer'>
-            {t('disclaimer.title')}:
+                </IonCol>
+              </IonRow>
+            </IonCol>
+          </IonRow>
+          <div className="disclaimer">
+            {t("disclaimer.title")}:
             <ul>
-              <li>{t('disclaimer.1')}</li>
+              <li>{t("disclaimer.1")}</li>
               <li>
-              <Trans i18nKey='disclaimer.2'>
-                  disclaimer.2 <a href='https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0' target="_blank">here.</a>
-              </Trans>
+                <Trans i18nKey="disclaimer.2">
+                  disclaimer.2{" "}
+                  <a
+                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    here.
+                  </a>
+                </Trans>
               </li>
-              <li>{t('disclaimer.3')}</li>
+              <li>{t("disclaimer.3")}</li>
             </ul>
           </div>
         </div>
@@ -395,4 +494,4 @@ const Home = () => {
   );
 };
 
-export default /*withRouter*/(Home);
+export default /*withRouter*/ Home;
