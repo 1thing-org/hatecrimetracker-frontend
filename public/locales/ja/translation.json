@@ -23,7 +23,8 @@
     "cases": "合計件数",
     "no_data": "データは収集されませんでした",
     "count_10k_asian": "アジア系人1万人当たり",
-    "count_1mm": "人口100万人当たり"
+    "count_1mm": "人口100万人当たり",
+    "incident_count": "インシデント数"
   },
   "incident_chart": {
     "total_monthly_cases": "月合計{{count}}件",
@@ -33,7 +34,9 @@
     "total_daily_cases_plural": "合計{{count}}件",
     "trend": "アンチアジアン犯罪事件数の推移",
     "total_cases": "合計{{count}}件",
-    "total_cases_plural": "合計{{count}}件"
+    "total_cases_plural": "合計{{count}}件",
+    "average_cases": "アジア人 1 万人あたりの平均 {{count}} 件のインシデント",
+    "total_monthly_cases_per_10k_Asian": "アジア人 10,000 人あたりの月額 {{count}} の割合"
   },
   "contact_us": "お問い合わせ",
   "copyright": "コピーライト",
@@ -57,5 +60,7 @@
   "link_to_news_source": "ニュースソースへのリンク",
   "make_a_donation": "寄付をします",
   "police_tip_line": "警察のヒントライン",
-  "other_ways_to_help": "助ける他の方法"
+  "other_ways_to_help": "助ける他の方法",
+  "data_display": "表示するデータ",
+  "monthly_per_10k_asian": "毎月 10,000 アジア人あたり"
 }

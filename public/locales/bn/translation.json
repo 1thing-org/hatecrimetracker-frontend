@@ -23,7 +23,8 @@
     "cases": "ঘটনা সমূহ",
     "no_data": "কোন তথ্য পাওয়া যায়নি",
     "count_10k_asian": "গণনা/১০ হাজার এশিয়ান",
-    "count_1mm": "গণনা/১০ লক্ষ"
+    "count_1mm": "গণনা/১০ লক্ষ",
+    "incident_count": "ঘটনা গণনা"
   },
   "incident_chart": {
     "total_monthly_cases": "সর্বমোট {{count}} মাসিক ঘটনা",
@@ -33,7 +34,9 @@
     "trend": "হেইট ক্রাইম ঘটনার প্রবণতা",
     "no_data": "কোন তথ্য পাওয়া যায়নি",
     "total_cases": "সর্বমোট {{count}} ঘটনা",
-    "total_cases_plural": "সর্বমোট {{count}} ঘটনা"
+    "total_cases_plural": "সর্বমোট {{count}} ঘটনা",
+    "average_cases": "গড় {{count}} ঘটনা প্রতি 10k এশিয়ান",
+    "total_monthly_cases_per_10k_Asian": "অনুপাত {{count}} মাসিক হার প্রতি 10k এশিয়ান"
   },
   "contact_us": "আমাদের সাথে যোগাযোগ করুন",
   "copyright": "কপিরাইট",
@@ -57,5 +60,7 @@
   "link_to_news_source": "সংবাদ উত্স লিঙ্ক",
   "make_a_donation": "উচ্চ স্বরে পড়া",
   "police_tip_line": "পুলিশ টিপ লাইন",
-  "other_ways_to_help": "সাহায্য করার অন্যান্য উপায়"
+  "other_ways_to_help": "সাহায্য করার অন্যান্য উপায়",
+  "data_display": "প্রদর্শনের জন্য ডেটা",
+  "monthly_per_10k_asian": "প্রতি 10k এশিয়ান মাসিক"
 }

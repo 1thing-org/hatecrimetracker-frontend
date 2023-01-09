@@ -23,7 +23,8 @@
     "cases": "คดี",
     "no_data": "ไม่มีการเก็บข้อมูล",
     "count_10k_asian": "จำนวนต่อ/หมื่น คนเอเชีย",
-    "count_1mm": "จำนวนต่อ/1ล้านคน"
+    "count_1mm": "จำนวนต่อ/1ล้านคน",
+    "incident_count": "จำนวนเหตุการณ์"
   },
   "incident_chart": {
     "total_monthly_cases": "ทั้งหมด {{count}} คดีรายเดือน",
@@ -33,7 +34,9 @@
     "trend": "แนวโน้มเหตุอาชญากรรมจากความเกลียดชัง",
     "no_data": "ไม่มีการเก็บข้อมูล",
     "total_cases": "ทั้งหมด {{count}} เหตุการณ์",
-    "total_cases_plural": "ทั้งหมด {{count}} เหตุการณ์"
+    "total_cases_plural": "ทั้งหมด {{count}} เหตุการณ์",
+    "average_cases": "เฉลี่ย {{count}} เหตุการณ์ต่อ 10,000 คนเอเชีย",
+    "total_monthly_cases_per_10k_Asian": "สัดส่วน {{count}} อัตราต่อเดือนต่อ 10,000 Asian"
   },
   "contact_us": "ติดต่อเรา",
   "copyright": "ลิขสิทธิ์",
@@ -57,5 +60,7 @@
   "link_to_news_source": "ลิงค์แหล่งข่าว",
   "make_a_donation": "บริจาค",
   "police_tip_line": "สายด่วนตำรวจ",
-  "other_ways_to_help": "วิธีอื่นในการช่วย"
+  "other_ways_to_help": "วิธีอื่นในการช่วย",
+  "data_display": "ข้อมูลที่จะแสดง",
+  "monthly_per_10k_asian": "รายเดือนต่อ 10,000 เอเชีย"
 }

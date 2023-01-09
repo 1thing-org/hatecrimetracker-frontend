@@ -53,7 +53,7 @@ const IncidentChartPer10kAsian = ({ color, monthly_stats, date_range, state }) =
         return (
             <div className='recharts-custom-tooltip'>
             <p>{dateFns.format(d, "MMM yyyy")}</p>
-            <p><strong>{t("incident_chart.total_monthly_cases_per_10k_Asian", { count: monthly })}</strong></p>
+            <p><strong>{t("incident_chart.monthly_ratio_per_10k_Asian", { count: monthly })}</strong></p>
             <p><strong>{t("incident_map.count_10k_asian") + " : " + monthly_10k_asian }</strong></p>
             </div>
         )

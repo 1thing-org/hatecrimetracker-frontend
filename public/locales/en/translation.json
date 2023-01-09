@@ -2,46 +2,43 @@
   "website": {
     "name": "Anti-Asian Hate Crime Tracker"
   },
-
-  "location" : "Location",
-  "date_range" : "Date Range",
-  "data_display" : "Data Display",
-  "daily_count" : "Daily Count",
-  "monthly_count" : "Monthly Count",
+  "location": "Location",
+  "date_range": "Date Range",
+  "data_display": "Data to Display",
+  "daily_count": "Daily Count",
+  "monthly_count": "Monthly Count",
   "monthly_per_10k_asian": "Monthly Per 10k Asian",
-  "load_more" : "Load More",
-  "incident_count_by_state" : "Incident Count By State",
-  "incident_table" : {
-    "total_incident" : "Total {{count}} Incident",
-    "no_data" : "No data collected",
-    "total_incident_plural" : "Total {{count}} Incidents",
-    "state" : "State",
-    "count" : "Count",
-    "count_10k_asian" : "Count/10K Asian",
-    "count_1mm" : "Count/1MM",
+  "load_more": "Load More",
+  "incident_count_by_state": "Incident Count By State",
+  "incident_table": {
+    "total_incident": "Total {{count}} Incident",
+    "no_data": "No data collected",
+    "total_incident_plural": "Total {{count}} Incidents",
+    "state": "State",
+    "count": "Count",
+    "count_10k_asian": "Count/10K Asian",
+    "count_1mm": "Count/1MM",
     "asian_population": "Asian Population",
     "state_population": "State Population"
-
   },
   "incident_map": {
     "cases": "Cases",
     "no_data": "No data collected",
     "count_10k_asian": "Count/10K Asian",
-    "count_1mm": "Count/1MM"
+    "count_1mm": "Count/1MM",
+    "incident_count" : "Incident Count"
   },
-  
-  "incident_chart" : {
-    "total_monthly_cases" : "Total {{count}} monthly case",
-    "total_monthly_cases_per_10k_Asian" : "Proportion {{count}} monthly rate per 10k Asian",
-    "total_monthly_cases_plural" : "Total {{count}} monthly cases",
-    "total_daily_cases" : "Total {{count}} daily case",
-    "total_daily_cases_plural" : "Total {{count}} daily cases",
-    "trend" : "Hate Crime Incident Trend",
-    "no_data" : "No data collected",
-    "total_cases" : "Total {{count}} Incident",
-    "average_cases" : "Average {{count}} Incident Per 10k Asian",
-    "total_cases_plural" : "Total {{count}} Incidents"
-
+  "incident_chart": {
+    "total_monthly_cases": "Total {{count}} monthly case",
+    "total_monthly_cases_per_10k_Asian": "Proportion {{count}} monthly rate per 10k Asian",
+    "total_monthly_cases_plural": "Total {{count}} monthly cases",
+    "total_daily_cases": "Total {{count}} daily case",
+    "total_daily_cases_plural": "Total {{count}} daily cases",
+    "trend": "Hate Crime Incident Trend",
+    "no_data": "No data collected",
+    "total_cases": "Total {{count}} Incident",
+    "average_cases": "Average {{count}} Incident Per 10k Asian",
+    "total_cases_plural": "Total {{count}} Incidents"
   },
   "contact_us": "Contact Us",
   "copyright": "Copyright",
