@@ -344,11 +344,11 @@ const Home = () => {
           <Row className="match-height">
             <Col xl="8" lg="6" md="12">
               <div>
-                <IncidentChart
+                {/* <IncidentChart
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
-                />
+                /> */}
                 <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
