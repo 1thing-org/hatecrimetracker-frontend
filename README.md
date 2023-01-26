@@ -1,46 +1,79 @@
-# Getting Started with Create React App
+# Dev Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Install NodeJS and npm
+    Follow instructiion at: https://nodejs.org/
+2. Install Yarn
+    
+    `npm install --global yarn`
+3. Install git (should already be installed on MacOSX)
+4. Clone code from GitHub:
+    
+    `git clone https://github.com/1thing-org/hatecrimetracker-frontend.git`
 
-## Available Scripts
+5. Change configuration in `hatecrimetracker-frontend/src/configs/appConfig.js`
 
-In the project directory, you can run:
+    Make sure `api_endpoint: 'https://api.hatecrimetracker.1thing.org'`
 
-### `yarn start`
+6. Under hatecrimetracker-frontend, run:
+```
+yarn
+yarn start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Deployment
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`./deploy`
+- creates a production build / minified (not needed at this stage)
 
-### `yarn test`
+# Other notes
+When configure Google Cloud Bucket to hold static files, make sure in the website configuration, 
+set 404 page to index.html too. Otherwise you will get NoKey error when loading any page like /home,/admin, etc.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Vuexy React doc: https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/
 
-### `yarn build`
+# How to contribute
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Create your own GitHub account
+2. Fork the repository
+3. Make changes and commit to your forked repository. The changes can be in main or any branches in your own fork.
+4. Create Pull Request from your own fork to https://github.com/1thing-org/hatecrimetracker-frontend
+5. Wait for reviewer to review and merge the PR
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Develop on MacBook with M1 Chip
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Install HomeBrew:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+2. Use HomeBrew to install NodeJS V14
+```
+brew install node@14
+```
+3. Set PATH:
+    * Open ~/.zshrc
+    * Add the following lines and save:
+```
+export PATH=/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
+```    
+    * Make .zshrc executable
+```
+chmod +x ~/.zshrc
+```
+4. Install Yarn
+```
+npm install yarn
+```
+5. Make sure git is installed properly
+    * Run git in a terminal, it might ask you to install Command Line Tools. Hit Install to install it.
+6. Install XCode from AppStore
+7. Install vscode
+    * Go to https://code.visualstudio.com, download and install vscode.
+    * Optionally install the following plugins:
+        * React
+        * Python
+        * GitHub Copilot, need to sign in to GitHub when install
+8. Clone repository
+9. Build
+    * Open a terminal, go to a hatecrimtracker-frontend folder
+    * Run `yarn; yarn start`

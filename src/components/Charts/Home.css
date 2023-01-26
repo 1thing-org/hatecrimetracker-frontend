@@ -1,0 +1,97 @@
+@media (max-width: 786px) {
+    .OneRowItem {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 1rem;
+    }
+    
+    .rs-picker-toggle-wrapper {
+        width: 16rem
+    }
+    
+    .SimpleLabel {
+        margin-top: 1rem;
+    }
+
+    .title {
+        font-size: 1rem !important; 
+    }
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.behind-relative {
+    position: relative;
+    z-index: 1;
+}
+
+.button-no-background {
+    background-color: transparent;
+}
+
+.wrapper-floatting-button {
+    float:right; 
+    width: 2.5rem;
+}
+
+
+.floating-button-top {
+    font-size: 1rem;
+    position: fixed;
+    padding: 20px 14px 20px 9px;
+    cursor: pointer;
+    background-color: #FFFF00 !important;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    top: 24%;
+    z-index: 10;
+    font-weight: bold;
+}
+
+.floating-button-bottom {
+    font-size: 1rem;
+    position: fixed;
+    padding: 12px 14px 12px 9px;
+    cursor: pointer;
+    background-color: #FFFF00 !important;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    top: 35%;
+    z-index: 10;
+}
+
+.floating-text{
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    color: #000000 !important;
+}
+
+
+@media (max-width: 786px) {
+    .floating-button-top {
+        top: 24%;
+        
+    }
+
+    .floating-button-bottom {
+        top: 33%;
+    }
+    
+}
+
+@media (max-width: 376px) {
+    .floating-button-top {
+        top: 25%;
+        
+    }
+
+    .floating-button-bottom {
+        top: 33%;
+    }
+
+}
