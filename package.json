@@ -23,6 +23,7 @@
     "react-data-table-component": "^7.5.2",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
+    "react-ga4": "^1.4.1",
     "react-hook-form": "^7.36.0",
     "react-i18next": "^11.18.4",
     "react-icons": "^4.4.0",
