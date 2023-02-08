@@ -41,12 +41,13 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     dateAxis.renderer.grid.template.strokeWidth = 1;
     dateAxis.renderer.grid.template.strokeOpacity = 0.2;
     dateAxis.renderer.grid.template.strokeDasharray = "3,3";
-    dateAxis.dateFormats.setKey("day", "M/d/yy");
-    dateAxis.periodChangeDateFormats.setKey("day", "M/d/yy");
-    dateAxis.dateFormats.setKey("week", "M/d/yy");
-    dateAxis.periodChangeDateFormats.setKey("week", "M/d/yy");
-    dateAxis.dateFormats.setKey("month", "M/d/yy");
-    dateAxis.periodChangeDateFormats.setKey("month", "M/d/yy");
+    dateAxis.dateFormats.setKey("day", "MM/yyyy");
+    dateAxis.periodChangeDateFormats.setKey("day", "MM/yyyy");
+    dateAxis.dateFormats.setKey("week", "MM/yyyy");
+    dateAxis.periodChangeDateFormats.setKey("week", "MM/yyyy");
+    dateAxis.dateFormats.setKey("month", "MM/yyyy");
+    dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyyy");
+    dateAxis.renderer.minGridDistance = 50;
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = "Case Count";
