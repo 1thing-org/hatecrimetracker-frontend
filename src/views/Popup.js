@@ -1,30 +1,20 @@
+import { React , useContext} from 'react'
 import { yupResolver } from '@hookform/resolvers/yup';
-import moment from 'moment';
-import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
-import { auth } from "../firebase";
-import { UserContext } from "../providers/UserProvider";
 import * as incidentsService from "../services/incidents";
-import IncidentTable from './IncidentTable';
-import { Button } from 'reactstrap'
-import { signInWithGoogle } from '../firebase'
-// to get states abbreviation
+import { Link } from 'react-router-dom';
+import { auth } from "../firebase";
 import { forEachState } from '../utility/Utils';
+import { UserContext } from "../providers/UserProvider";
 
-
-const IncidentAdminPage = () => {
+function Popup(props){
+  console.log(props.trigger);
+  // statesAbbreviation stores all abbreviation of US states
+  const statesAbbreviation = [];
   const user = useContext(UserContext);
-  
-  const [currIncidentId, setCurrIncidentId] = useState(null);
-  const [recentIncidents, setRecentIncidents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const isAddMode = () => !currIncidentId;
 
-
-  // form validation rules 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required('Title is required'),
@@ -41,13 +31,15 @@ const IncidentAdminPage = () => {
     police_tip_line: Yup.string(),
   });
 
-  // functions to build form returned by useForm() hook
+
   const { register, handleSubmit, reset, setValue, errors, formState } = useForm({
     resolver: yupResolver(validationSchema)
   });
-
+  //call the same function when adding a root news to database
+  //on the backend, the child news will be differentiated by parentId
+  //root news doesn't have parentId
   function onSubmit(incident) {
-    incident.id = currIncidentId;
+    //incident.id = currIncidentId;
     incident.created_by = user.email;
     incidentsService.createIncident(incident).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
@@ -58,74 +50,11 @@ const IncidentAdminPage = () => {
       setValue("donation_link", "");
       setValue("police_tip_line", "");
       setValue("help_the_victim", "");
-      setCurrIncidentId(null);
-      reloadIncidents(incident.incident_time);
+      setValue("parent", parentId)
+      //setCurrIncidentId(null);
+      
     });
   }
-
-  function reloadIncidents(date) {
-    //load incidents around the date -7 - 1 days
-    console.log("reloading incidents around:" + date);
-    incidentsService.getIncidents(moment(date).subtract(7, 'days'), moment(date).add(1, 'days'), null, 'en', true)
-      .then(incidents => setRecentIncidents(incidents));
-  }
-  function dateChanged(event) {
-    // setData(FAKE_DATA.incidents);
-    const date = event.target.value;
-    setSelectedDate(date);
-    reloadIncidents(date);
-  }
-
-  const editIncident = (incident) => {
-    setCurrIncidentId(incident.id);
-    reset({
-      incident_time: moment(incident.incident_time).format('YYYY-MM-DD'),
-      title: incident.title,
-      incident_location: incident.incident_location,
-      url: incident.url,
-      abstract: incident.abstract,
-      donation_link: incident.donation_link,
-      police_tip_line: incident.police_tip_line,
-      help_the_victim: incident.help_the_victim,
-    });
-  }
-  const deleteIncident = (incident) => {
-    Swal.fire({
-      title: 'Are you sure you want to delete this incident?',
-      icon: 'warning',
-      html:
-        'Title:' + incident.title + '<br/>' +
-        'Id:' + incident.id + '<br/>' +
-        'Date:' + moment(incident.incident_time).format('MM/DD/YYYY') + '<br/>' +
-        'Location:' + incident.incident_location,
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        incidentsService.deleteIncident(incident.id).then(() => {
-          Swal.fire("Incident has been delete successfully!")
-          setCurrIncidentId(null);
-          reloadIncidents(selectedDate);
-        })
-      }
-    })
-  };
-  if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button tag={Link} to='/admin' color='secondary' block
-      onClick={() => {
-        signInWithGoogle();
-      }}>
-      Sign in with Google
-    </Button>
-    </div>);
-  }
-  const { photoURL, displayName, email, isadmin } = user;
-
-  // statesAbbreviation stores all abbreviation of US states
-  const statesAbbreviation = [];
   if (statesAbbreviation.length === 0) {
     forEachState((state, name) => {
       // create format as "New York - NY", "Canada - CANADA", "Online - ONLINE"
@@ -136,33 +65,22 @@ const IncidentAdminPage = () => {
   const stateAbbrOptions = (
     <>{statesAbbreviation.map(abbr => <option key={abbr[0]} value={abbr[0]}>{abbr[1]}</option>)}</>
   );
-
-  const dupRecentIncidents = recentIncidents.map(item => [item, item, item]);
-
   
 
-  return (
-    <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
-      <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
-        <div
-          style={{
-            background: `url(${photoURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
-            backgroundSize: "cover",
-            height: "64px",
-            width: "64px"
-          }}
-          className="border border-blue-300 col-2"
-        ></div>
-        <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
-        <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-        <h1>{isAddMode() ? 'Add Incident' : 'Edit Incident'}</h1>
-        <div className="row">
+
+  return (props.trigger) ? (
+  <div className="popup">
+        <div className="popupInner">
+          <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
+          <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
+          
+          <form onSubmit={handleSubmit(onSubmit)}>
+          <h1></h1>
+          <div className="row">
           <div className="mb-3 col-2">
             <label>Incident Time</label>
             <input {...register("incident_time")} type="date"  className={`form-control ${errors?.incident_time ? 'is-invalid' : ''}`}
-              onChange={dateChanged} />
+               />
             <div className="invalid-feedback">{errors?.incident_time?.message}</div>
           </div>
           <div className="mb-3 col-2">
@@ -180,10 +98,15 @@ const IncidentAdminPage = () => {
           </div>
         </div>
         <div className="row">
-          <div className="mb-3 col-12">
+          <div className="mb-3 col-8">
             <label>URL</label>
             <input {...register("url")} type="text" className={`form-control ${errors?.url ? 'is-invalid' : ''}`} />
             <div className="invalid-feedback">{errors?.url?.message}</div>
+          </div>
+          <div className="mb-3 col-4">
+          <label>Parent</label>
+          <input  {...register("parent")} type="hidden" value={props.parentId}  className={`form-control ${errors?.parent ? 'is-invalid' : ''}`}/>
+          <div className="invalid-feedback">{errors?.parent?.message}</div>
           </div>
         </div>
         <div className="row">
@@ -217,18 +140,16 @@ const IncidentAdminPage = () => {
             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
             Save
           </button>
-          <Link to={isAddMode() ? '.' : '..'} className="btn btn-link">Cancel</Link>
+          
         </div>
-      </form>
-      <IncidentTable className="col-12"
-        title="Incidents Around the Same Time Period"
-        data={recentIncidents}
-        onEdit={editIncident}
-        onDelete={deleteIncident}
-        onAddRelatedNews={editIncident}
-      />
-    </div>
-  );
+        </form>
+            <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   ) : ""
 }
 
-export default IncidentAdminPage;
+export default Popup;
