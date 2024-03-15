@@ -1,4 +1,4 @@
-import UILoader from "./components/ui-loader";
+ import UILoader from "./components/ui-loader";
 import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
