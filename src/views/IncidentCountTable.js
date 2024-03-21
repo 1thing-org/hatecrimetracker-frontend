@@ -127,6 +127,8 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
                 onRowClicked={updateState}
                 conditionalRowStyles={conditionalRowStyles}
                 theme="dark"
+				defaultSortFieldId={2}
+				defaultSortAsc={false}
             />
         </CardBody>
     </Card>);
