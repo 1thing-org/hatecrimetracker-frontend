@@ -126,7 +126,7 @@ const IncidentList = (props) => {
             <Input
                 className="mb-1"
                 type="text"
-                placeholder={t('search')}
+                placeholder={t('Search for the news ...')}
                 onChange={(value) => {
                     setSearchTerm(value)
                     setVisibleLimit(INCR_COUNT)
