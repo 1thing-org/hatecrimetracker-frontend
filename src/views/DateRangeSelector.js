@@ -38,7 +38,7 @@ const DateRangeSelector = ({ onChange, value, isMobile }) => {
 			disabledDate={afterToday()}
 			onChange={onChange}
 			value={value}
-			format='MM-dd-yy'
+			format='MM/dd/yy'
 		/>
 	);
 };
