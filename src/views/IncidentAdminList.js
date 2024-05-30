@@ -5,8 +5,46 @@ import { UserContext } from '../providers/UserProvider';
 import { auth } from '../firebase';
 import './IncidentAdminList.css'; 
 
+
 const IncidentListPage = () => {
     const user = useContext(UserContext) || { photoURL: '', displayName: 'Guest', email: 'guest@example.com' };
+    const [incidents, setIncidents] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        loadIncidents(currentPage);
+
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [currentPage]);
+
+    const loadIncidents = async (page) => {
+        try {
+            const response = await fetch('/data.json');
+            const data = await response.json();
+            const startIndex = (page - 1) * 7;
+            const selectedIncidents = data.incidents.slice(startIndex, startIndex + 7);
+            setIncidents(selectedIncidents); // 使用 selectedIncidents 而不是 response.data.incidents
+            setTotalPages(Math.ceil(data.incidents.length / 7));
+        } catch (error) {
+            console.error('Error loading incidents:', error);
+        }
+    };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        loadIncidents(page);
+    }; 
+
     if (!user) {
         return <div>Loading...</div>;  
     }
@@ -62,8 +100,45 @@ const IncidentListPage = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="table-body-container">
+                                    {incidents.map(incident => (
+                                            <tr key={incident.id}>
+                                                <td>{incident.id}</td>
+                                                <td>{incident.incident_time}</td>
+                                                <td>{incident.incident_location}</td>
+                                                <td className="content-cell" title={incident.content}>
+                                                    {incident.content.length > 0 ? `${incident.content.slice(0, isSmallScreen ? 10 : 85)}...` : incident.content}
+                                                </td>
+                                                <td>
+                                                    <div className="file-icons-container">
+                                                        <a href={incident.file_url} target="_blank" rel="noopener noreferrer" className="file-icon">
+                                                            <img src="/path/to/document-icon.png" alt="Document" />
+                                                        </a>
+                                                        <a href={incident.file_url} target="_blank" rel="noopener noreferrer" className="file-icon">
+                                                            <img src="/path/to/document-icon.png" alt="Document" />
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>{incident.status}</td>
+                                                <td>{incident.reviewer}</td>
+                                                <td>
+                                                    <Button color="btn btn-detail" size="sm">Detail</Button>{' '}
+                                                    <Button color="btn btn-reject" size="sm">Reject</Button>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </Table>
+                            </div>
+                            <div className="pagination">
+                                <button disabled={currentPage <= 1} onClick={() => handlePageChange(currentPage - 1)}>
+                                    <i className="fa-solid fa-sharp fa-angle-left fa-xl" style={{ color: '#d9d9d9' }}></i>
+                                </button>
+                                <span className="page-info">
+                                    <span className="current-page">{currentPage}</span> / {totalPages}
+                                </span>
+                                <button disabled={currentPage >= totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                                    <i className="fa-solid fa-angle-right fa-xl" style={{ color: '#d9d9d9' }}></i>
+                                </button>
                             </div>
                         </div>
                     </div>
