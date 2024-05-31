@@ -134,6 +134,7 @@ html, body {
     height: 40px !important;
     text-align: center;
     border-right: 1px solid #ddd;
+    font-size: 15px;
 }
 
 .table-header th:last-child {

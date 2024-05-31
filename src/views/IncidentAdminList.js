@@ -33,7 +33,7 @@ const IncidentListPage = () => {
             const data = await response.json();
             const startIndex = (page - 1) * 7;
             const selectedIncidents = data.incidents.slice(startIndex, startIndex + 7);
-            setIncidents(selectedIncidents); // 使用 selectedIncidents 而不是 response.data.incidents
+            setIncidents(selectedIncidents); 
             setTotalPages(Math.ceil(data.incidents.length / 7));
         } catch (error) {
             console.error('Error loading incidents:', error);
