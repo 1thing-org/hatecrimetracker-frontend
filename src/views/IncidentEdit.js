@@ -74,25 +74,25 @@ const IncidentEdit = ({ incident }) => {
 					<Row form>
 						<Col md={3}>
 							<FormGroup>
-								<Label for="incidentTime">Incident Time</Label>
+								<Label for="incidentTime">Incident Time: </Label>
 								<Input type="text" name="incidentTime" id="incidentTime" value={incident.time} />
 							</FormGroup>
 						</Col>
 						<Col md={3}>
 							<FormGroup>
-								<Label for="location">Location</Label>
+								<Label for="location">Location:</Label>
 								<Input type="text" name="location" id="location" value={incident.location} />
 							</FormGroup>
 						</Col>
 						<Col md={6}>
 							<FormGroup>
-								<Label for="title">Title</Label>
+								<Label for="title">Title:</Label>
 								<Input type="text" name="title" id="title" value={incident.title} />
 							</FormGroup>
 						</Col>
 					</Row>
 					<FormGroup>
-						<Label for="abstract">Abstract</Label>
+						<Label for="abstract">Abstract:</Label>
 						<Input className="textarea" type="textarea" name="abstract" id="abstract" value={incident.abstract} />
 					</FormGroup>
 					<FormGroup>
@@ -133,13 +133,13 @@ const IncidentEdit = ({ incident }) => {
 							<Row form>
 								<Col md={3}>
 									<FormGroup>
-										<Label for="contactEmail">Contact Email</Label>
+										<Label for="contactEmail">Contact Email:</Label>
 										<Input type="email" name="contactEmail" id="contactEmail" value={incident.contact_email} />
 									</FormGroup>
 								</Col>
 								<Col md={3}>
 									<FormGroup>
-										<Label for="contactPhoneNumber">Contact Phone Number</Label>
+										<Label for="contactPhoneNumber">Contact Phone Number:</Label>
 										<Input
 											type="text"
 											name="contactPhoneNumber"
@@ -157,7 +157,7 @@ const IncidentEdit = ({ incident }) => {
 					</FormGroup>
 					<Col md={2}>
 						<FormGroup>
-							<Label for="status">Current Status</Label>
+							<Label for="status">Current Status:</Label>
 							<Input type="select" name="status" id="status" value={status} onChange={handleStatusChange}>
 								<option value="Pending">Pending</option>
 								<option value="Approved">Approved</option>
@@ -167,7 +167,7 @@ const IncidentEdit = ({ incident }) => {
 					</Col>
 
 					<FormGroup>
-						<Label for="comment">Comment</Label>
+						<Label for="comment">Comment:</Label>
 						<Input className="textarea" type="textarea" name="comment" id="comment" value={incident.comment} />
 					</FormGroup>
 					<Button className="btn-save">Save</Button>
