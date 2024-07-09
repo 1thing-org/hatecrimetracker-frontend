@@ -17,8 +17,7 @@ export default function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin" element={<IncidentAdminPage />} />
         <Route path="/admin/selfreport" element={<IncidentListPage />} />
-        <Route path="/admin/news" element={<News />} />
-        
+        <Route path="/admin/news" element={<IncidentListPage />} />
       </Routes>
     </BrowserRouter>
   )

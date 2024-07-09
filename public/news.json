@@ -1,0 +1,36 @@
+{
+    "news": [
+      {
+        "incident_time": "12/25/2023",
+        "incident_location": "PA",
+        "content": "Incident content 16",
+        "file_url": "http://example.com/file2",
+        "status": "Pending",
+        "reviewer": "Reviewer 2"
+      },
+      {
+        "incident_time": "12/26/2023",
+        "incident_location": "NY",
+        "content": "News content 1",
+        "file_url": "http://example.com/newsfile1",
+        "status": "Published",
+        "reviewer": "Editor A"
+      },
+      {
+        "incident_time": "12/27/2023",
+        "incident_location": "CA",
+        "content": "News content 2",
+        "file_url": "http://example.com/newsfile2",
+        "status": "Draft",
+        "reviewer": "Editor B"
+      },
+      {
+        "incident_time": "12/28/2023",
+        "incident_location": "TX",
+        "content": "News content 3",
+        "file_url": "http://example.com/newsfile3",
+        "status": "Published",
+        "reviewer": "Editor C"
+      }
+    ]
+  }

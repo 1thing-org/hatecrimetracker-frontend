@@ -5,17 +5,24 @@ import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
 import "./IncidentAdminList.css";
 import IncidentEdit from "./IncidentEdit";
+import CustomTable from "./CustomTable";
 
 const IncidentListPage = () => {
 	const user = useContext(UserContext) || { photoURL: "", displayName: "Guest", email: "guest@example.com" };
 	const [incidents, setIncidents] = useState([]);
+	const [news, setNews] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 	const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 	const [selectedIncident, setSelectedIncident] = useState(null);
+	const [selectedTab, setSelectedTab] = useState('selfreport'); // State to track the selected tab
 
 	useEffect(() => {
-		loadIncidents(currentPage);
+		if (selectedTab === 'selfreport') {
+            loadIncidents(currentPage);
+        } else {
+            loadNews(currentPage);
+        }
 
 		const handleResize = () => {
 			setIsSmallScreen(window.innerWidth < 768);
@@ -26,7 +33,7 @@ const IncidentListPage = () => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [currentPage]);
+	}, [currentPage, selectedTab]);
 
 	const loadIncidents = async (page) => {
 		try {
@@ -41,9 +48,21 @@ const IncidentListPage = () => {
 		}
 	};
 
+	const loadNews = async (page) => {
+		try {
+		  const response = await fetch("/news.json");
+		  const data = await response.json();
+		  const startIndex = (page - 1) * 7;
+		  const selectedNews = data.news.slice(startIndex, startIndex + 7);
+		  setNews(selectedNews);
+		  setTotalPages(Math.ceil(data.news.length / 7));
+		} catch (error) {
+		  console.error("Error loading news:", error);
+		}
+	  };
+
 	const handlePageChange = (page) => {
 		setCurrentPage(page);
-		loadIncidents(page);
 	};
 
 	const handleDetailClick = (incident) => {
@@ -53,6 +72,11 @@ const IncidentListPage = () => {
 	const handleBackClick = () => {
 		setSelectedIncident(null);
 	};
+
+	const handleTabClick = (tab) => {
+		setSelectedTab(tab);
+		setCurrentPage(1);
+	  };
 
 	if (!user) {
 		return <div>Loading...</div>;
@@ -85,17 +109,17 @@ const IncidentListPage = () => {
 						<nav className="nav flex-column">
 							<div className="tab news">
 								<div className="bullet"></div>
-								<Link className="nav-link" to="/admin/news">
+								<Link className="nav-link" onClick={() => handleTabClick('news')}>
 									News
 								</Link>
-								<i className="fas fa-angle-down fa-lg" style={{ color: "#d9d9d9" }}></i>
+								<i className={`fas fa-angle-${selectedTab === 'news' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 							<div className="tab">
 								<div className="bullet"></div>
-								<Link className="nav-link" to="/admin/selfreport">
+								<Link className="nav-link" onClick={() => handleTabClick('selfreport')}>
 									Self-Report
 								</Link>
-								<i class="fas fa-angle-right fa-lg" style={{ color: "#d9d9d9" }}></i>
+								<i className={`fas fa-angle-${selectedTab === 'selfreport' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 						</nav>
 					</div>
@@ -104,82 +128,16 @@ const IncidentListPage = () => {
 						{selectedIncident ? (
 							<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
 						) : (
-							<>
-								<div className="header-container">
-									<h5>Self-Report Incidents</h5>
-								</div>
-								<div className="table-container">
-									<div className="table-header-container">
-										<Table>
-											<thead className="table-header">
-												<tr>
-													<th>Incident ID</th>
-													<th>Date</th>
-													<th>Location</th>
-													<th>Content</th>
-													<th>File</th>
-													<th>Status</th>
-													<th>Reviewer</th>
-													<th>Operation</th>
-												</tr>
-											</thead>
-											<tbody className="table-body-container">
-												{incidents.map((incident) => (
-													<tr key={incident.id}>
-														<td>{incident.id}</td>
-														<td>{incident.incident_time}</td>
-														<td>{incident.incident_location}</td>
-														<td className="content-cell" title={incident.content}>
-															{incident.content.length > 0
-																? `${incident.content.slice(0, isSmallScreen ? 10 : 85)}...`
-																: incident.content}
-														</td>
-														<td>
-															<div className="file-icons-container">
-																<a
-																	href={incident.file_url}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="file-icon">
-																	<img src="/path/to/document-icon.png" alt="Document" />
-																</a>
-																<a
-																	href={incident.file_url}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="file-icon">
-																	<img src="/path/to/document-icon.png" alt="Document" />
-																</a>
-															</div>
-														</td>
-														<td>{incident.status}</td>
-														<td>{incident.reviewer}</td>
-														<td>
-															<Button color="btn btn-detail" size="sm" onClick={() => handleDetailClick(incident)}>
-																Detail
-															</Button>{" "}
-															<Button color="btn btn-reject" size="sm">
-																Reject
-															</Button>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</Table>
-									</div>
-									<div className="pagination">
-										<button disabled={currentPage <= 1} onClick={() => handlePageChange(currentPage - 1)}>
-											<i className="fa-solid fa-sharp fa-angle-left fa-xl" style={{ color: "#d9d9d9" }}></i>
-										</button>
-										<span className="page-info">
-											<span className="current-page">{currentPage}</span> / {totalPages}
-										</span>
-										<button disabled={currentPage >= totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-											<i className="fa-solid fa-angle-right fa-xl" style={{ color: "#d9d9d9" }}></i>
-										</button>
-									</div>
-								</div>
-							</>
+							<CustomTable 
+								title={selectedTab === 'selfreport' ? 'Self-Report Incidents' : 'News'}
+								data={selectedTab === 'selfreport' ? incidents : news} 
+								isSmallScreen={isSmallScreen} 
+								handleDetailClick={handleDetailClick} 
+								currentPage={currentPage} 
+								totalPages={totalPages} 
+								handlePageChange={handlePageChange} 
+								selectedTab={selectedTab} // Pass the selectedTab prop here
+							/>
 						)}
 					</div>
 				</div>
