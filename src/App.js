@@ -4,7 +4,6 @@ import "./assets/scss/style.scss"
 import HomePage from "./views/Home"
 import IncidentAdminPage from "./views/IncidentAdmin"
 import IncidentListPage from "./views/IncidentAdminList";
-import News from "./views/News";
 
 ReactGA.initialize("UA-241702877-1")
 ReactGA.send("pageview")
