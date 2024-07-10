@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { Table, Button } from "reactstrap";
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
@@ -15,12 +15,14 @@ const IncidentListPage = () => {
 	const [totalPages, setTotalPages] = useState(1);
 	const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 	const [selectedIncident, setSelectedIncident] = useState(null);
-	const [selectedTab, setSelectedTab] = useState('selfreport'); // State to track the selected tab
+	const [selectedTab, setSelectedTab] = useState('news'); // State to track the selected tab
+
+	const navigate = useNavigate();//enable url change according to clicked tab
 
 	useEffect(() => {
-		if (selectedTab === 'selfreport') {
+		if (selectedTab === 'selfreport') {//selfreport
             loadIncidents(currentPage);
-        } else {
+        } else if (selectedTab === 'news'){
             loadNews(currentPage);
         }
 
@@ -73,10 +75,14 @@ const IncidentListPage = () => {
 		setSelectedIncident(null);
 	};
 
-	const handleTabClick = (tab) => {
+	const handleTabClick = (tab,event) => {
+		event.preventDefault(); // Modified line: Prevent default anchor behavior
+
 		setSelectedTab(tab);
 		setCurrentPage(1);
-	  };
+
+		navigate(`/admin/${tab}`); // Update the URL without reloading the page
+	};
 
 	if (!user) {
 		return <div>Loading...</div>;
@@ -109,16 +115,12 @@ const IncidentListPage = () => {
 						<nav className="nav flex-column">
 							<div className="tab news">
 								<div className="bullet"></div>
-								<Link className="nav-link" onClick={() => handleTabClick('news')}>
-									News
-								</Link>
+								<a className="nav-link" href="/admin/news" onClick={(e) => handleTabClick('news', e)}>News</a>
 								<i className={`fas fa-angle-${selectedTab === 'news' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 							<div className="tab">
 								<div className="bullet"></div>
-								<Link className="nav-link" onClick={() => handleTabClick('selfreport')}>
-									Self-Report
-								</Link>
+								<a class="nav-link" href="/admin/selfreport" onClick={(e) => handleTabClick('selfreport', e)}>Self-Report</a>
 								<i className={`fas fa-angle-${selectedTab === 'selfreport' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 						</nav>
