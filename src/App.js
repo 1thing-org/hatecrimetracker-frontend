@@ -14,9 +14,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/admin" element={<IncidentAdminPage />} />
+        {/* <Route path="/admin" element={<IncidentAdminPage />} /> */}
         <Route path="/admin/selfreport" element={<IncidentListPage />} />
-        <Route path="/admin/news" element={<IncidentListPage />} />
+        {/* <Route path="/admin/news" element={<IncidentListPage />} /> */}
+        <Route path="/admin/news" element={<IncidentAdminPage />} />
       </Routes>
     </BrowserRouter>
   )
