@@ -113,7 +113,7 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button tag={Link} to='/admin' color='secondary' block
+    return (<div className="col-2"><Button tag={Link} to='/admin/news' color='secondary' block
       onClick={() => {
         signInWithGoogle();
       }}>
