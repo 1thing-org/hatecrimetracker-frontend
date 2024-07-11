@@ -113,7 +113,7 @@ const IncidentAdminPage = () => {
     })
   };
   if (!user || !user.isadmin) {
-    return (<div className="col-2"><Button tag={Link} to='/admin' color='secondary' block
+    return (<div className="col-2"><Button tag={Link} to='/admin/news' color='secondary' block
       onClick={() => {
         signInWithGoogle();
       }}>
@@ -139,7 +139,7 @@ const IncidentAdminPage = () => {
 
   return (
     <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
-      <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
+      {/* <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
         <div
           style={{
             background: `url(${photoURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
@@ -151,7 +151,7 @@ const IncidentAdminPage = () => {
         ></div>
         <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
         <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
-      </div>
+      </div> */}
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode() ? 'Add Incident' : 'Edit Incident'}</h1>
         <div className="row">
