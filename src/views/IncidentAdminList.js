@@ -6,6 +6,8 @@ import { auth } from "../firebase";
 import "./IncidentAdminList.css";
 import IncidentEdit from "./IncidentEdit";
 import CustomTable from "./CustomTable";
+import IncidentAdminPage from "./IncidentAdmin"
+
 
 const IncidentListPage = () => {
 	const user = useContext(UserContext) || { photoURL: "", displayName: "Guest", email: "guest@example.com" };
@@ -126,7 +128,7 @@ const IncidentListPage = () => {
 						</nav>
 					</div>
 					{/* Main Content */}
-					<div className="flex-grow-1  main-content">
+					{/* <div className="flex-grow-1  main-content">
 						{selectedIncident ? (
 							<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
 						) : (
@@ -141,6 +143,35 @@ const IncidentListPage = () => {
 								selectedTab={selectedTab} // Pass the selectedTab prop here
 							/>
 						)}
+					</div> */}
+
+					<div className="flex-grow-1 main-content">
+					{selectedTab === 'news' ? (
+						<IncidentAdminPage />
+					) : selectedIncident ? (
+						<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
+					) : (
+						<CustomTable
+						title="Self-Report Incidents"
+						data={incidents}
+						isSmallScreen={isSmallScreen}
+						handleDetailClick={handleDetailClick}
+						currentPage={currentPage}
+						totalPages={totalPages}
+						handlePageChange={handlePageChange}
+						selectedTab={selectedTab} // Pass the selectedTab prop here
+					  />
+						// <CustomTable
+						// title={selectedTab === 'selfreport' ? 'Self-Report Incidents' : 'News'}
+						// data={selectedTab === 'selfreport' ? incidents : news}
+						// isSmallScreen={isSmallScreen}
+						// handleDetailClick={handleDetailClick}
+						// currentPage={currentPage}
+						// totalPages={totalPages}
+						// handlePageChange={handlePageChange}
+						// selectedTab={selectedTab} // Pass the selectedTab prop here
+						// />
+					)}
 					</div>
 				</div>
 			</div>
