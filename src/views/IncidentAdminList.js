@@ -127,23 +127,6 @@ const IncidentListPage = () => {
 							</div>
 						</nav>
 					</div>
-					{/* Main Content */}
-					{/* <div className="flex-grow-1  main-content">
-						{selectedIncident ? (
-							<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
-						) : (
-							<CustomTable 
-								title={selectedTab === 'selfreport' ? 'Self-Report Incidents' : 'News'}
-								data={selectedTab === 'selfreport' ? incidents : news} 
-								isSmallScreen={isSmallScreen} 
-								handleDetailClick={handleDetailClick} 
-								currentPage={currentPage} 
-								totalPages={totalPages} 
-								handlePageChange={handlePageChange} 
-								selectedTab={selectedTab} // Pass the selectedTab prop here
-							/>
-						)}
-					</div> */}
 
 					<div className="flex-grow-1 main-content">
 					{selectedTab === 'news' ? (
@@ -161,16 +144,6 @@ const IncidentListPage = () => {
 						handlePageChange={handlePageChange}
 						selectedTab={selectedTab} // Pass the selectedTab prop here
 					  />
-						// <CustomTable
-						// title={selectedTab === 'selfreport' ? 'Self-Report Incidents' : 'News'}
-						// data={selectedTab === 'selfreport' ? incidents : news}
-						// isSmallScreen={isSmallScreen}
-						// handleDetailClick={handleDetailClick}
-						// currentPage={currentPage}
-						// totalPages={totalPages}
-						// handlePageChange={handlePageChange}
-						// selectedTab={selectedTab} // Pass the selectedTab prop here
-						// />
 					)}
 					</div>
 				</div>
