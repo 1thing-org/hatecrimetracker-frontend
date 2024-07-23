@@ -133,8 +133,8 @@ const IncidentMap = (props) => {
         if (!legend) return;
         legend.disposeChildren()
         let markerTemplate = legend.markers.template;
-        markerTemplate.width = 12;
-        markerTemplate.height = 12;
+        markerTemplate.width = 15;
+        markerTemplate.height = 15;
 
         legend.itemContainers.template.clickable = false;
         legend.itemContainers.template.focusable = false;
@@ -142,6 +142,9 @@ const IncidentMap = (props) => {
 
         let marker = legend.markers.template.children.getIndex(0);
         marker.cornerRadius(0, 0, 0, 0);
+        marker.stroke = am4core.color("#FFFFFF");
+        markerTemplate.strokeWidth = 0.8;
+        marker.strokeOpacity = 1;
 
         let legendLabel = legend.createChild(am4core.Label);
         legendLabel.fontSize = "10px";
