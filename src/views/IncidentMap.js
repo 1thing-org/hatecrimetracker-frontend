@@ -30,17 +30,17 @@ const IncidentMap = (props) => {
 
     const MAP_COLOR_COUNT = [
         [10, "#FFF500"], //when >= , color        
-        [5, "#D7CF00"],
-        [2, "#A9A403"],
-        [1, "#706C00"],
-        [0, "#313131"],
+        [5, "#908B09"],
+        [2, "#AEAEAE"],
+        [1, "#5C5C5C"],
+        [0, "#000000"],
     ];
     const MAP_COLOR_RATE = [
         [0.5, "#FFF500"], //when >= , color        
-        [0.1, "#D7CF00"],
-        [0.06, "#A9A403"],
-        [0.01, "#706C00"],
-        [0, "#313131"],
+        [0.1, "#908B09"],
+        [0.06, "#AEAEAE"],
+        [0.01, "#5C5C5C"],
+        [0, "#000000"],
     ];
     const getMapColor = (value) => {
         if (value) {
@@ -51,7 +51,7 @@ const IncidentMap = (props) => {
                 }
             }
         }
-        return "#313131";
+        return "#000000";
     }
 
 
@@ -133,8 +133,8 @@ const IncidentMap = (props) => {
         if (!legend) return;
         legend.disposeChildren()
         let markerTemplate = legend.markers.template;
-        markerTemplate.width = 12;
-        markerTemplate.height = 12;
+        markerTemplate.width = 15;
+        markerTemplate.height = 15;
 
         legend.itemContainers.template.clickable = false;
         legend.itemContainers.template.focusable = false;
@@ -142,6 +142,9 @@ const IncidentMap = (props) => {
 
         let marker = legend.markers.template.children.getIndex(0);
         marker.cornerRadius(0, 0, 0, 0);
+        marker.stroke = am4core.color("#FFFFFF");
+        markerTemplate.strokeWidth = 0.8;
+        marker.strokeOpacity = 1;
 
         let legendLabel = legend.createChild(am4core.Label);
         legendLabel.fontSize = "10px";
@@ -164,18 +167,18 @@ const IncidentMap = (props) => {
                 "fill": "#FFF500"
             }, {
                 "name": "5-10",
-                "fill": "#D7CF00"
+                "fill": "#908B09"
             }, {
                 "name": "2-5",
-                "fill": "#A9A403"
+                "fill": "#AEAEAE"
             },
             {
                 "name": "1",
-                "fill": "#706C00"
+                "fill": "#5C5C5C"
             },
             {
                 "name": "0",
-                "fill": "#313131"
+                "fill": "#000000"
             }
 
             ];
@@ -187,19 +190,19 @@ const IncidentMap = (props) => {
                 "fill": "#FFF500"
             }, {
                 "name": "0.5-1",
-                "fill": "#D7CF00"
+                "fill": "#908B09"
             }, {
                 "name": "0.2-0.5",
-                "fill": "#A9A403"
+                "fill": "#AEAEAE"
             },
             {
                 "name": "0.1",
 
-                "fill": "#706C00"
+                "fill": "#5C5C5C"
             },
             {
                 "name": "0",
-                "fill": "#313131"
+                "fill": "#000000"
             }
             ]
         }
