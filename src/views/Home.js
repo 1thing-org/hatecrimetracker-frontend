@@ -120,7 +120,7 @@ const Home = () => {
 
     setLoading(true);
     incidentsService
-      .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode)
+      .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "news")
       .then((incidents) => setIncidents(incidents));
     incidentsService
       .getStats(dateRange[0], dateRange[1], selectedState)
