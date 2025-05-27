@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate  } from "react-router-dom";
+import { Button } from "reactstrap";
 import moment from 'moment';
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
@@ -9,7 +10,6 @@ import IncidentEdit from "./IncidentEdit";
 import CustomTable from "./CustomTable";
 import IncidentAdminPage from "./IncidentAdmin"
 import { signInWithGoogle } from "../firebase";
-import { deleteIncident, getAllIncidents,getAllNews } from "../services/incidents";
 
 const IncidentListPage = () => {
 	const user = useContext(UserContext) || { photoURL: "", displayName: "Guest", email: "guest@example.com" };
@@ -44,8 +44,8 @@ const IncidentListPage = () => {
 	const loadIncidents = async (page) => {
 		try {
 			//get incidents from the server
-			getAllIncidents().then((incidents) => {
-
+			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "self_report", true)
+			.then((incidents) => {
 				const newIncidents = incidents.map((incident,idx) => {		
 					return {
 						id: incident.id,
@@ -59,30 +59,13 @@ const IncidentListPage = () => {
 					};
 				});
 				const length = newIncidents.length;
-
-
 				// setIncidents(incidents);
 				const startIndex = (page - 1) * 7;
-
 				const selectedIncidents = newIncidents.slice(startIndex, startIndex + 7);
-
 				setIncidents(selectedIncidents);
 				setTotalPages(Math.ceil(length / 7));
 	
 			});
-			
-			// Second way to get incidents from the server
-			// const response = await fetch("/data.json");
-			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "self_report", true)
-			.then(incidents => {
-				//setRecentIncidents(incidents)
-				//const data = await response.json();
-				const startIndex = (page - 1) * 7;
-				const selectedIncidents = incidents.slice(startIndex, startIndex + 7);
-				setIncidents(selectedIncidents);
-				setTotalPages(Math.ceil(incidents.length / 7));
-			});
-
 			
 		} catch (error) {
 			console.error("Error loading incidents:", error);
@@ -92,24 +75,26 @@ const IncidentListPage = () => {
 	const loadNews = async (page) => {
 		try {
 			//get incidents from the server
-			getAllNews().then((news) => {
-				const newNews = news.map((news,idx) => {		
+			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "news", true)
+			.then((incidents) => {
+				const newNews = incidents.map((incident,idx) => {		
 					return {
-						incident_time: news.incident_time,
-						incident_location: news.incident_location,
-						content: news.abstract,
-						file_url: news.url,
+						id: incident.id,
+						title: incident.title,	
+						incident_time: incident.incident_time,
+						incident_location: incident.incident_location,
+						content: incident.abstract,
+						file_url: incident.url,
 						status: "Pending",
-						reviewer: "Reviewer 2"
-					};		
+						reviewer: "Reviewer 1"
+					};
 				});
 				const length = newNews.length;
-						
+				// setIncidents(incidents);
 				const startIndex = (page - 1) * 7;
-				const selectedNews = newNews.slice(startIndex, startIndex + 7);
-				setNews(selectedNews);
+				const selectedIncidents = newNews.slice(startIndex, startIndex + 7);
+				setIncidents(selectedIncidents);
 				setTotalPages(Math.ceil(length / 7));
-
 			});
 
 		} catch (error) {

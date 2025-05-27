@@ -38,10 +38,10 @@ const CustomTable = ({
                   {selectedTab !== 'news' && <td>{item.id}</td>}
                   <td>{item.date || item.incident_time}</td>
                   <td>{item.location || item.incident_location}</td>
-                  <td className="content-cell" title={item.abstract? item.abstract : ""}>
-                    {item.abstract
-                      ? `${item.abstract.slice(0, isSmallScreen ? 10 : 85)}...`
-                      : "Content not available"}
+                  <td className="content-cell" title={item.content}>
+                    {item.content.length > 0
+                      ? `${item.content.slice(0, isSmallScreen ? 10 : 85)}...`
+                      : item.content}
                   </td>
                   <td>
                     <div className="file-icons-container">

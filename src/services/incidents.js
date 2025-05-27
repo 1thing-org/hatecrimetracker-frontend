@@ -12,6 +12,7 @@ export function getIncidents( startDate, endDate, state = null, lang = 'en', sel
         "&lang=" + lang +
         (state ? "&state=" + state : "") +
         (skip_cache ? "&skip_cache=true" : "");
+    // console.log("getIncidents", incidentsAPIUrl);
     return axios.get(incidentsAPIUrl,
         {
             headers: {
@@ -23,34 +24,23 @@ export function getIncidents( startDate, endDate, state = null, lang = 'en', sel
     });
 }
 
-export function getAllIncidents() {
-    const incidentsAPIUrl = config.api_endpoint + 
-        "/incidents?type=self-report";
-
-    return axios.get(incidentsAPIUrl,
+// TODO: update incident
+export function updateIncident(incident) {
+    const incidentAPIUrl = config.api_endpoint + "/user_report_profile";
+    console.log("updateIncident", incidentAPIUrl, incident);
+    return axios.post(incidentAPIUrl, {user_report:incident},
         {
             headers: {
                 "Access-Control-Allow-Origin": "false",
                 "strict-origin-when-cross-origin": "false"
             }
-        }).then((response) => {
-        return response.data.incidents;
-    });
-}
-
-export function getAllNews() {
-    const incidentsAPIUrl = config.api_endpoint + 
-        "/incidents?type=news";
-
-    return axios.get(incidentsAPIUrl,
-        {
-            headers: {
-                "Access-Control-Allow-Origin": "false",
-                "strict-origin-when-cross-origin": "false"
-            }
-        }).then((response) => {
-        return response.data.incidents;
-    });
+        }).then((response) => { 
+            return response.data; }
+        ).catch
+        ((error) => {
+            console.log(error);
+            return error;
+        }); 
 }
 
 export function getStats( startDate, endDate, state = null) {
