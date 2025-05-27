@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate  } from "react-router-dom";
-import { Table, Button } from "reactstrap";
+import moment from 'moment';
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
+import * as incidentsService from "../services/incidents";
 import "./IncidentAdminList.css";
 import IncidentEdit from "./IncidentEdit";
 import CustomTable from "./CustomTable";
@@ -69,6 +70,20 @@ const IncidentListPage = () => {
 				setTotalPages(Math.ceil(length / 7));
 	
 			});
+			
+			// Second way to get incidents from the server
+			// const response = await fetch("/data.json");
+			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "self_report", true)
+			.then(incidents => {
+				//setRecentIncidents(incidents)
+				//const data = await response.json();
+				const startIndex = (page - 1) * 7;
+				const selectedIncidents = incidents.slice(startIndex, startIndex + 7);
+				setIncidents(selectedIncidents);
+				setTotalPages(Math.ceil(incidents.length / 7));
+			});
+
+			
 		} catch (error) {
 			console.error("Error loading incidents:", error);
 		}
