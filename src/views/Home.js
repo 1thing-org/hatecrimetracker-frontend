@@ -1,4 +1,4 @@
- import UILoader from "./components/ui-loader";
+import UILoader from "./components/ui-loader";
 import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
@@ -79,42 +79,76 @@ const Home = () => {
     setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
   };
-  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
-  // Remove date out of the range, and insert days that does not have data
+
+  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]
+  //   - Old format: Descending order
+  //   - New format: Ascending order
+  // Push each day from start_date to end_date, inserting missing days with default values
+  // Handles both old format (value field) and new format (news + self_report fields)
   // start_date, end_date: Date
   // monthly: monthly aggregation { first_day_of_month: count_of_the_month }
+  //   - Old format: { '2024-01': 5 }
+  //   - New format: { '2024-01': {news: 3, self_report: 2} }
   const mergeDate = (stats, start_date, end_date, monthly) => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
-    const strStartDate = start.format("YYYY-MM-DD");
-    const strEndDate = end.format("YYYY-MM-DD");
+    // Convert stats object to a map for lookup
+    const statsMap = {}
+    stats.forEach(stat => {
+      statsMap[stat.key] = stat;
+    })
+
     while (start <= end) {
       const strDate = start.format("YYYY-MM-DD");
-      const monthlyData = monthly[start.format("YYYY-MM")];
-      if (stats.length > 0) {
-        if (
-          stats[stats.length - 1].key < strStartDate ||
-          stats[stats.length - 1].key > strEndDate
-        ) {
-          stats.pop();
-          continue; //skip data that is out of range
-        }
-        if (stats[stats.length - 1].key == strDate) {
-          //found the date in stats, use it
-          new_stats.push({
-            monthly_cases: monthlyData,
-            ...stats[stats.length - 1],
-          });
-          stats.pop();
-          continue;
-        }
+      const monthKey = start.format("YYYY-MM");
+      const monthlyRaw = monthly[monthKey];
+
+      // Handle both old format (numbers) and new format (objects)
+      let monthlyNews = 0;
+      let monthlySelfReport = 0;
+      if (typeof monthlyRaw === "object" && monthlyRaw !== null) {
+        monthlyNews = monthlyRaw.news || 0;
+        monthlySelfReport = monthlyRaw.self_report || 0;
+      } else if (typeof monthlyRaw === "number") {
+        monthlyNews = monthlyRaw;
+        monthlySelfReport = 0;
       }
-      new_stats.push({ key: strDate, value: null, monthly_cases: monthlyData });
+
+      // Find the current date stats 
+      const dailyStat = statsMap[strDate]
+      if (dailyStat) {
+        let dailyValue;
+        if (dailyStat.value !== undefined) {
+          dailyValue = dailyStat.value;
+        } else {
+          dailyValue = dailyStat.news || 0;
+        }
+        new_stats.push({
+          key: strDate,
+          value: dailyValue > 0 ? dailyValue : null,
+          news: dailyStat.news || 0,
+          self_report: dailyStat.self_report || 0,
+          monthly_cases: monthlyNews,
+          monthly_news: monthlyNews,
+          monthly_self_report: monthlySelfReport,
+        });
+      } else {
+        new_stats.push({
+          key: strDate,
+          value: null,
+          news: 0,
+          self_report: 0,
+          monthly_cases: monthlyNews,
+          monthly_news: monthlyNews,
+          monthly_self_report: monthlySelfReport,
+        });
+      }
       start.add(1, "days");
     }
     return new_stats;
   };
+
   const loadData = (updateMap = false) => {
     if (dateRange?.length != 2) return;
 
@@ -144,9 +178,8 @@ const Home = () => {
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format("YYYY-MM-DD")}&to=${moment(
       to
-    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${
-      lang ? "&lang=" + lang : ""
-    }`;
+    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${lang ? "&lang=" + lang : ""
+      }`;
   };
 
   const isParameterChanged = () => {
@@ -186,9 +219,9 @@ const Home = () => {
       const defaultDateRange = isObjEmpty(searchParams.get("from"))
         ? [moment().subtract(1, "years").toDate(), new Date()]
         : [
-            moment(searchParams.get("from")).toDate(),
-            moment(searchParams.get("to")).toDate(),
-          ];
+          moment(searchParams.get("from")).toDate(),
+          moment(searchParams.get("to")).toDate(),
+        ];
 
       setSelectedState(getValidState(searchParams.get("state")));
       setDateRange(defaultDateRange);
