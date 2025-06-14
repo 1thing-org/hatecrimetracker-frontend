@@ -98,8 +98,8 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     markerTemplate.children.getIndex(0).cornerRadius(0.5, 0.5, 0.5, 0.5);
     markerTemplate.width = 12;
     markerTemplate.height = 12;
-    series1.legendSettings.labelText = "Monthly Cases [bold {color}]{value}[/]";
-    series2.legendSettings.labelText = "Daily Cases [bold {color}]{value}[/]";
+    series1.legendSettings.labelText = "Monthly Cases";
+    series2.legendSettings.labelText = "Daily Cases";
 
     return () => {
       chart.dispose();

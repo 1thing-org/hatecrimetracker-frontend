@@ -178,8 +178,9 @@ const Home = () => {
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format("YYYY-MM-DD")}&to=${moment(
       to
-    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${lang ? "&lang=" + lang : ""
-      }`;
+    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${
+      lang ? "&lang=" + lang : ""
+    }`;
   };
 
   const isParameterChanged = () => {
@@ -219,9 +220,9 @@ const Home = () => {
       const defaultDateRange = isObjEmpty(searchParams.get("from"))
         ? [moment().subtract(1, "years").toDate(), new Date()]
         : [
-          moment(searchParams.get("from")).toDate(),
-          moment(searchParams.get("to")).toDate(),
-        ];
+            moment(searchParams.get("from")).toDate(),
+            moment(searchParams.get("to")).toDate(),
+          ];
 
       setSelectedState(getValidState(searchParams.get("state")));
       setDateRange(defaultDateRange);
