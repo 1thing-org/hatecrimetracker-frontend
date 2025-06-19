@@ -22,7 +22,7 @@
   }
   
   .app-download-popup {
-    background: rgb(44, 44, 44);
+    background: #2c2c2c;
     border-radius: 12px;
     padding: 2rem;
     max-width: 400px;

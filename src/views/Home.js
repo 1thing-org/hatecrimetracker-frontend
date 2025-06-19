@@ -339,13 +339,6 @@ const Home = () => {
                     iconFillColor={"#FEF753"}
                     isShare={false}
                   />
-                   <button
-                    className="button-no-background"
-                    onClick={() => setIsShare(true)}
-                    title="Share"
-                  >
-                    <RiShareForwardFill size={28} color="#FEF753" />
-                  </button>
                 </div>
                 <IncidentMap
                   mapData={incidentAggregated}
