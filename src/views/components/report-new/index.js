@@ -1,48 +1,44 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import Modal from "react-modal";
 import "./ReportNew.css";
 
+Modal.setAppElement("#root");
+
 const ReportNew = () => {
-  const [isShowAppDownload, setIsShowAppDownload] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <button className="report-new-btn" onClick={() => setIsShowAppDownload(true)}>
+      <button className="report-new-btn" onClick={() => setIsOpen(true)}>
         Report New
       </button>
 
-      {isShowAppDownload && (
-        <div className="app-download-overlay" onClick={() => setIsShowAppDownload(false)}>
-          <div className="app-download-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={() => setIsShowAppDownload(false)}>×</button>
-            <h3>Get the App</h3>
-            <p>Report hate crimes directly from your phone</p>
-            <div className="store-badge-buttons">
-              <a
-                href="https://apps.apple.com/us/app/anti-asian-hate-crime-tracker"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://www.1thing.org/static/media/appstore.005ff290ce90a1c5f9e2.png"
-                  alt="Download on the App Store"
-                  className="store-badge-img"
-                />
-              </a>
-              <a
-                href="https://play.google.com/store/apps/details?id=org.onething.hatecrimetracker"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://www.1thing.org/static/media/googleplay.b2106989d7482baf2454.png"
-                  alt="Get it on Google Play"
-                  className="store-badge-img"
-                />
-              </a>
-            </div>
-          </div>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        overlayClassName="modal-overlay"
+        className="modal-content"
+      >
+        <button className="modal-close" onClick={() => setIsOpen(false)}>
+          ×
+        </button>
+        <h3 className="modal-title">Get the App</h3>
+        <p className="modal-desc">Report hate crimes directly from your phone</p>
+        <div className="modal-badges">
+          <a href="https://apps.apple.com/us/app/anti-asian-hate-crime-tracker" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://www.1thing.org/static/media/appstore.005ff290ce90a1c5f9e2.png"
+              alt="App Store"
+            />
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=org.onething.hatecrimetracker" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://www.1thing.org/static/media/googleplay.b2106989d7482baf2454.png"
+              alt="Google Play"
+            />
+          </a>
         </div>
-      )}
+      </Modal>
     </>
   );
 };
