@@ -266,7 +266,7 @@ const Home = () => {
           <Row>
             <Col xs="12">
               <Container className="header">
-                <Row className="align-items-center">
+                <Row className="navbar align-items-center">
                   <Col xs="12" sm="12" md="8">
                     <p className="title">
                       <img src={logo} alt="logo" className="logo" />{" "}
@@ -275,7 +275,7 @@ const Home = () => {
                   </Col>
 
                   <Col xs="12" sm="12" md="4">
-                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+                    <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
                       <ReportNew />
                       &nbsp;&nbsp;&nbsp;&nbsp;
                       <a
@@ -291,8 +291,8 @@ const Home = () => {
                         searchable={false}
                         cleanable={false}
                         defaultValue={selectedLangCode}
-                        style={{ width: 120 }}
-                        className={"rs-theme-dark"}
+                        style={{ width: 120}}
+                        className={"rs-theme-dark no-border-lang-picker"}
                         onChange={(value) => setSelectedLang(value)}
                       />
                     </div>

@@ -5,6 +5,11 @@
         justify-content: space-between;
         padding-bottom: 1rem;
     }
+
+    .OneRowItem.right-controls {
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
     
     .rs-picker-toggle-wrapper {
         width: 16rem
@@ -17,6 +22,17 @@
     .title {
         font-size: 1rem !important; 
     }
+}
+
+.navbar {
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  background-color: #1A1D24;
+}
+
+.right-controls {
+  gap: 1.75rem; /* spacing between each item */
 }
 
 .title {
@@ -36,6 +52,7 @@
     float:right; 
     width: 2.5rem;
 }
+
 
 
 .floating-button-top {
