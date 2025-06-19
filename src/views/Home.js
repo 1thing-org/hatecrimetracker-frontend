@@ -275,7 +275,7 @@ const Home = () => {
                     <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
                       {deviceSize >= 786 && (
                         <>
-                          <SocialMedia
+                          {/* <SocialMedia
                             size={35}
                             bgStyle={{ fill: "#000000" }}
                             iconFillColor={"yellow"}
@@ -287,7 +287,7 @@ const Home = () => {
                           >
                             <RiShareForwardFill size={25} />
                           </button>
-                          &nbsp;&nbsp;{" "}
+                          &nbsp;&nbsp;{" "} */}
                         </>
                       )}
                       <a
@@ -344,6 +344,15 @@ const Home = () => {
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
+
+                <div className="floating-social-media">
+                  <SocialMedia
+                    size={32}
+                    bgStyle={{ fill: "#191818d9" }}
+                    iconFillColor={"#FEF753"} // yellow
+                    isShare={false} // or true depending on context
+                  />
+                </div>
 
                 <IncidentMap
                   mapData={incidentAggregated}
