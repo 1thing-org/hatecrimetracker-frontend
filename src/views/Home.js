@@ -297,8 +297,14 @@ const Home = () => {
                       />
                     </div>
                   </Col>
-                </Row>
+                </Row> 
+              </Container>
+            </Col>
+          </Row>
 
+          <Row className="match-height">
+            <Col xl="8" lg="6" md="12" className="left-panel">
+              <div className="left-panel-wrapper">
                 <FormGroup>
                   <Row>
                     <Col xs="12" sm="12" md="auto" className="OneRowItem">
@@ -320,12 +326,6 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-              </Container>
-            </Col>
-          </Row>
-          <Row className="match-height">
-            <Col xl="8" lg="6" md="12">
-              <div>
                 <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
@@ -355,7 +355,7 @@ const Home = () => {
                 />
               </div>
             </Col>
-            <Col xl="4" lg="6" md="12">
+            <Col xl="4" lg="6" md="12" className="right-panel">
               <Card>
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
@@ -367,7 +367,8 @@ const Home = () => {
             </Col>
           </Row>
         </div>
-        <div className="footer">
+        <div className="footer-wrapper">
+          <div className="footer">
           <Row>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <Row>
@@ -408,6 +409,7 @@ const Home = () => {
               <li>{t("disclaimer.3")}</li>
             </ul>
           </div>
+        </div>
         </div>
       </UILoader>
     </>

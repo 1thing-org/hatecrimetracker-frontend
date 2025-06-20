@@ -280,10 +280,15 @@ body.dark-layout {
 .header h4{
 	color: #FEF753 !important;
 }
+.footer-wrapper {
+  background-color: #1A1D24;
+  padding: 2rem;
+}
+
 .footer {
-	margin: 2em;
-	color: #FEF753;
-	padding-bottom: 2rem;
+  background-color: #1A1D24;
+  padding-bottom: 2rem;
+  color: #FEF753;
 }
 .disclaimer {
 	font-size: small;
