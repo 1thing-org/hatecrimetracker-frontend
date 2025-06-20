@@ -1,4 +1,4 @@
- import UILoader from "./components/ui-loader";
+import UILoader from "./components/ui-loader";
 import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
@@ -32,6 +32,7 @@ import "./Home.css";
 import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
+import ReportNew from "./components/report-new";
 import "../assets/scss/charts/recharts.scss";
 
 const Home = () => {
@@ -230,6 +231,8 @@ const Home = () => {
     setSelectedState(newState);
   };
 
+
+
   return (
     <>
       {deviceSize < 786 && (
@@ -263,7 +266,7 @@ const Home = () => {
           <Row>
             <Col xs="12">
               <Container className="header">
-                <Row className="align-items-center">
+                <Row className="navbar align-items-center">
                   <Col xs="12" sm="12" md="8">
                     <p className="title">
                       <img src={logo} alt="logo" className="logo" />{" "}
@@ -272,24 +275,9 @@ const Home = () => {
                   </Col>
 
                   <Col xs="12" sm="12" md="4">
-                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
-                      {deviceSize >= 786 && (
-                        <>
-                          <SocialMedia
-                            size={35}
-                            bgStyle={{ fill: "#000000" }}
-                            iconFillColor={"yellow"}
-                          />
-                          &nbsp;
-                          <button
-                            className="button-no-background"
-                            onClick={() => setIsShare(true)}
-                          >
-                            <RiShareForwardFill size={25} />
-                          </button>
-                          &nbsp;&nbsp;{" "}
-                        </>
-                      )}
+                    <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+                      <ReportNew />
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                       <a
                         href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                         target="_blank"
@@ -303,8 +291,8 @@ const Home = () => {
                         searchable={false}
                         cleanable={false}
                         defaultValue={selectedLangCode}
-                        style={{ width: 120 }}
-                        className={"rs-theme-dark"}
+                        style={{ width: 120}}
+                        className={"rs-theme-dark no-border-lang-picker"}
                         onChange={(value) => setSelectedLang(value)}
                       />
                     </div>
@@ -344,7 +332,14 @@ const Home = () => {
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
-
+                <div className="floating-social-media">
+                  <SocialMedia
+                    size={32}
+                    bgStyle={{ fill: "#191818d9" }}
+                    iconFillColor={"#FEF753"}
+                    isShare={false}
+                  />
+                </div>
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}

@@ -282,7 +282,8 @@ body.dark-layout {
 }
 .footer {
 	margin: 2em;
-	color: #FEF753
+	color: #FEF753;
+	padding-bottom: 2rem;
 }
 .disclaimer {
 	font-size: small;
@@ -290,11 +291,27 @@ body.dark-layout {
 	color:lightgray;
 }
 .contact_us {
-	color: #FEF753 !important;
+	color: #FFFFFF !important;
 }
 
 .container{
     max-width: 100%;
+}
+
+.no-border-lang-picker .rs-picker-toggle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.no-border-lang-picker .rs-picker-toggle-value,
+.no-border-lang-picker .rs-picker-toggle-placeholder {
+  color: white !important;
+  opacity: 1 !important;
+}
+.no-border-lang-picker .rs-picker-caret-icon {
+  color: white !important;
+  fill: white !important;
+  position: static !important;
 }
 
 input.form-control, textarea.form-control {
