@@ -306,7 +306,7 @@ const Home = () => {
             <Col xl="8" lg="6" md="12" className="left-panel">
               <div className="left-panel-wrapper">
                 <FormGroup>
-                  <Row>
+                  <Row className="row-offset">
                     <Col xs="12" sm="12" md="auto" className="OneRowItem">
                       <Label className="SimpleLabel">{t("location")}:</Label>{" "}
                       <StateSelection
