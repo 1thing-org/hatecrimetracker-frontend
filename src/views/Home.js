@@ -335,7 +335,7 @@ const Home = () => {
                 <div className="floating-social-media">
                   <SocialMedia
                     size={32}
-                    bgStyle={{ fill: "#191818d9" }}
+                    bgStyle={{ fill: "#1f2125" }}
                     iconFillColor={"#FEF753"}
                     isShare={false}
                   />
