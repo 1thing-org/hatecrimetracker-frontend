@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Modal from "react-modal";
-import "./ReportNew.css";
+import "./ReportIncident.css";
 
 Modal.setAppElement("#root");
 
-const ReportNew = () => {
+const ReportIncident = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <button className="report-new-btn" onClick={() => setIsOpen(true)}>
-        Report New
+      <button className="report-incident-btn" onClick={() => setIsOpen(true)}>
+        Report Incident
       </button>
 
       <Modal
@@ -22,10 +22,10 @@ const ReportNew = () => {
         <button className="modal-close" onClick={() => setIsOpen(false)}>
           ×
         </button>
-        <h3 className="modal-title">Get the App</h3>
-        <p className="modal-desc">Report hate crimes directly from your phone</p>
+        <h3 className="modal-title">Download App</h3>
+        <p className="modal-desc">Use our mobile app to report anti-Asian incidents. We will show your reported incidents in our website after the content got reviewed and confirmed.</p>
         <div className="modal-badges">
-          <a href="https://apps.apple.com/us/app/anti-asian-hate-crime-tracker" target="_blank" rel="noopener noreferrer">
+          <a href="https://apps.apple.com/us/app/anti-asian-hate-crime-tracker/id6504161404" target="_blank" rel="noopener noreferrer">
             <img
               src="https://www.1thing.org/static/media/appstore.005ff290ce90a1c5f9e2.png"
               alt="App Store"
@@ -43,4 +43,4 @@ const ReportNew = () => {
   );
 };
 
-export default ReportNew;
+export default ReportIncident;

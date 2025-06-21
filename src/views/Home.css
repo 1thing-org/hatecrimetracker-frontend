@@ -28,6 +28,9 @@
   padding-top: 1.5rem;
   padding-bottom: 1rem;
   background-color: #1A1D24;
+  width: 100vw;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .location-form-group {
@@ -35,7 +38,7 @@
 }
 
 .right-controls {
-  gap: 1.75rem;
+  gap: 1.5rem;
 }
 
 .title {

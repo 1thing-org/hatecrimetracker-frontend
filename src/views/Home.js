@@ -32,7 +32,7 @@ import "./Home.css";
 import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
-import ReportNew from "./components/report-new";
+import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 
 const Home = () => {
@@ -263,44 +263,41 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Row>
-            <Col xs="12">
-              <Container className="header">
-                <Row className="navbar align-items-center">
-                  <Col xs="12" sm="12" md="8">
-                    <p className="title">
-                      <img src={logo} alt="logo" className="logo" />{" "}
-                      {t("website.name")}
-                    </p>
-                  </Col>
+          <Container className="header">
+            <Row className="navbar align-items-center">
+              <Col xs="12" sm="12" md="8">
+                <p className="title">
+                  <img src={logo} alt="logo" className="logo" />{" "}
+                  {t("website.name")}
+                </p>
+              </Col>
 
-                  <Col xs="12" sm="12" md="4">
-                    <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
-                      <ReportNew />
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a
-                        href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                        target="_blank"
-                        className="contact_us"
-                      >
-                        {t("contact_us")}
-                      </a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <SelectPicker
-                        data={support_languages}
-                        searchable={false}
-                        cleanable={false}
-                        defaultValue={selectedLangCode}
-                        style={{ width: 120}}
-                        className={"rs-theme-dark no-border-lang-picker"}
-                        onChange={(value) => setSelectedLang(value)}
-                      />
-                    </div>
-                  </Col>
-                </Row> 
-              </Container>
-            </Col>
-          </Row>
+              <Col xs="12" sm="12" md="4">
+                <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+                  <ReportIncident />
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <a
+                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                    target="_blank"
+                    className="contact_us"
+                  >
+                    {t("contact_us")}
+                  </a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <SelectPicker
+                    data={support_languages}
+                    searchable={false}
+                    cleanable={false}
+                    defaultValue={selectedLangCode}
+                    style={{ width: 120}}
+                    className={"rs-theme-dark no-border-lang-picker"}
+                    onChange={(value) => setSelectedLang(value)}
+                  />
+                </div>
+              </Col>
+            </Row> 
+          </Container>
+     
 
           <Row className="match-height">
             <Col xl="8" lg="6" md="12" className="left-panel">
