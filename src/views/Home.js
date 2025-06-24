@@ -144,31 +144,32 @@ const Home = () => {
 
       // Find the current date stats 
       const dailyStat = statsMap[strDate]
-      if (dailyStat) {
-        const dailyNews = dailyStat.news ?? dailyStat.value ?? 0;
-        const dailySelfReport = dailyStat.self_report ?? 0;
-        new_stats.push({
-          key: strDate,
-          value: dailyNews > 0 ? dailyNews : null,
-          daily_news: dailyStat.news || 0,
-          daily_self_report: dailyStat.self_report || 0,
-          monthly_cases: monthlyNews,
-          monthly_news: monthlyNews,
-          monthly_self_report: monthlySelfReport,
-        });
-      } else {
-        new_stats.push({
-          key: strDate,
-          value: null,
-          daily_news: 0,
-          daily_self_report: 0,
-          monthly_cases: monthlyNews,
-          monthly_news: monthlyNews,
-          monthly_self_report: monthlySelfReport,
-        });
-      }
+                      if (dailyStat) {
+          const dailyNews = dailyStat.news ?? dailyStat.value ?? 0;
+          const dailySelfReport = dailyStat.self_report ?? 0;
+          new_stats.push({
+            key: strDate,
+            daily_cases: dailyNews > 0 ? dailyNews : null,
+            daily_news: dailyNews,
+            daily_self_report: dailySelfReport,
+            monthly_cases: monthlyNews,
+            monthly_news: monthlyNews,
+            monthly_self_report: monthlySelfReport,
+          });
+        } else {
+          new_stats.push({
+            key: strDate,
+            daily_cases: null,
+            daily_news: 0,
+            daily_self_report: 0,
+            monthly_cases: monthlyNews,
+            monthly_news: monthlyNews,
+            monthly_self_report: monthlySelfReport,
+          });
+        }
       start.add(1, "days");
     }
+    console.log(new_stats)
     return new_stats;
   };
 

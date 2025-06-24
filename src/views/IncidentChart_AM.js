@@ -28,7 +28,7 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
   useLayoutEffect(() => {
     let total = 0;
     for (let i = 0; i < chart_data.length; i++) {
-      total += chart_data[i].value;
+      total += chart_data[i].daily_cases || 0;  // Use daily_cases instead of value
     }
     setTotalCases(total);
 
@@ -74,12 +74,12 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     series1.fillOpacity = 0.4;
 
     let series2 = chart.series.push(new am4charts.ColumnSeries());
-    series2.dataFields.valueY = "value";
+    series2.dataFields.valueY = "daily_cases";
     series2.dataFields.dateX = "key";
     series2.name = "Daily Cases";
     // series2.tooltipText = toolTipText;
     series2.columns.template.tooltipText = `{key}
-        [bold]Daily Cases: {value}`;
+        [bold]Daily Cases: {daily_cases}`;
     chart.tooltip.label.fill = am4core.color("#f00");
     series2.clustered = true;
     series2.fill = am4core.color(color);
