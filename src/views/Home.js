@@ -312,7 +312,7 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-  return (
+ return (
     <>
       {deviceSize < 786 && (
         <>
@@ -342,59 +342,47 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Row>
-            <Col xs="12">
-              <Container className="header">
-                <Row className="align-items-center">
-                  <Col xs="12" sm="12" md="8">
-                    <p className="title">
-                      <img src={logo} alt="logo" className="logo" />{" "}
-                      {t("website.name")}
-                    </p>
-                  </Col>
+          <Container className="header">
+            <Row className="navbar align-items-center">
+              <Col xs="12" sm="12" md="8">
+                <p className="title">
+                  <img src={logo} alt="logo" className="logo" />{" "}
+                  {t("website.name")}
+                </p>
+              </Col>
 
-                  <Col xs="12" sm="12" md="4">
-                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
-                      {deviceSize >= 786 && (
-                        <>
-                          <SocialMedia
-                            size={35}
-                            bgStyle={{ fill: "#000000" }}
-                            iconFillColor={"yellow"}
-                          />
-                          &nbsp;
-                          <button
-                            className="button-no-background"
-                            onClick={() => setIsShare(true)}
-                          >
-                            <RiShareForwardFill size={25} />
-                          </button>
-                          &nbsp;&nbsp;{" "}
-                        </>
-                      )}
-                      <a
-                        href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                        target="_blank"
-                        className="contact_us"
-                      >
-                        {t("contact_us")}
-                      </a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <SelectPicker
-                        data={support_languages}
-                        searchable={false}
-                        cleanable={false}
-                        defaultValue={selectedLangCode}
-                        style={{ width: 120 }}
-                        className={"rs-theme-dark"}
-                        onChange={(value) => setSelectedLang(value)}
-                      />
-                    </div>
-                  </Col>
-                </Row>
+              <Col xs="12" sm="12" md="4">
+                <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+                  <ReportIncident />
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <a
+                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                    target="_blank"
+                    className="contact_us"
+                  >
+                    {t("contact_us")}
+                  </a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <SelectPicker
+                    data={support_languages}
+                    searchable={false}
+                    cleanable={false}
+                    defaultValue={selectedLangCode}
+                    style={{ width: 120}}
+                    className={"rs-theme-dark no-border-lang-picker"}
+                    onChange={(value) => setSelectedLang(value)}
+                  />
+                </div>
+              </Col>
+            </Row> 
+          </Container>
+     
 
+          <Row className="match-height">
+            <Col xl="8" lg="6" md="12" className="left-panel">
+              <div className="left-panel-wrapper">
                 <FormGroup>
-                  <Row>
+                  <Row className="row-offset">
                     <Col xs="12" sm="12" md="auto" className="OneRowItem">
                       <Label className="SimpleLabel">{t("location")}:</Label>{" "}
                       <StateSelection
@@ -414,19 +402,20 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-              </Container>
-            </Col>
-          </Row>
-          <Row className="match-height">
-            <Col xl="8" lg="6" md="12">
-              <div>
                 <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
-
+                <div className="floating-social-media">
+                  <SocialMedia
+                    size={32}
+                    bgStyle={{ fill: "#1f2125" }}
+                    iconFillColor={"#FEF753"}
+                    isShare={false}
+                  />
+                </div>
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
@@ -442,7 +431,7 @@ const Home = () => {
                 />
               </div>
             </Col>
-            <Col xl="4" lg="6" md="12">
+            <Col xl="4" lg="6" md="12" className="right-panel">
               <Card>
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
@@ -454,7 +443,8 @@ const Home = () => {
             </Col>
           </Row>
         </div>
-        <div className="footer">
+        <div className="footer-wrapper">
+          <div className="footer">
           <Row>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <Row>
@@ -495,6 +485,7 @@ const Home = () => {
               <li>{t("disclaimer.3")}</li>
             </ul>
           </div>
+        </div>
         </div>
       </UILoader>
     </>
