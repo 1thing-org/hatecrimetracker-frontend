@@ -34,6 +34,7 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
 
     // Create chart instance
     let chart = am4core.create("chart_1yaxis", am4charts.XYChart);
+    chart.logo.disabled = true;
     chart.data = chart_data;
     // Create date axes and value axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
