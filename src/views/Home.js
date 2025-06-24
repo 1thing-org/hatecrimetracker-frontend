@@ -81,7 +81,6 @@ const Home = () => {
     setSelectedLangCode(lang_code);
   };
 
-
   // "daily_statistics": {"2024-05-02": {"news": 1,"self_report": 0}},
   // Push each day from start_date to end_date, inserting missing days with default values
   // start_date, end_date: Date
@@ -142,13 +141,7 @@ const Home = () => {
         const dailyStats = response.daily_statistics || {};
         const monthlyStats = response.monthly_statistics || {};
         const totalStats = response.insights || {};
-
-
-        // // Fall back strategy: Prefer new format, fallback to old format (remove if no needed)
-        // const dailyStats = response.daily_statistics || convertOldStats(response.stats);
-        // const monthlyStats = response.monthly_statistics || convertOldMonthlyStats(response.monthly_stats);
-        // const totalStats = response.insights || convertOldTotalStats(response.total);
-          
+        
         const timeSeries = mergeDate(
           dailyStats,
           dateRange[0],
@@ -169,28 +162,6 @@ const Home = () => {
         setIsFirstLoadData(false);
       });
   };
-
-  // Helper functions to convert old format to new format (remove if no needed)
-  // const convertOldStats = (oldStats) => {
-  //   if (!oldStats) return {};
-  //   return Object.fromEntries(
-  //     oldStats.map(item => [item.key, {news: item.value || 0, self_report: 0}])
-  //   );
-  // };
-
-  // const convertOldMonthlyStats = (oldMonthly) => {
-  //   if (!oldMonthly) return {};
-  //   return Object.fromEntries(
-  //     Object.entries(oldMonthly).map(([month, value]) => [month, {news: value || 0, self_report: 0}])
-  //   );
-  // };
-
-  // const convertOldTotalStats = (oldTotal) => {
-  //   if (!oldTotal) return {};
-  //   return Object.fromEntries(
-  //     Object.entries(oldTotal).map(([state, value]) => [state, {news: value || 0, self_report: 0}])
-  //   );
-  // };
 
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format("YYYY-MM-DD")}&to=${moment(
