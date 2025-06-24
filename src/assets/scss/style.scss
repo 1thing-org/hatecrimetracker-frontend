@@ -247,6 +247,7 @@ body.dark-layout {
 	background-color: #000000;
 	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); 
 	margin-bottom: .5rem;
+	margin-top: 1.2rem;
 }
 
 .dark-layout .card-title {
@@ -280,9 +281,20 @@ body.dark-layout {
 .header h4{
 	color: #FEF753 !important;
 }
+
+.row-offset {
+  margin-left: 1px; 
+}
+
+.footer-wrapper {
+  background-color: #1A1D24;
+  padding: 2rem;
+}
+
 .footer {
-	margin: 2em;
-	color: #FEF753
+  background-color: #1A1D24;
+  padding-bottom: 2rem;
+  color: #FEF753;
 }
 .disclaimer {
 	font-size: small;
@@ -290,11 +302,27 @@ body.dark-layout {
 	color:lightgray;
 }
 .contact_us {
-	color: #FEF753 !important;
+	color: #FFFFFF !important;
 }
 
 .container{
     max-width: 100%;
+}
+
+.no-border-lang-picker .rs-picker-toggle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.no-border-lang-picker .rs-picker-toggle-value,
+.no-border-lang-picker .rs-picker-toggle-placeholder {
+  color: white !important;
+  opacity: 1 !important;
+}
+.no-border-lang-picker .rs-picker-caret-icon {
+  color: white !important;
+  fill: white !important;
+  position: static !important;
 }
 
 input.form-control, textarea.form-control {

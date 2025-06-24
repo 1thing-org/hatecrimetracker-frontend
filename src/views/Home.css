@@ -5,6 +5,11 @@
         justify-content: space-between;
         padding-bottom: 1rem;
     }
+
+    .OneRowItem.right-controls {
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
     
     .rs-picker-toggle-wrapper {
         width: 16rem
@@ -17,6 +22,23 @@
     .title {
         font-size: 1rem !important; 
     }
+}
+
+.navbar {
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  background-color: #1A1D24;
+  width: 100vw;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.location-form-group {
+  margin-bottom: 1rem;
+}
+
+.right-controls {
+  gap: 1.5rem;
 }
 
 .title {
@@ -71,6 +93,53 @@
     color: #000000 !important;
 }
 
+.floating-social-media {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background-color: #1f2125;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1.2px solid rgba(255, 255, 255, 0.6); 
+  display: flex;
+  gap: 0.1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(70px);
+  background-clip: padding-box;
+}
+
+.left-panel {
+  background-color: #131419 !important;
+  padding-top: 1.2rem;
+}
+
+.left-panel-wrapper {
+  background-color: #131419 !important;
+  padding: 1rem;
+}
+
+.left-panel-wrapper .card,
+.left-panel-wrapper .card-body,
+.left-panel-wrapper .recharts-wrapper,
+.left-panel-wrapper .amcharts-chart-div {
+  background-color: #131419 !important;
+  border: none;
+  box-shadow: none;
+}
+
+.left-panel-wrapper .rdt_TableBody,
+.left-panel-wrapper .rdt_TableRow,
+.left-panel-wrapper .rdt_TableCell {
+  background-color: #131419 !important;
+  color: white !important;
+}
+
+.right-panel {
+    padding: 1.2rem 1rem 1rem 1rem;
+}
+
 
 @media (max-width: 786px) {
     .floating-button-top {
@@ -95,3 +164,11 @@
     }
 
 }
+
+@media (max-width: 768px) {
+  .floating-social-media {
+    display: none;
+  }
+}
+
+
