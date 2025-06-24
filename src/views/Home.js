@@ -81,6 +81,27 @@ const Home = () => {
     setSelectedLangCode(lang_code);
   };
 
+  // Normalize monthly stats to consistent format
+  const normalizeMonthlyStats = (stats) => {
+    if (!stats) return {};
+
+    return Object.fromEntries(
+      Object.entries(stats).map(([month, val]) => {
+        if (typeof val === "number") {
+          return [month, { news: val, self_report: 0 }];
+        } else {
+          return [
+            month,
+            {
+              news: val?.news || 0,
+              self_report: val?.self_report || 0,
+            },
+          ];
+        }
+      })
+    );
+  };
+
   // stats [{'2021-01-02:1}, {'2021-01-01:1}...]
   //   - Old format: Descending order
   //   - New format: Ascending order
@@ -90,10 +111,24 @@ const Home = () => {
   // monthly: monthly aggregation { first_day_of_month: count_of_the_month }
   //   - Old format: { '2024-01': 5 }
   //   - New format: { '2024-01': {news: 3, self_report: 2} }
-  const mergeDate = (stats, start_date, end_date, monthly) => {
+  const mergeDate = (statsInput, start_date, end_date, monthly) => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
+
+    // Handle both old and new API formats for daily statistics
+    let stats = [];
+    if (Array.isArray(statsInput)) {
+      stats = statsInput;
+    } else if (typeof statsInput === 'object' && statsInput !== null) {
+      stats = Object.entries(statsInput).map(([key, value]) => ({
+        key,
+        news: value.news || 0,
+        self_report: value.self_report || 0,
+        value: value.news || 0
+      }));
+    }
+
     // Convert stats object to a map for lookup
     const statsMap = {}
     stats.forEach(stat => {
@@ -103,33 +138,20 @@ const Home = () => {
     while (start <= end) {
       const strDate = start.format("YYYY-MM-DD");
       const monthKey = start.format("YYYY-MM");
-      const monthlyRaw = monthly[monthKey];
-
-      // Handle both old format (numbers) and new format (objects)
-      let monthlyNews = 0;
-      let monthlySelfReport = 0;
-      if (typeof monthlyRaw === "object" && monthlyRaw !== null) {
-        monthlyNews = monthlyRaw.news || 0;
-        monthlySelfReport = monthlyRaw.self_report || 0;
-      } else if (typeof monthlyRaw === "number") {
-        monthlyNews = monthlyRaw;
-        monthlySelfReport = 0;
-      }
+      const monthlyData = monthly[monthKey] || { news: 0, self_report: 0 };
+      const monthlyNews = monthlyData.news;
+      const monthlySelfReport = monthlyData.self_report;
 
       // Find the current date stats 
       const dailyStat = statsMap[strDate]
       if (dailyStat) {
-        let dailyValue;
-        if (dailyStat.value !== undefined) {
-          dailyValue = dailyStat.value;
-        } else {
-          dailyValue = dailyStat.news || 0;
-        }
+        const dailyNews = dailyStat.news ?? dailyStat.value ?? 0;
+        const dailySelfReport = dailyStat.self_report ?? 0;
         new_stats.push({
           key: strDate,
-          value: dailyValue > 0 ? dailyValue : null,
-          news: dailyStat.news || 0,
-          self_report: dailyStat.self_report || 0,
+          value: dailyNews > 0 ? dailyNews : null,
+          daily_news: dailyStat.news || 0,
+          daily_self_report: dailyStat.self_report || 0,
           monthly_cases: monthlyNews,
           monthly_news: monthlyNews,
           monthly_self_report: monthlySelfReport,
@@ -138,8 +160,8 @@ const Home = () => {
         new_stats.push({
           key: strDate,
           value: null,
-          news: 0,
-          self_report: 0,
+          daily_news: 0,
+          daily_self_report: 0,
           monthly_cases: monthlyNews,
           monthly_news: monthlyNews,
           monthly_self_report: monthlySelfReport,
@@ -159,17 +181,42 @@ const Home = () => {
       .then((incidents) => setIncidents(incidents));
     incidentsService
       .getStats(dateRange[0], dateRange[1], selectedState)
-      .then((stats) => {
-        setIncidentTimeSeries(
-          mergeDate(
-            stats.stats,
-            dateRange[0],
-            dateRange[1],
-            stats.monthly_stats
-          )
+      .then((response) => {
+        // Defensive check for malformed response
+        if (!response || typeof response !== "object") {
+          setLoading(false);
+          return;
+        }
+        
+        // Handle both old and new field names
+        const dailyStats = response.daily_statistics || response.stats || [];
+        const monthlyStatsRaw = response.monthly_statistics || response.monthly_stats || {};
+        const monthlyStats = normalizeMonthlyStats(monthlyStatsRaw);
+        const totalStats = response.insights || response.total || {};
+        
+        const rawTimeSeries = mergeDate(
+          dailyStats,
+          dateRange[0],
+          dateRange[1],
+          monthlyStats
         );
+
+        
+        setIncidentTimeSeries(rawTimeSeries); 
+        
         if (updateMap) {
-          setIncidentAggregated(stats.total);
+          // Convert new format objects to numbers for map/table compatibility
+          const processedTotalStats = {};
+          Object.entries(totalStats).forEach(([state, value]) => {
+            if (typeof value === "object" && value !== null) {
+              processedTotalStats[state] = value.news || 0;
+            } else if (typeof value === "number") {
+              processedTotalStats[state] = value;
+            } else {
+              processedTotalStats[state] = 0;
+            }
+          });
+          setIncidentAggregated(processedTotalStats);
         }
         setLoading(false);
         setIsFirstLoadData(false);
@@ -265,8 +312,6 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-
-
   return (
     <>
       {deviceSize < 786 && (
@@ -297,47 +342,59 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Container className="header">
-            <Row className="navbar align-items-center">
-              <Col xs="12" sm="12" md="8">
-                <p className="title">
-                  <img src={logo} alt="logo" className="logo" />{" "}
-                  {t("website.name")}
-                </p>
-              </Col>
+          <Row>
+            <Col xs="12">
+              <Container className="header">
+                <Row className="align-items-center">
+                  <Col xs="12" sm="12" md="8">
+                    <p className="title">
+                      <img src={logo} alt="logo" className="logo" />{" "}
+                      {t("website.name")}
+                    </p>
+                  </Col>
 
-              <Col xs="12" sm="12" md="4">
-                <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
-                  <ReportIncident />
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <a
-                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                    target="_blank"
-                    className="contact_us"
-                  >
-                    {t("contact_us")}
-                  </a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <SelectPicker
-                    data={support_languages}
-                    searchable={false}
-                    cleanable={false}
-                    defaultValue={selectedLangCode}
-                    style={{ width: 120}}
-                    className={"rs-theme-dark no-border-lang-picker"}
-                    onChange={(value) => setSelectedLang(value)}
-                  />
-                </div>
-              </Col>
-            </Row> 
-          </Container>
-     
+                  <Col xs="12" sm="12" md="4">
+                    <div className="OneRowItem d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">
+                      {deviceSize >= 786 && (
+                        <>
+                          <SocialMedia
+                            size={35}
+                            bgStyle={{ fill: "#000000" }}
+                            iconFillColor={"yellow"}
+                          />
+                          &nbsp;
+                          <button
+                            className="button-no-background"
+                            onClick={() => setIsShare(true)}
+                          >
+                            <RiShareForwardFill size={25} />
+                          </button>
+                          &nbsp;&nbsp;{" "}
+                        </>
+                      )}
+                      <a
+                        href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                        target="_blank"
+                        className="contact_us"
+                      >
+                        {t("contact_us")}
+                      </a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <SelectPicker
+                        data={support_languages}
+                        searchable={false}
+                        cleanable={false}
+                        defaultValue={selectedLangCode}
+                        style={{ width: 120 }}
+                        className={"rs-theme-dark"}
+                        onChange={(value) => setSelectedLang(value)}
+                      />
+                    </div>
+                  </Col>
+                </Row>
 
-          <Row className="match-height">
-            <Col xl="8" lg="6" md="12" className="left-panel">
-              <div className="left-panel-wrapper">
                 <FormGroup>
-                  <Row className="row-offset">
+                  <Row>
                     <Col xs="12" sm="12" md="auto" className="OneRowItem">
                       <Label className="SimpleLabel">{t("location")}:</Label>{" "}
                       <StateSelection
@@ -357,20 +414,19 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
+              </Container>
+            </Col>
+          </Row>
+          <Row className="match-height">
+            <Col xl="8" lg="6" md="12">
+              <div>
                 <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
-                <div className="floating-social-media">
-                  <SocialMedia
-                    size={32}
-                    bgStyle={{ fill: "#1f2125" }}
-                    iconFillColor={"#FEF753"}
-                    isShare={false}
-                  />
-                </div>
+
                 <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
@@ -386,7 +442,7 @@ const Home = () => {
                 />
               </div>
             </Col>
-            <Col xl="4" lg="6" md="12" className="right-panel">
+            <Col xl="4" lg="6" md="12">
               <Card>
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
@@ -398,8 +454,7 @@ const Home = () => {
             </Col>
           </Row>
         </div>
-        <div className="footer-wrapper">
-          <div className="footer">
+        <div className="footer">
           <Row>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <Row>
@@ -440,7 +495,6 @@ const Home = () => {
               <li>{t("disclaimer.3")}</li>
             </ul>
           </div>
-        </div>
         </div>
       </UILoader>
     </>
