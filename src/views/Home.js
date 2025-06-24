@@ -81,92 +81,42 @@ const Home = () => {
     setSelectedLangCode(lang_code);
   };
 
-  // Normalize monthly stats to consistent format
-  const normalizeMonthlyStats = (stats) => {
-    if (!stats) return {};
 
-    return Object.fromEntries(
-      Object.entries(stats).map(([month, val]) => {
-        if (typeof val === "number") {
-          return [month, { news: val, self_report: 0 }];
-        } else {
-          return [
-            month,
-            {
-              news: val?.news || 0,
-              self_report: val?.self_report || 0,
-            },
-          ];
-        }
-      })
-    );
-  };
-
-  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]
-  //   - Old format: Descending order
-  //   - New format: Ascending order
+  // "daily_statistics": {"2024-05-02": {"news": 1,"self_report": 0}},
   // Push each day from start_date to end_date, inserting missing days with default values
-  // Handles both old format (value field) and new format (news + self_report fields)
   // start_date, end_date: Date
-  // monthly: monthly aggregation { first_day_of_month: count_of_the_month }
-  //   - Old format: { '2024-01': 5 }
-  //   - New format: { '2024-01': {news: 3, self_report: 2} }
-  const mergeDate = (statsInput, start_date, end_date, monthly) => {
+  // monthly_statistics: { '2024-01': {news: 3, self_report: 2} }
+  const mergeDate = (dailyStats, start_date, end_date, monthly) => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
 
-    // Handle both old and new API formats for daily statistics
-    let stats = [];
-    if (Array.isArray(statsInput)) {
-      stats = statsInput;
-    } else if (typeof statsInput === 'object' && statsInput !== null) {
-      stats = Object.entries(statsInput).map(([key, value]) => ({
-        key,
-        news: value.news || 0,
-        self_report: value.self_report || 0,
-        value: value.news || 0
-      }));
-    }
-
-    // Convert stats object to a map for lookup
-    const statsMap = {}
-    stats.forEach(stat => {
-      statsMap[stat.key] = stat;
-    })
+    // use statsMap to store the daily stats
+    const statsMap = {};
+    Object.entries(dailyStats || {}).forEach(([date, stats]) => {
+      statsMap[date] = {
+        news: stats.news || 0,
+        self_report: stats.self_report || 0,
+      };
+    });
 
     while (start <= end) {
       const strDate = start.format("YYYY-MM-DD");
       const monthKey = start.format("YYYY-MM");
       const monthlyData = monthly[monthKey] || { news: 0, self_report: 0 };
-      const monthlyNews = monthlyData.news;
-      const monthlySelfReport = monthlyData.self_report;
+      const dailyStat = statsMap[strDate];
 
-      // Find the current date stats 
-      const dailyStat = statsMap[strDate]
-                      if (dailyStat) {
-          const dailyNews = dailyStat.news ?? dailyStat.value ?? 0;
-          const dailySelfReport = dailyStat.self_report ?? 0;
-          new_stats.push({
-            key: strDate,
-            daily_cases: dailyNews > 0 ? dailyNews : null,
-            daily_news: dailyNews,
-            daily_self_report: dailySelfReport,
-            monthly_cases: monthlyNews,
-            monthly_news: monthlyNews,
-            monthly_self_report: monthlySelfReport,
-          });
-        } else {
-          new_stats.push({
-            key: strDate,
-            daily_cases: null,
-            daily_news: 0,
-            daily_self_report: 0,
-            monthly_cases: monthlyNews,
-            monthly_news: monthlyNews,
-            monthly_self_report: monthlySelfReport,
-          });
-        }
+      // current only handle news
+      new_stats.push({
+        key: strDate,
+        daily_cases: dailyStat ? (dailyStat.news > 0 ? dailyStat.news : null) : null,
+        daily_news: dailyStat?.news || 0,
+        daily_self_report: dailyStat?.self_report || 0,
+        monthly_cases: monthlyData.news,
+        monthly_news: monthlyData.news,
+        monthly_self_report: monthlyData.self_report,
+      });
+
       start.add(1, "days");
     }
     console.log(new_stats)
@@ -189,36 +139,27 @@ const Home = () => {
           return;
         }
         
-        // Handle both old and new field names
-        const dailyStats = response.daily_statistics || response.stats || [];
-        const monthlyStatsRaw = response.monthly_statistics || response.monthly_stats || {};
-        const monthlyStats = normalizeMonthlyStats(monthlyStatsRaw);
-        const totalStats = response.insights || response.total || {};
+        // Handle new field names
+        const dailyStats = response.daily_statistics || {};
+        const monthlyStats = response.monthly_statistics || {};
+        const totalStats = response.insights || {};
         
-        const rawTimeSeries = mergeDate(
+        const timeSeries = mergeDate(
           dailyStats,
           dateRange[0],
           dateRange[1],
           monthlyStats
         );
 
-        
-        setIncidentTimeSeries(rawTimeSeries); 
+        setIncidentTimeSeries(timeSeries); 
         
         if (updateMap) {
-          // Convert new format objects to numbers for map/table compatibility
-          const processedTotalStats = {};
-          Object.entries(totalStats).forEach(([state, value]) => {
-            if (typeof value === "object" && value !== null) {
-              processedTotalStats[state] = value.news || 0;
-            } else if (typeof value === "number") {
-              processedTotalStats[state] = value;
-            } else {
-              processedTotalStats[state] = 0;
-            }
-          });
-          setIncidentAggregated(processedTotalStats);
-        }
+          const processedTotal = {};
+          Object.entries(totalStats).forEach(([state, data]) => {
+            processedTotal[state] = data?.news || 0;
+        });
+        setIncidentAggregated(processedTotal);
+      }
         setLoading(false);
         setIsFirstLoadData(false);
       });
