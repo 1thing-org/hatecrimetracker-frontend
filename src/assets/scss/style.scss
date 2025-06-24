@@ -247,6 +247,7 @@ body.dark-layout {
 	background-color: #000000;
 	box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); 
 	margin-bottom: .5rem;
+	margin-top: 1.2rem;
 }
 
 .dark-layout .card-title {
@@ -280,10 +281,20 @@ body.dark-layout {
 .header h4{
 	color: #FEF753 !important;
 }
+
+.row-offset {
+  margin-left: 1px; 
+}
+
+.footer-wrapper {
+  background-color: #1A1D24;
+  padding: 2rem;
+}
+
 .footer {
-	margin: 2em;
-	color: #FEF753;
-	padding-bottom: 2rem;
+  background-color: #1A1D24;
+  padding-bottom: 2rem;
+  color: #FEF753;
 }
 .disclaimer {
 	font-size: small;
