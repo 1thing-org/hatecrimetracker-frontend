@@ -28,12 +28,13 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
   useLayoutEffect(() => {
     let total = 0;
     for (let i = 0; i < chart_data.length; i++) {
-      total += chart_data[i].value;
+      total += chart_data[i].daily_cases || 0;  // Use daily_cases instead of value
     }
     setTotalCases(total);
 
     // Create chart instance
     let chart = am4core.create("chart_1yaxis", am4charts.XYChart);
+    chart.logo.disabled = true;
     chart.data = chart_data;
     // Create date axes and value axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -74,12 +75,12 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     series1.fillOpacity = 0.4;
 
     let series2 = chart.series.push(new am4charts.ColumnSeries());
-    series2.dataFields.valueY = "value";
+    series2.dataFields.valueY = "daily_cases";
     series2.dataFields.dateX = "key";
     series2.name = "Daily Cases";
     // series2.tooltipText = toolTipText;
     series2.columns.template.tooltipText = `{key}
-        [bold]Daily Cases: {value}`;
+        [bold]Daily Cases: {daily_cases}`;
     chart.tooltip.label.fill = am4core.color("#f00");
     series2.clustered = true;
     series2.fill = am4core.color(color);
@@ -98,8 +99,8 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     markerTemplate.children.getIndex(0).cornerRadius(0.5, 0.5, 0.5, 0.5);
     markerTemplate.width = 12;
     markerTemplate.height = 12;
-    series1.legendSettings.labelText = "Monthly Cases [bold {color}]{value}[/]";
-    series2.legendSettings.labelText = "Daily Cases [bold {color}]{value}[/]";
+    series1.legendSettings.labelText = "Monthly Cases";
+    series2.legendSettings.labelText = "Daily Cases";
 
     return () => {
       chart.dispose();

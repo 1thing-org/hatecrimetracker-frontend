@@ -80,42 +80,47 @@ const Home = () => {
     setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
   };
-  // stats [{'2021-01-02:1}, {'2021-01-01:1}...]  dates descending
-  // Remove date out of the range, and insert days that does not have data
+
+  // "daily_statistics": {"2024-05-02": {"news": 1,"self_report": 0}},
+  // Push each day from start_date to end_date, inserting missing days with default values
   // start_date, end_date: Date
-  // monthly: monthly aggregation { first_day_of_month: count_of_the_month }
-  const mergeDate = (stats, start_date, end_date, monthly) => {
+  // monthly_statistics: { '2024-01': {news: 3, self_report: 2} }
+  const mergeDate = (dailyStats, start_date, end_date, monthly) => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
-    const strStartDate = start.format("YYYY-MM-DD");
-    const strEndDate = end.format("YYYY-MM-DD");
+
+    // use statsMap to store the daily stats
+    const statsMap = {};
+    Object.entries(dailyStats || {}).forEach(([date, stats]) => {
+      statsMap[date] = {
+        news: stats.news || 0,
+        self_report: stats.self_report || 0,
+      };
+    });
+
     while (start <= end) {
       const strDate = start.format("YYYY-MM-DD");
-      const monthlyData = monthly[start.format("YYYY-MM")];
-      if (stats.length > 0) {
-        if (
-          stats[stats.length - 1].key < strStartDate ||
-          stats[stats.length - 1].key > strEndDate
-        ) {
-          stats.pop();
-          continue; //skip data that is out of range
-        }
-        if (stats[stats.length - 1].key == strDate) {
-          //found the date in stats, use it
-          new_stats.push({
-            monthly_cases: monthlyData,
-            ...stats[stats.length - 1],
-          });
-          stats.pop();
-          continue;
-        }
-      }
-      new_stats.push({ key: strDate, value: null, monthly_cases: monthlyData });
+      const monthKey = start.format("YYYY-MM");
+      const monthlyData = monthly[monthKey] || { news: 0, self_report: 0 };
+      const dailyStat = statsMap[strDate];
+
+      // current only handle news
+      new_stats.push({
+        key: strDate,
+        daily_cases: dailyStat ? (dailyStat.news > 0 ? dailyStat.news : null) : null,
+        daily_news: dailyStat?.news || 0,
+        daily_self_report: dailyStat?.self_report || 0,
+        monthly_cases: monthlyData.news,
+        monthly_news: monthlyData.news,
+        monthly_self_report: monthlyData.self_report,
+      });
+
       start.add(1, "days");
     }
     return new_stats;
   };
+
   const loadData = (updateMap = false) => {
     if (dateRange?.length != 2) return;
 
@@ -125,18 +130,34 @@ const Home = () => {
       .then((incidents) => setIncidents(incidents));
     incidentsService
       .getStats(dateRange[0], dateRange[1], selectedState)
-      .then((stats) => {
-        setIncidentTimeSeries(
-          mergeDate(
-            stats.stats,
-            dateRange[0],
-            dateRange[1],
-            stats.monthly_stats
-          )
-        );
-        if (updateMap) {
-          setIncidentAggregated(stats.total);
+      .then((response) => {
+        // Defensive check for malformed response
+        if (!response || typeof response !== "object") {
+          setLoading(false);
+          return;
         }
+        
+        // Handle new field names
+        const dailyStats = response.daily_statistics || {};
+        const monthlyStats = response.monthly_statistics || {};
+        const totalStats = response.insights || {};
+        
+        const timeSeries = mergeDate(
+          dailyStats,
+          dateRange[0],
+          dateRange[1],
+          monthlyStats
+        );
+
+        setIncidentTimeSeries(timeSeries); 
+        
+        if (updateMap) {
+          const processedTotal = {};
+          Object.entries(totalStats).forEach(([state, data]) => {
+            processedTotal[state] = data?.news || 0;
+        });
+        setIncidentAggregated(processedTotal);
+      }
         setLoading(false);
         setIsFirstLoadData(false);
       });
@@ -231,9 +252,7 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-
-
-  return (
+ return (
     <>
       {deviceSize < 786 && (
         <>
