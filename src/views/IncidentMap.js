@@ -210,6 +210,7 @@ const IncidentMap = (props) => {
     //componentDidMount
     useLayoutEffect(() => {
         let map = am4core.create('chartdiv', am4maps.MapChart)
+        map.logo.disabled = true;
         map.geodata = am4geodata_usaHigh
         map.projection = new am4maps.projections.AlbersUsa()
         map.chartContainer.wheelable = false

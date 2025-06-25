@@ -1,0 +1,46 @@
+.time-range-toggle {
+  display: flex;
+  justify-content: left;
+  gap: 25px;
+  font-size: 0.95rem;
+  margin-top: 2.5rem;
+  margin-left: 4rem;
+}
+
+.time-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 4px 6px;
+}
+
+.time-circle-outer {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #888888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-circle-outer.active {
+  border-color: #FEF753;
+}
+
+.time-circle-inner {
+  width: 10px;
+  height: 10px;
+  background-color: #FEF753;
+  border-radius: 50%;
+}
+
+.active-label {
+  color: #FEF753;
+}
+
+.inactive-label {
+  color: #FFF;
+}
