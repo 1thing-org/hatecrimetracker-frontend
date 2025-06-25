@@ -59,31 +59,31 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     valueAxis.renderer.grid.template.strokeDasharray = "3,3";
 
     // Create series (the data sets)
-    let series1 = chart.series.push(new am4charts.LineSeries());
-    series1.dataFields.valueY = "monthly_cases";
-    series1.dataFields.dateX = "key";
-    series1.name = "Monthly Cases";
-    series1.tooltipText = `{key}
+    let monthlySeries = chart.series.push(new am4charts.LineSeries());
+    monthlySeries.dataFields.valueY = "monthly_cases";
+    monthlySeries.dataFields.dateX = "key";
+    monthlySeries.name = "Monthly Cases";
+    monthlySeries.tooltipText = `{key}
         [bold]Monthly Cases: {monthly_cases}`;
-    series1.yAxis = valueAxis;
-    series1.fillOpacity = 0.4;
+    monthlySeries.yAxis = valueAxis;
+    monthlySeries.fillOpacity = 0.4;
 
-    let series2 = chart.series.push(new am4charts.ColumnSeries());
-    series2.dataFields.valueY = "daily_cases";
-    series2.dataFields.dateX = "key";
-    series2.name = "Daily Cases";
+    let dailySeries = chart.series.push(new am4charts.ColumnSeries());
+    dailySeries.dataFields.valueY = "daily_cases";
+    dailySeries.dataFields.dateX = "key";
+    dailySeries.name = "Daily Cases";
     // series2.tooltipText = toolTipText;
-    series2.columns.template.tooltipText = `{key}
+    dailySeries.columns.template.tooltipText = `{key}
         [bold]Daily Cases: {daily_cases}`;
     chart.tooltip.label.fill = am4core.color("#f00");
-    series2.clustered = true;
-    series2.fill = am4core.color(color);
-    series2.stroke = am4core.color(color);
-    series2.columns.template.width = am4core.percent(80);
+    dailySeries.clustered = true;
+    dailySeries.fill = am4core.color(color);
+    dailySeries.stroke = am4core.color(color);
+    dailySeries.columns.template.width = am4core.percent(80);
 
     // Show and hide based on viewMode
-    series1.hidden = viewMode !== "monthly";
-    series2.hidden = viewMode !== "daily";
+    monthlySeries.hidden = viewMode !== "monthly";
+    dailySeries.hidden = viewMode !== "daily";
 
     // chart cursor on
     chart.cursor = new am4charts.XYCursor();
