@@ -34,6 +34,8 @@ import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
 import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
+import IncidentChart_D3 from "./IncidentChart_D3";
+import dayjs from "dayjs";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +53,8 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
+  const [viewMode, setViewMode] = useState("monthly");
+  const [showSelfReport, setShowSelfReport] = useState(false);
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
     support_languages.push({
@@ -252,6 +256,24 @@ const Home = () => {
     setSelectedState(newState);
   };
 
+  const chartData = incidentTimeSeries
+    .filter((d, idx, arr) => {
+      if (viewMode === "daily") return true;
+
+      // Keep first entry for each month even if it's 0
+      const currentMonth = dayjs(d.key).format("YYYY-MM");
+      const isFirstInMonth = !arr.slice(0, idx).some(prev =>
+        dayjs(prev.key).format("YYYY-MM") === currentMonth
+      );
+
+      return isFirstInMonth;
+    })
+    .map(d => ({
+      key: d.key,
+      news: viewMode === "monthly" ? d.monthly_news : d.daily_news,
+      self_report: viewMode === "monthly" ? d.monthly_self_report : d.daily_self_report,
+    }));
+
  return (
     <>
       {deviceSize < 786 && (
@@ -342,12 +364,63 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-                <IncidentChart_AM
+                {/* <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
+                /> */}
+                <IncidentChart_D3
+                  chart_data={chartData}
+                  viewMode={viewMode}
+                  showSelfReport={showSelfReport}
+                  setViewMode={setViewMode}
+                  setShowSelfReport={setShowSelfReport}
+                  state={selectedState}
+                  isFirstLoadData={isFirstLoadData}
                 />
+              <div className="time-range-toggle">
+                <div
+                className="time-option"
+                onClick={() => setViewMode("monthly")}
+               >
+                <div
+                className={`time-circle-outer ${
+                  viewMode === "monthly" ? "active" : ""
+                }`}
+              >
+                {viewMode === "monthly" && <div className="time-circle-inner" />}
+              </div>
+                  <span
+                className={
+                  viewMode === "monthly" ? "active-label" : "inactive-label"
+                }
+              >
+                Monthly
+              </span>
+            </div>
+            <div
+              className="time-option"
+              onClick={() => setViewMode("daily")}
+            >
+              <div
+                className={`time-circle-outer ${
+                  viewMode === "daily" ? "active" : ""
+                }`}
+              >
+                {viewMode === "daily" && <div className="time-circle-inner" />}
+              </div>
+              <span
+                className={
+                  viewMode === "daily" ? "active-label" : "inactive-label"
+                }
+              >
+                Daily
+              </span>
+            </div>
+              </div>
+  
+
                 <div className="floating-social-media">
                   <SocialMedia
                     size={32}
