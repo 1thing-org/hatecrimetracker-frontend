@@ -3,12 +3,12 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import "./IncidentChart_AM.css";
 import React, { useEffect, useLayoutEffect, useState, useContext } from "react";
 import { stateFullName } from "../utility/Utils";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
 import { th } from "date-fns/locale";
+import TimeToggle from "./components/time-toggle/TimeToggle";
 
 am4core.useTheme(am4themes_animated);
 
@@ -134,46 +134,7 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
               style={{ width: "100%", height: "400px" }}
             ></div>
             </div>
-            <div className="time-range-toggle">
-              <div
-                className="time-option"
-                onClick={() => setViewMode("monthly")}
-               >
-                <div
-                className={`time-circle-outer ${
-                  viewMode === "monthly" ? "active" : ""
-                }`}
-              >
-                {viewMode === "monthly" && <div className="time-circle-inner" />}
-              </div>
-                  <span
-                className={
-                  viewMode === "monthly" ? "active-label" : "inactive-label"
-                }
-              >
-                Monthly
-              </span>
-            </div>
-            <div
-              className="time-option"
-              onClick={() => setViewMode("daily")}
-            >
-              <div
-                className={`time-circle-outer ${
-                  viewMode === "daily" ? "active" : ""
-                }`}
-              >
-                {viewMode === "daily" && <div className="time-circle-inner" />}
-              </div>
-              <span
-                className={
-                  viewMode === "daily" ? "active-label" : "inactive-label"
-                }
-              >
-                Daily
-              </span>
-            </div>
-          </div>
+            <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
         </CardBody>
       </Card>
     </div>
