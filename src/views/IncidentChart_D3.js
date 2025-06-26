@@ -36,7 +36,7 @@ const IncidentChart_D3 = ({ chart_data,
       .attr("id", "d3-tooltip")
       .style("position", "absolute")
       .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")  // yellow or purple
-      .style("color", "#000")
+      .style("color", "#fff")
       .style("padding", "6px 10px")
       .style("border-radius", "4px")
       .style("pointer-events", "none")
@@ -113,10 +113,14 @@ const IncidentChart_D3 = ({ chart_data,
       .on("mouseover", function (event, d) {
       tooltip
         .style("display", "block")
-        .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")
+        .style("background", "#283046")
         .html(`
-          <strong>${dayjs(d.data.key).format("YYYY-MM-DD")}</strong><br/>
-          ${viewMode === "daily" ? "Daily" : "Monthly"} Cases: ${d.data.news}
+          <strong>${
+            viewMode === "monthly"
+              ? dayjs(d.data.key).format("MMM YYYY") // e.g. "Apr 2025"
+              : dayjs(d.data.key).format("YYYY-MM-DD")
+          }</strong><br/>
+          ${viewMode === "monthly" ? "Monthly" : "Daily"} Cases: ${d.data.news}
         `);
       })
       .on("mousemove", function (event) {
