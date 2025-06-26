@@ -82,7 +82,9 @@ const IncidentChart_D3 = ({ chart_data,
       .data(stackedData)
       .join("g")
       .attr("fill", d => {
-        if (d.key === "news") return "#514f81";
+        if (d.key === "news") {
+          return viewMode === "monthly" ? "#514f81" : "#FEF753"; // purple for monthly, yellow for daily
+        }
         if (d.key === "self_report") return "#cc804d";
         return "#ccc";
         })
