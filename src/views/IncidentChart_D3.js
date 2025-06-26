@@ -31,6 +31,19 @@ const IncidentChart_D3 = ({ chart_data,
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    const tooltip = d3.select(chartRef.current)
+      .append("div")
+      .attr("id", "d3-tooltip")
+      .style("position", "absolute")
+      .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")  // yellow or purple
+      .style("color", "#000")
+      .style("padding", "6px 10px")
+      .style("border-radius", "4px")
+      .style("pointer-events", "none")
+      .style("font-size", "12px")
+      .style("box-shadow", "0 2px 4px rgba(0,0,0,0.3)")
+      .style("display", "none");
+
     // Keys to stack
     const keys = ["news"];
     if (showSelfReport) keys.push("self_report");
@@ -96,9 +109,26 @@ const IncidentChart_D3 = ({ chart_data,
       .attr("y", (d) => y(d[1]))
       .attr("height", (d) => y(d[0]) - y(d[1]))
       .attr("width", x.bandwidth())
-      .attr("shape-rendering", "geometricPrecision");;
-      
-  }, [chart_data, viewMode, showSelfReport]);
+      .attr("shape-rendering", "geometricPrecision")
+      .on("mouseover", function (event, d) {
+      tooltip
+        .style("display", "block")
+        .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")
+        .html(`
+          <strong>${dayjs(d.data.key).format("YYYY-MM-DD")}</strong><br/>
+          ${viewMode === "daily" ? "Daily" : "Monthly"} Cases: ${d.data.news}
+        `);
+      })
+      .on("mousemove", function (event) {
+        tooltip
+          .style("left", event.offsetX + 10 + "px")
+          .style("top", event.offsetY - 30 + "px");
+      })
+      .on("mouseout", function () {
+        tooltip.style("display", "none");
+      });;;
+        
+    }, [chart_data, viewMode, showSelfReport]);
 
   return (
     <Card>
