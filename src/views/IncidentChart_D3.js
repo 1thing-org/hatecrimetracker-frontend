@@ -1,8 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
+import { Card, CardBody, CardHeader } from 'reactstrap'
+import "./IncidentChart_AM.css";
 
-const IncidentChart_D3 = ({ chart_data, viewMode, showSelfReport }) => {
+const IncidentChart_D3 = ({ chart_data, 
+    viewMode, 
+    setViewMode,
+    showSelfReport,
+    setSelfReport,
+    state,
+    isFirstLoadData }) => {
   const chartRef = useRef();
 
   useEffect(() => {
@@ -60,9 +68,11 @@ const IncidentChart_D3 = ({ chart_data, viewMode, showSelfReport }) => {
           .tickFormat((d) => dayjs(d).format("MM/YYYY"))
           .tickValues(x.domain().filter((d, i) => i % Math.ceil(chart_data.length / 8) === 0))
       )
+      .call((g) => g.selectAll(".tick line").remove()) 
       .selectAll("text")
-      .attr("transform", "rotate(-30)")
-      .style("text-anchor", "end");
+      .attr("transform", "rotate(0)")
+      .style("text-anchor", "center");
+
 
     svg.append("g").call(d3.axisLeft(y).ticks(5));
 
@@ -86,9 +96,64 @@ const IncidentChart_D3 = ({ chart_data, viewMode, showSelfReport }) => {
       .attr("width", x.bandwidth())
       .attr("shape-rendering", "geometricPrecision");;
       
-  }, [chart_data, viewMode]);
+  }, [chart_data, viewMode, showSelfReport]);
 
-  return <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />;
+  return (
+    <Card>
+        <CardHeader>
+        </CardHeader>
+        <CardBody>
+        <div className="recharts-wrapper">
+            {chart_data.length === 0 && !isFirstLoadData ? (
+            <p className="add-data-button">
+                No data collected in this range.
+            </p>
+            ) : null}
+            <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
+            <div className="time-range-toggle">
+                <div
+                    className="time-option"
+                    onClick={() => setViewMode("monthly")}
+                >
+                    <div
+                    className={`time-circle-outer ${
+                    viewMode === "monthly" ? "active" : ""
+                    }`}
+                >
+                    {viewMode === "monthly" && <div className="time-circle-inner" />}
+                </div>
+                    <span
+                    className={
+                    viewMode === "monthly" ? "active-label" : "inactive-label"
+                    }
+                >
+                    Monthly
+                </span>
+                </div>
+                <div
+                className="time-option"
+                onClick={() => setViewMode("daily")}
+                >
+                <div
+                    className={`time-circle-outer ${
+                    viewMode === "daily" ? "active" : ""
+                    }`}
+                >
+                    {viewMode === "daily" && <div className="time-circle-inner" />}
+                </div>
+                <span
+                    className={
+                    viewMode === "daily" ? "active-label" : "inactive-label"
+                    }
+                >
+                    Daily
+                </span>
+                </div>
+            </div>
+        </div>
+    </CardBody>
+    </Card>
+  );
 };
 
 export default IncidentChart_D3;
