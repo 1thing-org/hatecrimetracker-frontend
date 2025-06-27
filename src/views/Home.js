@@ -406,7 +406,7 @@ const Home = () => {
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
-                <CardBody>
+                <CardBody className="incident-list-card">
                   <IncidentList data={incidents} />
                 </CardBody>
               </Card>
