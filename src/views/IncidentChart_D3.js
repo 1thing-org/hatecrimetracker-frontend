@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
 import { Card, CardBody, CardHeader } from 'reactstrap'
-import "./IncidentChart_AM.css";
 import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
 
