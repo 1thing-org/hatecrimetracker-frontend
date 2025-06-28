@@ -20,10 +20,12 @@ const IncidentChart_D3 = ({ chart_data,
     const svgId = chartRef.current;
     d3.select(svgId).selectAll("*").remove();
 
+    // Set chart demension
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 800 - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
 
+    // Initialize svg
     const svg = d3
       .select(svgId)
       .append("svg")
@@ -36,7 +38,7 @@ const IncidentChart_D3 = ({ chart_data,
       .append("div")
       .attr("id", "d3-tooltip")
       .style("position", "absolute")
-      .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")  // yellow or purple
+      .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")
       .style("color", "#fff")
       .style("padding", "6px 10px")
       .style("border-radius", "4px")
@@ -45,13 +47,13 @@ const IncidentChart_D3 = ({ chart_data,
       .style("box-shadow", "0 2px 4px rgba(0,0,0,0.3)")
       .style("display", "none");
 
-    // Keys to stack
+    // Prepare stacked keys (currently self-report not showing)
     const keys = ["news"];
     if (showSelfReport) keys.push("self_report");
 
-    // Prepare data
     const stackedData = d3.stack().keys(keys)(chart_data);
 
+    // Set up x and y scales
     const x = d3
       .scaleBand()
       .domain(chart_data.map((d) => d.key))
@@ -67,6 +69,7 @@ const IncidentChart_D3 = ({ chart_data,
       .nice()
       .range([height, 0]);
 
+    // color for each key
     const color = d3
       .scaleOrdinal()
       .domain(keys)
@@ -97,7 +100,7 @@ const IncidentChart_D3 = ({ chart_data,
       .join("g")
       .attr("fill", d => {
         if (d.key === "news") {
-          return viewMode === "monthly" ? "#514f81" : "#FEF753"; // purple for monthly, yellow for daily
+          return viewMode === "monthly" ? "#514f81" : "#FEF753";
         }
         if (d.key === "self_report") return "#cc804d";
         return "#ccc";
@@ -118,7 +121,7 @@ const IncidentChart_D3 = ({ chart_data,
         .html(`
           <strong>${
             viewMode === "monthly"
-              ? dayjs(d.data.key).format("MMM YYYY") // e.g. "Apr 2025"
+              ? dayjs(d.data.key).format("MMM YYYY")
               : dayjs(d.data.key).format("YYYY-MM-DD")
           }</strong><br/>
           ${viewMode === "monthly" ? "Monthly" : "Daily"} Cases: ${d.data.news}
