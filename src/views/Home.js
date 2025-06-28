@@ -34,6 +34,8 @@ import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
 import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
+import IncidentChart_D3 from "./IncidentChart_D3";
+import dayjs from "dayjs";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +53,8 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
+  const [viewMode, setViewMode] = useState("monthly");
+  const [showSelfReport, setShowSelfReport] = useState(false);
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
     support_languages.push({
@@ -252,6 +256,24 @@ const Home = () => {
     setSelectedState(newState);
   };
 
+  const chartData = incidentTimeSeries
+    .filter((d, idx, arr) => {
+      if (viewMode === "daily") return true;
+
+      // Keep first entry for each month even if it's 0
+      const currentMonth = dayjs(d.key).format("YYYY-MM");
+      const isFirstInMonth = !arr.slice(0, idx).some(prev =>
+        dayjs(prev.key).format("YYYY-MM") === currentMonth
+      );
+
+      return isFirstInMonth;
+    })
+    .map(d => ({
+      key: d.key,
+      news: viewMode === "monthly" ? d.monthly_news : d.daily_news,
+      self_report: viewMode === "monthly" ? d.monthly_self_report : d.daily_self_report,
+    }));
+
  return (
     <>
       {deviceSize < 786 && (
@@ -317,7 +339,6 @@ const Home = () => {
             </Row> 
           </Container>
      
-
           <Row className="match-height">
             <Col xl="8" lg="6" md="12" className="left-panel">
               <div className="left-panel-wrapper">
@@ -342,9 +363,18 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-                <IncidentChart_AM
+                {/* <IncidentChart_AM
                   color={colors.primary.main}
                   chart_data={incidentTimeSeries}
+                  state={selectedState}
+                  isFirstLoadData={isFirstLoadData}
+                /> */}
+                <IncidentChart_D3
+                  chart_data={chartData}
+                  viewMode={viewMode}
+                  showSelfReport={showSelfReport}
+                  setViewMode={setViewMode}
+                  setShowSelfReport={setShowSelfReport}
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
