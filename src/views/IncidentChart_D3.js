@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import dayjs from "dayjs";
 import { Card, CardBody, CardHeader } from 'reactstrap'
 import "./IncidentChart_AM.css";
+import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
 
 const IncidentChart_D3 = ({ chart_data, 
@@ -111,7 +112,10 @@ const IncidentChart_D3 = ({ chart_data,
       .join("rect")
       .attr("x", (d) => x(d.data.key))
       .attr("y", (d) => y(d[1]))
-      .attr("height", (d) => y(d[0]) - y(d[1]))
+      .attr("height", (d) => {
+        const height = y(d[0]) - y(d[1]);
+        return isNaN(height) ? 0 : height;
+      }) 
       .attr("width", x.bandwidth())
       .attr("shape-rendering", "geometricPrecision")
       .on("mouseover", function (event, d) {
@@ -138,20 +142,35 @@ const IncidentChart_D3 = ({ chart_data,
         
     }, [chart_data, viewMode, showSelfReport]);
 
+  const totalCases = chart_data.reduce((sum, d) => sum + d.news + d.self_report, 0);
+  const isAllZero = totalCases === 0;
+
   return (
     <Card>
-        <CardHeader>
-        </CardHeader>
+
         <CardBody>
         <div className="recharts-wrapper">
-            {chart_data.length === 0 && !isFirstLoadData ? (
+          {isAllZero && !isFirstLoadData ? (
+          <>
             <p className="add-data-button">
-                No data collected in this range.
+              <Trans i18nKey="no_data_please_report">
+                There is no data collected in the selected location and date
+                range yet. Please click
+                <a
+                  href="https://forms.gle/HRkVKW2Sfp7BytXj8"
+                  target="_blank"
+                >
+                  here
+                </a>
+                to report incidents to us.
+              </Trans>
             </p>
-            ) : null}
-            <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
-            <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
-        </div>
+            <div className="drop-down" />
+          </>
+        ) : null}
+          <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
+          <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+      </div>
     </CardBody>
     </Card>
   );
