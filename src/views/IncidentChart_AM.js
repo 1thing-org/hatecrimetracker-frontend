@@ -8,6 +8,7 @@ import { stateFullName } from "../utility/Utils";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
 import { th } from "date-fns/locale";
+import TimeToggle from "./components/time-toggle/TimeToggle";
 
 am4core.useTheme(am4themes_animated);
 
@@ -16,14 +17,12 @@ Example comes from here
 https://www.amcharts.com/docs/v4/getting-started/integrations/using-react/
 */
 
-const togDaily = false,
-  togMonthly = false;
 //chartData is result from ___
 const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
   const { t } = useTranslation();
   const [totalCases, setTotalCases] = useState(0);
-  let toggleDaily = togDaily,
-    toggleMonthly = togMonthly;
+  const [viewMode, setViewMode] = useState("monthly");
+
 
   useLayoutEffect(() => {
     let total = 0;
@@ -59,53 +58,42 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
     valueAxis.renderer.grid.template.strokeOpacity = 0.2;
     valueAxis.renderer.grid.template.strokeDasharray = "3,3";
 
-    // Setting up toolTipText
-    let toolTipText = `{key}
-        [bold]Monthly Cases: {monthly_cases}
-        [bold]Daily Cases: {value}`;
-
     // Create series (the data sets)
-    let series1 = chart.series.push(new am4charts.LineSeries());
-    series1.dataFields.valueY = "monthly_cases";
-    series1.dataFields.dateX = "key";
-    series1.name = "Monthly Cases";
-    series1.tooltipText = `{key}
+    let monthlySeries = chart.series.push(new am4charts.LineSeries());
+    monthlySeries.dataFields.valueY = "monthly_cases";
+    monthlySeries.dataFields.dateX = "key";
+    monthlySeries.name = "Monthly Cases";
+    monthlySeries.tooltipText = `{key}
         [bold]Monthly Cases: {monthly_cases}`;
-    series1.yAxis = valueAxis;
-    series1.fillOpacity = 0.4;
+    monthlySeries.yAxis = valueAxis;
+    monthlySeries.fillOpacity = 0.4;
 
-    let series2 = chart.series.push(new am4charts.ColumnSeries());
-    series2.dataFields.valueY = "daily_cases";
-    series2.dataFields.dateX = "key";
-    series2.name = "Daily Cases";
+    let dailySeries = chart.series.push(new am4charts.ColumnSeries());
+    dailySeries.dataFields.valueY = "daily_cases";
+    dailySeries.dataFields.dateX = "key";
+    dailySeries.name = "Daily Cases";
     // series2.tooltipText = toolTipText;
-    series2.columns.template.tooltipText = `{key}
+    dailySeries.columns.template.tooltipText = `{key}
         [bold]Daily Cases: {daily_cases}`;
     chart.tooltip.label.fill = am4core.color("#f00");
-    series2.clustered = true;
-    series2.fill = am4core.color(color);
-    series2.stroke = am4core.color(color);
-    series2.columns.template.width = am4core.percent(80);
+    dailySeries.clustered = true;
+    dailySeries.fill = am4core.color(color);
+    dailySeries.stroke = am4core.color(color);
+    dailySeries.columns.template.width = am4core.percent(80);
+
+    // Show and hide based on viewMode
+    monthlySeries.hidden = viewMode !== "monthly";
+    dailySeries.hidden = viewMode !== "daily";
 
     // chart cursor on
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.lineX.disabled = false;
     chart.cursor.lineY.disabled = false;
 
-    // chart legend
-    chart.legend = new am4charts.Legend();
-    chart.legend.useDefaultMarker = false;
-    let markerTemplate = chart.legend.markers.template;
-    markerTemplate.children.getIndex(0).cornerRadius(0.5, 0.5, 0.5, 0.5);
-    markerTemplate.width = 12;
-    markerTemplate.height = 12;
-    series1.legendSettings.labelText = "Monthly Cases";
-    series2.legendSettings.labelText = "Daily Cases";
-
     return () => {
       chart.dispose();
     };
-  }, [chart_data]);
+  }, [chart_data, viewMode]);
 
   return (
     <div>
@@ -145,7 +133,8 @@ const IncidentChart_AM = ({ color, chart_data, state, isFirstLoadData }) => {
               id="chart_1yaxis"
               style={{ width: "100%", height: "400px" }}
             ></div>
-          </div>
+            </div>
+            <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
         </CardBody>
       </Card>
     </div>

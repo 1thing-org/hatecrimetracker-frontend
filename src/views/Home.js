@@ -85,7 +85,7 @@ const Home = () => {
   // Push each day from start_date to end_date, inserting missing days with default values
   // start_date, end_date: Date
   // monthly_statistics: { '2024-01': {news: 3, self_report: 2} }
-  const mergeDate = (dailyStats, start_date, end_date, monthly) => {
+  const buildTimeSeries = (dailyStats, start_date, end_date, monthly) => {
     const new_stats = [];
     let start = moment(start_date);
     const end = moment(end_date);
@@ -111,7 +111,7 @@ const Home = () => {
         daily_cases: dailyStat ? (dailyStat.news > 0 ? dailyStat.news : null) : null,
         daily_news: dailyStat?.news || 0,
         daily_self_report: dailyStat?.self_report || 0,
-        monthly_cases: monthlyData.news,
+        monthly_cases: monthlyData.news > 0 ? monthlyData.news : null,
         monthly_news: monthlyData.news,
         monthly_self_report: monthlyData.self_report,
       });
@@ -142,7 +142,7 @@ const Home = () => {
         const monthlyStats = response.monthly_statistics || {};
         const totalStats = response.insights || {};
         
-        const timeSeries = mergeDate(
+        const timeSeries = buildTimeSeries(
           dailyStats,
           dateRange[0],
           dateRange[1],
@@ -376,7 +376,7 @@ const Home = () => {
                 {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
-                <CardBody>
+                <CardBody className="incident-list-card">
                   <IncidentList data={incidents} />
                 </CardBody>
               </Card>
