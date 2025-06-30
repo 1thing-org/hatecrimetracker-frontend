@@ -1,26 +1,63 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
-import { Card, CardBody, CardHeader } from 'reactstrap'
+import { Card, CardBody} from 'reactstrap'
 import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
 
-const IncidentChart_D3 = ({ chart_data, 
-    viewMode, 
-    setViewMode,
+// Keys
+const KEY_NEWS = "news";
+const KEY_SELF_REPORT = "self_report";
+
+// Colors
+const COLOR_NEWS_MONTHLY = "#514f81";
+const COLOR_NEWS_DAILY = "#FEF753";
+const COLOR_SELF_REPORT = "#cc804d";
+const COLOR_TOOLTIP_BG = "#283046";
+
+const IncidentChartD3 = ({ 
+    rawTimeSeriesData,
+    initialViewMode = "monthly",
     showSelfReport,
-    setSelfReport,
     state,
-    isFirstLoadData }) => {
+    isFirstLoadData 
+}) => {
   const chartRef = useRef();
+  const [viewMode, setViewMode] = useState(initialViewMode);
+
+  // Data formatting
+  const formatChartData = (rawData, viewMode) => {
+    return rawData
+      .filter((d, idx, arr) => {
+        if (viewMode === "daily") return true;
+
+        // Keep first entry for each month even if it's 0
+        const currentMonth = dayjs(d.key).format("YYYY-MM");
+        const isFirstInMonth = !arr.slice(0, idx).some(prev =>
+          dayjs(prev.key).format("YYYY-MM") === currentMonth
+        );
+
+        return isFirstInMonth;
+      })
+      .map(d => ({
+        key: d.key,
+        [KEY_NEWS]: viewMode === "monthly" ? d.monthly_news : d.daily_news,
+        [KEY_SELF_REPORT]: viewMode === "monthly" ? d.monthly_self_report : d.daily_self_report,
+      }));
+  };
+
+  const chartData = formatChartData(rawTimeSeriesData || [], viewMode);
+  const totalCases = chartData.reduce((sum, d) => sum + d[KEY_NEWS] + d[KEY_SELF_REPORT], 0);
+  const isAllZero = totalCases === 0;
 
   useEffect(() => {
-    if (!chart_data || chart_data.length === 0) return;
-
     const svgId = chartRef.current;
     d3.select(svgId).selectAll("*").remove();
 
-    // Set chart demension
+    // Early return only for truly invalid data
+    if (!chartData) return;
+
+    // Set chart dimension
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 800 - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
@@ -38,7 +75,7 @@ const IncidentChart_D3 = ({ chart_data,
       .append("div")
       .attr("id", "d3-tooltip")
       .style("position", "absolute")
-      .style("background", viewMode === "daily" ? "#FEF753" : "#957DAD")
+      .style("background", COLOR_TOOLTIP_BG)
       .style("color", "#fff")
       .style("padding", "6px 10px")
       .style("border-radius", "4px")
@@ -47,16 +84,15 @@ const IncidentChart_D3 = ({ chart_data,
       .style("box-shadow", "0 2px 4px rgba(0,0,0,0.3)")
       .style("display", "none");
 
-    // Prepare stacked keys (currently self-report not showing)
-    const keys = ["news"];
-    if (showSelfReport) keys.push("self_report");
-
-    const stackedData = d3.stack().keys(keys)(chart_data);
+    // Prepare stacked keys (by default self-report not showing)
+    const keys = [KEY_NEWS];
+    if (showSelfReport) keys.push(KEY_SELF_REPORT);
+    const stackedData = d3.stack().keys(keys)(chartData);
 
     // Set up x and y scales
     const x = d3
       .scaleBand()
-      .domain(chart_data.map((d) => d.key))
+      .domain(chartData.map((d) => d.key))
       .range([0, width])
       .padding(0.6);
 
@@ -64,7 +100,7 @@ const IncidentChart_D3 = ({ chart_data,
       .scaleLinear()
       .domain([
         0,
-        d3.max(chart_data, (d) => d.news + (viewMode === "monthly" ? d.self_report : 0)),
+        d3.max(chartData, (d) => d[KEY_NEWS] + (viewMode === "monthly" ? d[KEY_SELF_REPORT] : 0)),
       ])
       .nice()
       .range([height, 0]);
@@ -73,7 +109,7 @@ const IncidentChart_D3 = ({ chart_data,
     const color = d3
       .scaleOrdinal()
       .domain(keys)
-      .range(["#514f81", "#cc804d"]);
+      .range([COLOR_NEWS_MONTHLY, COLOR_SELF_REPORT]);
 
     // Draw axes
     svg
@@ -83,13 +119,12 @@ const IncidentChart_D3 = ({ chart_data,
         d3
           .axisBottom(x)
           .tickFormat((d) => dayjs(d).format("MM/YYYY"))
-          .tickValues(x.domain().filter((d, i) => i % Math.ceil(chart_data.length / 8) === 0))
+          .tickValues(x.domain().filter((d, i) => i % Math.ceil(chartData.length / 8) === 0))
       )
       .call((g) => g.selectAll(".tick line").remove()) 
       .selectAll("text")
       .attr("transform", "rotate(0)")
       .style("text-anchor", "center");
-
 
     svg.append("g").call(d3.axisLeft(y).ticks(5));
 
@@ -99,10 +134,10 @@ const IncidentChart_D3 = ({ chart_data,
       .data(stackedData)
       .join("g")
       .attr("fill", d => {
-        if (d.key === "news") {
-          return viewMode === "monthly" ? "#514f81" : "#FEF753";
+        if (d.key === KEY_NEWS) {
+          return viewMode === "monthly" ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY;
         }
-        if (d.key === "self_report") return "#cc804d";
+        if (d.key === KEY_SELF_REPORT) return COLOR_SELF_REPORT;
         return "#ccc";
         })
       .style("stroke", "none") 
@@ -120,14 +155,14 @@ const IncidentChart_D3 = ({ chart_data,
       .on("mouseover", function (event, d) {
       tooltip
         .style("display", "block")
-        .style("background", "#283046")
+        .style("background", COLOR_TOOLTIP_BG)
         .html(`
           <strong>${
             viewMode === "monthly"
               ? dayjs(d.data.key).format("MMM YYYY")
               : dayjs(d.data.key).format("YYYY-MM-DD")
           }</strong><br/>
-          ${viewMode === "monthly" ? "Monthly" : "Daily"} Cases: ${d.data.news}
+          ${viewMode === "monthly" ? "Monthly" : "Daily"} Cases: ${d.data[KEY_NEWS]}
         `);
       })
       .on("mousemove", function (event) {
@@ -137,16 +172,12 @@ const IncidentChart_D3 = ({ chart_data,
       })
       .on("mouseout", function () {
         tooltip.style("display", "none");
-      });;;
+      });
         
-    }, [chart_data, viewMode, showSelfReport]);
-
-  const totalCases = chart_data.reduce((sum, d) => sum + d.news + d.self_report, 0);
-  const isAllZero = totalCases === 0;
+    }, [chartData, viewMode, showSelfReport]);
 
   return (
     <Card>
-
         <CardBody>
         <div className="recharts-wrapper">
           {isAllZero && !isFirstLoadData ? (
@@ -168,11 +199,12 @@ const IncidentChart_D3 = ({ chart_data,
           </>
         ) : null}
           <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
-          <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+          <TimeToggle viewMode={viewMode} setViewMode={setViewMode}
+          />
       </div>
     </CardBody>
     </Card>
   );
 };
 
-export default IncidentChart_D3;
+export default IncidentChartD3;

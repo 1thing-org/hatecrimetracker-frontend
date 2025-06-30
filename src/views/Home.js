@@ -13,7 +13,6 @@ import {
 } from "reactstrap";
 import "rsuite/dist/rsuite.min.css";
 import * as incidentsService from "../services/incidents";
-import IncidentChart_AM from "./IncidentChart_AM";
 import DateRangeSelector from "./DateRangeSelector";
 import IncidentCountTable from "./IncidentCountTable";
 import IncidentList from "./IncidentList";
@@ -29,13 +28,12 @@ import Head from "./components/head";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
 import "./Home.css";
-import { RiShareForwardFill } from "react-icons/ri";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
 import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
-import IncidentChart_D3 from "./IncidentChart_D3";
-import dayjs from "dayjs";
+// TODO: remove old chart lib when finalized
+import IncidentChartD3 from "./IncidentChartD3";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -53,7 +51,7 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
-  const [viewMode, setViewMode] = useState("monthly");
+  // TODO: Future PR - implement self-report toggle functionality  
   const [showSelfReport, setShowSelfReport] = useState(false);
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
@@ -256,23 +254,6 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-  const chartData = incidentTimeSeries
-    .filter((d, idx, arr) => {
-      if (viewMode === "daily") return true;
-
-      // Keep first entry for each month even if it's 0
-      const currentMonth = dayjs(d.key).format("YYYY-MM");
-      const isFirstInMonth = !arr.slice(0, idx).some(prev =>
-        dayjs(prev.key).format("YYYY-MM") === currentMonth
-      );
-
-      return isFirstInMonth;
-    })
-    .map(d => ({
-      key: d.key,
-      news: viewMode === "monthly" ? d.monthly_news : d.daily_news,
-      self_report: viewMode === "monthly" ? d.monthly_self_report : d.daily_self_report,
-    }));
 
  return (
     <>
@@ -363,18 +344,9 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-                {/* <IncidentChart_AM
-                  color={colors.primary.main}
-                  chart_data={incidentTimeSeries}
-                  state={selectedState}
-                  isFirstLoadData={isFirstLoadData}
-                /> */}
-                <IncidentChart_D3
-                  chart_data={chartData}
-                  viewMode={viewMode}
+                <IncidentChartD3
+                  rawTimeSeriesData={incidentTimeSeries}
                   showSelfReport={showSelfReport}
-                  setViewMode={setViewMode}
-                  setShowSelfReport={setShowSelfReport}
                   state={selectedState}
                   isFirstLoadData={isFirstLoadData}
                 />
@@ -391,12 +363,14 @@ const Home = () => {
                   selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
+                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={"Incident Count by State"}
                   data={incidentAggregated}
                   selectedState={selectedState}
+                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
               </div>
