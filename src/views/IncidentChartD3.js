@@ -9,6 +9,10 @@ import TimeToggle from "./components/time-toggle/TimeToggle";
 const KEY_NEWS = "news";
 const KEY_SELF_REPORT = "self_report";
 
+// View modes
+const VIEW_MODE_MONTHLY = "monthly";
+const VIEW_MODE_DAILY = "daily";
+
 // Colors
 const COLOR_NEWS_MONTHLY = "#514f81";
 const COLOR_NEWS_DAILY = "#FEF753";
@@ -17,7 +21,7 @@ const COLOR_TOOLTIP_BG = "#283046";
 
 const IncidentChartD3 = ({ 
     rawTimeSeriesData,
-    initialViewMode = "monthly",
+    initialViewMode = VIEW_MODE_MONTHLY,
     showSelfReport,
     state,
     isFirstLoadData 
@@ -29,7 +33,7 @@ const IncidentChartD3 = ({
   const formatChartData = (rawData, viewMode) => {
     return rawData
       .filter((d, idx, arr) => {
-        if (viewMode === "daily") return true;
+        if (viewMode === VIEW_MODE_DAILY) return true;
 
         // Keep first entry for each month even if it's 0
         const currentMonth = dayjs(d.key).format("YYYY-MM");
@@ -41,8 +45,8 @@ const IncidentChartD3 = ({
       })
       .map(d => ({
         key: d.key,
-        [KEY_NEWS]: viewMode === "monthly" ? d.monthly_news : d.daily_news,
-        [KEY_SELF_REPORT]: viewMode === "monthly" ? d.monthly_self_report : d.daily_self_report,
+        [KEY_NEWS]: viewMode === VIEW_MODE_MONTHLY ? d.monthly_news : d.daily_news,
+        [KEY_SELF_REPORT]: viewMode === VIEW_MODE_MONTHLY ? d.monthly_self_report : d.daily_self_report,
       }));
   };
 
@@ -100,7 +104,7 @@ const IncidentChartD3 = ({
       .scaleLinear()
       .domain([
         0,
-        d3.max(chartData, (d) => d[KEY_NEWS] + (viewMode === "monthly" ? d[KEY_SELF_REPORT] : 0)),
+        d3.max(chartData, (d) => d[KEY_NEWS] + (viewMode === VIEW_MODE_MONTHLY ? d[KEY_SELF_REPORT] : 0)),
       ])
       .nice()
       .range([height, 0]);
@@ -135,7 +139,7 @@ const IncidentChartD3 = ({
       .join("g")
       .attr("fill", d => {
         if (d.key === KEY_NEWS) {
-          return viewMode === "monthly" ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY;
+          return viewMode === VIEW_MODE_MONTHLY ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY;
         }
         if (d.key === KEY_SELF_REPORT) return COLOR_SELF_REPORT;
         return "#ccc";
@@ -158,11 +162,11 @@ const IncidentChartD3 = ({
         .style("background", COLOR_TOOLTIP_BG)
         .html(`
           <strong>${
-            viewMode === "monthly"
+            viewMode === VIEW_MODE_MONTHLY
               ? dayjs(d.data.key).format("MMM YYYY")
               : dayjs(d.data.key).format("YYYY-MM-DD")
           }</strong><br/>
-          ${viewMode === "monthly" ? "Monthly" : "Daily"} Cases: ${d.data[KEY_NEWS]}
+          ${viewMode === VIEW_MODE_MONTHLY ? "Monthly" : "Daily"} Cases: ${d.data[KEY_NEWS]}
         `);
       })
       .on("mousemove", function (event) {
