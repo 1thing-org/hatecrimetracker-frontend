@@ -161,6 +161,7 @@ const IncidentChartD3 = ({
           ? dayjs(d.data.key).format("MMM YYYY")
           : dayjs(d.data.key).format("YYYY-MM-DD");
 
+        // TODO: Will change to a more appropriate name to make the site consistency
         let html = `<strong>${dateStr}</strong><br/>`;
         html += `News Cases: ${d.data[KEY_NEWS]}`;
 
