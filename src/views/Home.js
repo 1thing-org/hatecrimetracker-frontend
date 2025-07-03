@@ -34,6 +34,7 @@ import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
+import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -344,6 +345,10 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
+                <SelfReportToggle
+                isOn={showSelfReport}
+                handleToggle={setShowSelfReport}
+              />
                 <IncidentChartD3
                   rawTimeSeriesData={incidentTimeSeries}
                   showSelfReport={showSelfReport}

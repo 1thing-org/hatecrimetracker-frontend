@@ -16,7 +16,7 @@ const VIEW_MODE_DAILY = "daily";
 // Colors
 const COLOR_NEWS_MONTHLY = "#514f81";
 const COLOR_NEWS_DAILY = "#FEF753";
-const COLOR_SELF_REPORT = "#cc804d";
+const COLOR_SELF_REPORT = "#ffab91";
 const COLOR_TOOLTIP_BG = "#283046";
 
 const IncidentChartD3 = ({ 
