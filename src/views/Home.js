@@ -34,6 +34,9 @@ import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
+// TODO: Only added Self-report toggle UI, but it currently affects chart 
+// since chart needs internal logic to split and stack news and self-report for visualization (already handled)
+// Map and table rely on aggreated totals, and will use it in the next PR
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
 
 const Home = () => {
