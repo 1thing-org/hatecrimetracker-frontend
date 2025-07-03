@@ -16,7 +16,7 @@ const VIEW_MODE_DAILY = "daily";
 // Colors
 const COLOR_NEWS_MONTHLY = "#514f81";
 const COLOR_NEWS_DAILY = "#FEF753";
-const COLOR_SELF_REPORT = "#cc804d";
+const COLOR_SELF_REPORT = "#ffab91";
 const COLOR_TOOLTIP_BG = "#283046";
 
 const IncidentChartD3 = ({ 
@@ -157,17 +157,22 @@ const IncidentChartD3 = ({
       .attr("width", x.bandwidth())
       .attr("shape-rendering", "geometricPrecision")
       .on("mouseover", function (event, d) {
-      tooltip
-        .style("display", "block")
-        .style("background", COLOR_TOOLTIP_BG)
-        .html(`
-          <strong>${
-            viewMode === VIEW_MODE_MONTHLY
-              ? dayjs(d.data.key).format("MMM YYYY")
-              : dayjs(d.data.key).format("YYYY-MM-DD")
-          }</strong><br/>
-          ${viewMode === VIEW_MODE_MONTHLY ? "Monthly" : "Daily"} Cases: ${d.data[KEY_NEWS]}
-        `);
+        const dateStr = viewMode === VIEW_MODE_MONTHLY
+          ? dayjs(d.data.key).format("MMM YYYY")
+          : dayjs(d.data.key).format("YYYY-MM-DD");
+
+        // TODO: Will change to a more appropriate name to make the site consistency
+        let html = `<strong>${dateStr}</strong><br/>`;
+        html += `News Cases: ${d.data[KEY_NEWS]}`;
+
+        if (showSelfReport && d.data[KEY_SELF_REPORT] !== undefined) {
+          html += `<br/>Self-Report Cases: ${d.data[KEY_SELF_REPORT]}`;
+        }
+
+        tooltip
+          .style("display", "block")
+          .style("background", COLOR_TOOLTIP_BG)
+          .html(html);
       })
       .on("mousemove", function (event) {
         tooltip
