@@ -34,9 +34,6 @@ import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
-// TODO: Only added Self-report toggle UI, but it currently affects chart 
-// since chart needs internal logic to split and stack news and self-report for visualization (already handled)
-// Map and table rely on aggreated totals, and will use it in the next PR
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
 
 const Home = () => {
@@ -80,6 +77,7 @@ const Home = () => {
     },
   ]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
+  const [rawTotalStats, setRawTotalStats] = useState({});
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const setSelectedLang = (lang_code) => {
@@ -131,9 +129,17 @@ const Home = () => {
     if (dateRange?.length != 2) return;
 
     setLoading(true);
-    incidentsService
-      .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "news")
-      .then((incidents) => setIncidents(incidents));
+    
+    // Load all incidents (news + self-report)
+    Promise.all([
+      incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "news"),
+      incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "self_report")
+    ]).then(([newsIncidents, selfReportIncidents]) => {
+      // Store all incidents for filtering
+      const allIncidents = [...newsIncidents, ...selfReportIncidents];
+      setIncidents(allIncidents);
+    });
+
     incidentsService
       .getStats(dateRange[0], dateRange[1], selectedState)
       .then((response) => {
@@ -155,15 +161,11 @@ const Home = () => {
           monthlyStats
         );
 
-        setIncidentTimeSeries(timeSeries); 
+        setIncidentTimeSeries(timeSeries);
         
         if (updateMap) {
-          const processedTotal = {};
-          Object.entries(totalStats).forEach(([state, data]) => {
-            processedTotal[state] = data?.news || 0;
-        });
-        setIncidentAggregated(processedTotal);
-      }
+          setRawTotalStats(totalStats);
+        }
         setLoading(false);
         setIsFirstLoadData(false);
       });
@@ -257,6 +259,42 @@ const Home = () => {
     const newState = state == selectedState ? null : state;
     setSelectedState(newState);
   };
+
+  // Process Incident data based on self-report toggle
+  const AggregateIncidents = (totalStats) => {
+    const result = {};
+    Object.entries(totalStats).forEach(([state, data]) => {
+      let total = data?.news || 0;
+      if (showSelfReport) {
+        total += data?.self_report || 0;
+      }
+      result[state] = total;
+    });
+    return result;
+  };
+
+  const filterIncidents = (allIncidents) => {
+    let filtered;
+    if (!showSelfReport) {
+      // Show only news incidents
+      filtered = allIncidents.filter(incident => incident.type === 'news' || !incident.type);
+    } else {
+      // Show all incidents (news + self-report)
+      filtered = allIncidents;
+    }
+    
+    // Sort by date descending (most recent first)
+    return filtered.sort((a, b) => 
+      moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
+    );
+  };
+
+  // Update processed data when toggle changes
+  useEffect(() => {
+    if (Object.keys(rawTotalStats).length > 0) {
+      setIncidentAggregated(AggregateIncidents(rawTotalStats));
+    }
+  }, [showSelfReport, rawTotalStats]);
 
 
  return (
@@ -371,14 +409,12 @@ const Home = () => {
                   selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
-                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={"Incident Count by State"}
                   data={incidentAggregated}
                   selectedState={selectedState}
-                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
               </div>
@@ -389,7 +425,7 @@ const Home = () => {
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
                 <CardBody className="incident-list-card">
-                  <IncidentList data={incidents} />
+                  <IncidentList data={filterIncidents(incidents)} />
                 </CardBody>
               </Card>
             </Col>
