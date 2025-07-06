@@ -109,13 +109,10 @@ const Home = () => {
       const monthlyData = monthly[monthKey] || { news: 0, self_report: 0 };
       const dailyStat = statsMap[strDate];
 
-      // current only handle news
       new_stats.push({
         key: strDate,
-        daily_cases: dailyStat ? (dailyStat.news > 0 ? dailyStat.news : null) : null,
         daily_news: dailyStat?.news || 0,
         daily_self_report: dailyStat?.self_report || 0,
-        monthly_cases: monthlyData.news > 0 ? monthlyData.news : null,
         monthly_news: monthlyData.news,
         monthly_self_report: monthlyData.self_report,
       });
@@ -260,8 +257,8 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-  // Process Incident data based on self-report toggle
-  const AggregateIncidents = (totalStats) => {
+  // Process data based on self-report toggle
+  const getAggregatedTotals = (totalStats) => {
     const result = {};
     Object.entries(totalStats).forEach(([state, data]) => {
       let total = data?.news || 0;
@@ -292,7 +289,7 @@ const Home = () => {
   // Update processed data when toggle changes
   useEffect(() => {
     if (Object.keys(rawTotalStats).length > 0) {
-      setIncidentAggregated(AggregateIncidents(rawTotalStats));
+      setIncidentAggregated(getAggregatedTotals(rawTotalStats));
     }
   }, [showSelfReport, rawTotalStats]);
 
