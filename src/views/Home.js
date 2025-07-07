@@ -127,13 +127,8 @@ const Home = () => {
 
     setLoading(true);
     
-    // Load all incidents (news + self-report)
-    Promise.all([
-      incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "news"),
-      incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "self_report")
-    ]).then(([newsIncidents, selfReportIncidents]) => {
-      // Store all incidents for filtering
-      const allIncidents = [...newsIncidents, ...selfReportIncidents];
+    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "both")
+    .then((allIncidents) => {
       setIncidents(allIncidents);
     });
 
@@ -257,8 +252,8 @@ const Home = () => {
     setSelectedState(newState);
   };
 
-  // Process data based on self-report toggle
-  const getAggregatedTotals = (totalStats) => {
+  // Aggregate total incidents per state (includes self-report if toggle is ON)
+  const getAggregatedTotalByState = (totalStats) => {
     const result = {};
     Object.entries(totalStats).forEach(([state, data]) => {
       let total = data?.news || 0;
@@ -289,7 +284,7 @@ const Home = () => {
   // Update processed data when toggle changes
   useEffect(() => {
     if (Object.keys(rawTotalStats).length > 0) {
-      setIncidentAggregated(getAggregatedTotals(rawTotalStats));
+      setIncidentAggregated(getAggregatedTotalByState(rawTotalStats));
     }
   }, [showSelfReport, rawTotalStats]);
 
