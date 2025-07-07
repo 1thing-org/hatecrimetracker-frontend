@@ -129,7 +129,12 @@ const Home = () => {
     
     incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "both")
     .then((allIncidents) => {
-      setIncidents(allIncidents);
+      // Separate incidents by type when storing
+      const incidentsByType = {
+        news: allIncidents.filter(incident => incident.type === 'news' || !incident.type),
+        self_report: allIncidents.filter(incident => incident.type === 'self_report')
+      };
+      setIncidents(incidentsByType);
     });
 
     incidentsService
@@ -265,18 +270,16 @@ const Home = () => {
     return result;
   };
 
-  const filterIncidents = (allIncidents) => {
-    let filtered;
-    if (!showSelfReport) {
-      // Show only news incidents
-      filtered = allIncidents.filter(incident => incident.type === 'news' || !incident.type);
-    } else {
-      // Show all incidents (news + self-report)
-      filtered = allIncidents;
-    }
+  // Combining news and self-report if toggle is ON and sort incident list
+  const displayIncidents = (incidentsByType) => {
+    if (!incidentsByType.news) return [];
+    
+    const visibleIncidents = showSelfReport 
+      ? [...incidentsByType.news, ...incidentsByType.self_report]
+      : incidentsByType.news;
     
     // Sort by date descending (most recent first)
-    return filtered.sort((a, b) => 
+    return visibleIncidents.sort((a, b) => 
       moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
     );
   };
@@ -417,7 +420,7 @@ const Home = () => {
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
                 <CardBody className="incident-list-card">
-                  <IncidentList data={filterIncidents(incidents)} />
+                  <IncidentList data={displayIncidents(incidents)} />
                 </CardBody>
               </Card>
             </Col>
