@@ -127,7 +127,7 @@ const Home = () => {
 
     setLoading(true);
     
-    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "both")
+    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", "both")
     .then((allIncidents) => {
       // Separate incidents by type when storing
       const incidentsByType = {
