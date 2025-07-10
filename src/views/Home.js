@@ -127,14 +127,14 @@ const Home = () => {
 
     setLoading(true);
     
-    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", "both")
+    // Call incident based on current toggle state
+    const incidentType = showSelfReport ? "both" : "news";
+    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", incidentType)
     .then((allIncidents) => {
-      // Separate incidents by type when storing
-      const incidentsByType = {
-        news: allIncidents.filter(incident => incident.type === 'news' || !incident.type),
-        self_report: allIncidents.filter(incident => incident.type === 'self_report')
-      };
-      setIncidents(incidentsByType);
+      const sortedIncidents = allIncidents.sort((a, b) => 
+        moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
+      );
+      setIncidents(sortedIncidents);
     });
 
     incidentsService
@@ -270,19 +270,12 @@ const Home = () => {
     return result;
   };
 
-  // Combining news and self-report if toggle is ON and sort incident list
-  const displayIncidents = (incidentsByType) => {
-    if (!incidentsByType.news) return [];
-    
-    const visibleIncidents = showSelfReport 
-      ? [...incidentsByType.news, ...incidentsByType.self_report]
-      : incidentsByType.news;
-    
-    // Sort by date descending (most recent first)
-    return visibleIncidents.sort((a, b) => 
-      moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
-    );
-  };
+  // Reload data when toggle changes
+  useEffect(() => {
+    if (dateRange?.length === 2) {
+      loadData();
+    }
+  }, [showSelfReport]);
 
   // Update processed data when toggle changes
   useEffect(() => {
@@ -420,7 +413,7 @@ const Home = () => {
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
                 <CardBody className="incident-list-card">
-                  <IncidentList data={displayIncidents(incidents)} />
+                  <IncidentList data={incidents} />
                 </CardBody>
               </Card>
             </Col>
