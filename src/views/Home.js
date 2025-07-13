@@ -34,9 +34,6 @@ import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
-// TODO: Only added Self-report toggle UI, but it currently affects chart 
-// since chart needs internal logic to split and stack news and self-report for visualization (already handled)
-// Map and table rely on aggreated totals, and will use it in the next PR
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
 
 const Home = () => {
@@ -111,13 +108,10 @@ const Home = () => {
       const monthlyData = monthly[monthKey] || { news: 0, self_report: 0 };
       const dailyStat = statsMap[strDate];
 
-      // current only handle news
       new_stats.push({
         key: strDate,
-        daily_cases: dailyStat ? (dailyStat.news > 0 ? dailyStat.news : null) : null,
         daily_news: dailyStat?.news || 0,
         daily_self_report: dailyStat?.self_report || 0,
-        monthly_cases: monthlyData.news > 0 ? monthlyData.news : null,
         monthly_news: monthlyData.news,
         monthly_self_report: monthlyData.self_report,
       });
@@ -131,11 +125,19 @@ const Home = () => {
     if (dateRange?.length != 2) return;
 
     setLoading(true);
+    
+    // Call incident based on current toggle state
+    const incidentType = showSelfReport ? "both" : "news";
+    incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", incidentType)
+    .then((allIncidents) => {
+      const sortedIncidents = allIncidents.sort((a, b) => 
+        moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
+      );
+      setIncidents(sortedIncidents);
+    });
+
     incidentsService
-      .getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, null, "news")
-      .then((incidents) => setIncidents(incidents));
-    incidentsService
-      .getStats(dateRange[0], dateRange[1], selectedState)
+      .getStats(dateRange[0], dateRange[1], selectedState, "approved", incidentType)
       .then((response) => {
         // Defensive check for malformed response
         if (!response || typeof response !== "object") {
@@ -155,15 +157,13 @@ const Home = () => {
           monthlyStats
         );
 
-        setIncidentTimeSeries(timeSeries); 
+        setIncidentTimeSeries(timeSeries);
         
         if (updateMap) {
-          const processedTotal = {};
-          Object.entries(totalStats).forEach(([state, data]) => {
-            processedTotal[state] = data?.news || 0;
-        });
-        setIncidentAggregated(processedTotal);
-      }
+          if (Object.keys(totalStats).length > 0) {
+            setIncidentAggregated(getAggregatedTotalByState(totalStats));
+          }
+        }
         setLoading(false);
         setIsFirstLoadData(false);
       });
@@ -258,6 +258,25 @@ const Home = () => {
     setSelectedState(newState);
   };
 
+  // Aggregate total incidents per state (includes self-report if toggle is ON)
+  const getAggregatedTotalByState = (totalStats) => {
+    const result = {};
+    Object.entries(totalStats).forEach(([state, data]) => {
+      let total = data?.news || 0;
+      if (showSelfReport) {
+        total += data?.self_report || 0;
+      }
+      result[state] = total;
+    });
+    return result;
+  };
+
+  // Reload data when toggle changes
+  useEffect(() => {
+    if (dateRange?.length === 2) {
+      loadData(true);
+    }
+  }, [showSelfReport]);
 
  return (
     <>
@@ -371,14 +390,12 @@ const Home = () => {
                   selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
-                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
                 <IncidentCountTable
                   title={"Incident Count by State"}
                   data={incidentAggregated}
                   selectedState={selectedState}
-                  showSelfReport={showSelfReport}
                   stateToggled={stateToggled}
                 />
               </div>
