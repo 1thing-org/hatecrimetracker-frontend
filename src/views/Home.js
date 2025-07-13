@@ -77,7 +77,6 @@ const Home = () => {
     },
   ]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
-  const [rawTotalStats, setRawTotalStats] = useState({});
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const setSelectedLang = (lang_code) => {
@@ -138,7 +137,7 @@ const Home = () => {
     });
 
     incidentsService
-      .getStats(dateRange[0], dateRange[1], selectedState)
+      .getStats(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", incidentType)
       .then((response) => {
         // Defensive check for malformed response
         if (!response || typeof response !== "object") {
@@ -161,7 +160,9 @@ const Home = () => {
         setIncidentTimeSeries(timeSeries);
         
         if (updateMap) {
-          setRawTotalStats(totalStats);
+              if (Object.keys(totalStats).length > 0) {
+      setIncidentAggregated(getAggregatedTotalByState(totalStats));
+    }
         }
         setLoading(false);
         setIsFirstLoadData(false);
@@ -273,17 +274,9 @@ const Home = () => {
   // Reload data when toggle changes
   useEffect(() => {
     if (dateRange?.length === 2) {
-      loadData();
+      loadData(true);
     }
   }, [showSelfReport]);
-
-  // Update processed data when toggle changes
-  useEffect(() => {
-    if (Object.keys(rawTotalStats).length > 0) {
-      setIncidentAggregated(getAggregatedTotalByState(rawTotalStats));
-    }
-  }, [showSelfReport, rawTotalStats]);
-
 
  return (
     <>
