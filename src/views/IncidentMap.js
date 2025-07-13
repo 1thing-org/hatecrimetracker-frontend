@@ -110,9 +110,15 @@ const IncidentMap = (props) => {
         }
     }, [selectedState])
 
-    // Selection is now handled automatically via data properties
-    // No manual polygon manipulation needed
-    // const selectState = (state) => {    
+    // NOTE:
+    // Previously it updated mapPolygonSeries.data and manually applied highlight styles
+    // by looping over polygons in selectState(). However, since amCharts rebuilds polygons
+    // asynchronously when data changes, highlights could disappear if selectState()
+    // ran before polygons were ready.
+    // Now selection styling is data-driven using propertyFields, so highlights update
+    // automatically when data changes. This avoids timing issues and simplifies the code.
+    // const selectState = (state) => {
+        // Previous manual implementation removed:
     // }
 
     const updateMapLegend = (legend) => {
