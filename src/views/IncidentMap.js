@@ -71,10 +71,15 @@ const IncidentMap = (props) => {
                     : getStateIncidentPer10kAsian(mapStatistics[state], state)
                 )
 
+            const isSelected = selectedState === state;
             data.push({
                 id: 'US-' + state,
                 value: value,
                 fillColor: getMapColor(value),
+                // Selection styling
+                strokeColor: isSelected ? '#FCEB4F' : '#D1CFD7',
+                strokeWidth: isSelected ? 4 : 1,
+                strokeOpacity: 1,
                 tooltipText:
                     "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
                     (count ?
@@ -88,7 +93,6 @@ const IncidentMap = (props) => {
             })
         })
         mapPolygonSeries.data = data
-        selectState(selectedState)
     }
     useEffect(() => {
         updateMap(props.mapData)
@@ -100,35 +104,17 @@ const IncidentMap = (props) => {
     }, [props.selectedState])
 
     useEffect(() => {
-        selectState(selectedState)
+        // Trigger map update when selectedState changes to refresh selection
+        if (mapPolygonSeries && Object.keys(props.mapData).length > 0) {
+            updateMap(props.mapData)
+        }
     }, [selectedState])
 
-    const selectState = (state) => {
-        if (!mapPolygonSeries || !polygonTemplate) {
-            return
-        }
-        const stateId = 'US-' + state
-        //clean selection effect on other states
-        for (let i = 0; i < mapPolygonSeries.mapPolygons.values.length; i++) {
-            const polygon = mapPolygonSeries.mapPolygons.values[i]
-            if (stateId == polygon.dataItem?.dataContext?.id) {
-                //https://www.amcharts.com/docs/v4/tutorials/consistent-outlines-of-map-polygons-on-hover/
-                polygon.zIndex = Number.MAX_VALUE
-                polygon.toFront()
-                polygon.strokeWidth = 4
-                polygon.stroke = am4core.color('#FCEB4F') //am4core.color(colors.danger.main);
-                var activeShadow = polygon.filters.push(new am4core.DropShadowFilter())
-                activeShadow.dx = 6
-                activeShadow.dy = 6
-                activeShadow.opacity = 0.3
-            } else {
-                polygon.strokeWidth = polygonTemplate.strokeWidth
-                polygon.stroke = polygonTemplate.stroke
-                polygon.zIndex = i
-                polygon.filters.clear()
-            }
-        }
-    }
+    // Selection is now handled automatically via data properties
+    // No manual polygon manipulation needed
+    // const selectState = (state) => {    
+    // }
+
     const updateMapLegend = (legend) => {
         if (!legend) return;
         legend.disposeChildren()
@@ -237,6 +223,10 @@ const IncidentMap = (props) => {
         polygonTemplate.tooltipHTML = '{tooltipText}'
         polygonTemplate.fillOpacity = 1
         polygonTemplate.propertyFields.fill = "fillColor";
+        // Use property fields for selection styling
+        polygonTemplate.propertyFields.stroke = "strokeColor";
+        polygonTemplate.propertyFields.strokeWidth = "strokeWidth";
+        polygonTemplate.propertyFields.strokeOpacity = "strokeOpacity";
         polygonTemplate.clickable = true
         let hs = polygonTemplate.states.create('hover')
         hs.properties.fillOpacity = 0.5
@@ -253,8 +243,10 @@ const IncidentMap = (props) => {
             // }
         })
 
+        // Default stroke values - now handled by propertyFields
         polygonTemplate.stroke = am4core.color('#D1CFD7')
         polygonTemplate.strokeOpacity = 1
+        
         setMapPolygonSeries(polygonSeries)
         setPolygonTemplate(polygonTemplate)
 
