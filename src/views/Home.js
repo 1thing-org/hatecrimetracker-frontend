@@ -160,9 +160,9 @@ const Home = () => {
         setIncidentTimeSeries(timeSeries);
         
         if (updateMap) {
-              if (Object.keys(totalStats).length > 0) {
-      setIncidentAggregated(getAggregatedTotalByState(totalStats));
-    }
+          if (Object.keys(totalStats).length > 0) {
+            setIncidentAggregated(getAggregatedTotalByState(totalStats));
+          }
         }
         setLoading(false);
         setIsFirstLoadData(false);
