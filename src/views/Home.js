@@ -137,7 +137,7 @@ const Home = () => {
     });
 
     incidentsService
-      .getStats(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", incidentType)
+      .getStats(dateRange[0], dateRange[1], selectedState, "approved", incidentType)
       .then((response) => {
         // Defensive check for malformed response
         if (!response || typeof response !== "object") {
