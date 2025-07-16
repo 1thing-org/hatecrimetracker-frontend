@@ -367,16 +367,18 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-                <SelfReportToggle
-                isOn={showSelfReport}
-                handleToggle={setShowSelfReport}
-              />
-                <IncidentChartD3
-                  rawTimeSeriesData={incidentTimeSeries}
-                  showSelfReport={showSelfReport}
-                  state={selectedState}
-                  isFirstLoadData={isFirstLoadData}
-                />
+                
+                <div className="incident-controls">
+                  <div className="incident-count-title">
+                    <h4 style={{ color: 'white'}}>{incidents.length} incidents have been reported</h4>
+                  </div>
+                  
+                  <SelfReportToggle
+                    isOn={showSelfReport}
+                    handleToggle={setShowSelfReport}
+                  />
+                </div>
+                
                 <div className="floating-social-media">
                   <SocialMedia
                     size={32}
@@ -391,6 +393,12 @@ const Home = () => {
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
                   stateToggled={stateToggled}
+                />
+                <IncidentChartD3
+                  rawTimeSeriesData={incidentTimeSeries}
+                  showSelfReport={showSelfReport}
+                  state={selectedState}
+                  isFirstLoadData={isFirstLoadData}
                 />
                 <IncidentCountTable
                   title={"Incident Count by State"}

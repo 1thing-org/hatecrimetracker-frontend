@@ -93,6 +93,13 @@
     color: #000000 !important;
 }
 
+.incident-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0 1rem 1.5rem;
+}
+
 .floating-social-media {
   position: fixed;
   bottom: 1.5rem;
