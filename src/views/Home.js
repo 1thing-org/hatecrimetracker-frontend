@@ -372,7 +372,6 @@ const Home = () => {
                   <div className="incident-count-title">
                     <h4 style={{ color: 'white'}}>{incidents.length} incidents have been reported</h4>
                   </div>
-                  
                   <SelfReportToggle
                     isOn={showSelfReport}
                     handleToggle={setShowSelfReport}
@@ -387,13 +386,24 @@ const Home = () => {
                     isShare={false}
                   />
                 </div>
-                <IncidentMap
+                <Row>
+                  <Col xs="12" md="2" className="order-2 order-md-1">
+                  <div className="geo-label-container">
+                    <div className="geo-label">Geography</div>
+                    <div id="map-legend-container" className="map-legend mt-2" />
+                    </div>
+                  </Col>
+                  <Col xs="12" md="10" className="order-1 order-md-2">
+                  <IncidentMap
                   mapData={incidentAggregated}
                   selectedState={selectedState}
                   lang={i18n.language}
                   showPer10KAsian={isShowPer10kAsian}
                   stateToggled={stateToggled}
                 />
+                  </Col>
+                </Row>
+               
                 <IncidentChartD3
                   rawTimeSeriesData={incidentTimeSeries}
                   showSelfReport={showSelfReport}

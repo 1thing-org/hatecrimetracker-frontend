@@ -7,6 +7,12 @@
     margin-bottom: 30px;
 }
 
+.map-legend {
+  min-height: 180px;
+  color: white;
+  font-size: 12px;
+}
+
 @media screen and (max-width:992px) {
     .incident-map {
         display: flex;

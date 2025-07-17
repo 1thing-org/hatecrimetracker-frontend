@@ -143,6 +143,33 @@
   color: white !important;
 }
 
+.geo-label-container {
+  margin-left: 2rem;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.geo-label {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  margin-left: 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  color: white
+}
+
+
+.trend-label {
+  margin-top: 8rem;
+  display: flex;
+  justify-self: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: white
+}
+
 .right-panel {
     padding: 1.2rem 1rem 1rem 1rem;
 }

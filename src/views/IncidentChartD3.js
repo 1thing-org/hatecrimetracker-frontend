@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { Card, CardBody} from 'reactstrap'
 import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
+import './IncidentChartD3.css';
 
 // Keys
 const KEY_NEWS = "news";
@@ -188,7 +189,7 @@ const IncidentChartD3 = ({
   return (
     <Card>
         <CardBody>
-        <div className="recharts-wrapper">
+        <div className="incident-chart">
           {isAllZero && !isFirstLoadData ? (
           <>
             <p className="add-data-button">
@@ -208,8 +209,10 @@ const IncidentChartD3 = ({
           </>
         ) : null}
           <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
+          <div>
           <TimeToggle viewMode={viewMode} setViewMode={setViewMode}
           />
+          </div>
       </div>
     </CardBody>
     </Card>

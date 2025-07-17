@@ -1,0 +1,10 @@
+.incident-chart {
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}

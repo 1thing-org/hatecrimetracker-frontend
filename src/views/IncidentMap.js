@@ -125,8 +125,8 @@ const IncidentMap = (props) => {
         if (!legend) return;
         legend.disposeChildren()
         let markerTemplate = legend.markers.template;
-        markerTemplate.width = 15;
-        markerTemplate.height = 15;
+        markerTemplate.width = 17;
+        markerTemplate.height = 17;
 
         legend.itemContainers.template.clickable = false;
         legend.itemContainers.template.focusable = false;
@@ -139,12 +139,12 @@ const IncidentMap = (props) => {
         marker.strokeOpacity = 1;
 
         let legendLabel = legend.createChild(am4core.Label);
-        legendLabel.fontSize = "10px";
+        legendLabel.fontSize = "12px";
 
         legend.background.fill = am4core.color("#000");
         legend.background.fillOpacity = 0.05;
-        legend.fontSize = "10px";
-        legend.width = 100;
+        legend.fontSize = "12px";
+        legend.width = 120;
         legend.valign = "middle";
         legend.align = "left";
         legendLabel.clickable = false;
@@ -214,7 +214,14 @@ const IncidentMap = (props) => {
         let polygonSeries = map.series.push(new am4maps.MapPolygonSeries())
 
         let legend = new am4maps.Legend();
-        legend.parent = map.chartContainer;
+        // Let legend be in a separate container
+        let legendContainer = am4core.create("map-legend-container", am4core.Container);
+        legendContainer.logo.disabled = true;
+        legendContainer.layout = "vertical";
+        legendContainer.padding(0, 0, 0, 0);
+        legendContainer.width = am4core.percent(100);
+        legendContainer.background.fillOpacity = 0;
+        legend.parent = legendContainer;
         setMapLegend(legend)
 
         updateMapLegend(legend);
@@ -258,6 +265,10 @@ const IncidentMap = (props) => {
 
         return () => {
             map.dispose()
+            // Also dispose the legend container to prevent conflicts
+            if (legendContainer) {
+                legendContainer.dispose()
+            }
         }
     }, [])
     return (
