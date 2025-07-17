@@ -1,10 +1,11 @@
 .incident-map {
     display: flex;
-    height: 280px;
-    width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    align-self: center;
+    height: 300px;
+    width: 100%;
+    max-width: 900px;
     margin-bottom: 30px;
+    margin-left: -2rem;
 }
 
 .map-legend {

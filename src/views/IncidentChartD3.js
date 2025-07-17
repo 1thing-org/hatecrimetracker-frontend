@@ -30,6 +30,54 @@ const IncidentChartD3 = ({
   const chartRef = useRef();
   const [viewMode, setViewMode] = useState(initialViewMode);
 
+  // Update chart legend based on current view mode
+  const updateChartLegend = () => {
+    const legendContainer = d3.select("#chart-legend-container");
+    legendContainer.selectAll("*").remove();
+
+    // Create a wrapper div with margin-top
+    const legendWrapper = legendContainer
+      .append("div")
+      .style("margin-top", "1rem");
+
+    const legendData = [
+      {
+        name: "News Reports",
+        color: viewMode === VIEW_MODE_MONTHLY ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY
+      },
+      {
+        name: "Self-reported", 
+        color: COLOR_SELF_REPORT
+      }
+    ];
+
+    const legendItems = legendWrapper
+      .selectAll(".legend-item")
+      .data(legendData)
+      .enter()
+      .append("div")
+      .attr("class", "legend-item")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("margin-bottom", "15px");
+
+    legendItems
+      .append("div")
+      .style("width", "20px")
+      .style("height", "17px")
+      .style("background-color", d => d.color)
+      .style("margin-right", "8px")
+      .style("margin-left", "1rem")
+      .style("border-radius", "2px");
+
+    legendItems
+      .append("span")
+      .text(d => d.name)
+      .style("color", "white")
+      .style("font-size", "13px")
+      .style("white-space", "nowrap");
+  };
+
   // Data formatting
   const formatChartData = (rawData, viewMode) => {
     return rawData
@@ -64,7 +112,7 @@ const IncidentChartD3 = ({
 
     // Set chart dimension
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
-    const width = 800 - margin.left - margin.right;
+    const width = 750 - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
 
     // Initialize svg
@@ -185,6 +233,11 @@ const IncidentChartD3 = ({
       });
         
     }, [chartData, viewMode, showSelfReport]);
+
+  // Update legend when viewMode changes
+  useEffect(() => {
+    updateChartLegend();
+  }, [viewMode]);
 
   return (
     <Card>

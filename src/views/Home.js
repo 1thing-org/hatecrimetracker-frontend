@@ -394,22 +394,32 @@ const Home = () => {
                     </div>
                   </Col>
                   <Col xs="12" md="10" className="order-1 order-md-2">
-                  <IncidentMap
-                  mapData={incidentAggregated}
-                  selectedState={selectedState}
-                  lang={i18n.language}
-                  showPer10KAsian={isShowPer10kAsian}
-                  stateToggled={stateToggled}
-                />
+                    <IncidentMap
+                    mapData={incidentAggregated}
+                    selectedState={selectedState}
+                    lang={i18n.language}
+                    showPer10KAsian={isShowPer10kAsian}
+                    stateToggled={stateToggled}
+                  />
                   </Col>
                 </Row>
-               
-                <IncidentChartD3
-                  rawTimeSeriesData={incidentTimeSeries}
-                  showSelfReport={showSelfReport}
-                  state={selectedState}
-                  isFirstLoadData={isFirstLoadData}
-                />
+                <Row>
+                  <Col xs="12" md="2" className="order-2 order-md-1">
+                  <div className="trend-label-container">
+                    <div className="trend-label">Trend</div>
+                    <div id="chart-legend-container" className="chart-legend mt-2" />
+                  </div>
+                  </Col>
+                  <Col xs="12" md="10" className="order-1 order-md-2">
+                    <IncidentChartD3
+                    rawTimeSeriesData={incidentTimeSeries}
+                    showSelfReport={showSelfReport}
+                    state={selectedState}
+                    isFirstLoadData={isFirstLoadData}
+                  />
+                  </Col>
+                </Row>
+                
                 <IncidentCountTable
                   title={"Incident Count by State"}
                   data={incidentAggregated}

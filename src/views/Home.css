@@ -144,6 +144,7 @@
 }
 
 .geo-label-container {
+  margin-top: 4rem;
   margin-left: 2rem;
   display: flex;
   align-items: flex-start;
@@ -152,7 +153,7 @@
 }
 
 .geo-label {
-  margin-top: 3rem;
+
   margin-bottom: 1.5rem;
   margin-left: 1rem;
   font-size: 20px;
@@ -160,15 +161,23 @@
   color: white
 }
 
+.trend-label-container {
+  margin-top: 4rem;
+  margin-left: 2rem;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .trend-label {
-  margin-top: 8rem;
   display: flex;
-  justify-self: center;
+  margin-left: 1rem;
   font-size: 20px;
   font-weight: bold;
   color: white
 }
+
 
 .right-panel {
     padding: 1.2rem 1rem 1rem 1rem;
