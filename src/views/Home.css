@@ -143,7 +143,8 @@
   color: white !important;
 }
 
-.map-section {
+.map-section,
+.chart-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -151,13 +152,10 @@
 
 /* Reduce gaps on mobile */
 @media (max-width: 1200px) {
-  .map-section {
+  .map-section,
+  .chart-section {
     gap: 0.5rem;
   }
-}
-
-.map-header {
-  display: flex;
 }
 
 .map-content {
@@ -170,13 +168,13 @@
 @media (min-width: 1201px) {
   .map-content {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 130px 1fr;
+    gap: 1rem;
     align-items: start;
   }
   
   /* Show desktop elements */
-  .desktop-geo-title {
+  .desktop-label-title {
     display: block;
     margin-bottom: 1rem;
   }
@@ -190,24 +188,53 @@
   }
   
   /* Hide mobile elements */
-  .mobile-geo-title,
+  .mobile-label-title,
   .mobile-legend-wrapper {
     display: none;
   }
+
+  .chart-content {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 1rem;
+    align-items: start;
+    height:400px
+  }
+
+  .chart-legend-wrapper {
+    grid-column: 1;
+  }
+
+  .chart-container {
+    grid-column: 2;
+  }
+
+  .mobile-chart-header,
+  .chart-section .mobile-legend-wrapper {
+    display: none;
+  }
+  
+
 }
 
 /* Mobile layout: <= 1200px = stacked with horizontal legend below */
 @media (max-width: 1200px) {
-  .map-section {
+  .map-section,
+  .chart-section {
     flex-direction: column;
     padding: 0;
+    overflow: visible;
   }
   
   /* Show mobile elements */
-  .mobile-geo-title {
+  .mobile-label-title {
     display: block;
-    margin-bottom: 0rem;
+    margin-bottom: 1.2rem;
     padding: 0;
+    font-size: 10px;
+    color: white;
+    margin-left: 1.5rem;
+    margin-top: 2rem;
   }
   
   .mobile-legend-wrapper {
@@ -219,18 +246,21 @@
   }
   
   /* Hide desktop elements */
-  .desktop-geo-title {
+  .desktop-label-title {
     display: none;
   }
   
-  .map-legend-wrapper {
+  .map-legend-wrapper,
+  .chart-legend-wrapper {
     display: none;
   }
   
-  .map-content {
+  .map-content,
+  .chart-content {
     flex-direction: column;
     padding: 0;
     margin: 0;
+    overflow: visible;
   }
   
   .map-container {
@@ -238,10 +268,53 @@
     padding: 0;
     margin-top: -3.5rem;
   }
+  
+    .chart-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    margin-top: -0.5rem;
+    height: 300px;
+    overflow: visible;
+  }
+  
+  /* Show mobile chart elements */
+  .mobile-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0rem;
+    padding: 0 1.5rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .mobile-chart-header .label {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+  }
+  
+  .mobile-chart-header .time-range-toggle {
+    pointer-events: auto;
+    z-index: 10;
+  }
+  
+    /* Style mobile legend wrapper for charts */
+  .chart-section .mobile-legend-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+    padding: 0;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 10;
+  }
 }
 
 
-.geo-label {
+.label {
   font-size: 20px;
   font-weight: bold;
   color: white;
@@ -251,37 +324,11 @@
 /* Desktop geo label styling */
 @media (min-width: 1201px) {
 
-  .desktop-geo-title .geo-label {
+  .desktop-label-title .label {
     margin-top: 3.5rem;
     margin-bottom: 1rem;
     margin-left: 2rem;
   }
-}
-
-/* Mobile geo label styling */
-@media (max-width: 1200px) {
-  .mobile-geo-title .geo-label {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    margin-left: 1rem;
-  }
-}
-
-.trend-label-container {
-  margin-top: 4rem;
-  margin-left: 2rem;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.trend-label {
-  display: flex;
-  margin-left: 1rem;
-  font-size: 20px;
-  font-weight: bold;
-  color: white
 }
 
 

@@ -22,23 +22,23 @@ const COLOR_TOOLTIP_BG = "#283046";
 
 const IncidentChartD3 = ({ 
     rawTimeSeriesData,
-    initialViewMode = VIEW_MODE_MONTHLY,
     showSelfReport,
     state,
-    isFirstLoadData 
+    isFirstLoadData,
+    viewMode = VIEW_MODE_MONTHLY,
+    setViewMode
 }) => {
   const chartRef = useRef();
-  const [viewMode, setViewMode] = useState(initialViewMode);
 
-  // Update chart legend based on current view mode
+  // Update chart legends for both desktop and mobile
   const updateChartLegend = () => {
+    // Desktop legend (vertical)
     const legendContainer = d3.select("#chart-legend-container");
     legendContainer.selectAll("*").remove();
 
-    // Create a wrapper div with margin-top
-    const legendWrapper = legendContainer
-      .append("div")
-      .style("margin-top", "1rem");
+    // Mobile legend (horizontal)
+    const mobileLegendContainer = d3.select("#chart-legend-mobile");
+    mobileLegendContainer.selectAll("*").remove();
 
     const legendData = [
       {
@@ -51,31 +51,76 @@ const IncidentChartD3 = ({
       }
     ];
 
-    const legendItems = legendWrapper
-      .selectAll(".legend-item")
-      .data(legendData)
-      .enter()
-      .append("div")
-      .attr("class", "legend-item")
-      .style("display", "flex")
-      .style("align-items", "center")
-      .style("margin-bottom", "15px");
+    // Create desktop legend (vertical)
+    if (!legendContainer.empty()) {
+      const desktopWrapper = legendContainer
+        .append("div")
+        .style("margin-top", "1rem");
 
-    legendItems
-      .append("div")
-      .style("width", "20px")
-      .style("height", "17px")
-      .style("background-color", d => d.color)
-      .style("margin-right", "8px")
-      .style("margin-left", "1rem")
-      .style("border-radius", "2px");
+      const desktopItems = desktopWrapper
+        .selectAll(".legend-item")
+        .data(legendData)
+        .enter()
+        .append("div")
+        .attr("class", "legend-item")
+        .style("display", "flex")
+        .style("align-items", "center")
+        .style("margin-bottom", "15px")
+        .style("margin-left", "1rem");
 
-    legendItems
-      .append("span")
-      .text(d => d.name)
-      .style("color", "white")
-      .style("font-size", "13px")
-      .style("white-space", "nowrap");
+      desktopItems
+        .append("div")
+        .style("width", "20px")
+        .style("height", "17px")
+        .style("background-color", d => d.color)
+        .style("margin-right", "8px")
+        .style("margin-left", "1rem")
+        .style("border-radius", "2px");
+
+      desktopItems
+        .append("span")
+        .text(d => d.name)
+        .style("color", "white")
+        .style("font-size", "13px")
+        .style("white-space", "nowrap");
+    }
+
+    // Create mobile legend (horizontal)
+    if (!mobileLegendContainer.empty()) {
+      const mobileWrapper = mobileLegendContainer
+        .append("div")
+        .style("display", "flex")
+        .style("align-items", "flex-start")
+        .style("justify-content", "center")
+        .style("flex-wrap", "wrap")
+        .style("gap", "16px");
+
+      const mobileItems = mobileWrapper
+        .selectAll(".mobile-legend-item")
+        .data(legendData)
+        .enter()
+        .append("div")
+        .attr("class", "mobile-legend-item")
+        .style("display", "flex")
+        .style("flex-direction", "row")
+        .style("align-items", "center")
+        .style("margin-right", "16px");
+
+      mobileItems
+        .append("div")
+        .style("width", "17px")
+        .style("height", "14px")
+        .style("background-color", d => d.color)
+        .style("margin-right", "8px")
+        .style("border-radius", "2px");
+
+      mobileItems
+        .append("span")
+        .text(d => d.name)
+        .style("color", "white")
+        .style("font-size", "13px")
+        .style("white-space", "nowrap");
+    }
   };
 
   // Data formatting
@@ -235,10 +280,10 @@ const IncidentChartD3 = ({
         
     }, [chartData, viewMode, showSelfReport]);
 
-  // Update legend when viewMode changes
+  // Update legend when viewMode or showSelfReport changes
   useEffect(() => {
     updateChartLegend();
-  }, [viewMode]);
+  }, [viewMode, showSelfReport]);
 
   return (
     <Card>
@@ -263,9 +308,8 @@ const IncidentChartD3 = ({
           </>
         ) : null}
           <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
-          <div>
-          <TimeToggle viewMode={viewMode} setViewMode={setViewMode}
-          />
+          <div className="desktop-time-toggle-container">
+            <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
       </div>
     </CardBody>

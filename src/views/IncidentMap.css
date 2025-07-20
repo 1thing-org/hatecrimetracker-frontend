@@ -30,12 +30,27 @@
         max-width: 750px;
         margin: 0 auto 20px auto;
     }
+
+    .map-container .card-body {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+    }
+
+    .map-container .card-header {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+    }
+    
+
+
 }
 
 /* Mobile horizontal legend styling */
 .map-legend-mobile {
   color: white;
   font-size: 12px;
+  width: 100%;
+  overflow: visible;
 }
 
 #map-legend-mobile .amcharts-Legend {
@@ -44,23 +59,27 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
 }
 
 #map-legend-mobile .amcharts-legend-item {
   display: flex !important;
   flex-direction: column !important;
   align-items: center;
-  margin-right: 16px;
-  margin-bottom: 8px;
+  margin-right: 8px;
+  margin-bottom: 4px;
 }
 
 #map-legend-mobile .amcharts-legend-marker {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 #map-legend-mobile .amcharts-legend-label {
   margin-top: 2px !important;
-  padding-top: 4px !important;
+  padding-top: 2px !important;
+  font-size: 11px !important;
 }
 
 
@@ -72,6 +91,13 @@
         max-width: 95vw;
         margin: 0 auto 15px auto;
         padding: 0;
+    }
+
+   
+    
+    .map-container .card-body {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
     }
 }
 

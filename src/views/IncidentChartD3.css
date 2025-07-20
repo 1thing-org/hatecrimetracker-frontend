@@ -1,10 +1,66 @@
 .incident-chart {
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 400px;
     width: 100%;
     max-width: 750px;
     margin-left: 1rem;
     margin-right: auto;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
+    margin-top: 0;
+}
+
+/* Mobile chart legend styling */
+.chart-legend-mobile {
+  color: white;
+  font-size: 12px;
+}
+
+#chart-legend-mobile {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#chart-legend-mobile .mobile-legend-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  margin-right: 16px;
+}
+
+/* Desktop time toggle styling */
+.desktop-time-toggle-container {
+  margin-top: 0rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Responsive chart container */
+@media (max-width: 1200px) {
+  .incident-chart {
+    margin-left: 0;
+    margin-top: 0;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  
+  /* Hide desktop time toggle on mobile */
+  .desktop-time-toggle-container {
+    display: none;
+  }
+  
+  /* Reduce card padding on mobile */
+  .chart-container .card {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .chart-container .card-body {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
 }

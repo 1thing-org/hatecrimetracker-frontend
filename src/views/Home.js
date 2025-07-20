@@ -35,6 +35,7 @@ import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
+import TimeToggle from "./components/time-toggle/TimeToggle";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +55,7 @@ const Home = () => {
   const support_languages = [];
   // TODO: Future PR - implement self-report toggle functionality  
   const [showSelfReport, setShowSelfReport] = useState(false);
+  const [viewMode, setViewMode] = useState("monthly");
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
     support_languages.push({
@@ -388,15 +390,15 @@ const Home = () => {
                 </div>
                 <div className="map-section">
                   {/* Mobile: Geography title above everything */}
-                  <div className="mobile-geo-title">
-                    <h3 className="geo-label">Geography</h3>
+                  <div className="mobile-label-title">
+                    <h3 className="label">Geography</h3>
                   </div>
                   
                   <div className="map-content">
                     {/* Desktop: Geography + Legend grouped */}
                     <div className="map-legend-wrapper">
-                      <div className="desktop-geo-title">
-                        <h3 className="geo-label">Geography</h3>
+                      <div className="desktop-label-title">
+                        <h3 className="label">Geography</h3>
                       </div>
                       <div id="map-legend-container" className="map-legend" />
                     </div>
@@ -411,15 +413,13 @@ const Home = () => {
                     />
                     </div>
                   </div>
-                  
                   {/* Mobile: Legend below map */}
                   <div className="mobile-legend-wrapper">
                     <div id="map-legend-mobile" className="map-legend-mobile" />
                   </div>
                 </div>
-
                 
-                <Row>
+                {/* <Row>
                   <Col xs="12" md="2">
                   <div className="trend-label-container">
                     <div className="trend-label">Trend</div>
@@ -434,7 +434,40 @@ const Home = () => {
                     isFirstLoadData={isFirstLoadData}
                   />
                   </Col>
-                </Row>
+                </Row> */}
+
+                <div className="chart-section">
+                  {/* Mobile: Trend title and TimeToggle in same line */}
+                  <div className="mobile-chart-header">
+                    <h3 className="label">Trend</h3>
+                    <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+                  </div>
+                  
+                  <div className="chart-content">
+                    {/* Desktop: Trend + Legend grouped */}
+                    <div className="chart-legend-wrapper">
+                      <div className="desktop-label-title">
+                        <h3 className="label">Trend</h3>
+                      </div>
+                      <div id="chart-legend-container" className="chart-legend" />
+                    </div>
+                    
+                    <div className="chart-container">
+                      <IncidentChartD3
+                        rawTimeSeriesData={incidentTimeSeries}
+                        showSelfReport={showSelfReport}
+                        state={selectedState}
+                        isFirstLoadData={isFirstLoadData}
+                        viewMode={viewMode}
+                        setViewMode={setViewMode}
+                      />
+                    </div>
+                  </div>
+                  {/* Mobile: Legend below map */}
+                  <div className="mobile-legend-wrapper">
+                    <div id="chart-legend-mobile" className="chart-legend-mobile" />
+                  </div>
+                </div>
                 
                 <IncidentCountTable
                   title={"Incident Count by State"}

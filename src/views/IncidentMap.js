@@ -245,13 +245,13 @@ const IncidentMap = (props) => {
         legend.layout = "horizontal"
         legend.align = "center"
         legend.valign = "middle"
-        legend.maxWidth = am4core.percent(100)
+        legend.width = am4core.percent(100)
         legend.position = "relative"
 
         legend.itemContainers.template.layout = "vertical"
         legend.itemContainers.template.align = "center"
         legend.itemContainers.template.valign = "middle"
-        legend.itemContainers.template.marginRight = 12
+        legend.itemContainers.template.marginRight = 6
 
         legend.markers.template.align = "center"
         legend.labels.template.align = "center"
@@ -262,7 +262,7 @@ const IncidentMap = (props) => {
         legendLabel.valign = "top";
         legendLabel.align = "left";
         legendLabel.marginTop = 8;
-        legendLabel.marginRight = 10;
+        legendLabel.marginRight = 6;
         legendLabel.clickable = false;
         legendLabel.focusable = false;
         legendLabel.cursorOverStyle = am4core.MouseCursorStyle.default;
