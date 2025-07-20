@@ -110,9 +110,10 @@ const IncidentChartD3 = ({
     // Early return only for truly invalid data
     if (!chartData) return;
 
-    // Set chart dimension
+    // Set chart dimension - make it responsive to container width
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
-    const width = 750 - margin.left - margin.right;
+    const containerWidth = chartRef.current.offsetWidth || 600; // Get actual container width
+    const width = Math.min(750, containerWidth) - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
 
     // Initialize svg

@@ -143,22 +143,128 @@
   color: white !important;
 }
 
-.geo-label-container {
-  margin-top: 4rem;
-  margin-left: 2rem;
+.map-section {
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
 }
 
-.geo-label {
+/* Reduce gaps on mobile */
+@media (max-width: 1200px) {
+  .map-section {
+    gap: 0.5rem;
+  }
+}
 
-  margin-bottom: 1.5rem;
-  margin-left: 1rem;
+.map-header {
+  display: flex;
+}
+
+.map-content {
+  display: flex;
+  gap: 1rem;
+}
+
+
+/* Desktop layout: > 1200px = Geography + Legend aligned with Map */
+@media (min-width: 1201px) {
+  .map-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  
+  /* Show desktop elements */
+  .desktop-geo-title {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .map-legend-wrapper {
+    grid-column: 1;
+  }
+  
+  .map-container {
+    grid-column: 2;
+  }
+  
+  /* Hide mobile elements */
+  .mobile-geo-title,
+  .mobile-legend-wrapper {
+    display: none;
+  }
+}
+
+/* Mobile layout: <= 1200px = stacked with horizontal legend below */
+@media (max-width: 1200px) {
+  .map-section {
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  /* Show mobile elements */
+  .mobile-geo-title {
+    display: block;
+    margin-bottom: 0rem;
+    padding: 0;
+  }
+  
+  .mobile-legend-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+    padding: 0;
+    margin-bottom: -5rem;
+  }
+  
+  /* Hide desktop elements */
+  .desktop-geo-title {
+    display: none;
+  }
+  
+  .map-legend-wrapper {
+    display: none;
+  }
+  
+  .map-content {
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .map-container {
+    width: 100%;
+    padding: 0;
+    margin-top: -3.5rem;
+  }
+}
+
+
+.geo-label {
   font-size: 20px;
   font-weight: bold;
-  color: white
+  color: white;
+  margin: 0;
+}
+
+/* Desktop geo label styling */
+@media (min-width: 1201px) {
+
+  .desktop-geo-title .geo-label {
+    margin-top: 3.5rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+  }
+}
+
+/* Mobile geo label styling */
+@media (max-width: 1200px) {
+  .mobile-geo-title .geo-label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+  }
 }
 
 .trend-label-container {
@@ -216,6 +322,23 @@
   .floating-social-media {
     display: none;
   }
+}
+
+/* NUCLEAR OPTION: Force Bootstrap columns to absolutely contain content */
+[class*="col-"] {
+  overflow: hidden !important;
+  min-width: 0 !important;
+  position: relative !important;
+}
+
+/* Force all chart/map containers to respect column boundaries */
+.incident-map,
+.incident-chart,
+#chartdiv,
+#chart_1yaxis {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 

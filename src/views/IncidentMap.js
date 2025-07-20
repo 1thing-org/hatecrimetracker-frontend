@@ -23,9 +23,11 @@ const IncidentMap = (props) => {
     const { t } = useTranslation();
     const [mapPolygonSeries, setMapPolygonSeries] = useState()
     const [mapLegend, setMapLegend] = useState()
+    const [mobileLegend, setMobileLegend] = useState()
     const [polygonTemplate, setPolygonTemplate] = useState()
     const [selectedState, setSelectedState] = useState()
     const [maxValue, setMaxValue] = useState(0)
+
 
 
     const MAP_COLOR_COUNT = [
@@ -97,7 +99,8 @@ const IncidentMap = (props) => {
     useEffect(() => {
         updateMap(props.mapData)
         updateMapLegend(mapLegend);
-    }, [props.mapData, props.lang, props.showPer10KAsian])
+        updateMobileLegend(mobileLegend);
+    }, [props.mapData, props.lang, props.showPer10KAsian, mapLegend, mobileLegend])
 
     useEffect(() => {
         setSelectedState(props.selectedState)
@@ -109,6 +112,16 @@ const IncidentMap = (props) => {
             updateMap(props.mapData)
         }
     }, [selectedState])
+
+    // Update legends when they're first created
+    useEffect(() => {
+        if (mapLegend) {
+            updateMapLegend(mapLegend);
+        }
+        if (mobileLegend) {
+            updateMobileLegend(mobileLegend);
+        }
+    }, [mapLegend, mobileLegend])
 
     // NOTE:
     // Previously it updated mapPolygonSeries.data and manually applied highlight styles
@@ -144,12 +157,16 @@ const IncidentMap = (props) => {
         legend.background.fill = am4core.color("#000");
         legend.background.fillOpacity = 0.05;
         legend.fontSize = "12px";
+        
+        // Desktop: vertical layout, left aligned
+        legend.layout = "vertical"
         legend.width = 120;
         legend.valign = "middle";
         legend.align = "left";
+        
         legendLabel.clickable = false;
         legendLabel.focusable = false;
-        legendLabel.cursorOverStyle  = am4core.MouseCursorStyle.default;
+        legendLabel.cursorOverStyle = am4core.MouseCursorStyle.default;
         // legend.position = "left";
         if (!props.showPer10KAsian) {
             legendLabel.text = t("incident_map.incident_count");
@@ -199,6 +216,101 @@ const IncidentMap = (props) => {
             ]
         }
     };
+
+    const updateMobileLegend = (legend) => {
+        if (!legend) return;
+        legend.disposeChildren()
+        let markerTemplate = legend.markers.template;
+        markerTemplate.width = 12;
+        markerTemplate.height = 12;
+
+        legend.itemContainers.template.clickable = false;
+        legend.itemContainers.template.focusable = false;
+        legend.itemContainers.template.cursorOverStyle = am4core.MouseCursorStyle.default;
+
+        let marker = legend.markers.template.children.getIndex(0);
+        marker.cornerRadius(0, 0, 0, 0);
+        marker.stroke = am4core.color("#FFFFFF");
+        markerTemplate.strokeWidth = 0.8;
+        marker.strokeOpacity = 1;
+
+        let legendLabel = legend.createChild(am4core.Label);
+        legendLabel.fontSize = "12px";
+
+        legend.background.fill = am4core.color("#000");
+        legend.background.fillOpacity = 0.05;
+        legend.fontSize = "12px";
+        
+        // Mobile: horizontal layout, inline with title
+        legend.layout = "horizontal"
+        legend.align = "center"
+        legend.valign = "middle"
+        legend.maxWidth = am4core.percent(100)
+        legend.position = "relative"
+
+        legend.itemContainers.template.layout = "vertical"
+        legend.itemContainers.template.align = "center"
+        legend.itemContainers.template.valign = "middle"
+        legend.itemContainers.template.marginRight = 12
+
+        legend.markers.template.align = "center"
+        legend.labels.template.align = "center"
+        legend.labels.template.valign = "top"
+        legend.labels.template.paddingTop = 8
+        
+        // Align legend label at same level as squares
+        legendLabel.valign = "top";
+        legendLabel.align = "left";
+        legendLabel.marginTop = 8;
+        legendLabel.marginRight = 10;
+        legendLabel.clickable = false;
+        legendLabel.focusable = false;
+        legendLabel.cursorOverStyle = am4core.MouseCursorStyle.default;
+
+        if (!props.showPer10KAsian) {
+            legendLabel.text = t("incident_map.incident_count");
+
+            legend.data = [{
+                "name": ">= 10",
+                "fill": "#FFF500"
+            }, {
+                "name": "5-10",
+                "fill": "#908B09"
+            }, {
+                "name": "2-5",
+                "fill": "#AEAEAE"
+            },
+            {
+                "name": "1",
+                "fill": "#5C5C5C"
+            },
+            {
+                "name": "0",
+                "fill": "#000000"
+            }];
+        }
+        else {
+            legendLabel.text = t("incident_map.count_10k_asian");
+            legend.data = [{
+                "name": ">= 1",
+                "fill": "#FFF500"
+            }, {
+                "name": "0.5-1",
+                "fill": "#908B09"
+            }, {
+                "name": "0.2-0.5",
+                "fill": "#AEAEAE"
+            },
+            {
+                "name": "0.1",
+                "fill": "#5C5C5C"
+            },
+            {
+                "name": "0",
+                "fill": "#000000"
+            }]
+        }
+    };
     //componentDidMount
     useLayoutEffect(() => {
         let map = am4core.create('chartdiv', am4maps.MapChart)
@@ -213,8 +325,8 @@ const IncidentMap = (props) => {
 
         let polygonSeries = map.series.push(new am4maps.MapPolygonSeries())
 
+        // Desktop legend (vertical)
         let legend = new am4maps.Legend();
-        // Let legend be in a separate container
         let legendContainer = am4core.create("map-legend-container", am4core.Container);
         legendContainer.logo.disabled = true;
         legendContainer.layout = "vertical";
@@ -224,7 +336,19 @@ const IncidentMap = (props) => {
         legend.parent = legendContainer;
         setMapLegend(legend)
 
+        // Mobile legend (horizontal)
+        let mLegend = new am4maps.Legend();
+        let mLegendContainer = am4core.create("map-legend-mobile", am4core.Container);
+        mLegendContainer.logo.disabled = true;
+        mLegendContainer.layout = "horizontal";
+        mLegendContainer.padding(0, 0, 0, 0);
+        mLegendContainer.width = am4core.percent(100);
+        mLegendContainer.background.fillOpacity = 0;
+        mLegend.parent = mLegendContainer;
+        setMobileLegend(mLegend)
+
         updateMapLegend(legend);
+        updateMobileLegend(mLegend);
 
         polygonSeries.useGeodata = true
         polygonSeries.data = []
@@ -265,9 +389,12 @@ const IncidentMap = (props) => {
 
         return () => {
             map.dispose()
-            // Also dispose the legend container to prevent conflicts
+            // Also dispose the legend containers to prevent conflicts
             if (legendContainer) {
                 legendContainer.dispose()
+            }
+            if (mLegendContainer) {
+                mLegendContainer.dispose()
             }
         }
     }, [])

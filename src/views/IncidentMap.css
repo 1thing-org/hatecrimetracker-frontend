@@ -3,85 +3,85 @@
     align-self: center;
     height: 300px;
     width: 100%;
-    max-width: 900px;
-    margin-bottom: 30px;
-    margin-left: -2rem;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
 .map-legend {
   min-height: 180px;
   color: white;
   font-size: 12px;
+  margin-left: 1rem;
 }
 
-@media screen and (max-width:992px) {
+/* Desktop layout */
+@media screen and (min-width: 1201px) {
     .incident-map {
-        display: flex;
+        max-width: min(900px, calc(100vw - 300px));
+        margin-left: -2rem;
+    }
+}
+
+/* Tablet layout */
+@media screen and (max-width: 1200px) and (min-width: 769px) {
+    .incident-map {
         height: 350px;
-        width: 750px;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
+        max-width: 750px;
+        margin: 0 auto 20px auto;
     }
 }
 
-@media screen and (max-width:768px) {
-    .incident-map {
-        display: flex;
-        height: 380px;
-        width: 750px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+/* Mobile horizontal legend styling */
+.map-legend-mobile {
+  color: white;
+  font-size: 12px;
+}
+
+#map-legend-mobile .amcharts-Legend {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#map-legend-mobile .amcharts-legend-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+#map-legend-mobile .amcharts-legend-marker {
+  margin-bottom: 6px;
+}
+
+#map-legend-mobile .amcharts-legend-label {
+  margin-top: 2px !important;
+  padding-top: 4px !important;
 }
 
 
-/* @media screen and (min-width: 992px) {
-    .incident-map {
-        display: flex;
-        height: 400px;
-        width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-} */
-
+/* Mobile layout - responsive and optimized */
 @media screen and (max-width: 768px) {
     .incident-map {
-        display: flex;
         height: 250px;
-        width: 580px;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
+        max-width: 95vw;
+        margin: 0 auto 15px auto;
+        padding: 0;
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 480px) {
     .incident-map {
-        display: flex;
-        height: 180px;
-        width: 550px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .incident-map {
-        display: flex;
-        height: 150px;
-        width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .incident-map {
-        display: flex;
-        height: 150px;
-        width: 380px;
-        margin-left: auto;
-        margin-right: auto;
+        height: 200px;
+        width: 100%;
+        max-width: 98vw;
+        margin: 0 auto 10px auto;
+        padding: 0;
     }
 }
 

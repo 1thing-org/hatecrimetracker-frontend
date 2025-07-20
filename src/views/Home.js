@@ -386,31 +386,47 @@ const Home = () => {
                     isShare={false}
                   />
                 </div>
-                <Row>
-                  <Col xs="12" md="2" className="order-2 order-md-1">
-                  <div className="geo-label-container">
-                    <div className="geo-label">Geography</div>
-                    <div id="map-legend-container" className="map-legend mt-2" />
+                <div className="map-section">
+                  {/* Mobile: Geography title above everything */}
+                  <div className="mobile-geo-title">
+                    <h3 className="geo-label">Geography</h3>
+                  </div>
+                  
+                  <div className="map-content">
+                    {/* Desktop: Geography + Legend grouped */}
+                    <div className="map-legend-wrapper">
+                      <div className="desktop-geo-title">
+                        <h3 className="geo-label">Geography</h3>
+                      </div>
+                      <div id="map-legend-container" className="map-legend" />
                     </div>
-                  </Col>
-                  <Col xs="12" md="10" className="order-1 order-md-2">
-                    <IncidentMap
-                    mapData={incidentAggregated}
-                    selectedState={selectedState}
-                    lang={i18n.language}
-                    showPer10KAsian={isShowPer10kAsian}
-                    stateToggled={stateToggled}
-                  />
-                  </Col>
-                </Row>
+                    
+                    <div className="map-container">
+                      <IncidentMap
+                      mapData={incidentAggregated}
+                      selectedState={selectedState}
+                      lang={i18n.language}
+                      showPer10KAsian={isShowPer10kAsian}
+                      stateToggled={stateToggled}
+                    />
+                    </div>
+                  </div>
+                  
+                  {/* Mobile: Legend below map */}
+                  <div className="mobile-legend-wrapper">
+                    <div id="map-legend-mobile" className="map-legend-mobile" />
+                  </div>
+                </div>
+
+                
                 <Row>
-                  <Col xs="12" md="2" className="order-2 order-md-1">
+                  <Col xs="12" md="2">
                   <div className="trend-label-container">
                     <div className="trend-label">Trend</div>
                     <div id="chart-legend-container" className="chart-legend mt-2" />
                   </div>
                   </Col>
-                  <Col xs="12" md="10" className="order-1 order-md-2">
+                  <Col xs="12" md="10">
                     <IncidentChartD3
                     rawTimeSeriesData={incidentTimeSeries}
                     showSelfReport={showSelfReport}
