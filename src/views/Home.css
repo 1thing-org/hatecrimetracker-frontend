@@ -217,6 +217,37 @@
 
 }
 
+/* Tablet-specific adjustments for 992-1200px range */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .map-section .mobile-label-title {
+    margin-bottom: 0.2rem !important;
+    margin-top: 2rem !important;
+    margin-left: 1.5rem !important;
+    font-size: 18px !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+    z-index: 100 !important; /* Make title appear above map */
+    padding: 0.2rem 0 0.2rem 0 !important;
+  }
+  
+  .map-container {
+    margin-top: -8rem !important; /* Pull map up aggressively */
+    position: relative !important;
+    z-index: 1 !important; /* Lower z-index than title */
+  }
+  
+ 
+  
+  /* Also apply same technique to chart section */
+  .chart-section .mobile-chart-header {
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.2rem !important;
+    position: relative !important;
+    z-index: 100 !important;
+  }
+  
+}
+
 /* Mobile layout: <= 1200px = stacked with horizontal legend below */
 @media (max-width: 1200px) {
   .map-section,
@@ -267,15 +298,16 @@
     width: 100%;
     padding: 0;
     margin-top: -3.5rem;
+    max-height: 340px;
   }
   
-    .chart-container {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    margin-top: -0.5rem;
-    height: 300px;
-    overflow: visible;
+  .chart-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  margin-top: -0.5rem;
+  height: 300px;
+  overflow: visible;
   }
   
   /* Show mobile chart elements */

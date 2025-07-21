@@ -22,6 +22,26 @@
     }
 }
 
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+   .incident-map {
+        height: 425px !important;
+        width: 100%;
+        max-width: 950px !important;
+        margin: 0 auto !important;
+    } 
+  .map-legend-mobile {
+    color: white;
+    font-size: 12px;
+    width: 100%;
+    overflow: visible;
+    margin-top: -2rem;
+    margin-bottom: 1rem;
+    z-index: 100;
+    }
+
+}
+
+
 /* Tablet layout */
 @media screen and (max-width: 1200px) and (min-width: 769px) {
     .incident-map {
@@ -36,50 +56,35 @@
         padding-bottom: 0rem;
     }
 
+
     .map-container .card-header {
         padding-top: 0rem;
         padding-bottom: 0rem;
     }
+
+    .map-legend-mobile {
+        margin-top: 2rem;
+    }
     
-
-
 }
 
+
+@media (max-width: 768px) {
+    .map-legend-mobile {
+    color: white;
+    font-size: 12px;
+    width: 100%;
+    overflow: visible;
+    margin-top: -2rem;
+    margin-bottom: 1rem;
+    }
+}
 /* Mobile horizontal legend styling */
 .map-legend-mobile {
   color: white;
   font-size: 12px;
   width: 100%;
   overflow: visible;
-}
-
-#map-legend-mobile .amcharts-Legend {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow: visible !important;
-}
-
-#map-legend-mobile .amcharts-legend-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center;
-  margin-right: 8px;
-  margin-bottom: 4px;
-}
-
-#map-legend-mobile .amcharts-legend-marker {
-  margin-bottom: 4px;
-}
-
-#map-legend-mobile .amcharts-legend-label {
-  margin-top: 2px !important;
-  padding-top: 2px !important;
-  font-size: 11px !important;
 }
 
 
@@ -92,7 +97,6 @@
         margin: 0 auto 15px auto;
         padding: 0;
     }
-
    
     
     .map-container .card-body {

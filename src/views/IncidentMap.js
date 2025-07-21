@@ -152,7 +152,7 @@ const IncidentMap = (props) => {
         marker.strokeOpacity = 1;
 
         let legendLabel = legend.createChild(am4core.Label);
-        legendLabel.fontSize = "12px";
+        legendLabel.fontSize = "13px";
 
         legend.background.fill = am4core.color("#000");
         legend.background.fillOpacity = 0.05;
