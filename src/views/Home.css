@@ -1,15 +1,10 @@
 @media (max-width: 786px) {
-    .OneRowItem {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding-bottom: 1rem;
+    .controls-section {
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
     }
 
-    .OneRowItem.right-controls {
-    gap: 0.5rem;
-    justify-content: space-between;
-  }
     
     .rs-picker-toggle-wrapper {
         width: 16rem
@@ -19,9 +14,6 @@
         margin-top: 1rem;
     }
 
-    .title {
-        font-size: 1rem !important; 
-    }
 }
 
 .navbar {
@@ -31,6 +23,19 @@
   width: 100vw;
   padding-left: 0 !important;
   padding-right: 0 !important;
+  justify-content: space-between;
+}
+
+.title-section {
+  margin-right: auto; /* 自动推到左边 */
+}
+
+.controls-section {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-right: 2rem;
+  flex-shrink: 0; 
 }
 
 .location-form-group {
@@ -42,7 +47,7 @@
 }
 
 .title {
-    font-size: 2rem;
+    font-size: clamp(1rem, 2.5vw, 2rem); 
 }
 
 .behind-relative {

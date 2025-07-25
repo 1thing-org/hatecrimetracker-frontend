@@ -310,19 +310,17 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Container className="header">
-            <Row className="navbar align-items-center">
-              <Col xs="12" sm="12" md="8">
+          <div className="header">
+            <div className="navbar">
+               <div className="title-section">
                 <p className="title">
                   <img src={logo} alt="logo" className="logo" />{" "}
                   {t("website.name")}
                 </p>
-              </Col>
+               </div>
 
-              <Col xs="12" sm="12" md="4">
-                <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+               <div className="controls-section">                      
                   <ReportIncident />
-                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <a
                     href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                     target="_blank"
@@ -330,7 +328,6 @@ const Home = () => {
                   >
                     {t("contact_us")}
                   </a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <SelectPicker
                     data={support_languages}
                     searchable={false}
@@ -341,9 +338,10 @@ const Home = () => {
                     onChange={(value) => setSelectedLang(value)}
                   />
                 </div>
-              </Col>
-            </Row> 
-          </Container>
+            </div>
+            </div> 
+         </div>
+
      
           <Row className="match-height">
             <Col xl="8" lg="6" md="12" className="left-panel">
@@ -488,7 +486,7 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
-        </div>
+
         <div className="footer-wrapper">
           <div className="footer">
           <Row>
