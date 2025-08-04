@@ -416,24 +416,7 @@ const Home = () => {
                     <div id="map-legend-mobile" className="map-legend-mobile" />
                   </div>
                 </div>
-                
-                {/* <Row>
-                  <Col xs="12" md="2">
-                  <div className="trend-label-container">
-                    <div className="trend-label">Trend</div>
-                    <div id="chart-legend-container" className="chart-legend mt-2" />
-                  </div>
-                  </Col>
-                  <Col xs="12" md="10">
-                    <IncidentChartD3
-                    rawTimeSeriesData={incidentTimeSeries}
-                    showSelfReport={showSelfReport}
-                    state={selectedState}
-                    isFirstLoadData={isFirstLoadData}
-                  />
-                  </Col>
-                </Row> */}
-
+          
                 <div className="chart-section">
                   {/* Mobile: Trend title and TimeToggle in same line */}
                   <div className="mobile-chart-header">

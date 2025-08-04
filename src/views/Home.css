@@ -260,10 +260,11 @@
     padding: 0.2rem 0;
   }
 
-  .mobile-legend-wrapper {
+  .chart-section .mobile-legend-wrapper {
     margin-left: 3.5rem;
   }
-  
+
+
   .desktop-label-title {
     display: none;
   }
@@ -310,7 +311,7 @@
   /* Show mobile elements */
   .mobile-label-title {
     display: block;
-    margin: 2rem 0 1.2rem 1.5rem;
+    margin: 2rem 0 1.5rem 1.5rem;
     padding: 0;
     font-size: 10px;
     color: white;
@@ -319,9 +320,13 @@
   .mobile-legend-wrapper {
     display: flex;
     justify-content: center;
-    margin-left: 3.5rem;
-    margin-bottom: 3rem;
     padding: 0;
+    margin-top: 1.5rem;
+  }
+
+  .chart-section .mobile-legend-wrapper{
+    margin-left: 3.5rem;
+    margin-top: 0rem;
   }
 
   /* Hide desktop elements */
@@ -335,7 +340,7 @@
   .map-container {
     width: 100%;
     padding: 0;
-    margin-top: -3.5rem;
+    margin-top: -3rem;
     max-height: 340px;
   }
   
