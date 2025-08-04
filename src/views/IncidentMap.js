@@ -134,6 +134,29 @@ const IncidentMap = (props) => {
         // Previous manual implementation removed:
     // }
 
+    // Helper function to generate legend data from color constants
+    const generateLegendData = (colorMap) => {
+    return colorMap.map((item, index) => {
+        const [threshold, color] = item;
+        const nextThreshold = index < colorMap.length - 1 ? colorMap[index + 1][0] : null;
+        
+        let name;
+        if (threshold === 0) {
+            name = "0";
+        } else if (nextThreshold === null) {
+            name = `>= ${threshold}`;
+        } else if (threshold === nextThreshold + 0.01) {
+            name = `${threshold}`;
+        } else {
+            name = `${nextThreshold}-${threshold}`;
+        }
+        return {
+            name,
+            fill: color
+        };
+    });
+};
+
     const updateMapLegend = (legend) => {
         if (!legend) return;
         legend.disposeChildren()
@@ -168,54 +191,13 @@ const IncidentMap = (props) => {
         legendLabel.focusable = false;
         legendLabel.cursorOverStyle = am4core.MouseCursorStyle.default;
         // legend.position = "left";
-        if (!props.showPer10KAsian) {
-            legendLabel.text = t("incident_map.incident_count");
-
-            legend.data = [{
-                "name": ">= 10",
-                "fill": "#FFF500"
-            }, {
-                "name": "5-10",
-                "fill": "#908B09"
-            }, {
-                "name": "2-5",
-                "fill": "#AEAEAE"
-            },
-            {
-                "name": "1",
-                "fill": "#5C5C5C"
-            },
-            {
-                "name": "0",
-                "fill": "#000000"
-            }
-
-            ];
-        }
-        else {
-            legendLabel.text = t("incident_map.count_10k_asian");
-            legend.data = [{
-                "name": ">= 1",
-                "fill": "#FFF500"
-            }, {
-                "name": "0.5-1",
-                "fill": "#908B09"
-            }, {
-                "name": "0.2-0.5",
-                "fill": "#AEAEAE"
-            },
-            {
-                "name": "0.1",
-
-                "fill": "#5C5C5C"
-            },
-            {
-                "name": "0",
-                "fill": "#000000"
-            }
-            ]
-        }
-    };
+        const colorMap = props.showPer10KAsian ? MAP_COLOR_RATE : MAP_COLOR_COUNT;
+        legendLabel.text = props.showPer10KAsian ? 
+            t("incident_map.count_10k_asian") : 
+            t("incident_map.incident_count");
+        
+        legend.data = generateLegendData(colorMap);
+        };
 
     const updateMobileLegend = (legend) => {
         if (!legend) return;
@@ -267,49 +249,12 @@ const IncidentMap = (props) => {
         legendLabel.focusable = false;
         legendLabel.cursorOverStyle = am4core.MouseCursorStyle.default;
 
-        if (!props.showPer10KAsian) {
-            legendLabel.text = t("incident_map.incident_count");
-
-            legend.data = [{
-                "name": ">= 10",
-                "fill": "#FFF500"
-            }, {
-                "name": "5-10",
-                "fill": "#908B09"
-            }, {
-                "name": "2-5",
-                "fill": "#AEAEAE"
-            },
-            {
-                "name": "1",
-                "fill": "#5C5C5C"
-            },
-            {
-                "name": "0",
-                "fill": "#000000"
-            }];
-        }
-        else {
-            legendLabel.text = t("incident_map.count_10k_asian");
-            legend.data = [{
-                "name": ">= 1",
-                "fill": "#FFF500"
-            }, {
-                "name": "0.5-1",
-                "fill": "#908B09"
-            }, {
-                "name": "0.2-0.5",
-                "fill": "#AEAEAE"
-            },
-            {
-                "name": "0.1",
-                "fill": "#5C5C5C"
-            },
-            {
-                "name": "0",
-                "fill": "#000000"
-            }]
-        }
+        const colorMap = props.showPer10KAsian ? MAP_COLOR_RATE : MAP_COLOR_COUNT;
+        legendLabel.text = props.showPer10KAsian ? 
+            t("incident_map.count_10k_asian") : 
+            t("incident_map.incident_count");
+        
+        legend.data = generateLegendData(colorMap);
     };
     //componentDidMount
     useLayoutEffect(() => {
