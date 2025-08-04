@@ -282,7 +282,7 @@ const Home = () => {
 
  return (
     <>
-      {deviceSize < 786 && (
+      {deviceSize < 768 && (
         <>
           <div className="wrapper-floatting-button">
             <div
