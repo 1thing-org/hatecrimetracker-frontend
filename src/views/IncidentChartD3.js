@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { Card, CardBody} from 'reactstrap'
 import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
+import './IncidentChartD3.css';
 
 // Keys
 const KEY_NEWS = "news";
@@ -21,13 +22,106 @@ const COLOR_TOOLTIP_BG = "#283046";
 
 const IncidentChartD3 = ({ 
     rawTimeSeriesData,
-    initialViewMode = VIEW_MODE_MONTHLY,
     showSelfReport,
     state,
-    isFirstLoadData 
+    isFirstLoadData,
+    viewMode = VIEW_MODE_MONTHLY,
+    setViewMode
 }) => {
   const chartRef = useRef();
-  const [viewMode, setViewMode] = useState(initialViewMode);
+
+  // Update chart legends for both desktop and mobile
+  const updateChartLegend = () => {
+    // Desktop legend (vertical)
+    const legendContainer = d3.select("#chart-legend-container");
+    legendContainer.selectAll("*").remove();
+
+    // Mobile legend (horizontal)
+    const mobileLegendContainer = d3.select("#chart-legend-mobile");
+    mobileLegendContainer.selectAll("*").remove();
+
+    const legendData = [
+      {
+        name: "News Reports",
+        color: viewMode === VIEW_MODE_MONTHLY ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY
+      },
+      {
+        name: "Self-reported", 
+        color: COLOR_SELF_REPORT
+      }
+    ];
+
+    // Create desktop legend (vertical)
+    if (!legendContainer.empty()) {
+      const desktopWrapper = legendContainer
+        .append("div")
+        .style("margin-top", "1rem");
+
+      const desktopItems = desktopWrapper
+        .selectAll(".legend-item")
+        .data(legendData)
+        .enter()
+        .append("div")
+        .attr("class", "legend-item")
+        .style("display", "flex")
+        .style("align-items", "center")
+        .style("margin-bottom", "15px")
+        .style("margin-left", "1rem");
+
+      desktopItems
+        .append("div")
+        .style("width", "20px")
+        .style("height", "17px")
+        .style("background-color", d => d.color)
+        .style("margin-right", "8px")
+        .style("margin-left", "1rem")
+        .style("border-radius", "2px");
+
+      desktopItems
+        .append("span")
+        .text(d => d.name)
+        .style("color", "white")
+        .style("font-size", "13px")
+        .style("white-space", "nowrap");
+    }
+
+    // Create mobile legend (horizontal)
+    if (!mobileLegendContainer.empty()) {
+      const mobileWrapper = mobileLegendContainer
+        .append("div")
+        .style("display", "flex")
+        .style("align-items", "flex-start")
+        .style("justify-content", "center")
+        .style("flex-wrap", "wrap")
+        .style("gap", "16px");
+
+      const mobileItems = mobileWrapper
+        .selectAll(".mobile-legend-item")
+        .data(legendData)
+        .enter()
+        .append("div")
+        .attr("class", "mobile-legend-item")
+        .style("display", "flex")
+        .style("flex-direction", "row")
+        .style("align-items", "center")
+        .style("margin-right", "16px");
+
+      mobileItems
+        .append("div")
+        .style("width", "17px")
+        .style("height", "14px")
+        .style("background-color", d => d.color)
+        .style("margin-right", "8px")
+        .style("border-radius", "2px");
+
+      mobileItems
+        .append("span")
+        .text(d => d.name)
+        .style("color", "white")
+        .style("font-size", "13px")
+        .style("white-space", "nowrap");
+    }
+  };
 
   // Data formatting
   const formatChartData = (rawData, viewMode) => {
@@ -61,9 +155,10 @@ const IncidentChartD3 = ({
     // Early return only for truly invalid data
     if (!chartData) return;
 
-    // Set chart dimension
+    // Set chart dimension - make it responsive to container width
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
-    const width = 800 - margin.left - margin.right;
+    const containerWidth = chartRef.current.offsetWidth || 600; // Get actual container width
+    const width = Math.min(750, containerWidth) - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
 
     // Initialize svg
@@ -185,10 +280,15 @@ const IncidentChartD3 = ({
         
     }, [chartData, viewMode, showSelfReport]);
 
+  // Update legend when viewMode or showSelfReport changes
+  useEffect(() => {
+    updateChartLegend();
+  }, [viewMode, showSelfReport]);
+
   return (
     <Card>
         <CardBody>
-        <div className="recharts-wrapper">
+        <div className="incident-chart">
           {isAllZero && !isFirstLoadData ? (
           <>
             <p className="add-data-button">
@@ -208,8 +308,9 @@ const IncidentChartD3 = ({
           </>
         ) : null}
           <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
-          <TimeToggle viewMode={viewMode} setViewMode={setViewMode}
-          />
+          <div className="desktop-time-toggle-container">
+            <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+          </div>
       </div>
     </CardBody>
     </Card>

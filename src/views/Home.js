@@ -35,6 +35,7 @@ import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
+import TimeToggle from "./components/time-toggle/TimeToggle";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +55,7 @@ const Home = () => {
   const support_languages = [];
   // TODO: Future PR - implement self-report toggle functionality  
   const [showSelfReport, setShowSelfReport] = useState(false);
+  const [viewMode, setViewMode] = useState("monthly");
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
     support_languages.push({
@@ -280,7 +282,7 @@ const Home = () => {
 
  return (
     <>
-      {deviceSize < 786 && (
+      {deviceSize < 768 && (
         <>
           <div className="wrapper-floatting-button">
             <div
@@ -308,19 +310,17 @@ const Home = () => {
       <Head />
       <UILoader blocking={loading}>
         <div>
-          <Container className="header">
-            <Row className="navbar align-items-center">
-              <Col xs="12" sm="12" md="8">
+          <div className="header">
+            <div className="navbar">
+               <div className="title-section">
                 <p className="title">
                   <img src={logo} alt="logo" className="logo" />{" "}
                   {t("website.name")}
                 </p>
-              </Col>
+               </div>
 
-              <Col xs="12" sm="12" md="4">
-                <div className="OneRowItem right-controls d-flex align-items-center justify-content-md-end justify-content-xs-between justify-content-sm-between py-1">                      
+               <div className="controls-section">                      
                   <ReportIncident />
-                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <a
                     href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
                     target="_blank"
@@ -328,7 +328,6 @@ const Home = () => {
                   >
                     {t("contact_us")}
                   </a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <SelectPicker
                     data={support_languages}
                     searchable={false}
@@ -339,9 +338,10 @@ const Home = () => {
                     onChange={(value) => setSelectedLang(value)}
                   />
                 </div>
-              </Col>
-            </Row> 
-          </Container>
+            </div>
+            </div> 
+         </div>
+
      
           <Row className="match-height">
             <Col xl="8" lg="6" md="12" className="left-panel">
@@ -367,16 +367,17 @@ const Home = () => {
                     </Col>
                   </Row>
                 </FormGroup>
-                <SelfReportToggle
-                isOn={showSelfReport}
-                handleToggle={setShowSelfReport}
-              />
-                <IncidentChartD3
-                  rawTimeSeriesData={incidentTimeSeries}
-                  showSelfReport={showSelfReport}
-                  state={selectedState}
-                  isFirstLoadData={isFirstLoadData}
-                />
+                
+                <div className="incident-controls">
+                  <div className="incident-count-title">
+                    <h4 style={{ color: 'white'}}>{incidents.length} incidents have been reported</h4>
+                  </div>
+                  <SelfReportToggle
+                    isOn={showSelfReport}
+                    handleToggle={setShowSelfReport}
+                  />
+                </div>
+                
                 <div className="floating-social-media">
                   <SocialMedia
                     size={32}
@@ -385,13 +386,70 @@ const Home = () => {
                     isShare={false}
                   />
                 </div>
-                <IncidentMap
-                  mapData={incidentAggregated}
-                  selectedState={selectedState}
-                  lang={i18n.language}
-                  showPer10KAsian={isShowPer10kAsian}
-                  stateToggled={stateToggled}
-                />
+                <div className="map-section">
+                  {/* Mobile: Geography title above everything */}
+                  <div className="mobile-label-title">
+                    <h3 className="label">Geography</h3>
+                  </div>
+                  
+                  <div className="map-content">
+                    {/* Desktop: Geography + Legend grouped */}
+                    <div className="map-legend-wrapper">
+                      <div className="desktop-label-title">
+                        <h3 className="label">Geography</h3>
+                      </div>
+                      <div id="map-legend-container" className="map-legend" />
+                    </div>
+                    
+                    <div className="map-container">
+                      <IncidentMap
+                      mapData={incidentAggregated}
+                      selectedState={selectedState}
+                      lang={i18n.language}
+                      showPer10KAsian={isShowPer10kAsian}
+                      stateToggled={stateToggled}
+                    />
+                    </div>
+                  </div>
+                  {/* Mobile: Legend below map */}
+                  <div className="mobile-legend-wrapper">
+                    <div id="map-legend-mobile" className="map-legend-mobile" />
+                  </div>
+                </div>
+          
+                <div className="chart-section">
+                  {/* Mobile: Trend title and TimeToggle in same line */}
+                  <div className="mobile-chart-header">
+                    <h3 className="label">Trend</h3>
+                    <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+                  </div>
+                  
+                  <div className="chart-content">
+                    {/* Desktop: Trend + Legend grouped */}
+                    <div className="chart-legend-wrapper">
+                      <div className="desktop-label-title">
+                        <h3 className="label">Trend</h3>
+                      </div>
+                      <div id="chart-legend-container" className="chart-legend" />
+                    </div>
+                    
+                    <div className="chart-container">
+                      <IncidentChartD3
+                        rawTimeSeriesData={incidentTimeSeries}
+                        showSelfReport={showSelfReport}
+                        state={selectedState}
+                        isFirstLoadData={isFirstLoadData}
+                        viewMode={viewMode}
+                        setViewMode={setViewMode}
+                      />
+                    </div>
+                  </div>
+                  {/* Mobile: Legend below map */}
+                  <div className="mobile-legend-wrapper">
+                    <div id="chart-legend-mobile" className="chart-legend-mobile" />
+                  </div>
+                </div>
+                
                 <IncidentCountTable
                   title={"Incident Count by State"}
                   data={incidentAggregated}
@@ -411,7 +469,7 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
-        </div>
+
         <div className="footer-wrapper">
           <div className="footer">
           <Row>
