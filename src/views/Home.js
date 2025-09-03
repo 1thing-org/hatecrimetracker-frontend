@@ -331,11 +331,6 @@ const Home = () => {
             setSelectedLang={setSelectedLang}
             t={t}
           />
-           
-       
-      
-
-     
           <Row className="match-height">
             <Col xl="8" lg="6" md="12" className="left-panel">
               <div className="left-panel-wrapper">

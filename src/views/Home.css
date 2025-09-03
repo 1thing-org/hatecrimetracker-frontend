@@ -272,7 +272,6 @@
     margin-left: 3.5rem;
   }
 
-
   .desktop-label-title {
     display: none;
   }
@@ -292,6 +291,28 @@
     margin: 1.5rem 0 0.2rem 0;
     position: relative !important;
     z-index: 100 !important;
+  }
+  
+  /* Align spaces when location and date range stacked */
+  .row-offset .OneRowItem {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .row-offset .OneRowItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  .row-offset .OneRowItem .SimpleLabel {
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    flex: 1;
   }
 }
 
@@ -402,14 +423,6 @@
     width: 100%;
   }
   
-  .rs-picker-toggle-wrapper {
-    width: 16rem;
-  }
-  
-  .SimpleLabel {
-    margin-top: 1rem;
-  }
-  
   .wrapper-floatting-button {
     top: 24%;
   }
@@ -427,6 +440,60 @@
 @media (max-width: 768px) {
   .floating-social-media {
     display: none;
+  }
+  
+  /* Align location and date range when stacking */
+  .row-offset .OneRowItem {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .row-offset .OneRowItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  
+  .row-offset .OneRowItem .SimpleLabel {
+    display: block !important;
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 0.5rem; 
+    font-weight: 500;
+    color: white;
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    flex: 0 1 auto;
+    max-width: 280px;
+  }
+}
+
+/* Smaller Mobile: Under 600px */
+@media (max-width: 600px) {
+  .row-offset .OneRowItem .SimpleLabel {
+    margin-right: 0.3rem; 
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    max-width: 240px; /* Smaller boxes */
+  }
+}
+
+/* Very Small Mobile: Under 480px */
+@media (max-width: 480px) {
+  .row-offset .OneRowItem .SimpleLabel {
+    margin-right: 0rem; 
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    max-width: 200px; /* Even smaller boxes */
   }
 }
 
