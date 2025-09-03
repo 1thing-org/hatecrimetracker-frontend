@@ -22,14 +22,22 @@
   padding-left: 0 !important;
   padding-right: 0 !important;
   justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .title-section {
   margin-right: auto;
+  flex: 1 1 auto; 
+  min-width: 0;  
 }
 
 .title {
   font-size: clamp(1rem, 2.5vw, 2rem);
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 
 .controls-section {
@@ -409,6 +417,10 @@
   .floating-button-bottom {
     top: 33%;
   }
+
+  .navbar .title {
+    font-size: 20px !important;
+  }
 }
 
 /* Small Mobile: Under 768px */
@@ -426,5 +438,8 @@
   
   .floating-button-bottom {
     top: 33%;
+  }
+  .navbar .title {
+    font-size: 14px !important;
   }
 }

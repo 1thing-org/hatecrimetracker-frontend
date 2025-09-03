@@ -22,7 +22,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getValidState, isObjEmpty } from "../utility/Utils";
 import { useCookies } from "react-cookie";
 import { getBrowserLang, SUPPORTED_LANGUAGES } from "../utility/Languages";
-import { SelectPicker } from "rsuite";
 import { useSearchParams } from "react-router-dom";
 import Head from "./components/head";
 import { useTranslation } from "react-i18next";
@@ -36,6 +35,8 @@ import "../assets/scss/charts/recharts.scss";
 import IncidentChartD3 from "./IncidentChartD3";
 import SelfReportToggle from "./components/self-report-toggle/SelfReportToggle";
 import TimeToggle from "./components/time-toggle/TimeToggle";
+import TopNavbar from "./components/navbar/TopNavbar";
+import MobileMenu from "./components/navbar/MobileMenu";
 
 const Home = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -81,7 +82,9 @@ const Home = () => {
   const [incidentAggregated, setIncidentAggregated] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const setSelectedLang = (lang_code) => {
+    console.log('Setting language to:', lang_code);
     setCookie("lang", lang_code);
     setSelectedLangCode(lang_code);
   };
@@ -282,7 +285,7 @@ const Home = () => {
 
  return (
     <>
-      {deviceSize < 768 && (
+      {deviceSize < 786 && (
         <>
           <div className="wrapper-floatting-button">
             <div
@@ -309,38 +312,28 @@ const Home = () => {
       )}
       <Head />
       <UILoader blocking={loading}>
-        <div>
           <div className="header">
-            <div className="navbar">
-               <div className="title-section">
-                <p className="title">
-                  <img src={logo} alt="logo" className="logo" />{" "}
-                  {t("website.name")}
-                </p>
-               </div>
-
-               <div className="controls-section">                      
-                  <ReportIncident />
-                  <a
-                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                    target="_blank"
-                    className="contact_us"
-                  >
-                    {t("contact_us")}
-                  </a>
-                  <SelectPicker
-                    data={support_languages}
-                    searchable={false}
-                    cleanable={false}
-                    defaultValue={selectedLangCode}
-                    style={{ width: 120}}
-                    className={"rs-theme-dark no-border-lang-picker"}
-                    onChange={(value) => setSelectedLang(value)}
-                  />
-                </div>
+            <TopNavbar
+              deviceSize={deviceSize}
+              selectedLangCode={selectedLangCode}
+              supportLanguages={support_languages}
+              setSelectedLang={setSelectedLang}
+              t={t}
+              onOpenMenu={() => setIsMobileMenuOpen(true)}
+            />
             </div>
-            </div> 
-         </div>
+
+            <MobileMenu
+            isOpen={isMobileMenuOpen && deviceSize <= 786}
+            onClose={() => setIsMobileMenuOpen(false)}
+            supportLanguages={support_languages}
+            selectedLangCode={selectedLangCode}
+            setSelectedLang={setSelectedLang}
+            t={t}
+          />
+           
+       
+      
 
      
           <Row className="match-height">

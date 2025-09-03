@@ -9,7 +9,6 @@ export function getIncidents( startDate, endDate, state = null, lang = 'en', sel
         "&end=" + moment(endDate).format("YYYY-MM-DD") +
         (self_report_status? "&self_report_status=" + self_report_status:"") +
         "&type=" + type +
-        "&lang=" + lang +
         (state ? "&state=" + state : "") +
         (skip_cache ? "&skip_cache=true" : "") +
         "&page_size=" + page_size;
