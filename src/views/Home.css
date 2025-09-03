@@ -155,7 +155,7 @@
 
 .wrapper-floatting-button {
   position: fixed;
-  top: 24%;
+  top: 35%;
   right: 0;
   width: 2.5rem;
   z-index: 10;
@@ -424,7 +424,7 @@
   }
   
   .wrapper-floatting-button {
-    top: 24%;
+    top: 35%;
   }
   
   .floating-button-bottom {
@@ -434,13 +434,16 @@
   .navbar .title {
     font-size: 20px !important;
   }
+  .floating-social-media {
+    display: none;
+  }
+
+  
 }
 
 /* Small Mobile: Under 768px */
 @media (max-width: 768px) {
-  .floating-social-media {
-    display: none;
-  }
+  
   
   /* Align location and date range when stacking */
   .row-offset .OneRowItem {
@@ -495,17 +498,34 @@
   .row-offset .OneRowItem .rs-picker-default {
     max-width: 200px; /* Even smaller boxes */
   }
-}
+  .navbar .title {
+    font-size: 18px !important;
+  }
+  .incident-count-title h4 {
+    font-size: 19px;
+  }
 
-/* Extra Small Mobile: Under 376px */
-@media (max-width: 376px) {
   .wrapper-floatting-button {
-    top: 25%;
+    top: 37%;
   }
   
   .floating-button-bottom {
     top: 33%;
   }
+
+  .label {
+    font-size: 18px;
+  }
+
+  .mobile-chart-header .label {
+    font-size: 18px;
+  }
+
+}
+
+/* Extra Small Mobile: Under 376px */
+@media (max-width: 376px) {
+
   .navbar .title {
     font-size: 14px !important;
   }

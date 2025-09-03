@@ -29,7 +29,6 @@ import { Trans } from "react-i18next";
 import "./Home.css";
 import SocialMedia from "./components/social-media";
 import SocialMediaPopup from "./components/social-media-pop-up";
-import ReportIncident from "./components/report-incident";
 import "../assets/scss/charts/recharts.scss";
 // TODO: remove old chart lib when finalized
 import IncidentChartD3 from "./IncidentChartD3";
