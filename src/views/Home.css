@@ -15,39 +15,6 @@
   box-sizing: border-box !important;
 }
 
-.navbar {
-  padding: 1.5rem 0 1rem 0;
-  background-color: #1A1D24;
-  width: 100vw;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  justify-content: space-between;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-
-.title-section {
-  margin-right: auto;
-  flex: 1 1 auto; 
-  min-width: 0;  
-}
-
-.title {
-  font-size: clamp(1rem, 2.5vw, 2rem);
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-.controls-section {
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  margin-right: 2rem;
-  flex-shrink: 0;
-}
-
 .right-controls {
   gap: 1.5rem;
 }
@@ -431,14 +398,9 @@
     top: 33%;
   }
 
-  .navbar .title {
-    font-size: 20px !important;
-  }
   .floating-social-media {
     display: none;
   }
-
-  
 }
 
 /* Small Mobile: Under 768px */
@@ -498,9 +460,7 @@
   .row-offset .OneRowItem .rs-picker-default {
     max-width: 200px; /* Even smaller boxes */
   }
-  .navbar .title {
-    font-size: 18px !important;
-  }
+
   .incident-count-title h4 {
     font-size: 19px;
   }
@@ -523,10 +483,3 @@
 
 }
 
-/* Extra Small Mobile: Under 376px */
-@media (max-width: 376px) {
-
-  .navbar .title {
-    font-size: 14px !important;
-  }
-}

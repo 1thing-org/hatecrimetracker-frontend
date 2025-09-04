@@ -1,5 +1,6 @@
 import { SelectPicker } from "rsuite";
 import ReportIncident from "../report-incident";
+import { useEffect } from "react";
 import "./Navbar.css";
 
 const MobileMenu = ({
@@ -10,6 +11,23 @@ const MobileMenu = ({
   setSelectedLang,
   t,
 }) => {
+  // Handle ESC key to close menu
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
     <div className="mobile-menu-backdrop" onClick={onClose}>
@@ -25,7 +43,7 @@ const MobileMenu = ({
           </div>
           <div className="mobile-menu-item">
             <a
-              href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+              href="https://docs.google.com/forms/d/1pWp89Y6EThMHtml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
               target="_blank"
               className="contact_us"
             >

@@ -239,11 +239,19 @@ const Home = () => {
   }, [dateRange]);
 
   useEffect(() => {
-    const resizeW = () => changeDeviceSize(window.innerWidth);
+    const resizeW = () => {
+      const newSize = window.innerWidth;
+      changeDeviceSize(newSize);
+      
+      // Auto-close mobile menu when resizing to desktop
+      if (newSize > 786 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
 
-    window.addEventListener("resize", resizeW); // Update the width on resize
+    window.addEventListener("resize", resizeW);
     return () => window.removeEventListener("resize", resizeW);
-  });
+  }, [isMobileMenuOpen]);
   const colors = {
     primary: {
       main: "#FEF753",

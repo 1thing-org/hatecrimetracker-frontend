@@ -1,3 +1,36 @@
+.navbar {
+  padding: 1.5rem 0 1rem 0;
+  background-color: #1A1D24;
+  width: 100vw;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.title-section {
+  margin-right: auto;
+  flex: 1 1 auto; 
+  min-width: 0;  
+}
+
+.title {
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.controls-section {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-right: 2rem;
+  flex-shrink: 0;
+}
+
 .hamburger-button {
   display: inline-flex;
   background: transparent;
@@ -56,7 +89,7 @@
   z-index: 2200 !important;
 }
 
-/* Global safeguard: make all RSuite picker popups stack above overlays */
+/* Make all RSuite picker popups stack above overlays */
 .rs-picker-popup,
 .rs-picker-select-menu,
 .rs-picker-date-menu,
@@ -73,4 +106,24 @@
   display: flex;
   align-items: center;
   margin-left: -0.2rem;
+}
+
+/* Mobile Navigation: Under 786px */
+@media (max-width: 786px) {
+  .navbar .title {
+    font-size: 20px;
+  }
+}
+
+/* Very Small Mobile: Under 480px */
+@media (max-width: 480px) {
+  .navbar .title {
+    font-size: 18px; 
+  }
+}
+
+@media (max-width: 376px) {
+  .navbar .title {
+    font-size: 14px;
+  }
 }

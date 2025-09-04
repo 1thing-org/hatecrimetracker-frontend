@@ -115,12 +115,8 @@ const IncidentMap = (props) => {
 
     // Update legends when they're first created
     useEffect(() => {
-        if (mapLegend) {
-            updateMapLegend(mapLegend);
-        }
-        if (mobileLegend) {
-            updateMobileLegend(mobileLegend);
-        }
+        updateMapLegend(mapLegend);
+        updateMobileLegend(mobileLegend);
     }, [mapLegend, mobileLegend])
 
     // NOTE:
