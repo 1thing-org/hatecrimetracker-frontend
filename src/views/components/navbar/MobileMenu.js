@@ -43,7 +43,7 @@ const MobileMenu = ({
           </div>
           <div className="mobile-menu-item">
             <a
-              href="https://docs.google.com/forms/d/1pWp89Y6EThMHtml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+              href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
               target="_blank"
               className="contact_us"
             >
