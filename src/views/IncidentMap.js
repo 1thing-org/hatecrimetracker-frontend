@@ -3,7 +3,7 @@ import * as am4core from '@amcharts/amcharts4/core'
 import * as am4maps from '@amcharts/amcharts4/maps'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import { Card, CardBody, CardHeader } from 'reactstrap'
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { getStateIncidentPerM, formatIncidentRate, forEachState, getStateIncidentPer10kAsian } from '../utility/Utils'
 import { useTranslation } from 'react-i18next';
 import './IncidentMap.css'
@@ -24,9 +24,7 @@ const IncidentMap = (props) => {
     const [mapPolygonSeries, setMapPolygonSeries] = useState()
     const [mapLegend, setMapLegend] = useState()
     const [mobileLegend, setMobileLegend] = useState()
-    const [polygonTemplate, setPolygonTemplate] = useState()
     const [selectedState, setSelectedState] = useState()
-    const [maxValue, setMaxValue] = useState(0)
 
 
 
@@ -63,7 +61,6 @@ const IncidentMap = (props) => {
         //calc max value from the input map data
         let max = 0
         Object.values(mapStatistics).forEach((value) => max = value > max ? value : max);
-        setMaxValue(max);
         let data = []
         forEachState((state, name) => {
             const count = mapStatistics[state];
@@ -326,7 +323,6 @@ const IncidentMap = (props) => {
         polygonTemplate.strokeOpacity = 1
         
         setMapPolygonSeries(polygonSeries)
-        setPolygonTemplate(polygonTemplate)
 
         return () => {
             map.dispose()

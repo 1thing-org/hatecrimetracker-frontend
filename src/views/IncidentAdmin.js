@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
-import { auth } from "../firebase";
 import { UserContext } from "../providers/UserProvider";
 import * as incidentsService from "../services/incidents";
 import IncidentTable from './IncidentTable';
@@ -121,7 +120,6 @@ const IncidentAdminPage = () => {
     </Button>
     </div>);
   }
-  const { photoURL, displayName, email, isadmin } = user;
 
   // statesAbbreviation stores all abbreviation of US states
   const statesAbbreviation = [];
@@ -139,19 +137,6 @@ const IncidentAdminPage = () => {
 
   return (
     <div className="mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
-      {/* <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
-        <div
-          style={{
-            background: `url(${photoURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
-            backgroundSize: "cover",
-            height: "64px",
-            width: "64px"
-          }}
-          className="border border-blue-300 col-2"
-        ></div>
-        <p className="text-2xl font-semibold">Name: {displayName} <br /> Email: {email}</p>
-        <p><Link onClick={() => auth.signOut()} to="/">Sign Out</Link></p>
-      </div> */}
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
         <h1>{isAddMode() ? 'Add Incident' : 'Edit Incident'}</h1>
         <div className="row">

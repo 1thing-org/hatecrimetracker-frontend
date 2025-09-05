@@ -63,7 +63,7 @@ const IncidentList = (props) => {
     }, [props.data])
     const getTitle = (incident) => {
         if (incident?.title_translate) {
-            for (const [key, value] of Object.entries(incident.title_translate)) {
+            for (const [, value] of Object.entries(incident.title_translate)) {
                 return value;
             }
         }
@@ -71,7 +71,7 @@ const IncidentList = (props) => {
     }
     const getAbstract = (incident) => {
         if (incident?.abstract_translate) {
-            for (const [key, value] of Object.entries(incident.abstract_translate)) {
+            for (const [, value] of Object.entries(incident.abstract_translate)) {
                 return value;
             }
         }
@@ -134,17 +134,18 @@ const IncidentList = (props) => {
 
             <div className='incident-list'>
                 {
-                    props.data.map(function (d, idx) {
-                        if (searchTerm == "" && visibleCount >= visibleLimit) return;
-                        if (searchTerm == "" || getTitle(d).toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    props.data.map(function(d, idx) {
+                        if (searchTerm === "" && visibleCount >= visibleLimit) return "";
+                        if (searchTerm === "" || getTitle(d).toLowerCase().includes(searchTerm.toLowerCase()) ||
                             getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())) {
                             visibleCount++;
                             return (
                                 <div className='incident' key={idx}>
-                                    <a className='incident-title' onClick={() => {
-                                        setModalData(d);
-                                        setModalIsOpen(true);
-                                    }}>{getTitle(d)}</a>
+                                    <a className='incident-title'
+                                        onClick={() => {
+                                            setModalData(d);
+                                            openModal();
+                                        }}>{getTitle(d)}</a>
                                     {maybeGetHelpIcons(d)}
                                     <p className='location-time'>
                                         {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
@@ -153,6 +154,7 @@ const IncidentList = (props) => {
                                 </div>
                             )
                         }
+                        return "";
                     })
                 }
             </div>
@@ -199,7 +201,7 @@ const IncidentList = (props) => {
                     </div>
                 </div>)
                 : null}
-            {visibleLimit < props.data.length && searchTerm == "" ?
+            {visibleLimit < props.data.length && searchTerm === "" ?
                 (<div align='center'><Button className='btn-loadmore' size="sm" onClick={() => setVisibleLimit(visibleLimit + INCR_COUNT)}>{t('load_more')}.</Button></div>)
                 : null}
         </div>

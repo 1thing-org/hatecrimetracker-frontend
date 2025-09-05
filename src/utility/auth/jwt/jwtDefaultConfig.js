@@ -1,5 +1,5 @@
 // ** Auth Endpoints
-export default {
+const jwtDefaultConfig = {
   loginEndpoint: '/jwt/login',
   registerEndpoint: '/jwt/register',
   refreshEndpoint: '/jwt/refresh-token',
@@ -13,3 +13,5 @@ export default {
   storageTokenKeyName: 'accessToken',
   storageRefreshTokenKeyName: 'refreshToken'
 }
+
+export default jwtDefaultConfig;
