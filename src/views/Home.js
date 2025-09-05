@@ -1,12 +1,10 @@
 import UILoader from "./components/ui-loader";
-import logo from "../assets/images/logo/logo.png";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
   Col,
-  Container,
   FormGroup,
   Label,
   Row,
@@ -38,7 +36,7 @@ import TopNavbar from "./components/navbar/TopNavbar";
 import MobileMenu from "./components/navbar/MobileMenu";
 
 const Home = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -126,7 +124,7 @@ const Home = () => {
   };
 
   const loadData = (updateMap = false) => {
-    if (dateRange?.length != 2) return;
+    if (dateRange?.length !== 2) return;
 
     setLoading(true);
     
@@ -182,7 +180,7 @@ const Home = () => {
   };
 
   const isParameterChanged = () => {
-    if (dateRange?.length != 2) {
+    if (dateRange?.length !== 2) {
       return true;
     }
     const cururl = generateUrl(
@@ -227,7 +225,6 @@ const Home = () => {
     }
   }, [location]);
   useEffect(() => {
-    // console.log("selectedState:" + selectedState)
     changeLanguage(selectedLangCode);
     loadData();
     saveHistory();
@@ -252,11 +249,6 @@ const Home = () => {
     window.addEventListener("resize", resizeW);
     return () => window.removeEventListener("resize", resizeW);
   }, [isMobileMenuOpen]);
-  const colors = {
-    primary: {
-      main: "#FEF753",
-    },
-  };
 
   // handle date change
   function handleDateRangeSelect(ranges) {
@@ -266,7 +258,7 @@ const Home = () => {
   }
 
   const stateToggled = (state) => {
-    const newState = state == selectedState ? null : state;
+    const newState = state === selectedState ? null : state;
     setSelectedState(newState);
   };
 

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
+import { Card, CardBody } from 'reactstrap';
 import { formatIncidentRate, getStateIncidentPerM, getStateIncidentPer10kAsian, stateFullName, statePopulation, asianPopulation } from '../utility/Utils';
 import { useTranslation, getI18n} from 'react-i18next';
 
@@ -26,7 +26,6 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
     const { t } = useTranslation();
     const [incidentCountData, setIncidentCountData] = useState(toIncidentCount(data));
     const [currState, setCurrState] = useState(selectedState);
-    const [totalCases, setTotalCases] = useState(0);
 
     const columns = [
         {
@@ -76,11 +75,6 @@ const IncidentCountTable = ({ data, title, selectedState, stateToggled }) => {
     //** ComponentDidMount
     useEffect(() => {
         setIncidentCountData(toIncidentCount(data));
-        let total = 0;
-        for (const state in data) {
-            total += data[state];
-        };
-        setTotalCases(total);
     }, [data])
     useEffect(() => {
         setCurrState(selectedState);

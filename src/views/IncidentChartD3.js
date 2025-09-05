@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
 import { Card, CardBody} from 'reactstrap'
@@ -203,12 +203,6 @@ const IncidentChartD3 = ({
       ])
       .nice()
       .range([height, 0]);
-
-    // color for each key
-    const color = d3
-      .scaleOrdinal()
-      .domain(keys)
-      .range([COLOR_NEWS_MONTHLY, COLOR_SELF_REPORT]);
 
     // Draw axes
     svg
