@@ -15,31 +15,6 @@
   box-sizing: border-box !important;
 }
 
-.navbar {
-  padding: 1.5rem 0 1rem 0;
-  background-color: #1A1D24;
-  width: 100vw;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  justify-content: space-between;
-}
-
-.title-section {
-  margin-right: auto;
-}
-
-.title {
-  font-size: clamp(1rem, 2.5vw, 2rem);
-}
-
-.controls-section {
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  margin-right: 2rem;
-  flex-shrink: 0;
-}
-
 .right-controls {
   gap: 1.5rem;
 }
@@ -147,7 +122,7 @@
 
 .wrapper-floatting-button {
   position: fixed;
-  top: 24%;
+  top: 35%;
   right: 0;
   width: 2.5rem;
   z-index: 10;
@@ -264,7 +239,6 @@
     margin-left: 3.5rem;
   }
 
-
   .desktop-label-title {
     display: none;
   }
@@ -284,6 +258,28 @@
     margin: 1.5rem 0 0.2rem 0;
     position: relative !important;
     z-index: 100 !important;
+  }
+  
+  /* Align spaces when location and date range stacked */
+  .row-offset .OneRowItem {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .row-offset .OneRowItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  .row-offset .OneRowItem .SimpleLabel {
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    flex: 1;
   }
 }
 
@@ -394,37 +390,96 @@
     width: 100%;
   }
   
-  .rs-picker-toggle-wrapper {
-    width: 16rem;
-  }
-  
-  .SimpleLabel {
-    margin-top: 1rem;
-  }
-  
   .wrapper-floatting-button {
-    top: 24%;
+    top: 35%;
   }
   
   .floating-button-bottom {
     top: 33%;
   }
-}
 
-/* Small Mobile: Under 768px */
-@media (max-width: 768px) {
   .floating-social-media {
     display: none;
   }
 }
 
-/* Extra Small Mobile: Under 376px */
-@media (max-width: 376px) {
+/* Small Mobile: Under 768px */
+@media (max-width: 768px) {
+  
+  
+  /* Align location and date range when stacking */
+  .row-offset .OneRowItem {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .row-offset .OneRowItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  
+  .row-offset .OneRowItem .SimpleLabel {
+    display: block !important;
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 0.5rem; 
+    font-weight: 500;
+    color: white;
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    flex: 0 1 auto;
+    max-width: 280px;
+  }
+}
+
+/* Smaller Mobile: Under 600px */
+@media (max-width: 600px) {
+  .row-offset .OneRowItem .SimpleLabel {
+    margin-right: 0.3rem; 
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    max-width: 240px; /* Smaller boxes */
+  }
+}
+
+/* Very Small Mobile: Under 480px */
+@media (max-width: 480px) {
+  .row-offset .OneRowItem .SimpleLabel {
+    margin-right: 0rem; 
+  }
+  
+  .row-offset .OneRowItem .rs-picker-toggle-wrapper,
+  .row-offset .OneRowItem .rs-picker-default {
+    max-width: 200px; /* Even smaller boxes */
+  }
+
+  .incident-count-title h4 {
+    font-size: 19px;
+  }
+
   .wrapper-floatting-button {
-    top: 25%;
+    top: 37%;
   }
   
   .floating-button-bottom {
     top: 33%;
   }
+
+  .label {
+    font-size: 18px;
+  }
+
+  .mobile-chart-header .label {
+    font-size: 18px;
+  }
+
 }
+

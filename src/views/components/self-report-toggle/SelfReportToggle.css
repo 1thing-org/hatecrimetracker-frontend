@@ -4,6 +4,7 @@
   align-items: center;
   gap: 0.6rem;
   cursor: pointer;
+  width: fit-content;
 }
 
 .toggle-button {
@@ -74,4 +75,10 @@
 
 .label-off {
   color: white;
+}
+
+@media (max-width: 480px) {
+  .toggle-label {
+    font-size: 14px;
+  }
 }
