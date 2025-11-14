@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { stateFullName } from '../utility/Utils.js'
-import { Button, Card, CardBody, Badge, Row, Col, CardImg } from 'reactstrap'
+import { Button, Card, CardBody, Row, Col, CardImg } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
 import { Input } from 'rsuite';
 import donationIcon from '../assets/images/icons/donation.svg';
@@ -121,6 +121,8 @@ const IncidentList = (props) => {
 
     const [searchTerm, setSearchTerm] = useState("")
 
+
+
     return (
         <div>
             <Input
@@ -134,14 +136,23 @@ const IncidentList = (props) => {
 
             <div className='incident-list'>
                 {
-                    props.data.map(function(d, idx) {
-                        if (searchTerm === "" && visibleCount >= visibleLimit) return "";
-                        if (searchTerm === "" || getTitle(d).toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())) {
-                            visibleCount++;
+                     props.data.map((d, idx) => {
+                        const normalizedSearch = (searchTerm || "").toLowerCase();
 
-                    // attachments
-                    const attachments = Array.isArray(d.attachments) ? d.attachments : [];
+                        // title might be empty
+                        const title = (getTitle(d) || "").toLowerCase();
+                        const abstract = (getAbstract(d) || "").toLowerCase();
+
+                        const matchesSearch =
+                            normalizedSearch === "" ||
+                            title.includes(normalizedSearch) ||
+                            abstract.includes(normalizedSearch);
+
+                        if (!matchesSearch) return null;
+
+                        if (normalizedSearch === "" && visibleCount >= visibleLimit) return null;
+                        visibleCount++;
+    
                     const isUserReport = d.type === 'self_report';
                   
                     return (
@@ -149,11 +160,13 @@ const IncidentList = (props) => {
                         <Card className="border-0 shadow-sm mx-0">
                         <CardBody className="p-0">
                             {/* Source Tag */}
+                        {props.showSelfReport && (
                         <div>
                             <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
                                 {isUserReport ? 'User Reported' : 'News Reported'}
                             </span>
                         </div>
+                    )}
                             <a className='incident-title'
                                 onClick={() => {
                                 setModalData(d);
@@ -191,10 +204,10 @@ const IncidentList = (props) => {
                     <div className="incident-divider" />
                     </div>
                     )
-                }
-                        return "";
+              
                     })
                 }
+
             </div>
             <Modal
                 isOpen={modalIsOpen}
