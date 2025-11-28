@@ -36,32 +36,25 @@ const CustomTable = ({
               {data.map((item, index) => (
                 <tr key={index}>
                   {selectedTab !== 'news' && <td>{item.id}</td>}
-                  <td>{item.date || item.incident_time}</td>
-                  <td>{item.location || item.incident_location}</td>
-                  <td className="content-cell" title={item.abstract? item.abstract : ""}>
+                  <td>{item.incident_time}</td>
+                  <td>{item.incident_location}</td>
+                  <td className="content-cell">
                     {item.abstract
-                      ? `${item.abstract.slice(0, isSmallScreen ? 10 : 85)}...`
+                      ? item.abstract
                       : "Content not available"}
                   </td>
                   <td>
-                    <div className="file-icons-container">
-                      <a
-                        href={item.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="file-icon"
-                      >
-                        <img src="/path/to/document-icon.png" alt="Document" />
-                      </a>
-                      <a
-                        href={item.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="file-icon"
-                      >
-                        <img src="/path/to/document-icon.png" alt="Document" />
-                      </a>
-                    </div>
+                    {
+                      item.attachments && item.attachments.length > 0 ? (
+                        <div className="file-icons-container">
+                          {item.attachments.map((attachment, attIndex) => (
+                            <img src={attachment} alt={`Uploaded media ${attIndex + 1}`} key={attIndex} className="file-icon" />
+                          ))}
+                        </div>
+                      ) : (
+                         <div>No files Uploaded</div> 
+                      )
+                    }                      
                   </td>
                   <td>{item.status}</td>
                   <td>{item.reviewer}</td>
