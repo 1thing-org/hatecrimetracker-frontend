@@ -1,5 +1,5 @@
 // ** React Imports
-import { Suspense, useContext, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 
 // ** Utils
 import { useLayout } from '@hooks/useLayout'
@@ -40,7 +40,7 @@ const Router = () => {
     const LayoutPaths = []
 
     if (Routes) {
-      Routes.filter(route => {
+      Routes.forEach(route => {
         // ** Checks if Route layout or Default layout matches current layout
         if (route.layout === layout || (route.layout === undefined && DefaultLayout === layout)) {
           LayoutRoutes.push(route)
