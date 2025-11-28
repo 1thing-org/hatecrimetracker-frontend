@@ -451,7 +451,8 @@ const Home = () => {
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
                 <CardBody className="incident-list-card">
-                  <IncidentList data={incidents} />
+                  {/* Pass showSelfReport, so that when toggle on, news and self-report tag will show */}
+                  <IncidentList data={incidents} showSelfReport={showSelfReport} />
                 </CardBody>
               </Card>
             </Col>

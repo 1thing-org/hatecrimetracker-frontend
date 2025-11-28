@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { stateFullName } from '../utility/Utils.js'
-import { Button } from 'reactstrap'
+import { Button, Card, CardBody, Row, Col, CardImg } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
 import { Input } from 'rsuite';
 import donationIcon from '../assets/images/icons/donation.svg';
@@ -121,6 +121,8 @@ const IncidentList = (props) => {
 
     const [searchTerm, setSearchTerm] = useState("")
 
+
+
     return (
         <div>
             <Input
@@ -134,29 +136,78 @@ const IncidentList = (props) => {
 
             <div className='incident-list'>
                 {
-                    props.data.map(function(d, idx) {
-                        if (searchTerm === "" && visibleCount >= visibleLimit) return "";
-                        if (searchTerm === "" || getTitle(d).toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            getAbstract(d).toLowerCase().includes(searchTerm.toLowerCase())) {
-                            visibleCount++;
-                            return (
-                                <div className='incident' key={idx}>
-                                    <a className='incident-title'
+                     props.data.map((d, idx) => {
+                        const normalizedSearch = (searchTerm || "").toLowerCase();
+
+                        // title might be empty
+                        const title = (getTitle(d) || "").toLowerCase();
+                        const abstract = (getAbstract(d) || "").toLowerCase();
+
+                        const matchesSearch =
+                            normalizedSearch === "" ||
+                            title.includes(normalizedSearch) ||
+                            abstract.includes(normalizedSearch);
+
+                        if (!matchesSearch) return null;
+
+                        if (normalizedSearch === "" && visibleCount >= visibleLimit) return null;
+                        visibleCount++;
+    
+                    const isUserReport = d.type === 'self_report';
+                  
+                    return (
+                        <div className="incident-card" key={idx}>
+                        <Card className="border-0 shadow-sm mx-0">
+                        <CardBody className="p-0">
+                            {/* Source Tag */}
+                        {props.showSelfReport && (
+                        <div>
+                            <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
+                                {isUserReport ? 'User Reported' : 'News Reported'}
+                            </span>
+                        </div>
+                    )}
+                            <a className='incident-title'
+                                onClick={() => {
+                                setModalData(d);
+                                openModal();
+                                }}>{getTitle(d)}</a>
+                            {maybeGetHelpIcons(d)}
+                            <p className='location-time'>
+                                {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
+                            </p>
+                            <p className='description'>{getAbstract(d)}</p>
+                                {Array.isArray(d.attachments) && d.attachments.length > 0 && (
+                                <Row className="gx-2 gy-2 mt-2">
+                                    {d.attachments.map((url, i) => (
+                                    <Col xs="4" md="3" key={i}>
+                                        <CardImg
+                                        alt={`attachment-${i+1}`}
+                                        src={url}
+                                        style={{
+                                            aspectRatio: '1 / 1',
+                                            width: '100%',
+                                            objectFit: "cover",
+                                            cursor: "pointer"
+                                        }}
                                         onClick={() => {
                                             setModalData(d);
                                             openModal();
-                                        }}>{getTitle(d)}</a>
-                                    {maybeGetHelpIcons(d)}
-                                    <p className='location-time'>
-                                        {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
-                                    </p>
-                                    <p className='description'>{getAbstract(d)}</p>
-                                </div>
-                            )
-                        }
-                        return "";
+                                        }}
+                                        />
+                                    </Col>
+                                    ))}
+                                </Row>
+                                )}
+                        </CardBody>
+                    </Card>
+                    <div className="incident-divider" />
+                    </div>
+                    )
+              
                     })
                 }
+
             </div>
             <Modal
                 isOpen={modalIsOpen}
