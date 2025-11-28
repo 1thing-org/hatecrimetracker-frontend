@@ -61,7 +61,7 @@ const IncidentEdit = ({ incident }) => {
 	return (
 		<>
 			<div className="header-container">
-				<h5>Edit Incidents</h5>
+				<h5>Edit Self-reported Incidents</h5>
 			</div>
 			<div className="incident-edit-container">
 				<Form>
@@ -75,25 +75,33 @@ const IncidentEdit = ({ incident }) => {
 						<Col md={3}>
 							<FormGroup>
 								<Label for="incidentTime">Incident Time: </Label>
-								<Input type="text" name="incidentTime" id="incidentTime" value={incident.time} />
+								<Input type="text" name="incidentTime" id="incidentTime" value={incident.incident_time} />
 							</FormGroup>
 						</Col>
-						<Col md={3}>
+						<Col md={9}>
 							<FormGroup>
 								<Label for="location">Location:</Label>
-								<Input type="text" name="location" id="location" value={incident.location} />
-							</FormGroup>
-						</Col>
-						<Col md={6}>
-							<FormGroup>
-								<Label for="title">Title:</Label>
-								<Input type="text" name="title" id="title" value={incident.title} />
+								<Input type="text" name="location" id="location" value={incident.incident_location} />
 							</FormGroup>
 						</Col>
 					</Row>
 					<FormGroup>
 						<Label for="abstract">Abstract:</Label>
 						<Input className="textarea" type="textarea" name="abstract" id="abstract" value={incident.abstract} />
+					</FormGroup>
+					<FormGroup>
+						<Label for="exampleFile">Uploaded Files:</Label>
+						{
+							incident.attachments && incident.attachments.length > 0 ? (
+								<div className="file-icons-container">
+								{incident.attachments.map((attachment, attIndex) => (
+									<img src={attachment} alt={`Uploaded media ${attIndex + 1}`} key={attIndex} className="file-icon" />
+								))}
+								</div>
+							) : (
+								<div>No files Uploaded</div> 
+							)
+						}       
 					</FormGroup>
 					<FormGroup>
 						<Label for="exampleFile">File:</Label>
