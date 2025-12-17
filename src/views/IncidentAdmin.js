@@ -47,7 +47,7 @@ const IncidentAdminPage = () => {
   function onSubmit(incident) {
     incident.id = currIncidentId;
     incident.created_by = user.email;
-    incidentsService.createIncident(incident).then((incident_id) => {
+    incidentsService.upsertIncident(incident).then((incident_id) => {
       Swal.fire("The incident has been saved successfully!")
       setValue("title", "");
       setValue("incident_location", "");

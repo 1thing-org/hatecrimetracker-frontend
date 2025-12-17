@@ -47,16 +47,13 @@ export function upsertIncident(incident) {
     if ( !incident.incident_source ){
         incident.incident_source = "MANUAL";
     }
-    return axios.post(incidentAPIUrl, {incident:incident},
+    return axios.post(incidentAPIUrl, incident,
         {
             headers: {
                 "Access-Control-Allow-Origin": "false",
                 "strict-origin-when-cross-origin": "false"
             }
         }).then((response) => { return response.incident_id; });
-}
-export function createIncident(incident) {
-    return upsertIncident(incident);
 }
 
 export function deleteIncident(id) {

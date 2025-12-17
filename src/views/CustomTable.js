@@ -56,7 +56,7 @@ const CustomTable = ({
                       )
                     }                      
                   </td>
-                  <td>{item.status}</td>
+                  <td>{item.self_report_status}</td>
                   <td>{item.reviewer}</td>
                   <td>
                     <Button color="btn btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
