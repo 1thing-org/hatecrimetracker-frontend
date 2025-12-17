@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, Modal, ModalHeader, ModalBody } from "reactstrap";
+import * as incidentsService from "../services/incidents";
 import "./IncidentEdit.css";
 
 const IncidentEdit = ({ incident }) => {
+	const [localIncident, setLocalIncident] = useState({
+        ...incident,
+        self_report_status: incident.self_report_status || "new",
+    });
 	const [selectedFiles, setSelectedFiles] = useState(incident.files || []);
 	const [selectedPreviews, setSelectedPreviews] = useState([]);
-	const [status, setStatus] = useState("Pending");
 	const [modal, setModal] = useState(false);
 	const [previewFile, setPreviewFile] = useState(null);
 
 	const toggleModal = () => setModal(!modal);
 
-	const handleStatusChange = (event) => {
-		setStatus(event.target.value);
-	};
+	const handleSaveIncident = (event) => {
+		incidentsService.upsertIncident(localIncident)
+		.then((updatedIncident) => {
+			console.log("Incident updated:", updatedIncident);
+		})
+		.catch((error) => {
+			console.error("Error updating incident:", error);
+			alert("Failed to update incident. Please try again:" + error);
+		});
+	}
 
 	const handleFileChange = (event) => {
 		const files = Array.from(event.target.files);
@@ -68,33 +79,36 @@ const IncidentEdit = ({ incident }) => {
 					<Row form>
 						<FormGroup>
 							<Label for="incidentID">Incident ID: </Label>
-							<span> #{incident.id}</span>
+							<span> #{localIncident.id}</span>
 						</FormGroup>
 					</Row>
 					<Row form>
 						<Col md={3}>
 							<FormGroup>
 								<Label for="incidentTime">Incident Time: </Label>
-								<Input type="text" name="incidentTime" id="incidentTime" value={incident.incident_time} />
+								<Input type="text" name="incidentTime" id="incidentTime" value={localIncident.incident_time || ''}
+									onChange={(e) => setLocalIncident(prev => ({...prev, incident_time: e.target.value}))} />
 							</FormGroup>
 						</Col>
 						<Col md={9}>
 							<FormGroup>
 								<Label for="location">Location:</Label>
-								<Input type="text" name="location" id="location" value={incident.incident_location} />
+								<Input type="text" name="location" id="location" value={localIncident.incident_location || ''}
+									onChange={(e) => setLocalIncident(prev => ({...prev, incident_location: e.target.value}))} />
 							</FormGroup>
 						</Col>
 					</Row>
 					<FormGroup>
 						<Label for="abstract">Abstract:</Label>
-						<Input className="textarea" type="textarea" name="abstract" id="abstract" value={incident.abstract} />
+						<Input className="textarea" type="textarea" name="abstract" id="abstract" value={localIncident.abstract || ''}
+							onChange={(e) => setLocalIncident(prev => ({...prev, abstract: e.target.value}))} />
 					</FormGroup>
 					<FormGroup>
 						<Label for="exampleFile">Uploaded Files:</Label>
 						{
-							incident.attachments && incident.attachments.length > 0 ? (
+							localIncident.attachments && localIncident.attachments.length > 0 ? (
 								<div className="file-icons-container">
-								{incident.attachments.map((attachment, attIndex) => (
+								{localIncident.attachments.map((attachment, attIndex) => (
 									<img src={attachment} alt={`Uploaded media ${attIndex + 1}`} key={attIndex} className="file-icon" />
 								))}
 								</div>
@@ -142,7 +156,8 @@ const IncidentEdit = ({ incident }) => {
 								<Col md={3}>
 									<FormGroup>
 										<Label for="contactEmail">Contact Email:</Label>
-										<Input type="email" name="contactEmail" id="contactEmail" value={incident.contact_email} />
+										<Input type="email" name="contactEmail" id="contactEmail" value={localIncident.contact_email || ''} 
+											onChange={(e) => setLocalIncident(prev => ({...prev, contact_email: e.target.value}))}/>
 									</FormGroup>
 								</Col>
 								<Col md={3}>
@@ -152,7 +167,8 @@ const IncidentEdit = ({ incident }) => {
 											type="text"
 											name="contactPhoneNumber"
 											id="contactPhoneNumber"
-											value={incident.contact_phone_number}
+											value={localIncident.contact_phone_number || ''}
+											onChange={(e) => setLocalIncident(prev => ({...prev, contact_phone_number: e.target.value}))}
 										/>
 									</FormGroup>
 								</Col>
@@ -166,19 +182,21 @@ const IncidentEdit = ({ incident }) => {
 					<Col md={2}>
 						<FormGroup>
 							<Label for="status">Current Status:</Label>
-							<Input type="select" name="status" id="status" value={status} onChange={handleStatusChange}>
-								<option value="Pending">Pending</option>
-								<option value="Approved">Approved</option>
-								<option value="Rejected">Rejected</option>
+							<Input type="select" name="status" id="status" value={localIncident.self_report_status}
+								onChange={(e) => setLocalIncident(prev => ({...prev, self_report_status: e.target.value}))}>
+								<option value="new">Pending</option>
+								<option value="approved">Approved</option>
+								<option value="rejected">Rejected</option>
 							</Input>
 						</FormGroup>
 					</Col>
 
 					<FormGroup>
 						<Label for="comment">Comment:</Label>
-						<Input className="textarea" type="textarea" name="comment" id="comment" value={incident.comment} />
+						<Input className="textarea" type="textarea" name="comment" id="comment" value={localIncident.comment || ''}
+							onChange={(e) => setLocalIncident(prev => ({...prev, comment: e.target.value}))} />
 					</FormGroup>
-					<Button className="btn-save">Save</Button>
+					<Button className="btn-save" onClick={handleSaveIncident}>Save</Button>
 					<Button className="btn-cancel">Cancel</Button>
 				</Form>
 			</div>

@@ -80,9 +80,9 @@ const IncidentMap = (props) => {
                 strokeWidth: isSelected ? 4 : 1,
                 strokeOpacity: 1,
                 tooltipText:
-                    "<div class='maptooltip'><span class='state'>" + name + "</span><br/>" +
+                    "<div className='maptooltip'><span className='state'>" + name + "</span><br/>" +
                     (count ?
-                        "<div class='casenumber'>" +
+                        "<div className='casenumber'>" +
                         "<table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + count + "</td></tr>" +
                         "<tr><td>" + t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
                         "<tr><td>" + t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
