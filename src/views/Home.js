@@ -51,7 +51,6 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
-  // TODO: Future PR - implement self-report toggle functionality  
   const [showSelfReport, setShowSelfReport] = useState(false);
   const [viewMode, setViewMode] = useState("monthly");
 
@@ -127,16 +126,16 @@ const Home = () => {
     if (dateRange?.length !== 2) return;
 
     setLoading(true);
-    
+
     // Call incident based on current toggle state
     const incidentType = showSelfReport ? "both" : "news";
     incidentsService.getIncidents(dateRange[0], dateRange[1], selectedState, selectedLangCode, "approved", incidentType)
-    .then((allIncidents) => {
-      const sortedIncidents = allIncidents.sort((a, b) => 
-        moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
-      );
-      setIncidents(sortedIncidents);
-    });
+      .then((allIncidents) => {
+        const sortedIncidents = allIncidents.sort((a, b) =>
+          moment(b.incident_time).valueOf() - moment(a.incident_time).valueOf()
+        );
+        setIncidents(sortedIncidents);
+      });
 
     incidentsService
       .getStats(dateRange[0], dateRange[1], selectedState, "approved", incidentType)
@@ -146,12 +145,12 @@ const Home = () => {
           setLoading(false);
           return;
         }
-        
+
         // Handle new field names
         const dailyStats = response.daily_statistics || {};
         const monthlyStats = response.monthly_statistics || {};
         const totalStats = response.insights || {};
-        
+
         const timeSeries = buildTimeSeries(
           dailyStats,
           dateRange[0],
@@ -160,7 +159,7 @@ const Home = () => {
         );
 
         setIncidentTimeSeries(timeSeries);
-        
+
         if (updateMap) {
           if (Object.keys(totalStats).length > 0) {
             setIncidentAggregated(getAggregatedTotalByState(totalStats));
@@ -174,9 +173,8 @@ const Home = () => {
   const generateUrl = (from, to, state, lang) => {
     return `/home?from=${moment(from).format("YYYY-MM-DD")}&to=${moment(
       to
-    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${
-      lang ? "&lang=" + lang : ""
-    }`;
+    ).format("YYYY-MM-DD")}${state ? "&state=" + state.toUpperCase() : ""}${lang ? "&lang=" + lang : ""
+      }`;
   };
 
   const isParameterChanged = () => {
@@ -216,9 +214,9 @@ const Home = () => {
       const defaultDateRange = isObjEmpty(searchParams.get("from"))
         ? [moment().subtract(1, "years").toDate(), new Date()]
         : [
-            moment(searchParams.get("from")).toDate(),
-            moment(searchParams.get("to")).toDate(),
-          ];
+          moment(searchParams.get("from")).toDate(),
+          moment(searchParams.get("to")).toDate(),
+        ];
 
       setSelectedState(getValidState(searchParams.get("state")));
       setDateRange(defaultDateRange);
@@ -239,7 +237,7 @@ const Home = () => {
     const resizeW = () => {
       const newSize = window.innerWidth;
       changeDeviceSize(newSize);
-      
+
       // Auto-close mobile menu when resizing to desktop
       if (newSize > 786 && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
@@ -282,7 +280,7 @@ const Home = () => {
     }
   }, [showSelfReport]);
 
- return (
+  return (
     <>
       {deviceSize < 786 && (
         <>
@@ -311,196 +309,196 @@ const Home = () => {
       )}
       <Head />
       <UILoader blocking={loading}>
-          <div className="header">
-            <TopNavbar
-              deviceSize={deviceSize}
-              selectedLangCode={selectedLangCode}
-              supportLanguages={support_languages}
-              setSelectedLang={setSelectedLang}
-              t={t}
-              onOpenMenu={() => setIsMobileMenuOpen(true)}
-            />
-            </div>
-
-            <MobileMenu
-            isOpen={isMobileMenuOpen && deviceSize <= 786}
-            onClose={() => setIsMobileMenuOpen(false)}
-            supportLanguages={support_languages}
+        <div className="header">
+          <TopNavbar
+            deviceSize={deviceSize}
             selectedLangCode={selectedLangCode}
+            supportLanguages={support_languages}
             setSelectedLang={setSelectedLang}
             t={t}
+            onOpenMenu={() => setIsMobileMenuOpen(true)}
           />
-          <Row className="match-height">
-            <Col xl="8" lg="6" md="12" className="left-panel">
-              <div className="left-panel-wrapper">
-                <FormGroup>
-                  <Row className="row-offset">
-                    <Col xs="12" sm="12" md="auto" className="OneRowItem">
-                      <Label className="SimpleLabel">{t("location")}:</Label>{" "}
-                      <StateSelection
-                        name="state"
-                        value={selectedState}
-                        onChange={setSelectedState}
-                      />{" "}
-                    </Col>
-                    <Col xs="12" sm="12" md="auto" className="OneRowItem">
-                      <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
-                      <DateRangeSelector
-                        name="date"
-                        onChange={handleDateRangeSelect}
-                        value={dateRange}
-                        isMobile={isMobile}
-                      />
-                    </Col>
-                  </Row>
-                </FormGroup>
-                
-                <div className="incident-controls">
-                  <div className="incident-count-title">
-                    <h4 style={{ color: 'white'}}>{incidents.length} incidents have been reported</h4>
-                  </div>
-                  <SelfReportToggle
-                    isOn={showSelfReport}
-                    handleToggle={setShowSelfReport}
-                  />
+        </div>
+
+        <MobileMenu
+          isOpen={isMobileMenuOpen && deviceSize <= 786}
+          onClose={() => setIsMobileMenuOpen(false)}
+          supportLanguages={support_languages}
+          selectedLangCode={selectedLangCode}
+          setSelectedLang={setSelectedLang}
+          t={t}
+        />
+        <Row className="match-height">
+          <Col xl="8" lg="6" md="12" className="left-panel">
+            <div className="left-panel-wrapper">
+              <FormGroup>
+                <Row className="row-offset">
+                  <Col xs="12" sm="12" md="auto" className="OneRowItem">
+                    <Label className="SimpleLabel">{t("location")}:</Label>{" "}
+                    <StateSelection
+                      name="state"
+                      value={selectedState}
+                      onChange={setSelectedState}
+                    />{" "}
+                  </Col>
+                  <Col xs="12" sm="12" md="auto" className="OneRowItem">
+                    <Label className="SimpleLabel">{t("date_range")}:</Label>{" "}
+                    <DateRangeSelector
+                      name="date"
+                      onChange={handleDateRangeSelect}
+                      value={dateRange}
+                      isMobile={isMobile}
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+
+              <div className="incident-controls">
+                <div className="incident-count-title">
+                  <h4 style={{ color: 'white' }}>{incidents.length} incidents have been reported</h4>
                 </div>
-                
-                <div className="floating-social-media">
-                  <SocialMedia
-                    size={32}
-                    bgStyle={{ fill: "#1f2125" }}
-                    iconFillColor={"#FEF753"}
-                    isShare={false}
-                  />
+                <SelfReportToggle
+                  isOn={showSelfReport}
+                  handleToggle={setShowSelfReport}
+                />
+              </div>
+
+              <div className="floating-social-media">
+                <SocialMedia
+                  size={32}
+                  bgStyle={{ fill: "#1f2125" }}
+                  iconFillColor={"#FEF753"}
+                  isShare={false}
+                />
+              </div>
+              <div className="map-section">
+                {/* Mobile: Geography title above everything */}
+                <div className="mobile-label-title">
+                  <h3 className="label">Geography</h3>
                 </div>
-                <div className="map-section">
-                  {/* Mobile: Geography title above everything */}
-                  <div className="mobile-label-title">
-                    <h3 className="label">Geography</h3>
-                  </div>
-                  
-                  <div className="map-content">
-                    {/* Desktop: Geography + Legend grouped */}
-                    <div className="map-legend-wrapper">
-                      <div className="desktop-label-title">
-                        <h3 className="label">Geography</h3>
-                      </div>
-                      <div id="map-legend-container" className="map-legend" />
+
+                <div className="map-content">
+                  {/* Desktop: Geography + Legend grouped */}
+                  <div className="map-legend-wrapper">
+                    <div className="desktop-label-title">
+                      <h3 className="label">Geography</h3>
                     </div>
-                    
-                    <div className="map-container">
-                      <IncidentMap
+                    <div id="map-legend-container" className="map-legend" />
+                  </div>
+
+                  <div className="map-container">
+                    <IncidentMap
                       mapData={incidentAggregated}
                       selectedState={selectedState}
                       lang={i18n.language}
                       showPer10KAsian={isShowPer10kAsian}
                       stateToggled={stateToggled}
                     />
-                    </div>
-                  </div>
-                  {/* Mobile: Legend below map */}
-                  <div className="mobile-legend-wrapper">
-                    <div id="map-legend-mobile" className="map-legend-mobile" />
                   </div>
                 </div>
-          
-                <div className="chart-section">
-                  {/* Mobile: Trend title and TimeToggle in same line */}
-                  <div className="mobile-chart-header">
-                    <h3 className="label">Trend</h3>
-                    <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
-                  </div>
-                  
-                  <div className="chart-content">
-                    {/* Desktop: Trend + Legend grouped */}
-                    <div className="chart-legend-wrapper">
-                      <div className="desktop-label-title">
-                        <h3 className="label">Trend</h3>
-                      </div>
-                      <div id="chart-legend-container" className="chart-legend" />
-                    </div>
-                    
-                    <div className="chart-container">
-                      <IncidentChartD3
-                        rawTimeSeriesData={incidentTimeSeries}
-                        showSelfReport={showSelfReport}
-                        state={selectedState}
-                        isFirstLoadData={isFirstLoadData}
-                        viewMode={viewMode}
-                        setViewMode={setViewMode}
-                      />
-                    </div>
-                  </div>
-                  {/* Mobile: Legend below map */}
-                  <div className="mobile-legend-wrapper">
-                    <div id="chart-legend-mobile" className="chart-legend-mobile" />
-                  </div>
+                {/* Mobile: Legend below map */}
+                <div className="mobile-legend-wrapper">
+                  <div id="map-legend-mobile" className="map-legend-mobile" />
                 </div>
-                
-                <IncidentCountTable
-                  title={"Incident Count by State"}
-                  data={incidentAggregated}
-                  selectedState={selectedState}
-                  stateToggled={stateToggled}
-                />
               </div>
-            </Col>
-            <Col xl="4" lg="6" md="12" className="right-panel">
-              <Card>
-                {/* <CardHeader>
+
+              <div className="chart-section">
+                {/* Mobile: Trend title and TimeToggle in same line */}
+                <div className="mobile-chart-header">
+                  <h3 className="label">Trend</h3>
+                  <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
+                </div>
+
+                <div className="chart-content">
+                  {/* Desktop: Trend + Legend grouped */}
+                  <div className="chart-legend-wrapper">
+                    <div className="desktop-label-title">
+                      <h3 className="label">Trend</h3>
+                    </div>
+                    <div id="chart-legend-container" className="chart-legend" />
+                  </div>
+
+                  <div className="chart-container">
+                    <IncidentChartD3
+                      rawTimeSeriesData={incidentTimeSeries}
+                      showSelfReport={showSelfReport}
+                      state={selectedState}
+                      isFirstLoadData={isFirstLoadData}
+                      viewMode={viewMode}
+                      setViewMode={setViewMode}
+                    />
+                  </div>
+                </div>
+                {/* Mobile: Legend below map */}
+                <div className="mobile-legend-wrapper">
+                  <div id="chart-legend-mobile" className="chart-legend-mobile" />
+                </div>
+              </div>
+
+              <IncidentCountTable
+                title={"Incident Count by State"}
+                data={incidentAggregated}
+                selectedState={selectedState}
+                stateToggled={stateToggled}
+              />
+            </div>
+          </Col>
+          <Col xl="4" lg="6" md="12" className="right-panel">
+            <Card>
+              {/* <CardHeader>
                             <CardTitle>Hate Crime Incidents</CardTitle>
                         </CardHeader> */}
-                <CardBody className="incident-list-card">
-                  {/* Pass showSelfReport, so that when toggle on, news and self-report tag will show */}
-                  <IncidentList data={incidents} showSelfReport={showSelfReport} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+              <CardBody className="incident-list-card">
+                {/* Pass showSelfReport, so that when toggle on, news and self-report tag will show */}
+                <IncidentList data={incidents} showSelfReport={showSelfReport} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
         <div className="footer-wrapper">
           <div className="footer">
-          <Row>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Row>
-                <Col sm={{ size: "auto", offset: 1 }}>
-                  {t("copyright")} &copy; {new Date().getFullYear()}{" "}
-                  <a href="https://hatecrimetracker.1thing.org">
-                    {" "}
-                    {t("website.name")}{" "}
-                  </a>
-                </Col>
-                <Col sm={{ size: "auto", offset: 1 }}>
-                  <a
-                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                    target="_blank"
-                    className="contact_us"
-                  >
-                    {t("contact_us")}
-                  </a>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <div className="disclaimer">
-            {t("disclaimer.title")}:
-            <ul>
-              <li>{t("disclaimer.1")}</li>
-              <li>
-                <Trans i18nKey="disclaimer.2">
-                  disclaimer.2{" "}
-                  <a
-                    href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
-                    target="_blank"
-                  >
-                    here.
-                  </a>
-                </Trans>
-              </li>
-              <li>{t("disclaimer.3")}</li>
-            </ul>
+            <Row>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <Row>
+                  <Col sm={{ size: "auto", offset: 1 }}>
+                    {t("copyright")} &copy; {new Date().getFullYear()}{" "}
+                    <a href="https://hatecrimetracker.1thing.org">
+                      {" "}
+                      {t("website.name")}{" "}
+                    </a>
+                  </Col>
+                  <Col sm={{ size: "auto", offset: 1 }}>
+                    <a
+                      href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                      target="_blank"
+                      className="contact_us"
+                    >
+                      {t("contact_us")}
+                    </a>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <div className="disclaimer">
+              {t("disclaimer.title")}:
+              <ul>
+                <li>{t("disclaimer.1")}</li>
+                <li>
+                  <Trans i18nKey="disclaimer.2">
+                    disclaimer.2{" "}
+                    <a
+                      href="https://docs.google.com/forms/d/1pWp89Y6EThMHml1jYGkDj5J0YFO74K_37sIlOHKkWo0"
+                      target="_blank"
+                    >
+                      here.
+                    </a>
+                  </Trans>
+                </li>
+                <li>{t("disclaimer.3")}</li>
+              </ul>
+            </div>
           </div>
-        </div>
         </div>
       </UILoader>
     </>

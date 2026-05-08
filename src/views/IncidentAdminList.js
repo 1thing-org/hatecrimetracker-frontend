@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from 'moment';
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
@@ -24,10 +24,10 @@ const IncidentListPage = () => {
 
 	useEffect(() => {
 		if (selectedTab === 'selfreport') {//selfreport
-            loadIncidents(currentPage);
-        } else if (selectedTab === 'news'){
-            loadNews(currentPage);
-        }
+			loadIncidents(currentPage);
+		} else if (selectedTab === 'news') {
+			loadNews(currentPage);
+		}
 
 		const handleResize = () => {
 			setIsSmallScreen(window.innerWidth < 768);
@@ -44,16 +44,16 @@ const IncidentListPage = () => {
 		try {
 			// const response = await fetch("/data.json");
 			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "self_report", true)
-			.then(incidents => {
-				//setRecentIncidents(incidents)
-				//const data = await response.json();
-				const startIndex = (page - 1) * 7;
-				const selectedIncidents = incidents.slice(startIndex, startIndex + 7);
-				setIncidents(selectedIncidents);
-				setTotalPages(Math.ceil(incidents.length / 7));
-			});
+				.then(incidents => {
+					//setRecentIncidents(incidents)
+					//const data = await response.json();
+					const startIndex = (page - 1) * 7;
+					const selectedIncidents = incidents.slice(startIndex, startIndex + 7);
+					setIncidents(selectedIncidents);
+					setTotalPages(Math.ceil(incidents.length / 7));
+				});
 
-			
+
 		} catch (error) {
 			console.error("Error loading incidents:", error);
 		}
@@ -61,16 +61,16 @@ const IncidentListPage = () => {
 
 	const loadNews = async (page) => {
 		try {
-		  const response = await fetch("/news.json");
-		  const data = await response.json();
-		  const startIndex = (page - 1) * 7;
-		  const selectedNews = data.news.slice(startIndex, startIndex + 7);
-		  setNews(selectedNews);
-		  setTotalPages(Math.ceil(data.news.length / 7));
+			const response = await fetch("/news.json");
+			const data = await response.json();
+			const startIndex = (page - 1) * 7;
+			const selectedNews = data.news.slice(startIndex, startIndex + 7);
+			setNews(selectedNews);
+			setTotalPages(Math.ceil(data.news.length / 7));
 		} catch (error) {
-		  console.error("Error loading news:", error);
+			console.error("Error loading news:", error);
 		}
-	  };
+	};
 
 	const handlePageChange = (page) => {
 		setCurrentPage(page);
@@ -84,7 +84,7 @@ const IncidentListPage = () => {
 		setSelectedIncident(null);
 	};
 
-	const handleTabClick = (tab,event) => {
+	const handleTabClick = (tab, event) => {
 		event.preventDefault(); // Modified line: Prevent default anchor behavior
 
 		setSelectedTab(tab);
@@ -129,29 +129,29 @@ const IncidentListPage = () => {
 							</div>
 							<div className="tab">
 								<div className="bullet"></div>
-								<a class="nav-link" href="/admin/selfreport" onClick={(e) => handleTabClick('selfreport', e)}>Self-Report</a>
+								<a class="nav-link" href="/admin/selfreport" onClick={(e) => handleTabClick('selfreport', e)}>User Reported</a>
 								<i className={`fas fa-angle-${selectedTab === 'selfreport' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 						</nav>
 					</div>
 
 					<div className="flex-grow-1 main-content">
-					{selectedTab === 'news' ? (
-						<IncidentAdminPage />
-					) : selectedIncident ? (
-						<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
-					) : (
-						<CustomTable
-						title="Self-Report Incidents"
-						data={incidents}
-						isSmallScreen={isSmallScreen}
-						handleDetailClick={handleDetailClick}
-						currentPage={currentPage}
-						totalPages={totalPages}
-						handlePageChange={handlePageChange}
-						selectedTab={selectedTab} // Pass the selectedTab prop here
-					  />
-					)}
+						{selectedTab === 'news' ? (
+							<IncidentAdminPage />
+						) : selectedIncident ? (
+							<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
+						) : (
+							<CustomTable
+								title="User Reported Incidents"
+								data={incidents}
+								isSmallScreen={isSmallScreen}
+								handleDetailClick={handleDetailClick}
+								currentPage={currentPage}
+								totalPages={totalPages}
+								handlePageChange={handlePageChange}
+								selectedTab={selectedTab} // Pass the selectedTab prop here
+							/>
+						)}
 					</div>
 				</div>
 			</div>

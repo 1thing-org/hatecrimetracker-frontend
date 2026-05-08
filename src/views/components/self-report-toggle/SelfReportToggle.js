@@ -11,8 +11,8 @@ const SelfReportToggle = ({ isOn, handleToggle }) => {
         </span>
       </div>
       <span className={`toggle-label ${isOn ? 'label-on' : 'label-off'}`}>
-  Show Self-report incidents
-</span>
+        Show User Reported Incidents
+      </span>
     </div>
   );
 };

@@ -93,7 +93,7 @@ const IncidentList = (props) => {
     const maybeGetHelpDiv = (incident) => {
         return (
             <div>
-                {incident?.donation_link? (
+                {incident?.donation_link ? (
                     <div className='row'>
                         <img className='icon col' src={donationIcon} alt='donation link' />
                         <div className='col'>
@@ -101,19 +101,19 @@ const IncidentList = (props) => {
                             <img className='open-in-new' src={openInNewTab} alt='open in new tab' />
                         </div>
                     </div>
-                ): null}
-                {incident?.police_tip_line? (
+                ) : null}
+                {incident?.police_tip_line ? (
                     <div className='row'>
                         <img className='icon col' src={policeTipLineIcon} alt='police tip line' />
                         <p className='description col'><b>{t('police_tip_line')}</b>: {incident?.police_tip_line}</p>
                     </div>
-                ): null}
-                {incident?.help_the_victim? (
+                ) : null}
+                {incident?.help_the_victim ? (
                     <div className='row'>
                         <img className='icon col' src={helpTheVictimIcon} alt='help the victim' />
                         <p className='description col'><b>{t('other_ways_to_help')}</b>: {incident?.help_the_victim}</p>
                     </div>
-                ): null}
+                ) : null}
             </div>
         )
     }
@@ -136,7 +136,7 @@ const IncidentList = (props) => {
 
             <div className='incident-list'>
                 {
-                     props.data.map((d, idx) => {
+                    props.data.map((d, idx) => {
                         const normalizedSearch = (searchTerm || "").toLowerCase();
 
                         // title might be empty
@@ -152,59 +152,59 @@ const IncidentList = (props) => {
 
                         if (normalizedSearch === "" && visibleCount >= visibleLimit) return null;
                         visibleCount++;
-    
-                    const isUserReport = d.type === 'self_report';
-                  
-                    return (
-                        <div className="incident-card" key={idx}>
-                        <Card className="border-0 shadow-sm mx-0">
-                        <CardBody className="p-0">
-                            {/* Source Tag */}
-                        {props.showSelfReport && (
-                        <div>
-                            <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
-                                {isUserReport ? 'User Reported' : 'News Reported'}
-                            </span>
-                        </div>
-                    )}
-                            <a className='incident-title'
-                                onClick={() => {
-                                setModalData(d);
-                                openModal();
-                                }}>{getTitle(d)}</a>
-                            {maybeGetHelpIcons(d)}
-                            <p className='location-time'>
-                                {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
-                            </p>
-                            <p className='description'>{getAbstract(d)}</p>
-                                {Array.isArray(d.attachments) && d.attachments.length > 0 && (
-                                <Row className="gx-2 gy-2 mt-2">
-                                    {d.attachments.map((url, i) => (
-                                    <Col xs="4" md="3" key={i}>
-                                        <CardImg
-                                        alt={`attachment-${i+1}`}
-                                        src={url}
-                                        style={{
-                                            aspectRatio: '1 / 1',
-                                            width: '100%',
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
-                                        onClick={() => {
-                                            setModalData(d);
-                                            openModal();
-                                        }}
-                                        />
-                                    </Col>
-                                    ))}
-                                </Row>
-                                )}
-                        </CardBody>
-                    </Card>
-                    <div className="incident-divider" />
-                    </div>
-                    )
-              
+
+                        const isUserReport = d.type === 'self_report';
+
+                        return (
+                            <div className="incident-card" key={idx}>
+                                <Card className="border-0 shadow-sm mx-0">
+                                    <CardBody className="p-0">
+                                        {/* Source Tag */}
+                                        {props.showSelfReport && (
+                                            <div>
+                                                <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
+                                                    {isUserReport ? 'User Reported' : 'Media Reported'}
+                                                </span>
+                                            </div>
+                                        )}
+                                        <a className='incident-title'
+                                            onClick={() => {
+                                                setModalData(d);
+                                                openModal();
+                                            }}>{getTitle(d)}</a>
+                                        {maybeGetHelpIcons(d)}
+                                        <p className='location-time'>
+                                            {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
+                                        </p>
+                                        <p className='description'>{getAbstract(d)}</p>
+                                        {Array.isArray(d.attachments) && d.attachments.length > 0 && (
+                                            <Row className="gx-2 gy-2 mt-2">
+                                                {d.attachments.map((url, i) => (
+                                                    <Col xs="4" md="3" key={i}>
+                                                        <CardImg
+                                                            alt={`attachment-${i + 1}`}
+                                                            src={url}
+                                                            style={{
+                                                                aspectRatio: '1 / 1',
+                                                                width: '100%',
+                                                                objectFit: "cover",
+                                                                cursor: "pointer"
+                                                            }}
+                                                            onClick={() => {
+                                                                setModalData(d);
+                                                                openModal();
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                ))}
+                                            </Row>
+                                        )}
+                                    </CardBody>
+                                </Card>
+                                <div className="incident-divider" />
+                            </div>
+                        )
+
                     })
                 }
 
@@ -216,7 +216,7 @@ const IncidentList = (props) => {
                 style={modalStyle}
                 className="details-modal"
             >
-                <img className='close-modal-button' src={closeIcon} alt='close the modal' onClick={closeModal}/>
+                <img className='close-modal-button' src={closeIcon} alt='close the modal' onClick={closeModal} />
                 <p className='incident-title'>{getTitle(modalData)}</p>
                 <p className='location-time'>
                     {stateFullName(modalData?.incident_location)} | {moment(modalData?.incident_time).format('MM/DD/YYYY')}
@@ -226,7 +226,7 @@ const IncidentList = (props) => {
                 <br></br>
                 <a className='link-text' href={modalData?.url} target='_blank'>{t('link_to_news_source')}</a>
                 <img className='open-in-new' src={openInNewTab} alt='open in new tab' />
-                {isHelpDivAvail(modalData)? (
+                {isHelpDivAvail(modalData) ? (
                     <div className='support'>
                         <div className='title-with-line'>
                             <div className='title'>{t('how_to_help')}</div>
@@ -234,7 +234,7 @@ const IncidentList = (props) => {
                         </div>
                         {maybeGetHelpDiv(modalData)}
                     </div>
-                ): null}
+                ) : null}
             </Modal>
             {props.data.length ?
                 (<div className='icon-description'>
