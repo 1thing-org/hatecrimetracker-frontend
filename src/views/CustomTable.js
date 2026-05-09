@@ -14,9 +14,11 @@ const CustomTable = ({
 }) => {
   return (
     <>
-      <div className="header-container">
-        <h5>{title}</h5>
-      </div>
+      {title ? (
+        <div className="header-container">
+          <h5>{title}</h5>
+        </div>
+      ) : null}
       <div className="table-container">
         <div className="table-header-container">
           <Table>
@@ -117,7 +119,7 @@ const CustomTable = ({
 };
 
 CustomTable.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   data: PropTypes.array.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   handleDetailClick: PropTypes.func.isRequired,

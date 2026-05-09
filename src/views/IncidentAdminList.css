@@ -317,6 +317,51 @@
     font-weight: 500;
 }
 
+/* Toolbar above the User Reported list: title on the left, status
+   filter dropdown on the right. */
+.list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.list-toolbar-title {
+    color: #000000;
+    margin: 0;
+}
+
+.list-toolbar-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.list-toolbar-filter-label {
+    margin: 0;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.list-toolbar-select {
+    padding: 6px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    min-width: 140px;
+    cursor: pointer;
+}
+
+.list-toolbar-select:focus {
+    outline: 2px solid #80caff;
+    outline-offset: 1px;
+}
+
 .pagination {
     display: flex;
     justify-content: flex-end;

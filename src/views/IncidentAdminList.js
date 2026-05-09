@@ -33,6 +33,10 @@ const IncidentListPage = () => {
 	// Bumping this value forces a reload of the active tab's data, e.g.
 	// after returning from the edit page so updated statuses show up.
 	const [reloadKey, setReloadKey] = useState(0);
+	// Self-report status filter for the User Reported tab.
+	// Backend accepts: "new" | "approved" | "rejected" | "all" | "" (also "all").
+	// Defaults to "new" so the admin lands on the pending queue.
+	const [statusFilter, setStatusFilter] = useState("new");
 
 	const navigate = useNavigate();//enable url change according to clicked tab
 
@@ -53,7 +57,7 @@ const IncidentListPage = () => {
 			// Bypass the backend cache when this load was triggered by a
 			// save (reloadKey > 0), so the row's new status is guaranteed
 			// fresh even if a stale cache entry survived the upsert flush.
-			loadIncidents(currentPage, reloadKey > 0);
+			loadIncidents(currentPage, statusFilter, reloadKey > 0);
 		} else if (selectedTab === 'news') {
 			loadNews(currentPage);
 		}
@@ -67,24 +71,26 @@ const IncidentListPage = () => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [currentPage, selectedTab, reloadKey]);
+	}, [currentPage, selectedTab, reloadKey, statusFilter]);
 
-	const loadIncidents = async (page, skipCache = false) => {
+	const loadIncidents = async (page, status = "new", skipCache = false) => {
 		setListError(null);
 		try {
 			// Service signature:
 			//   (startDate, endDate, state, lang, self_report_status, type, skip_cache, page_size)
-			// We want pending (self_report_status="new") incidents of type "self_report".
-			// On the initial load we leave skip_cache=false so the backend doesn't
-			// require an admin-auth check before the user's token is attached.
-			// After a save we *do* want skip_cache=true so the row's new status
-			// is fetched fresh, not served from a stale cache entry.
+			// `status` controls which self-reports we ask for:
+			//   "new" (default) | "approved" | "rejected" | "all"
+			// On the initial load we leave skip_cache=false so the backend
+			// doesn't require an admin-auth check before the user's token
+			// is attached. After a save (or filter change requesting fresh
+			// data) we set skip_cache=true so the row's new status is
+			// fetched fresh, not served from a stale cache entry.
 			const list = await incidentsService.getIncidents(
 				moment().subtract(10, 'year'),
 				moment().add(1, 'days'),
 				null,           // state
 				'en',           // lang
-				"new",          // self_report_status (pending)
+				status,         // self_report_status
 				"self_report", // type
 				skipCache       // skip_cache
 			);
@@ -218,11 +224,33 @@ const IncidentListPage = () => {
 							/>
 						) : (
 							<>
+								<div className="list-toolbar">
+									<h5 className="list-toolbar-title">User Reported Incidents</h5>
+									<div className="list-toolbar-filter">
+										<label htmlFor="status-filter" className="list-toolbar-filter-label">
+											Status:
+										</label>
+										<select
+											id="status-filter"
+											className="list-toolbar-select"
+											value={statusFilter}
+											onChange={(e) => {
+												setStatusFilter(e.target.value);
+												setCurrentPage(1);
+											}}
+										>
+											<option value="new">Pending</option>
+											<option value="approved">Approved</option>
+											<option value="rejected">Rejected</option>
+											<option value="all">All</option>
+										</select>
+									</div>
+								</div>
 								{listError && (
 									<div className="list-error" role="alert">{listError}</div>
 								)}
 								<CustomTable
-									title="User Reported Incidents"
+									title=""
 									data={incidents}
 									isSmallScreen={isSmallScreen}
 									handleDetailClick={handleDetailClick}
