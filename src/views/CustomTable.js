@@ -14,9 +14,11 @@ const CustomTable = ({
 }) => {
   return (
     <>
-      <div className="header-container">
-        <h5>{title}</h5>
-      </div>
+      {title ? (
+        <div className="header-container">
+          <h5>{title}</h5>
+        </div>
+      ) : null}
       <div className="table-container">
         <div className="table-header-container">
           <Table>
@@ -47,22 +49,51 @@ const CustomTable = ({
                     {
                       item.attachments && item.attachments.length > 0 ? (
                         <div className="file-icons-container">
-                          {item.attachments.map((attachment, attIndex) => (
-                            <img src={attachment} alt={`Uploaded media ${attIndex + 1}`} key={attIndex} className="file-icon" />
-                          ))}
+                          {item.attachments.slice(0, 3).map((attachment, attIndex) => {
+                            const isVideo = /\.(mp4|mov|m4v|avi|wmv|mkv|webm|3gp)(?:\?|$)/i.test(attachment);
+                            return isVideo ? (
+                              <video
+                                src={attachment}
+                                key={attIndex}
+                                className="attachment-thumb-cell"
+                                muted
+                              />
+                            ) : (
+                              <img
+                                src={attachment}
+                                alt={`Attachment ${attIndex + 1}`}
+                                key={attIndex}
+                                className="attachment-thumb-cell"
+                                loading="lazy"
+                              />
+                            );
+                          })}
+                          {item.attachments.length > 3 && (
+                            <span className="attachment-count">
+                              +{item.attachments.length - 3}
+                            </span>
+                          )}
                         </div>
                       ) : (
-                         <div>No files Uploaded</div> 
+                         <div className="no-files">No files</div>
                       )
-                    }                      
+                    }
                   </td>
-                  <td>{item.self_report_status}</td>
+                  <td>
+                    {item.self_report_status ? (
+                      <span className={`status-pill status-${item.self_report_status}`}>
+                        {item.self_report_status === 'new'
+                          ? 'Pending'
+                          : item.self_report_status.charAt(0).toUpperCase() + item.self_report_status.slice(1)}
+                      </span>
+                    ) : null}
+                  </td>
                   <td>{item.reviewer}</td>
                   <td>
-                    <Button color="btn btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
+                    <Button className="btn-action btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
                       Detail
                     </Button>{" "}
-                    <Button color="btn btn-reject" size="sm">
+                    <Button className="btn-action btn-reject" size="sm">
                       Reject
                     </Button>
                   </td>
@@ -88,7 +119,7 @@ const CustomTable = ({
 };
 
 CustomTable.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   data: PropTypes.array.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   handleDetailClick: PropTypes.func.isRequired,

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
-import { Card, CardBody} from 'reactstrap'
+import { Card, CardBody } from 'reactstrap'
 import { Trans } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
 import './IncidentChartD3.css';
@@ -20,13 +20,13 @@ const COLOR_NEWS_DAILY = "#FEF753";
 const COLOR_SELF_REPORT = "#ffab91";
 const COLOR_TOOLTIP_BG = "#283046";
 
-const IncidentChartD3 = ({ 
-    rawTimeSeriesData,
-    showSelfReport,
-    state,
-    isFirstLoadData,
-    viewMode = VIEW_MODE_MONTHLY,
-    setViewMode
+const IncidentChartD3 = ({
+  rawTimeSeriesData,
+  showSelfReport,
+  state,
+  isFirstLoadData,
+  viewMode = VIEW_MODE_MONTHLY,
+  setViewMode
 }) => {
   const chartRef = useRef();
 
@@ -42,11 +42,11 @@ const IncidentChartD3 = ({
 
     const legendData = [
       {
-        name: "News Reports",
+        name: "Media Reported",
         color: viewMode === VIEW_MODE_MONTHLY ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY
       },
       {
-        name: "Self-reported", 
+        name: "User Reported",
         color: COLOR_SELF_REPORT
       }
     ];
@@ -214,7 +214,7 @@ const IncidentChartD3 = ({
           .tickFormat((d) => dayjs(d).format("MM/YYYY"))
           .tickValues(x.domain().filter((d, i) => i % Math.ceil(chartData.length / 8) === 0))
       )
-      .call((g) => g.selectAll(".tick line").remove()) 
+      .call((g) => g.selectAll(".tick line").remove())
       .selectAll("text")
       .attr("transform", "rotate(0)")
       .style("text-anchor", "center");
@@ -232,8 +232,8 @@ const IncidentChartD3 = ({
         }
         if (d.key === KEY_SELF_REPORT) return COLOR_SELF_REPORT;
         return "#ccc";
-        })
-      .style("stroke", "none") 
+      })
+      .style("stroke", "none")
       .selectAll("rect")
       .data((d) => d)
       .join("rect")
@@ -242,7 +242,7 @@ const IncidentChartD3 = ({
       .attr("height", (d) => {
         const height = y(d[0]) - y(d[1]);
         return isNaN(height) ? 0 : height;
-      }) 
+      })
       .attr("width", x.bandwidth())
       .attr("shape-rendering", "geometricPrecision")
       .on("mouseover", function (event, d) {
@@ -255,7 +255,7 @@ const IncidentChartD3 = ({
         html += `News Cases: ${d.data[KEY_NEWS]}`;
 
         if (showSelfReport && d.data[KEY_SELF_REPORT] !== undefined) {
-          html += `<br/>Self-Report Cases: ${d.data[KEY_SELF_REPORT]}`;
+          html += `<br/>User Reported Incidents: ${d.data[KEY_SELF_REPORT]}`;
         }
 
         tooltip
@@ -271,8 +271,8 @@ const IncidentChartD3 = ({
       .on("mouseout", function () {
         tooltip.style("display", "none");
       });
-        
-    }, [chartData, viewMode, showSelfReport]);
+
+  }, [chartData, viewMode, showSelfReport]);
 
   // Update legend when viewMode or showSelfReport changes
   useEffect(() => {
@@ -281,32 +281,32 @@ const IncidentChartD3 = ({
 
   return (
     <Card>
-        <CardBody>
+      <CardBody>
         <div className="incident-chart">
           {isAllZero && !isFirstLoadData ? (
-          <>
-            <p className="add-data-button">
-              <Trans i18nKey="no_data_please_report">
-                There is no data collected in the selected location and date
-                range yet. Please click
-                <a
-                  href="https://forms.gle/HRkVKW2Sfp7BytXj8"
-                  target="_blank"
-                >
-                  here
-                </a>
-                to report incidents to us.
-              </Trans>
-            </p>
-            <div className="drop-down" />
-          </>
-        ) : null}
+            <>
+              <p className="add-data-button">
+                <Trans i18nKey="no_data_please_report">
+                  There is no data collected in the selected location and date
+                  range yet. Please click
+                  <a
+                    href="https://forms.gle/HRkVKW2Sfp7BytXj8"
+                    target="_blank"
+                  >
+                    here
+                  </a>
+                  to report incidents to us.
+                </Trans>
+              </p>
+              <div className="drop-down" />
+            </>
+          ) : null}
           <div ref={chartRef} id="chart_1yaxis" style={{ width: "100%" }} />
           <div className="desktop-time-toggle-container">
             <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
-      </div>
-    </CardBody>
+        </div>
+      </CardBody>
     </Card>
   );
 };

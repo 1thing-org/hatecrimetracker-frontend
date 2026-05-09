@@ -20,7 +20,14 @@ export function getIncidents( startDate, endDate, state = null, lang = 'en', sel
                 "strict-origin-when-cross-origin": "false"
             }
         }).then((response) => {
-        return response.data.incidents;
+        // The backend has returned both shapes over time:
+        //   { incidents: [...], pagination: {...} }   (current)
+        //   [...]                                     (older deployments)
+        // Be tolerant of either so a backend rollback doesn't blank the list.
+        const data = response && response.data;
+        if (Array.isArray(data)) return data;
+        if (data && Array.isArray(data.incidents)) return data.incidents;
+        return [];
     });
 }
 
@@ -53,7 +60,7 @@ export function upsertIncident(incident) {
                 "Access-Control-Allow-Origin": "false",
                 "strict-origin-when-cross-origin": "false"
             }
-        }).then((response) => { return response.incident_id; });
+        }).then((response) => { return response.data && response.data.incident_id; });
 }
 
 export function deleteIncident(id) {

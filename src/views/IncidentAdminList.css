@@ -199,26 +199,69 @@
     width: 160px;
 }
 
-.table-body-container .btn {
-    background-color: #F7F7F7;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
-    margin: 0 5px; 
-    padding: 3px 6px; 
+/* Action buttons in the User Reported table — kept visually consistent
+   with the Approve/Reject/Save/Cancel buttons on the edit page. */
+.table-body-container .btn-action {
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    margin: 0 4px;
+    padding: 6px 14px;
     font-weight: bold;
-}
-
-.table-body-container .btn-detail {
-    color: #000000; 
     font-size: 13px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    min-width: 80px;
 }
 
-.table-body-container .btn-reject {
-    color: #FF0202; 
-    font-size: 13px;
+.table-body-container .btn-action.btn-detail {
+    background-color: #80caff;
+    color: #00385c;
 }
 
-.table-body-container .btn-reject:hover {
-    color: #FF0202 !important; 
+.table-body-container .btn-action.btn-detail:hover,
+.table-body-container .btn-action.btn-detail:focus {
+    background-color: #5fb8f5;
+    color: #00385c !important;
+}
+
+.table-body-container .btn-action.btn-reject {
+    background-color: #fdecec;
+    color: #b32020;
+}
+
+.table-body-container .btn-action.btn-reject:hover,
+.table-body-container .btn-action.btn-reject:focus {
+    background-color: #f7d4d4;
+    color: #b32020 !important;
+}
+
+/* Status pill rendered in the Status column — shared shape with the edit page. */
+.table-body-container .status-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #e9ecef;
+    color: #333;
+    border: 1px solid #ced4da;
+}
+
+.table-body-container .status-pill.status-approved {
+    background-color: #1f9d44;
+    color: white;
+    border-color: #15782f;
+}
+
+.table-body-container .status-pill.status-rejected {
+    background-color: #d6332e;
+    color: white;
+    border-color: #a0211d;
+}
+
+.table-body-container .status-pill.status-new {
+    background-color: #fff3cd;
+    color: #7a5c00;
+    border-color: #ffe188;
 }
 
 .text-truncate {
@@ -229,22 +272,94 @@
 
 .file-icons-container {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    gap: 15px; 
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-.file-icon {
-    width: 128px;
-    height: 128px;
-    background-color: #D9D9D9;
+/* Cell-sized thumbnail used in the User Reported list. The actual image
+   is shown — earlier the .file-icon rule painted a fixed grey square and
+   hid any nested img, so successful uploads still rendered as blanks. */
+.attachment-thumb-cell {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    background-color: #f3f3f3;
     display: inline-block;
-    border-radius: 2px; 
+}
+
+.attachment-count {
+    font-size: 12px;
+    font-weight: bold;
+    color: #444;
+    background: #eee;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.no-files {
+    color: #888;
+    font-size: 12px;
+}
+
+/* Inline error banner shown above the User Reported list when the
+   /incidents request fails — replaces the previous silent empty state. */
+.list-error {
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    background-color: #fdecec;
+    border: 1px solid #f5c2c2;
+    color: #b32020;
+    font-weight: 500;
+}
+
+/* Toolbar above the User Reported list: title on the left, status
+   filter dropdown on the right. */
+.list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.list-toolbar-title {
+    color: #000000;
+    margin: 0;
+}
+
+.list-toolbar-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.list-toolbar-filter-label {
+    margin: 0;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.list-toolbar-select {
+    padding: 6px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    min-width: 140px;
     cursor: pointer;
 }
 
-.file-icon img {
-    display: none; 
+.list-toolbar-select:focus {
+    outline: 2px solid #80caff;
+    outline-offset: 1px;
 }
 
 .pagination {

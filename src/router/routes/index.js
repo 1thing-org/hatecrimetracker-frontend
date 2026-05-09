@@ -26,7 +26,23 @@ const Routes = [
   },
   {
     path: '/admin',
-    component: lazy(() => import('../../views/IncidentAdmin')),
+    component: lazy(() => import('../../views/IncidentAdminList')),
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
+  },
+  {
+    path: '/admin/news',
+    component: lazy(() => import('../../views/IncidentAdminList')),
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
+  },
+  {
+    path: '/admin/selfreport',
+    component: lazy(() => import('../../views/IncidentAdminList')),
     layout: 'BlankLayout',
     meta: {
       authRoute: true
