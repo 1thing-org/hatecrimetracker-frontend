@@ -26,6 +26,7 @@ const IncidentListPage = () => {
 	const [totalPages, setTotalPages] = useState(1);
 	const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 	const [selectedIncident, setSelectedIncident] = useState(null);
+	const [listError, setListError] = useState(null);
 	// Initialise the tab from the current URL so deep links land on the
 	// correct tab (e.g. /admin/selfreport opens the User Reported tab).
 	const [selectedTab, setSelectedTab] = useState(tabFromPath(location.pathname));
@@ -49,7 +50,10 @@ const IncidentListPage = () => {
 
 	useEffect(() => {
 		if (selectedTab === 'selfreport') {//selfreport
-			loadIncidents(currentPage);
+			// Bypass the backend cache when this load was triggered by a
+			// save (reloadKey > 0), so the row's new status is guaranteed
+			// fresh even if a stale cache entry survived the upsert flush.
+			loadIncidents(currentPage, reloadKey > 0);
 		} else if (selectedTab === 'news') {
 			loadNews(currentPage);
 		}
@@ -65,22 +69,49 @@ const IncidentListPage = () => {
 		};
 	}, [currentPage, selectedTab, reloadKey]);
 
-	const loadIncidents = async (page) => {
+	const loadIncidents = async (page, skipCache = false) => {
+		setListError(null);
 		try {
-			// const response = await fetch("/data.json");
-			incidentsService.getIncidents(moment().subtract(10, 'year'), moment().add(1, 'days'), null, 'en', "new", "", "self_report", true)
-				.then(incidents => {
-					//setRecentIncidents(incidents)
-					//const data = await response.json();
-					const startIndex = (page - 1) * 7;
-					const selectedIncidents = incidents.slice(startIndex, startIndex + 7);
-					setIncidents(selectedIncidents);
-					setTotalPages(Math.ceil(incidents.length / 7));
-				});
-
-
+			// Service signature:
+			//   (startDate, endDate, state, lang, self_report_status, type, skip_cache, page_size)
+			// We want pending (self_report_status="new") incidents of type "self_report".
+			// On the initial load we leave skip_cache=false so the backend doesn't
+			// require an admin-auth check before the user's token is attached.
+			// After a save we *do* want skip_cache=true so the row's new status
+			// is fetched fresh, not served from a stale cache entry.
+			const list = await incidentsService.getIncidents(
+				moment().subtract(10, 'year'),
+				moment().add(1, 'days'),
+				null,           // state
+				'en',           // lang
+				"new",          // self_report_status (pending)
+				"self_report", // type
+				skipCache       // skip_cache
+			);
+			const safeList = Array.isArray(list) ? list : [];
+			const startIndex = (page - 1) * 7;
+			setIncidents(safeList.slice(startIndex, startIndex + 7));
+			setTotalPages(Math.max(1, Math.ceil(safeList.length / 7)));
 		} catch (error) {
 			console.error("Error loading incidents:", error);
+			setIncidents([]);
+			setTotalPages(1);
+			const status = error && error.response && error.response.status;
+			const apiMsg =
+				error && error.response && error.response.data && error.response.data.error;
+			if (status === 401 || status === 403) {
+				setListError(
+					"You don't have permission to view user-reported incidents. " +
+					"Please sign in with an admin account."
+				);
+			} else if (apiMsg) {
+				setListError(`Failed to load incidents: ${apiMsg}`);
+			} else {
+				setListError(
+					`Failed to load incidents${status ? ` (HTTP ${status})` : ""}. ` +
+					`Please try again.`
+				);
+			}
 		}
 	};
 
@@ -106,11 +137,21 @@ const IncidentListPage = () => {
 	};
 
 	// onBack is called by the edit page after Save / Cancel. When `didSave`
-	// is true we bump reloadKey so the table re-fetches and the updated
-	// status / comment show up immediately.
-	const handleBackClick = (didSave) => {
+	// is true:
+	//   1. We optimistically replace the matching row in `incidents` so the
+	//      new status pill is visible immediately when we drop back to the
+	//      list — no waiting on the network round-trip.
+	//   2. We bump reloadKey to re-fetch from the server (with cache bypass)
+	//      so the optimistic state is reconciled with server truth, and the
+	//      row drops out if it no longer matches the pending filter.
+	const handleBackClick = (didSave, savedIncident) => {
 		setSelectedIncident(null);
 		if (didSave) {
+			if (savedIncident && savedIncident.id) {
+				setIncidents(prev =>
+					prev.map(row => row.id === savedIncident.id ? { ...row, ...savedIncident } : row)
+				);
+			}
 			setReloadKey(k => k + 1);
 		}
 	};
@@ -176,16 +217,21 @@ const IncidentListPage = () => {
 								reviewer={user.displayName || user.email}
 							/>
 						) : (
-							<CustomTable
-								title="User Reported Incidents"
-								data={incidents}
-								isSmallScreen={isSmallScreen}
-								handleDetailClick={handleDetailClick}
-								currentPage={currentPage}
-								totalPages={totalPages}
-								handlePageChange={handlePageChange}
-								selectedTab={selectedTab} // Pass the selectedTab prop here
-							/>
+							<>
+								{listError && (
+									<div className="list-error" role="alert">{listError}</div>
+								)}
+								<CustomTable
+									title="User Reported Incidents"
+									data={incidents}
+									isSmallScreen={isSmallScreen}
+									handleDetailClick={handleDetailClick}
+									currentPage={currentPage}
+									totalPages={totalPages}
+									handlePageChange={handlePageChange}
+									selectedTab={selectedTab} // Pass the selectedTab prop here
+								/>
+							</>
 						)}
 					</div>
 				</div>

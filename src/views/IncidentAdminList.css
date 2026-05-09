@@ -272,22 +272,49 @@
 
 .file-icons-container {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    gap: 15px; 
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-.file-icon {
-    width: 128px;
-    height: 128px;
-    background-color: #D9D9D9;
+/* Cell-sized thumbnail used in the User Reported list. The actual image
+   is shown — earlier the .file-icon rule painted a fixed grey square and
+   hid any nested img, so successful uploads still rendered as blanks. */
+.attachment-thumb-cell {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    background-color: #f3f3f3;
     display: inline-block;
-    border-radius: 2px; 
-    cursor: pointer;
 }
 
-.file-icon img {
-    display: none; 
+.attachment-count {
+    font-size: 12px;
+    font-weight: bold;
+    color: #444;
+    background: #eee;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.no-files {
+    color: #888;
+    font-size: 12px;
+}
+
+/* Inline error banner shown above the User Reported list when the
+   /incidents request fails — replaces the previous silent empty state. */
+.list-error {
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    background-color: #fdecec;
+    border: 1px solid #f5c2c2;
+    color: #b32020;
+    font-weight: 500;
 }
 
 .pagination {

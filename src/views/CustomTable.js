@@ -47,14 +47,35 @@ const CustomTable = ({
                     {
                       item.attachments && item.attachments.length > 0 ? (
                         <div className="file-icons-container">
-                          {item.attachments.map((attachment, attIndex) => (
-                            <img src={attachment} alt={`Uploaded media ${attIndex + 1}`} key={attIndex} className="file-icon" />
-                          ))}
+                          {item.attachments.slice(0, 3).map((attachment, attIndex) => {
+                            const isVideo = /\.(mp4|mov|m4v|avi|wmv|mkv|webm|3gp)(?:\?|$)/i.test(attachment);
+                            return isVideo ? (
+                              <video
+                                src={attachment}
+                                key={attIndex}
+                                className="attachment-thumb-cell"
+                                muted
+                              />
+                            ) : (
+                              <img
+                                src={attachment}
+                                alt={`Attachment ${attIndex + 1}`}
+                                key={attIndex}
+                                className="attachment-thumb-cell"
+                                loading="lazy"
+                              />
+                            );
+                          })}
+                          {item.attachments.length > 3 && (
+                            <span className="attachment-count">
+                              +{item.attachments.length - 3}
+                            </span>
+                          )}
                         </div>
                       ) : (
-                         <div>No files Uploaded</div> 
+                         <div className="no-files">No files</div>
                       )
-                    }                      
+                    }
                   </td>
                   <td>
                     {item.self_report_status ? (
