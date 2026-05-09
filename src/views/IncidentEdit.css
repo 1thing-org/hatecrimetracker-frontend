@@ -37,23 +37,132 @@
 	color: black;
 }
 
-.incident-edit-container .btn-save,
-.btn-cancel {
+/* Action buttons row (Approve / Reject / Save / Cancel) */
+.action-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 24px;
+}
+
+.incident-edit-container .btn-action {
 	color: black;
-	box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
-	margin-top: 20px;
-	margin-right: 30px;
-	padding: 3px 6px;
+	box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+	padding: 8px 18px;
+	font-weight: bold;
+	font-size: 14px;
+	min-width: 110px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.incident-edit-container .btn-action:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.incident-edit-container .btn-approve {
+	background-color: #e6f7ec;
+	color: #156c2e;
+}
+
+.incident-edit-container .btn-approve.is-active {
+	background-color: #1f9d44;
+	color: white;
+	border-color: #15782f;
+}
+
+.incident-edit-container .btn-reject {
+	background-color: #fdecec;
+	color: #b32020;
+}
+
+.incident-edit-container .btn-reject.is-active {
+	background-color: #d6332e;
+	color: white;
+	border-color: #a0211d;
+}
+
+.incident-edit-container .btn-save {
+	background-color: #80caff;
+	color: #00385c;
+}
+
+.incident-edit-container .btn-cancel {
+	background-color: #f7f7f7;
+	color: #333;
+}
+
+/* Status pill + inline Approve/Reject buttons sit on the same row */
+.status-display {
+	margin-top: 4px;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.status-display .btn-action {
+	margin: 0;
+}
+
+.status-pill {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 999px;
 	font-weight: bold;
 	font-size: 13px;
-	width: 7%;
-	border: none;
+	background-color: #e9ecef;
+	color: #333;
+	border: 1px solid #ced4da;
 }
-.btn-save {
-	background-color: #80caff;
+
+.status-pill.status-approved {
+	background-color: #1f9d44;
+	color: white;
+	border-color: #15782f;
 }
-.btn-cancel {
-	background-color: #f7f7f7;
+
+.status-pill.status-rejected {
+	background-color: #d6332e;
+	color: white;
+	border-color: #a0211d;
+}
+
+.status-pill.status-new {
+	background-color: #fff3cd;
+	color: #7a5c00;
+	border-color: #ffe188;
+}
+
+/* Inline error banner shown when save fails */
+.save-error {
+	margin-top: 16px;
+	padding: 10px 14px;
+	border-radius: 4px;
+	background-color: #fdecec;
+	border: 1px solid #f5c2c2;
+	color: #b32020;
+	font-weight: 500;
+}
+
+/* Header with a back link above the page title */
+.header-with-back {
+	flex-direction: column;
+	align-items: flex-start !important;
+	gap: 4px;
+}
+
+.header-with-back .back-link {
+	padding: 0;
+	color: #2310fe;
+	text-decoration: none;
+	font-weight: bold;
+	box-shadow: none;
+}
+
+.header-with-back .back-link:hover {
+	text-decoration: underline;
 }
 .preview {
 	background-color: white;

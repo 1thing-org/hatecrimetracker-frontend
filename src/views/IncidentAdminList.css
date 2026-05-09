@@ -199,26 +199,69 @@
     width: 160px;
 }
 
-.table-body-container .btn {
-    background-color: #F7F7F7;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
-    margin: 0 5px; 
-    padding: 3px 6px; 
+/* Action buttons in the User Reported table — kept visually consistent
+   with the Approve/Reject/Save/Cancel buttons on the edit page. */
+.table-body-container .btn-action {
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    margin: 0 4px;
+    padding: 6px 14px;
     font-weight: bold;
-}
-
-.table-body-container .btn-detail {
-    color: #000000; 
     font-size: 13px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    min-width: 80px;
 }
 
-.table-body-container .btn-reject {
-    color: #FF0202; 
-    font-size: 13px;
+.table-body-container .btn-action.btn-detail {
+    background-color: #80caff;
+    color: #00385c;
 }
 
-.table-body-container .btn-reject:hover {
-    color: #FF0202 !important; 
+.table-body-container .btn-action.btn-detail:hover,
+.table-body-container .btn-action.btn-detail:focus {
+    background-color: #5fb8f5;
+    color: #00385c !important;
+}
+
+.table-body-container .btn-action.btn-reject {
+    background-color: #fdecec;
+    color: #b32020;
+}
+
+.table-body-container .btn-action.btn-reject:hover,
+.table-body-container .btn-action.btn-reject:focus {
+    background-color: #f7d4d4;
+    color: #b32020 !important;
+}
+
+/* Status pill rendered in the Status column — shared shape with the edit page. */
+.table-body-container .status-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #e9ecef;
+    color: #333;
+    border: 1px solid #ced4da;
+}
+
+.table-body-container .status-pill.status-approved {
+    background-color: #1f9d44;
+    color: white;
+    border-color: #15782f;
+}
+
+.table-body-container .status-pill.status-rejected {
+    background-color: #d6332e;
+    color: white;
+    border-color: #a0211d;
+}
+
+.table-body-container .status-pill.status-new {
+    background-color: #fff3cd;
+    color: #7a5c00;
+    border-color: #ffe188;
 }
 
 .text-truncate {

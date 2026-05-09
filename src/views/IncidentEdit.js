@@ -1,30 +1,87 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, Modal, ModalHeader, ModalBody } from "reactstrap";
 import * as incidentsService from "../services/incidents";
 import "./IncidentEdit.css";
 
-const IncidentEdit = ({ incident }) => {
-	const [localIncident, setLocalIncident] = useState({
+// Map between the API status value and the human-readable label.
+const STATUS_LABELS = {
+	new: "Pending",
+	approved: "Approved",
+	rejected: "Rejected",
+};
+
+const IncidentEdit = ({ incident, onBack, reviewer }) => {
+	const initialIncident = useMemo(() => ({
 		...incident,
 		self_report_status: incident.self_report_status || "new",
-	});
+	}), [incident]);
+
+	const [localIncident, setLocalIncident] = useState(initialIncident);
 	const [selectedFiles, setSelectedFiles] = useState(incident.files || []);
 	const [selectedPreviews, setSelectedPreviews] = useState([]);
 	const [modal, setModal] = useState(false);
 	const [previewFile, setPreviewFile] = useState(null);
+	const [isSaving, setIsSaving] = useState(false);
+	const [saveError, setSaveError] = useState(null);
 
 	const toggleModal = () => setModal(!modal);
 
-	const handleSaveIncident = (event) => {
-		incidentsService.upsertIncident(localIncident)
+	// Detect unsaved changes so we can warn before discarding them on Cancel.
+	const isDirty = useMemo(() => {
+		return (
+			localIncident.self_report_status !== initialIncident.self_report_status ||
+			(localIncident.comment || "") !== (initialIncident.comment || "") ||
+			(localIncident.incident_time || "") !== (initialIncident.incident_time || "") ||
+			(localIncident.incident_location || "") !== (initialIncident.incident_location || "") ||
+			(localIncident.abstract || "") !== (initialIncident.abstract || "") ||
+			(localIncident.contact_email || "") !== (initialIncident.contact_email || "") ||
+			(localIncident.contact_phone_number || "") !== (initialIncident.contact_phone_number || "")
+		);
+	}, [localIncident, initialIncident]);
+
+	const goBack = (didSave) => {
+		if (typeof onBack === "function") {
+			onBack(didSave);
+		}
+	};
+
+	const handleStatusChange = (status) => {
+		setSaveError(null);
+		setLocalIncident(prev => ({ ...prev, self_report_status: status }));
+	};
+
+	const handleSaveIncident = () => {
+		setIsSaving(true);
+		setSaveError(null);
+		const payload = {
+			...localIncident,
+			reviewer: reviewer || localIncident.reviewer,
+		};
+		incidentsService
+			.upsertIncident(payload)
 			.then((updatedIncident) => {
 				console.log("Incident updated:", updatedIncident);
+				setIsSaving(false);
+				// Return to the user-report list and ask the parent to reload.
+				goBack(true);
 			})
 			.catch((error) => {
 				console.error("Error updating incident:", error);
-				alert("Failed to update incident. Please try again:" + error);
+				setIsSaving(false);
+				setSaveError(
+					(error && error.message) ||
+					"Failed to update incident. Please try again."
+				);
 			});
-	}
+	};
+
+	const handleCancel = () => {
+		if (isDirty) {
+			const ok = window.confirm("Discard your unsaved changes?");
+			if (!ok) return;
+		}
+		goBack(false);
+	};
 
 	const handleFileChange = (event) => {
 		const files = Array.from(event.target.files);
@@ -69,9 +126,16 @@ const IncidentEdit = ({ incident }) => {
 		}
 	};
 
+	const currentStatus = localIncident.self_report_status;
+	const reporterId = localIncident.reporter_id || localIncident.reporter || "—";
+	const displayedReviewer = reviewer || localIncident.reviewer || "—";
+
 	return (
 		<>
-			<div className="header-container">
+			<div className="header-container header-with-back">
+				<Button color="link" className="back-link" onClick={handleCancel}>
+					&larr; Back to list
+				</Button>
 				<h5>Edit User Reported Incidents</h5>
 			</div>
 			<div className="incident-edit-container">
@@ -147,8 +211,8 @@ const IncidentEdit = ({ incident }) => {
 					</FormGroup>
 					<div className="divider">
 						<FormGroup>
-							<Label for="reviewBy">Reporter ID: </Label>
-							<span> 000001</span>
+							<Label for="reporterId">Reporter ID: </Label>
+							<span id="reporterId"> {reporterId}</span>
 						</FormGroup>
 
 						<FormGroup>
@@ -177,27 +241,62 @@ const IncidentEdit = ({ incident }) => {
 					</div>
 					<FormGroup>
 						<Label for="reviewBy">Review by: </Label>
-						<span> reviewer 1</span>
+						<span id="reviewBy"> {displayedReviewer}</span>
 					</FormGroup>
-					<Col md={2}>
-						<FormGroup>
-							<Label for="status">Current Status:</Label>
-							<Input type="select" name="status" id="status" value={localIncident.self_report_status}
-								onChange={(e) => setLocalIncident(prev => ({ ...prev, self_report_status: e.target.value }))}>
-								<option value="new">Pending</option>
-								<option value="approved">Approved</option>
-								<option value="rejected">Rejected</option>
-							</Input>
-						</FormGroup>
-					</Col>
+
+					<FormGroup>
+						<Label>Current Status:</Label>
+						<div className="status-display">
+							<span className={`status-pill status-${currentStatus}`}>
+								{STATUS_LABELS[currentStatus] || currentStatus}
+							</span>
+							<Button
+								className={`btn-action btn-approve${currentStatus === 'approved' ? ' is-active' : ''}`}
+								onClick={() => handleStatusChange('approved')}
+								disabled={isSaving}
+								type="button"
+							>
+								Approve
+							</Button>
+							<Button
+								className={`btn-action btn-reject${currentStatus === 'rejected' ? ' is-active' : ''}`}
+								onClick={() => handleStatusChange('rejected')}
+								disabled={isSaving}
+								type="button"
+							>
+								Reject
+							</Button>
+						</div>
+					</FormGroup>
 
 					<FormGroup>
 						<Label for="comment">Comment:</Label>
 						<Input className="textarea" type="textarea" name="comment" id="comment" value={localIncident.comment || ''}
 							onChange={(e) => setLocalIncident(prev => ({ ...prev, comment: e.target.value }))} />
 					</FormGroup>
-					<Button className="btn-save" onClick={handleSaveIncident}>Save</Button>
-					<Button className="btn-cancel">Cancel</Button>
+
+					{saveError && (
+						<div className="save-error" role="alert">{saveError}</div>
+					)}
+
+					<div className="action-buttons">
+						<Button
+							className="btn-action btn-save"
+							onClick={handleSaveIncident}
+							disabled={isSaving}
+							type="button"
+						>
+							{isSaving ? 'Saving…' : 'Save'}
+						</Button>
+						<Button
+							className="btn-action btn-cancel"
+							onClick={handleCancel}
+							disabled={isSaving}
+							type="button"
+						>
+							Cancel
+						</Button>
+					</div>
 				</Form>
 			</div>
 

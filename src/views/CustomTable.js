@@ -56,13 +56,21 @@ const CustomTable = ({
                       )
                     }                      
                   </td>
-                  <td>{item.self_report_status}</td>
+                  <td>
+                    {item.self_report_status ? (
+                      <span className={`status-pill status-${item.self_report_status}`}>
+                        {item.self_report_status === 'new'
+                          ? 'Pending'
+                          : item.self_report_status.charAt(0).toUpperCase() + item.self_report_status.slice(1)}
+                      </span>
+                    ) : null}
+                  </td>
                   <td>{item.reviewer}</td>
                   <td>
-                    <Button color="btn btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
+                    <Button className="btn-action btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
                       Detail
                     </Button>{" "}
-                    <Button color="btn btn-reject" size="sm">
+                    <Button className="btn-action btn-reject" size="sm">
                       Reject
                     </Button>
                   </td>

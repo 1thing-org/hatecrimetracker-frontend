@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from 'moment';
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
@@ -10,17 +10,42 @@ import CustomTable from "./CustomTable";
 import IncidentAdminPage from "./IncidentAdmin"
 
 
+// Derive the tab to show from the URL. /admin defaults to news so the
+// tab-based admin is the new default landing page.
+const tabFromPath = (pathname) => {
+	if (pathname && pathname.indexOf('/admin/selfreport') === 0) return 'selfreport';
+	return 'news';
+};
+
 const IncidentListPage = () => {
 	const user = useContext(UserContext) || { photoURL: "", displayName: "Guest", email: "guest@example.com" };
+	const location = useLocation();
 	const [incidents, setIncidents] = useState([]);
 	const [news, setNews] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 	const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 	const [selectedIncident, setSelectedIncident] = useState(null);
-	const [selectedTab, setSelectedTab] = useState('news'); // State to track the selected tab
+	// Initialise the tab from the current URL so deep links land on the
+	// correct tab (e.g. /admin/selfreport opens the User Reported tab).
+	const [selectedTab, setSelectedTab] = useState(tabFromPath(location.pathname));
+	// Bumping this value forces a reload of the active tab's data, e.g.
+	// after returning from the edit page so updated statuses show up.
+	const [reloadKey, setReloadKey] = useState(0);
 
 	const navigate = useNavigate();//enable url change according to clicked tab
+
+	// Keep tab state in sync with the URL when the user uses the browser's
+	// back/forward buttons or navigates between /admin/news and /admin/selfreport.
+	useEffect(() => {
+		const next = tabFromPath(location.pathname);
+		if (next !== selectedTab) {
+			setSelectedTab(next);
+			setCurrentPage(1);
+			setSelectedIncident(null);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location.pathname]);
 
 	useEffect(() => {
 		if (selectedTab === 'selfreport') {//selfreport
@@ -38,7 +63,7 @@ const IncidentListPage = () => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [currentPage, selectedTab]);
+	}, [currentPage, selectedTab, reloadKey]);
 
 	const loadIncidents = async (page) => {
 		try {
@@ -80,8 +105,14 @@ const IncidentListPage = () => {
 		setSelectedIncident(incident);
 	};
 
-	const handleBackClick = () => {
+	// onBack is called by the edit page after Save / Cancel. When `didSave`
+	// is true we bump reloadKey so the table re-fetches and the updated
+	// status / comment show up immediately.
+	const handleBackClick = (didSave) => {
 		setSelectedIncident(null);
+		if (didSave) {
+			setReloadKey(k => k + 1);
+		}
 	};
 
 	const handleTabClick = (tab, event) => {
@@ -129,7 +160,7 @@ const IncidentListPage = () => {
 							</div>
 							<div className="tab">
 								<div className="bullet"></div>
-								<a class="nav-link" href="/admin/selfreport" onClick={(e) => handleTabClick('selfreport', e)}>User Reported</a>
+								<a className="nav-link" href="/admin/selfreport" onClick={(e) => handleTabClick('selfreport', e)}>User Reported</a>
 								<i className={`fas fa-angle-${selectedTab === 'selfreport' ? 'down' : 'right'} fa-lg`} style={{ color: "#d9d9d9" }}></i>
 							</div>
 						</nav>
@@ -139,7 +170,11 @@ const IncidentListPage = () => {
 						{selectedTab === 'news' ? (
 							<IncidentAdminPage />
 						) : selectedIncident ? (
-							<IncidentEdit incident={selectedIncident} onBack={handleBackClick} />
+							<IncidentEdit
+								incident={selectedIncident}
+								onBack={handleBackClick}
+								reviewer={user.displayName || user.email}
+							/>
 						) : (
 							<CustomTable
 								title="User Reported Incidents"
