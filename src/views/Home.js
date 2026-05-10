@@ -51,7 +51,24 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
-  const [showSelfReport, setShowSelfReport] = useState(false);
+  // Persist the "Show User Reported Incidents" toggle in localStorage so a
+  // page refresh keeps the user's choice instead of snapping back to off.
+  const SHOW_SELF_REPORT_KEY = "hct.showSelfReport";
+  const [showSelfReport, setShowSelfReportState] = useState(() => {
+    try {
+      return window.localStorage.getItem(SHOW_SELF_REPORT_KEY) === "true";
+    } catch (e) {
+      return false;
+    }
+  });
+  const setShowSelfReport = (next) => {
+    setShowSelfReportState(next);
+    try {
+      window.localStorage.setItem(SHOW_SELF_REPORT_KEY, next ? "true" : "false");
+    } catch (e) {
+      // localStorage may be unavailable (private mode, quota); fall back silently.
+    }
+  };
   const [viewMode, setViewMode] = useState("monthly");
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
