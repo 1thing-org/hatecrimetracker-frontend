@@ -15,6 +15,20 @@ const STATUS_LABELS = {
 const VIDEO_RE = /\.(mp4|mov|m4v|avi|wmv|mkv|webm|3gp)(?:\?|$)/i;
 const isVideoUrl = (url) => VIDEO_RE.test(url || "");
 
+// <input type="date"> expects/produces YYYY-MM-DD. Coerce whatever the
+// backend returned (ISO, RFC, etc) into that wire format. Empty / invalid
+// values become "" so the picker shows blank instead of "Invalid Date".
+const toDateInputValue = (value) => {
+	if (!value) return "";
+	const d = new Date(value);
+	if (Number.isNaN(d.getTime())) return "";
+	// Use UTC parts so a local timezone offset can't shift the calendar day.
+	const yyyy = d.getUTCFullYear();
+	const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+	const dd = String(d.getUTCDate()).padStart(2, "0");
+	return `${yyyy}-${mm}-${dd}`;
+};
+
 const IncidentEdit = ({ incident, onBack, reviewer }) => {
 	const initialIncident = useMemo(() => ({
 		...incident,
@@ -134,8 +148,9 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 				type: localIncident.type || "self_report",
 				attachments: localIncident.attachments || [],
 				approved_by: reviewer || localIncident.approved_by || null,
+				// <input type="date"> already gives us YYYY-MM-DD, which the
+				// backend's dateparser handles natively.
 			};
-			console.log("Saving incident with attachments:", payload.attachments);
 			await incidentsService.upsertIncident(payload);
 			setIsSaving(false);
 			// Hand the parent the post-save snapshot so the row updates
@@ -226,8 +241,13 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 						<Col md={3}>
 							<FormGroup>
 								<Label for="incidentTime">Incident Time: </Label>
-								<Input type="text" name="incidentTime" id="incidentTime" value={localIncident.incident_time || ''}
-									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_time: e.target.value }))} />
+								<Input
+									type="date"
+									name="incidentTime"
+									id="incidentTime"
+									value={toDateInputValue(localIncident.incident_time)}
+									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_time: e.target.value }))}
+								/>
 							</FormGroup>
 						</Col>
 						<Col md={9}>

@@ -7,22 +7,28 @@ body.dark-layout {
 	color: #b4b7bd;
 	background-color: #000000; }
 
-.incident-list .source-tag {
-    display: block;
-    width: fit-content;
+/* Compact inline chip shown at the start of the location/time meta line
+   when the User Reported toggle is on. Replaces the older `.source-tag`
+   block (which took its own row and ~20px of vertical space per card). */
+.incident-list .source-chip {
+    display: inline-block;
     color: white;
-    padding: 2px 6px; 
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 500;
-    margin-bottom: 8px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+    margin-right: 6px;
+    vertical-align: 1px;
+    text-transform: uppercase;
 }
 
-.source-tag.user-report {
+.source-chip.user-report {
     background-color: #E7734E;
 }
 
-.source-tag.news-report {
+.source-chip.news-report {
     background-color: #002FBD;
 }
 

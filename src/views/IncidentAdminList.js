@@ -17,16 +17,45 @@ const tabFromPath = (pathname) => {
 	return 'news';
 };
 
+// Allowed values for the self-report status filter (backend also accepts "all").
+const VALID_STATUSES = new Set(["new", "approved", "rejected", "all"]);
+
+// Parse `?status=...&page=...` so refreshes / deep links restore the view
+// instead of resetting the filter to "Pending" and the page to 1.
+const parseQueryString = (search) => {
+	const sp = new URLSearchParams(search || "");
+	const rawStatus = sp.get("status");
+	const rawPage = parseInt(sp.get("page") || "1", 10);
+	return {
+		status: VALID_STATUSES.has(rawStatus) ? rawStatus : "new",
+		page: Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1,
+	};
+};
+
+// Defensive: even though we ask the backend for type=self_report, drop
+// anything whose `type` field doesn't normalize to "self_report". We
+// can't fall back to other shape signals (attachments, contact, status)
+// because the backend model defaults `self_report_status` to "new" for
+// EVERY record — so news rows would also pass any such heuristic. If a
+// row has no explicit type, it's treated as news and excluded.
+const isSelfReportRow = (row) => {
+	if (!row) return false;
+	const t = String(row.type || "").toLowerCase();
+	return t === "self_report";
+};
+
 const IncidentListPage = () => {
 	const user = useContext(UserContext) || { photoURL: "", displayName: "Guest", email: "guest@example.com" };
 	const location = useLocation();
+	const initialQuery = parseQueryString(location.search);
 	const [incidents, setIncidents] = useState([]);
 	const [news, setNews] = useState([]);
-	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState(initialQuery.page);
 	const [totalPages, setTotalPages] = useState(1);
 	const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 	const [selectedIncident, setSelectedIncident] = useState(null);
 	const [listError, setListError] = useState(null);
+	const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 	// Initialise the tab from the current URL so deep links land on the
 	// correct tab (e.g. /admin/selfreport opens the User Reported tab).
 	const [selectedTab, setSelectedTab] = useState(tabFromPath(location.pathname));
@@ -35,8 +64,8 @@ const IncidentListPage = () => {
 	const [reloadKey, setReloadKey] = useState(0);
 	// Self-report status filter for the User Reported tab.
 	// Backend accepts: "new" | "approved" | "rejected" | "all" | "" (also "all").
-	// Defaults to "new" so the admin lands on the pending queue.
-	const [statusFilter, setStatusFilter] = useState("new");
+	// Initial value comes from the URL (?status=...) so a refresh keeps the view.
+	const [statusFilter, setStatusFilter] = useState(initialQuery.status);
 
 	const navigate = useNavigate();//enable url change according to clicked tab
 
@@ -51,6 +80,29 @@ const IncidentListPage = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.pathname]);
+
+	// Mirror the User Reported view's filter + page into the URL so a
+	// refresh restores the same state.
+	useEffect(() => {
+		if (selectedTab !== 'selfreport') return;
+		const current = parseQueryString(location.search);
+		if (current.status === statusFilter && current.page === currentPage) return;
+		const params = new URLSearchParams(location.search);
+		params.set("status", statusFilter);
+		params.set("page", String(currentPage));
+		navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [statusFilter, currentPage, selectedTab]);
+
+	// Reverse: when the URL search changes externally (browser back/forward
+	// or a deep link), pull the new values into component state.
+	useEffect(() => {
+		if (selectedTab !== 'selfreport') return;
+		const next = parseQueryString(location.search);
+		if (next.status !== statusFilter) setStatusFilter(next.status);
+		if (next.page !== currentPage) setCurrentPage(next.page);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location.search, selectedTab]);
 
 	useEffect(() => {
 		if (selectedTab === 'selfreport') {//selfreport
@@ -73,18 +125,15 @@ const IncidentListPage = () => {
 		};
 	}, [currentPage, selectedTab, reloadKey, statusFilter]);
 
-	const loadIncidents = async (page, status = "new", skipCache = false) => {
+	const loadIncidents = async (page, status = "new", skipCache = false, _retry = 0) => {
 		setListError(null);
 		try {
 			// Service signature:
 			//   (startDate, endDate, state, lang, self_report_status, type, skip_cache, page_size)
-			// `status` controls which self-reports we ask for:
-			//   "new" (default) | "approved" | "rejected" | "all"
-			// On the initial load we leave skip_cache=false so the backend
-			// doesn't require an admin-auth check before the user's token
-			// is attached. After a save (or filter change requesting fresh
-			// data) we set skip_cache=true so the row's new status is
-			// fetched fresh, not served from a stale cache entry.
+			// On the initial load we leave skip_cache=false so the backend doesn't
+			// require an admin-auth check before the user's token is attached.
+			// After a save (or a manual refresh) we set skip_cache=true so a row's
+			// new status is fetched fresh, not served from a stale cache entry.
 			const list = await incidentsService.getIncidents(
 				moment().subtract(10, 'year'),
 				moment().add(1, 'days'),
@@ -94,18 +143,27 @@ const IncidentListPage = () => {
 				"self_report", // type
 				skipCache       // skip_cache
 			);
-			const safeList = Array.isArray(list) ? list : [];
+			const safeList = Array.isArray(list) ? list.filter(isSelfReportRow) : [];
 			const startIndex = (page - 1) * 7;
 			setIncidents(safeList.slice(startIndex, startIndex + 7));
 			setTotalPages(Math.max(1, Math.ceil(safeList.length / 7)));
+			setHasLoadedOnce(true);
 		} catch (error) {
 			console.error("Error loading incidents:", error);
+			// On the very first attempt, the JWT interceptor may not have
+			// attached the auth token yet (UserProvider's onAuthStateChanged
+			// fires asynchronously). Retry once after a short delay before
+			// surfacing the error to the user.
+			if (!hasLoadedOnce && _retry === 0) {
+				setTimeout(() => loadIncidents(page, status, skipCache, 1), 400);
+				return;
+			}
 			setIncidents([]);
 			setTotalPages(1);
-			const status = error && error.response && error.response.status;
+			const httpStatus = error && error.response && error.response.status;
 			const apiMsg =
 				error && error.response && error.response.data && error.response.data.error;
-			if (status === 401 || status === 403) {
+			if (httpStatus === 401 || httpStatus === 403) {
 				setListError(
 					"You don't have permission to view user-reported incidents. " +
 					"Please sign in with an admin account."
@@ -114,7 +172,7 @@ const IncidentListPage = () => {
 				setListError(`Failed to load incidents: ${apiMsg}`);
 			} else {
 				setListError(
-					`Failed to load incidents${status ? ` (HTTP ${status})` : ""}. ` +
+					`Failed to load incidents${httpStatus ? ` (HTTP ${httpStatus})` : ""}. ` +
 					`Please try again.`
 				);
 			}

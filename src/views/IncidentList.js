@@ -153,20 +153,22 @@ const IncidentList = (props) => {
                         if (normalizedSearch === "" && visibleCount >= visibleLimit) return null;
                         visibleCount++;
 
-                        const isUserReport = d.type === 'self_report';
+                        const normalizedType = String(d.type || '').toLowerCase();
+                        const isUserReport =
+                            normalizedType === 'self_report' ||
+                            (!d.type && !d.url && (
+                                (Array.isArray(d.attachments) && d.attachments.length > 0) ||
+                                !!d.contact_name ||
+                                !!d.contact_email ||
+                                !!d.contact_phone_number ||
+                                d.self_report_status === 'approved' ||
+                                d.self_report_status === 'new'
+                            ));
 
                         return (
                             <div className="incident-card" key={idx}>
                                 <Card className="border-0 shadow-sm mx-0">
                                     <CardBody className="p-0">
-                                        {/* Source Tag */}
-                                        {props.showSelfReport && (
-                                            <div>
-                                                <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
-                                                    {isUserReport ? 'User Reported' : 'Media Reported'}
-                                                </span>
-                                            </div>
-                                        )}
                                         <a className='incident-title'
                                             onClick={() => {
                                                 setModalData(d);
@@ -174,6 +176,14 @@ const IncidentList = (props) => {
                                             }}>{getTitle(d)}</a>
                                         {maybeGetHelpIcons(d)}
                                         <p className='location-time'>
+                                            {props.showSelfReport && (
+                                                <span
+                                                    className={`source-chip ${isUserReport ? 'user-report' : 'news-report'}`}
+                                                    title={isUserReport ? 'User Reported' : 'Media Reported'}
+                                                >
+                                                    {isUserReport ? 'User' : 'Media'}
+                                                </span>
+                                            )}
                                             {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
                                         </p>
                                         <p className='description'>{getAbstract(d)}</p>
