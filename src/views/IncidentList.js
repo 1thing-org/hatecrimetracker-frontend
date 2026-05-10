@@ -166,7 +166,7 @@ const IncidentList = (props) => {
             <Input
                 className="mb-1"
                 type="text"
-                placeholder={t('Search for the news ...')}
+                placeholder={t('search_for_news')}
                 onChange={(value) => {
                     setSearchTerm(value)
                     setVisibleLimit(INCR_COUNT)
@@ -224,8 +224,8 @@ const IncidentList = (props) => {
                                             {props.showSelfReport && (
                                                 <span
                                                     className={`source-icon ${isUserReport ? 'user-report' : 'news-report'}`}
-                                                    data-tooltip={isUserReport ? 'User Reported' : 'Media Reported'}
-                                                    aria-label={isUserReport ? 'User Reported' : 'Media Reported'}
+                                                    data-tooltip={isUserReport ? t('user_reported') : t('media_reported')}
+                                                    aria-label={isUserReport ? t('user_reported') : t('media_reported')}
                                                     role="img"
                                                 >
                                                     {isUserReport

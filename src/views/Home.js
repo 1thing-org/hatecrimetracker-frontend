@@ -372,7 +372,7 @@ const Home = () => {
 
               <div className="incident-controls">
                 <div className="incident-count-title">
-                  <h4 style={{ color: 'white' }}>{incidents.length} incidents have been reported</h4>
+                  <h4 style={{ color: 'white' }}>{t('incidents_have_been_reported', { count: incidents.length })}</h4>
                 </div>
                 <SelfReportToggle
                   isOn={showSelfReport}
@@ -391,14 +391,14 @@ const Home = () => {
               <div className="map-section">
                 {/* Mobile: Geography title above everything */}
                 <div className="mobile-label-title">
-                  <h3 className="label">Geography</h3>
+                  <h3 className="label">{t('geography')}</h3>
                 </div>
 
                 <div className="map-content">
                   {/* Desktop: Geography + Legend grouped */}
                   <div className="map-legend-wrapper">
                     <div className="desktop-label-title">
-                      <h3 className="label">Geography</h3>
+                      <h3 className="label">{t('geography')}</h3>
                     </div>
                     <div id="map-legend-container" className="map-legend" />
                   </div>
@@ -422,7 +422,7 @@ const Home = () => {
               <div className="chart-section">
                 {/* Mobile: Trend title and TimeToggle in same line */}
                 <div className="mobile-chart-header">
-                  <h3 className="label">Trend</h3>
+                  <h3 className="label">{t('trend')}</h3>
                   <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
                 </div>
 
@@ -430,7 +430,7 @@ const Home = () => {
                   {/* Desktop: Trend + Legend grouped */}
                   <div className="chart-legend-wrapper">
                     <div className="desktop-label-title">
-                      <h3 className="label">Trend</h3>
+                      <h3 className="label">{t('trend')}</h3>
                     </div>
                     <div id="chart-legend-container" className="chart-legend" />
                   </div>
@@ -453,7 +453,7 @@ const Home = () => {
               </div>
 
               <IncidentCountTable
-                title={"Incident Count by State"}
+                title={t('incident_count_by_state')}
                 data={incidentAggregated}
                 selectedState={selectedState}
                 stateToggled={stateToggled}

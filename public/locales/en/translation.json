@@ -26,7 +26,7 @@
     "no_data": "No data collected",
     "count_10k_asian": "Count/10K Asian",
     "count_1mm": "Count/1MM",
-    "incident_count" : "Incident Count"
+    "incident_count": "Incident Count"
   },
   "incident_chart": {
     "total_monthly_cases": "Total {{count}} monthly case",
@@ -62,5 +62,25 @@
   "how_to_help": "How to Help",
   "make_a_donation": "Make a Donation",
   "police_tip_line": "Police Tip Line",
-  "other_ways_to_help": "Other Ways to Help"
+  "other_ways_to_help": "Other Ways to Help",
+  "geography": "Geography",
+  "trend": "Trend",
+  "show_user_reported_incidents": "Show User Reported Incidents",
+  "toggle_on": "on",
+  "toggle_off": "off",
+  "user_reported": "User Reported",
+  "media_reported": "Media Reported",
+  "incidents_have_been_reported": "{{count}} incidents have been reported",
+  "all_states": "All States",
+  "search_for_news": "Search for the news ...",
+  "last_month": "Last Month",
+  "last_6_months": "Last 6 Months",
+  "last_year": "Last Year",
+  "year_to_date": "YTD",
+  "total": "Total",
+  "per_10k_asian": "Per 10K Asian",
+  "monthly": "Monthly",
+  "daily": "Daily",
+  "news_cases": "News Cases",
+  "user_reported_incidents": "User Reported Incidents"
 }

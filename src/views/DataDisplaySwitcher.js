@@ -1,15 +1,15 @@
 import {  Nav, NavItem, NavLink } from 'reactstrap';
+import { useTranslation } from 'react-i18next';
 import './DataDisplaySwitcher.css';
 
 const DataDisplaySwitcher = ({isShowPer10kAsian, onClick}) => {
+    const { t } = useTranslation();
     const TotalButton = () => {
-        console.log(isShowPer10kAsian)
         if (isShowPer10kAsian === true) {
             onClick()
         }
     }
     const Per10KAsianButton = () => {
-        console.log(isShowPer10kAsian)
         if (isShowPer10kAsian !== true) {
             onClick()
         }
@@ -19,10 +19,10 @@ const DataDisplaySwitcher = ({isShowPer10kAsian, onClick}) => {
             <Nav className= "ButtonToggle" pills>
                 <NavItem className="RowButtonToggle">
                     <NavLink active={!isShowPer10kAsian} onClick={TotalButton}>
-                        Total
+                        {t('total')}
                     </NavLink>
                     <NavLink className='Switcher10KButton' active={isShowPer10kAsian} onClick={Per10KAsianButton}>
-                        Per 10K Asian
+                        {t('per_10k_asian')}
                     </NavLink>
                 </NavItem>
             </Nav>
