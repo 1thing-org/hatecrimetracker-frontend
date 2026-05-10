@@ -1,8 +1,16 @@
 import React, { useMemo, useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { SelectPicker } from "rsuite";
 import * as incidentsService from "../services/incidents";
 import { uploadAttachment } from "../services/storage";
+import { forEachState } from "../utility/Utils";
 import "./IncidentEdit.css";
+
+// Build the state dropdown options once. Same source as the home page's
+// StateSelection so the admin sees the exact same list (US states +
+// CANADA + ONLINE).
+const STATE_OPTIONS = [];
+forEachState((state, name) => STATE_OPTIONS.push({ label: name, value: state }));
 
 // Map between the API status value and the human-readable label.
 const STATUS_LABELS = {
@@ -253,8 +261,16 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 						<Col md={9}>
 							<FormGroup>
 								<Label for="location">Location:</Label>
-								<Input type="text" name="location" id="location" value={localIncident.incident_location || ''}
-									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_location: e.target.value }))} />
+								<SelectPicker
+									id="location"
+									data={STATE_OPTIONS}
+									value={localIncident.incident_location || null}
+									onChange={(value) => setLocalIncident(prev => ({ ...prev, incident_location: value || "" }))}
+									onClean={() => setLocalIncident(prev => ({ ...prev, incident_location: "" }))}
+									placeholder="Select a state"
+									searchable
+									block
+								/>
 							</FormGroup>
 						</Col>
 					</Row>
