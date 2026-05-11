@@ -1,10 +1,12 @@
 import React from "react";
-import "./TimeToggle.css"; 
+import { useTranslation } from "react-i18next";
+import "./TimeToggle.css";
 
 const TimeToggle = ({ viewMode, setViewMode }) => {
+  const { t } = useTranslation();
   return (
     <div className="time-range-toggle">
-      <div className="time-option" onClick={() => setViewMode("monthly")}> 
+      <div className="time-option" onClick={() => setViewMode("monthly")}>
         <div
           className={`time-circle-outer ${
             viewMode === "monthly" ? "active" : ""
@@ -17,11 +19,11 @@ const TimeToggle = ({ viewMode, setViewMode }) => {
             viewMode === "monthly" ? "active-label" : "inactive-label"
           }
         >
-          Monthly
+          {t("monthly")}
         </span>
       </div>
 
-      <div className="time-option" onClick={() => setViewMode("daily")}> 
+      <div className="time-option" onClick={() => setViewMode("daily")}>
         <div
           className={`time-circle-outer ${
             viewMode === "daily" ? "active" : ""
@@ -34,7 +36,7 @@ const TimeToggle = ({ viewMode, setViewMode }) => {
             viewMode === "daily" ? "active-label" : "inactive-label"
           }
         >
-          Daily
+          {t("daily")}
         </span>
       </div>
     </div>

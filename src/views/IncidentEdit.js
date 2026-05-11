@@ -1,8 +1,16 @@
 import React, { useMemo, useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { SelectPicker } from "rsuite";
 import * as incidentsService from "../services/incidents";
 import { uploadAttachment } from "../services/storage";
+import { forEachState } from "../utility/Utils";
 import "./IncidentEdit.css";
+
+// Build the state dropdown options once. Same source as the home page's
+// StateSelection so the admin sees the exact same list (US states +
+// CANADA + ONLINE).
+const STATE_OPTIONS = [];
+forEachState((state, name) => STATE_OPTIONS.push({ label: name, value: state }));
 
 // Map between the API status value and the human-readable label.
 const STATUS_LABELS = {
@@ -14,6 +22,20 @@ const STATUS_LABELS = {
 // Heuristic: treat URLs ending in a known video extension as videos.
 const VIDEO_RE = /\.(mp4|mov|m4v|avi|wmv|mkv|webm|3gp)(?:\?|$)/i;
 const isVideoUrl = (url) => VIDEO_RE.test(url || "");
+
+// <input type="date"> expects/produces YYYY-MM-DD. Coerce whatever the
+// backend returned (ISO, RFC, etc) into that wire format. Empty / invalid
+// values become "" so the picker shows blank instead of "Invalid Date".
+const toDateInputValue = (value) => {
+	if (!value) return "";
+	const d = new Date(value);
+	if (Number.isNaN(d.getTime())) return "";
+	// Use UTC parts so a local timezone offset can't shift the calendar day.
+	const yyyy = d.getUTCFullYear();
+	const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+	const dd = String(d.getUTCDate()).padStart(2, "0");
+	return `${yyyy}-${mm}-${dd}`;
+};
 
 const IncidentEdit = ({ incident, onBack, reviewer }) => {
 	const initialIncident = useMemo(() => ({
@@ -134,8 +156,9 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 				type: localIncident.type || "self_report",
 				attachments: localIncident.attachments || [],
 				approved_by: reviewer || localIncident.approved_by || null,
+				// <input type="date"> already gives us YYYY-MM-DD, which the
+				// backend's dateparser handles natively.
 			};
-			console.log("Saving incident with attachments:", payload.attachments);
 			await incidentsService.upsertIncident(payload);
 			setIsSaving(false);
 			// Hand the parent the post-save snapshot so the row updates
@@ -226,15 +249,28 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 						<Col md={3}>
 							<FormGroup>
 								<Label for="incidentTime">Incident Time: </Label>
-								<Input type="text" name="incidentTime" id="incidentTime" value={localIncident.incident_time || ''}
-									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_time: e.target.value }))} />
+								<Input
+									type="date"
+									name="incidentTime"
+									id="incidentTime"
+									value={toDateInputValue(localIncident.incident_time)}
+									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_time: e.target.value }))}
+								/>
 							</FormGroup>
 						</Col>
 						<Col md={9}>
 							<FormGroup>
 								<Label for="location">Location:</Label>
-								<Input type="text" name="location" id="location" value={localIncident.incident_location || ''}
-									onChange={(e) => setLocalIncident(prev => ({ ...prev, incident_location: e.target.value }))} />
+								<SelectPicker
+									id="location"
+									data={STATE_OPTIONS}
+									value={localIncident.incident_location || null}
+									onChange={(value) => setLocalIncident(prev => ({ ...prev, incident_location: value || "" }))}
+									onClean={() => setLocalIncident(prev => ({ ...prev, incident_location: "" }))}
+									placeholder="Select a state"
+									searchable
+									block
+								/>
 							</FormGroup>
 						</Col>
 					</Row>

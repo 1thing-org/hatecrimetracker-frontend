@@ -305,6 +305,27 @@
     font-size: 12px;
 }
 
+/* The row ID cell is the click target that opens the edit page.
+   Render it like a link instead of a button, since it lives inside a
+   table cell. */
+.row-id-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #2310fe;
+    text-decoration: underline;
+    font-weight: bold;
+    font: inherit;
+    cursor: pointer;
+}
+
+.row-id-link:hover,
+.row-id-link:focus {
+    color: #0a08a6;
+    outline: none;
+}
+
 /* Inline error banner shown above the User Reported list when the
    /incidents request fails — replaces the previous silent empty state. */
 .list-error {

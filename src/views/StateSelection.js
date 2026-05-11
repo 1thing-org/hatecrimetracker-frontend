@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { SelectPicker } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 import { forEachState } from '../utility/Utils';
 const STATES = [];
 const StateSelection = (props) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState(props.value);
 
   if (STATES.length === 0) {
@@ -20,7 +22,7 @@ const StateSelection = (props) => {
   return (
     <SelectPicker
       data={STATES}
-      placeholder='All States'
+      placeholder={t('all_states')}
       style={{ width: 224 }}
       onChange={(value) => props.onChange(value)}
       value={value}

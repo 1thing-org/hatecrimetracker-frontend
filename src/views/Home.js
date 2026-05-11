@@ -51,7 +51,24 @@ const Home = () => {
     searchParams.get("lang") || cookies.lang || getBrowserLang();
   const [selectedLangCode, setSelectedLangCode] = useState(lang_code);
   const support_languages = [];
-  const [showSelfReport, setShowSelfReport] = useState(false);
+  // Persist the "Show User Reported Incidents" toggle in localStorage so a
+  // page refresh keeps the user's choice instead of snapping back to off.
+  const SHOW_SELF_REPORT_KEY = "hct.showSelfReport";
+  const [showSelfReport, setShowSelfReportState] = useState(() => {
+    try {
+      return window.localStorage.getItem(SHOW_SELF_REPORT_KEY) === "true";
+    } catch (e) {
+      return false;
+    }
+  });
+  const setShowSelfReport = (next) => {
+    setShowSelfReportState(next);
+    try {
+      window.localStorage.setItem(SHOW_SELF_REPORT_KEY, next ? "true" : "false");
+    } catch (e) {
+      // localStorage may be unavailable (private mode, quota); fall back silently.
+    }
+  };
   const [viewMode, setViewMode] = useState("monthly");
 
   Object.entries(SUPPORTED_LANGUAGES).forEach(([lang_code, lang_name]) => {
@@ -76,6 +93,10 @@ const Home = () => {
     },
   ]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
+  // Raw per-state breakdown: { [stateCode]: { news, self_report } }.
+  // The map uses this when the Show User Reported Incidents toggle is on,
+  // so the tooltip can split out news vs user-reported counts.
+  const [incidentBreakdown, setIncidentBreakdown] = useState({});
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -163,6 +184,9 @@ const Home = () => {
         if (updateMap) {
           if (Object.keys(totalStats).length > 0) {
             setIncidentAggregated(getAggregatedTotalByState(totalStats));
+            // Keep the raw {news, self_report} breakdown around so the
+            // map tooltip can show both counts when the toggle is on.
+            setIncidentBreakdown(totalStats);
           }
         }
         setLoading(false);
@@ -355,7 +379,7 @@ const Home = () => {
 
               <div className="incident-controls">
                 <div className="incident-count-title">
-                  <h4 style={{ color: 'white' }}>{incidents.length} incidents have been reported</h4>
+                  <h4 style={{ color: 'white' }}>{t('incidents_have_been_reported', { count: incidents.length })}</h4>
                 </div>
                 <SelfReportToggle
                   isOn={showSelfReport}
@@ -374,14 +398,14 @@ const Home = () => {
               <div className="map-section">
                 {/* Mobile: Geography title above everything */}
                 <div className="mobile-label-title">
-                  <h3 className="label">Geography</h3>
+                  <h3 className="label">{t('geography')}</h3>
                 </div>
 
                 <div className="map-content">
                   {/* Desktop: Geography + Legend grouped */}
                   <div className="map-legend-wrapper">
                     <div className="desktop-label-title">
-                      <h3 className="label">Geography</h3>
+                      <h3 className="label">{t('geography')}</h3>
                     </div>
                     <div id="map-legend-container" className="map-legend" />
                   </div>
@@ -389,6 +413,8 @@ const Home = () => {
                   <div className="map-container">
                     <IncidentMap
                       mapData={incidentAggregated}
+                      mapBreakdown={incidentBreakdown}
+                      showSelfReport={showSelfReport}
                       selectedState={selectedState}
                       lang={i18n.language}
                       showPer10KAsian={isShowPer10kAsian}
@@ -405,7 +431,7 @@ const Home = () => {
               <div className="chart-section">
                 {/* Mobile: Trend title and TimeToggle in same line */}
                 <div className="mobile-chart-header">
-                  <h3 className="label">Trend</h3>
+                  <h3 className="label">{t('trend')}</h3>
                   <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
                 </div>
 
@@ -413,7 +439,7 @@ const Home = () => {
                   {/* Desktop: Trend + Legend grouped */}
                   <div className="chart-legend-wrapper">
                     <div className="desktop-label-title">
-                      <h3 className="label">Trend</h3>
+                      <h3 className="label">{t('trend')}</h3>
                     </div>
                     <div id="chart-legend-container" className="chart-legend" />
                   </div>
@@ -436,7 +462,7 @@ const Home = () => {
               </div>
 
               <IncidentCountTable
-                title={"Incident Count by State"}
+                title={t('incident_count_by_state')}
                 data={incidentAggregated}
                 selectedState={selectedState}
                 stateToggled={stateToggled}

@@ -5,6 +5,7 @@ import { stateFullName } from '../utility/Utils.js'
 import { Button, Card, CardBody, Row, Col, CardImg } from 'reactstrap'
 import { useTranslation } from 'react-i18next';
 import { Input } from 'rsuite';
+import { FaUser, FaNewspaper } from 'react-icons/fa';
 import donationIcon from '../assets/images/icons/donation.svg';
 import policeTipLineIcon from '../assets/images/icons/police-line.svg';
 import helpTheVictimIcon from '../assets/images/icons/victim-support.svg';
@@ -12,10 +13,40 @@ import openInNewTab from '../assets/images/icons/launch_black_24dp.svg';
 import closeIcon from '../assets/images/icons/close_black_24dp.svg';
 
 const INCR_COUNT = 10;
+const VIDEO_EXT_RE = /\.(mp4|mov|m4v|avi|wmv|mkv|webm|3gp)(?:\?|$)/i;
+const isVideoUrl = (url) => VIDEO_EXT_RE.test(url || "");
+
 const IncidentList = (props) => {
     Modal.setAppElement('#root');
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
+    // Gallery modal — fired by clicking an attachment thumbnail. Shows all
+    // images / videos of the row as a navigable carousel.
+    const [galleryOpen, setGalleryOpen] = useState(false);
+    const [galleryUrls, setGalleryUrls] = useState([]);
+    const [galleryIndex, setGalleryIndex] = useState(0);
+    const openGallery = (urls, startIndex) => {
+        if (!Array.isArray(urls) || urls.length === 0) return;
+        setGalleryUrls(urls);
+        setGalleryIndex(Math.max(0, Math.min(startIndex || 0, urls.length - 1)));
+        setGalleryOpen(true);
+    };
+    const closeGallery = () => setGalleryOpen(false);
+    const galleryNext = () => setGalleryIndex(i => (i + 1) % galleryUrls.length);
+    const galleryPrev = () => setGalleryIndex(i => (i - 1 + galleryUrls.length) % galleryUrls.length);
+
+    // Allow keyboard navigation (←/→/Esc) while the gallery is open.
+    useEffect(() => {
+        if (!galleryOpen) return;
+        const onKey = (e) => {
+            if (e.key === "ArrowRight") galleryNext();
+            else if (e.key === "ArrowLeft") galleryPrev();
+            else if (e.key === "Escape") closeGallery();
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [galleryOpen, galleryUrls.length]);
     const getModalWidth = () => {
         const screenWidth = window.innerWidth;
         if (screenWidth < 600) return '95%';
@@ -78,6 +109,13 @@ const IncidentList = (props) => {
         return incident?.abstract;
     }
     const maybeGetHelpIcons = (incident) => {
+        // Skip the wrapper span entirely when there are no help links so an
+        // empty inline element doesn't reserve space above the meta line —
+        // especially noticeable on user-reported rows where the title is
+        // hidden and these links are almost never present.
+        if (!incident?.donation_link && !incident?.police_tip_line && !incident?.help_the_victim) {
+            return null;
+        }
         return (
             <span className='help-icons'>
                 {incident?.donation_link ? (<img className='icon' src={donationIcon} alt='donation link' />) : null}
@@ -128,7 +166,7 @@ const IncidentList = (props) => {
             <Input
                 className="mb-1"
                 type="text"
-                placeholder={t('Search for the news ...')}
+                placeholder={t('search_for_news')}
                 onChange={(value) => {
                     setSearchTerm(value)
                     setVisibleLimit(INCR_COUNT)
@@ -153,27 +191,48 @@ const IncidentList = (props) => {
                         if (normalizedSearch === "" && visibleCount >= visibleLimit) return null;
                         visibleCount++;
 
-                        const isUserReport = d.type === 'self_report';
+                        const normalizedType = String(d.type || '').toLowerCase();
+                        const isUserReport =
+                            normalizedType === 'self_report' ||
+                            (!d.type && !d.url && (
+                                (Array.isArray(d.attachments) && d.attachments.length > 0) ||
+                                !!d.contact_name ||
+                                !!d.contact_email ||
+                                !!d.contact_phone_number ||
+                                d.self_report_status === 'approved' ||
+                                d.self_report_status === 'new'
+                            ));
 
                         return (
-                            <div className="incident-card" key={idx}>
+                            <div className={`incident-card${isUserReport ? ' is-user-report' : ''}`} key={idx}>
                                 <Card className="border-0 shadow-sm mx-0">
                                     <CardBody className="p-0">
-                                        {/* Source Tag */}
-                                        {props.showSelfReport && (
-                                            <div>
-                                                <span className={`source-tag ${isUserReport ? 'user-report' : 'news-report'}`}>
-                                                    {isUserReport ? 'User Reported' : 'Media Reported'}
-                                                </span>
-                                            </div>
+                                        {/* User-reported incidents typically have no title
+                                            (or an auto-generated one), so the title link is
+                                            hidden for them — the description below is the
+                                            primary content, and clicking an attachment still
+                                            opens the modal. News rows keep their title link. */}
+                                        {!isUserReport && (
+                                            <a className='incident-title'
+                                                onClick={() => {
+                                                    setModalData(d);
+                                                    openModal();
+                                                }}>{getTitle(d)}</a>
                                         )}
-                                        <a className='incident-title'
-                                            onClick={() => {
-                                                setModalData(d);
-                                                openModal();
-                                            }}>{getTitle(d)}</a>
                                         {maybeGetHelpIcons(d)}
                                         <p className='location-time'>
+                                            {props.showSelfReport && (
+                                                <span
+                                                    className={`source-icon ${isUserReport ? 'user-report' : 'news-report'}`}
+                                                    data-tooltip={isUserReport ? t('user_reported') : t('media_reported')}
+                                                    aria-label={isUserReport ? t('user_reported') : t('media_reported')}
+                                                    role="img"
+                                                >
+                                                    {isUserReport
+                                                        ? <FaUser aria-hidden="true" />
+                                                        : <FaNewspaper aria-hidden="true" />}
+                                                </span>
+                                            )}
                                             {stateFullName(d.incident_location)} | {moment(d.incident_time).format('MM/DD/YYYY')}
                                         </p>
                                         <p className='description'>{getAbstract(d)}</p>
@@ -181,20 +240,35 @@ const IncidentList = (props) => {
                                             <Row className="gx-2 gy-2 mt-2">
                                                 {d.attachments.map((url, i) => (
                                                     <Col xs="4" md="3" key={i}>
-                                                        <CardImg
-                                                            alt={`attachment-${i + 1}`}
-                                                            src={url}
-                                                            style={{
-                                                                aspectRatio: '1 / 1',
-                                                                width: '100%',
-                                                                objectFit: "cover",
-                                                                cursor: "pointer"
-                                                            }}
-                                                            onClick={() => {
-                                                                setModalData(d);
-                                                                openModal();
-                                                            }}
-                                                        />
+                                                        {isVideoUrl(url) ? (
+                                                            <video
+                                                                src={url}
+                                                                muted
+                                                                playsInline
+                                                                preload="metadata"
+                                                                style={{
+                                                                    aspectRatio: '1 / 1',
+                                                                    width: '100%',
+                                                                    objectFit: "cover",
+                                                                    cursor: "pointer",
+                                                                    background: "#000",
+                                                                    borderRadius: 4,
+                                                                }}
+                                                                onClick={() => openGallery(d.attachments, i)}
+                                                            />
+                                                        ) : (
+                                                            <CardImg
+                                                                alt={`attachment-${i + 1}`}
+                                                                src={url}
+                                                                style={{
+                                                                    aspectRatio: '1 / 1',
+                                                                    width: '100%',
+                                                                    objectFit: "cover",
+                                                                    cursor: "pointer"
+                                                                }}
+                                                                onClick={() => openGallery(d.attachments, i)}
+                                                            />
+                                                        )}
                                                     </Col>
                                                 ))}
                                             </Row>
@@ -235,6 +309,92 @@ const IncidentList = (props) => {
                         {maybeGetHelpDiv(modalData)}
                     </div>
                 ) : null}
+            </Modal>
+
+            {/* Attachment gallery: opened by clicking any attachment thumbnail.
+                Shows images and videos for the row as a navigable carousel. */}
+            <Modal
+                isOpen={galleryOpen}
+                onRequestClose={closeGallery}
+                contentLabel="Attachment gallery"
+                style={{
+                    overlay: {
+                        position: 'fixed',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        zIndex: 1000,
+                    },
+                    content: {
+                        position: 'fixed',
+                        inset: 0,
+                        background: 'transparent',
+                        border: 'none',
+                        padding: 0,
+                        overflow: 'hidden',
+                    },
+                }}
+                className="gallery-modal"
+            >
+                <div className="gallery-root" onClick={closeGallery}>
+                    <button
+                        type="button"
+                        className="gallery-close"
+                        onClick={(e) => { e.stopPropagation(); closeGallery(); }}
+                        aria-label="Close"
+                    >
+                        ×
+                    </button>
+
+                    {galleryUrls.length > 1 && (
+                        <button
+                            type="button"
+                            className="gallery-nav gallery-prev"
+                            onClick={(e) => { e.stopPropagation(); galleryPrev(); }}
+                            aria-label="Previous"
+                        >
+                            ‹
+                        </button>
+                    )}
+
+                    <div className="gallery-stage" onClick={(e) => e.stopPropagation()}>
+                        {galleryUrls[galleryIndex] && (
+                            isVideoUrl(galleryUrls[galleryIndex]) ? (
+                                <video
+                                    key={galleryUrls[galleryIndex]}
+                                    src={galleryUrls[galleryIndex]}
+                                    controls
+                                    autoPlay
+                                    playsInline
+                                    className="gallery-media"
+                                />
+                            ) : (
+                                <img
+                                    key={galleryUrls[galleryIndex]}
+                                    src={galleryUrls[galleryIndex]}
+                                    alt={`attachment ${galleryIndex + 1}`}
+                                    className="gallery-media"
+                                />
+                            )
+                        )}
+                    </div>
+
+                    {galleryUrls.length > 1 && (
+                        <button
+                            type="button"
+                            className="gallery-nav gallery-next"
+                            onClick={(e) => { e.stopPropagation(); galleryNext(); }}
+                            aria-label="Next"
+                        >
+                            ›
+                        </button>
+                    )}
+
+                    {galleryUrls.length > 1 && (
+                        <div className="gallery-counter" onClick={(e) => e.stopPropagation()}>
+                            {galleryIndex + 1} / {galleryUrls.length}
+                        </div>
+                    )}
+                </div>
             </Modal>
             {props.data.length ?
                 (<div className='icon-description'>

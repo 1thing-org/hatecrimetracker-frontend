@@ -1,6 +1,17 @@
 import React from "react";
-import { Table, Button } from "reactstrap";
+import { Table } from "reactstrap";
 import PropTypes from "prop-types";
+
+// Render an incident's date using the user's OS / browser locale.
+// `undefined` as the first arg to toLocaleDateString picks up the
+// runtime's default locale (en-US → 5/2/2024, de-DE → 2.5.2024, etc).
+// Returns "—" if the value is empty or unparseable so the cell never
+// shows raw garbage.
+const formatIncidentDate = (value) => {
+  if (!value) return "—";
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleDateString();
+};
 
 const CustomTable = ({
   title,
@@ -31,14 +42,24 @@ const CustomTable = ({
                 <th>File</th>
                 <th>Status</th>
                 <th>Reviewer</th>
-                <th>Operation</th>
               </tr>
             </thead>
             <tbody className="table-body-container">
               {data.map((item, index) => (
                 <tr key={index}>
-                  {selectedTab !== 'news' && <td>{item.id}</td>}
-                  <td>{item.incident_time}</td>
+                  {selectedTab !== 'news' && (
+                    <td>
+                      <button
+                        type="button"
+                        className="row-id-link"
+                        onClick={() => handleDetailClick(item)}
+                        title="Open"
+                      >
+                        {item.id}
+                      </button>
+                    </td>
+                  )}
+                  <td>{formatIncidentDate(item.incident_time)}</td>
                   <td>{item.incident_location}</td>
                   <td className="content-cell">
                     {item.abstract
@@ -88,15 +109,7 @@ const CustomTable = ({
                       </span>
                     ) : null}
                   </td>
-                  <td>{item.reviewer}</td>
-                  <td>
-                    <Button className="btn-action btn-detail" size="sm" onClick={() => handleDetailClick(item)}>
-                      Detail
-                    </Button>{" "}
-                    <Button className="btn-action btn-reject" size="sm">
-                      Reject
-                    </Button>
-                  </td>
+                  <td>{item.reviewer || item.approved_by || ""}</td>
                 </tr>
               ))}
             </tbody>

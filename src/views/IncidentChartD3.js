@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
 import { Card, CardBody } from 'reactstrap'
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import TimeToggle from "./components/time-toggle/TimeToggle";
 import './IncidentChartD3.css';
 
@@ -29,6 +29,7 @@ const IncidentChartD3 = ({
   setViewMode
 }) => {
   const chartRef = useRef();
+  const { t } = useTranslation();
 
   // Update chart legends for both desktop and mobile
   const updateChartLegend = () => {
@@ -42,11 +43,11 @@ const IncidentChartD3 = ({
 
     const legendData = [
       {
-        name: "Media Reported",
+        name: t("media_reported"),
         color: viewMode === VIEW_MODE_MONTHLY ? COLOR_NEWS_MONTHLY : COLOR_NEWS_DAILY
       },
       {
-        name: "User Reported",
+        name: t("user_reported"),
         color: COLOR_SELF_REPORT
       }
     ];
@@ -250,12 +251,11 @@ const IncidentChartD3 = ({
           ? dayjs(d.data.key).format("MMM YYYY")
           : dayjs(d.data.key).format("YYYY-MM-DD");
 
-        // TODO: Will change to a more appropriate name to make the site consistency
         let html = `<strong>${dateStr}</strong><br/>`;
-        html += `News Cases: ${d.data[KEY_NEWS]}`;
+        html += `${t("news_cases")}: ${d.data[KEY_NEWS]}`;
 
         if (showSelfReport && d.data[KEY_SELF_REPORT] !== undefined) {
-          html += `<br/>User Reported Incidents: ${d.data[KEY_SELF_REPORT]}`;
+          html += `<br/>${t("user_reported_incidents")}: ${d.data[KEY_SELF_REPORT]}`;
         }
 
         tooltip
