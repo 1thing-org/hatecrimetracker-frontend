@@ -61,9 +61,14 @@ const IncidentMap = (props) => {
         //calc max value from the input map data
         let max = 0
         Object.values(mapStatistics).forEach((value) => max = value > max ? value : max);
+        const breakdown = props.mapBreakdown || {};
+        const showSelfReport = !!props.showSelfReport;
         let data = []
         forEachState((state, name) => {
             const count = mapStatistics[state];
+            const stateBreakdown = breakdown[state] || {};
+            const newsCount = stateBreakdown.news || 0;
+            const selfReportCount = stateBreakdown.self_report || 0;
             const value = !mapStatistics[state] ?
                 null :
                 (!props.showPer10KAsian ? mapStatistics[state]
@@ -71,6 +76,17 @@ const IncidentMap = (props) => {
                 )
 
             const isSelected = selectedState === state;
+            // When the toggle is on AND we have the per-state breakdown,
+            // split the total Cases line into News Cases + User Reported
+            // Incidents lines so both numbers are visible side-by-side.
+            const showBreakdownInTooltip =
+                showSelfReport && (newsCount > 0 || selfReportCount > 0);
+            const casesRows = showBreakdownInTooltip
+                ? "<tr><td>" + t("news_cases") + ":</td><td width='70px' align='right'>" + newsCount + "</td></tr>" +
+                  "<tr><td>" + t("user_reported_incidents") + ":</td><td align='right'>" + selfReportCount + "</td></tr>" +
+                  "<tr><td>" + t("incident_map.cases") + ":</td><td align='right'>" + count + "</td></tr>"
+                : "<tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + count + "</td></tr>";
+
             data.push({
                 id: 'US-' + state,
                 value: value,
@@ -83,7 +99,7 @@ const IncidentMap = (props) => {
                     "<div className='maptooltip'><span className='state'>" + name + "</span><br/>" +
                     (count ?
                         "<div className='casenumber'>" +
-                        "<table><tr><td>" + t("incident_map.cases") + ":</td><td width='70px' align='right'>" + count + "</td></tr>" +
+                        "<table>" + casesRows +
                         "<tr><td>" + t("incident_map.count_1mm") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPerM(count, state)) + "</td></tr>" +
                         "<tr><td>" + t("incident_map.count_10k_asian") + ":</td><td align='right'>" + formatIncidentRate(getStateIncidentPer10kAsian(count, state)) + "</td></tr>" +
                         "</table>"
@@ -97,7 +113,7 @@ const IncidentMap = (props) => {
         updateMap(props.mapData)
         updateMapLegend(mapLegend);
         updateMobileLegend(mobileLegend);
-    }, [props.mapData, props.lang, props.showPer10KAsian, mapLegend, mobileLegend])
+    }, [props.mapData, props.mapBreakdown, props.showSelfReport, props.lang, props.showPer10KAsian, mapLegend, mobileLegend])
 
     useEffect(() => {
         setSelectedState(props.selectedState)

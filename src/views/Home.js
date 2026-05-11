@@ -93,6 +93,10 @@ const Home = () => {
     },
   ]);
   const [incidentAggregated, setIncidentAggregated] = useState([]);
+  // Raw per-state breakdown: { [stateCode]: { news, self_report } }.
+  // The map uses this when the Show User Reported Incidents toggle is on,
+  // so the tooltip can split out news vs user-reported counts.
+  const [incidentBreakdown, setIncidentBreakdown] = useState({});
   const [loading, setLoading] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -180,6 +184,9 @@ const Home = () => {
         if (updateMap) {
           if (Object.keys(totalStats).length > 0) {
             setIncidentAggregated(getAggregatedTotalByState(totalStats));
+            // Keep the raw {news, self_report} breakdown around so the
+            // map tooltip can show both counts when the toggle is on.
+            setIncidentBreakdown(totalStats);
           }
         }
         setLoading(false);
@@ -406,6 +413,8 @@ const Home = () => {
                   <div className="map-container">
                     <IncidentMap
                       mapData={incidentAggregated}
+                      mapBreakdown={incidentBreakdown}
+                      showSelfReport={showSelfReport}
                       selectedState={selectedState}
                       lang={i18n.language}
                       showPer10KAsian={isShowPer10kAsian}
