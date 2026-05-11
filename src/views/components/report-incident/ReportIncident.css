@@ -31,6 +31,20 @@
   position: relative;
 }
 
+/*
+ * Wider, taller content area for the multi-step report flow. The mobile
+ * SelfReport screens are vertically scrollable so we keep the modal scrollable
+ * on smaller viewports too.
+ */
+.report-modal {
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: left;
+  background: #1f1f23;
+  color: #f5f5f5;
+}
+
 .modal-close {
   position: absolute;
   top: 10px;
@@ -64,4 +78,284 @@
   max-width: 220px;
   height: auto;
   cursor: pointer;
+}
+
+/* ---- Multi-step report flow ---- */
+
+.report-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-title {
+  color: #FEF753;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.report-subtitle {
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+}
+
+.report-subtitle-left {
+  text-align: left;
+}
+
+.report-text,
+.report-text-block p {
+  color: #f5f5f5;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.report-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-alert {
+  color: #FEF753;
+}
+
+.report-label {
+  color: #f5f5f5;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+.report-input {
+  width: 100%;
+  background-color: #292d33;
+  color: #d9d9d9;
+  border: 2px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.report-input:focus {
+  outline: none;
+  border-color: #FEF753;
+}
+
+.report-textarea {
+  min-height: 140px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* rsuite SelectPicker overrides so it visually matches the form inputs. */
+.report-state-picker .rs-picker-toggle {
+  background-color: #292d33 !important;
+  border: 2px solid #d9d9d9 !important;
+  border-radius: 6px !important;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.report-state-picker .rs-picker-toggle-value,
+.report-state-picker .rs-picker-toggle-placeholder {
+  color: #fff !important;
+}
+
+/*
+ * The picker menu portals to <body> by default and sits underneath
+ * react-modal's overlay (z-index 4000). Force it above and give it the dark
+ * theme palette so the search input + options are legible.
+ */
+.rs-picker-menu {
+  z-index: 5000 !important;
+}
+
+.report-modal .rs-picker-menu {
+  background-color: #1f1f23;
+  border: 1px solid #444;
+}
+
+.report-modal .rs-picker-menu .rs-picker-search-bar-input {
+  background-color: #292d33;
+  color: #fff;
+  border-color: #444;
+}
+
+.report-modal .rs-picker-menu .rs-picker-select-menu-item {
+  color: #f5f5f5;
+}
+
+.report-modal .rs-picker-menu .rs-picker-select-menu-item:hover,
+.report-modal .rs-picker-menu .rs-picker-select-menu-item-focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.report-modal .rs-picker-menu .rs-picker-select-menu-item-active {
+  background-color: rgba(254, 247, 83, 0.15);
+  color: #FEF753;
+}
+
+.report-upload-box {
+  width: 100%;
+  background-color: #292d33;
+  border: 2px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.report-upload-trigger {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.report-upload-icon {
+  font-size: 1.4rem;
+}
+
+.report-upload-text {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.report-upload-hint {
+  color: #89898a;
+  font-size: 0.85rem;
+}
+
+.report-media-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.report-media-item {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.report-media-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #000;
+}
+
+.report-media-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.report-error {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.report-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.report-actions-center {
+  justify-content: center;
+}
+
+.report-actions-split {
+  justify-content: center;
+}
+
+.report-actions-stack {
+  flex-direction: column;
+  align-items: center;
+}
+
+.report-primary-btn {
+  background-color: #FEF753;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 180px;
+}
+
+.report-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.report-secondary-btn {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 110px;
+}
+
+.report-ghost-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.report-full-btn {
+  width: 100%;
+  max-width: 340px;
+}
+
+.report-success-box {
+  background: #202020;
+  border-radius: 8px;
+  padding: 16px;
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .report-modal {
+    max-width: 100%;
+    border-radius: 0;
+    max-height: 100vh;
+    height: 100vh;
+  }
 }
