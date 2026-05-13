@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { updateIncidentContact } from "../../../services/incidents";
 
 // Step 4: optional contact info form.
@@ -7,6 +8,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[0-9]{10,15}$/;
 
 const ContactInfoForm = ({ incidentId, onSubmitted }) => {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -15,15 +17,15 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
 
   const validate = () => {
     if (!name.trim()) {
-      setError("Please enter your name.");
+      setError(t("report.validation_name"));
       return false;
     }
     if (!EMAIL_RE.test(email.trim().toLowerCase())) {
-      setError("Please enter a valid email address.");
+      setError(t("report.validation_email"));
       return false;
     }
     if (!PHONE_RE.test(phone.replace(/[^0-9]/g, ""))) {
-      setError("Please enter a valid phone number (10–15 digits).");
+      setError(t("report.validation_phone"));
       return false;
     }
     setError("");
@@ -44,7 +46,7 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
       onSubmitted();
     } catch (err) {
       console.error("Error updating contact info:", err);
-      setError("There was a problem submitting your contact details. Please try again.");
+      setError(t("report.error_contact_submit"));
     } finally {
       setSubmitting(false);
     }
@@ -52,15 +54,12 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
 
   return (
     <form className="report-step report-contact-info" onSubmit={handleSubmit}>
-      <h3 className="report-subtitle">Thank you for submitting your report!</h3>
-      <p className="report-text">
-        If you are comfortable, our team would like to follow up with you to
-        learn more about what happened and offer our support. Your willingness
-        to share further details helps us improve the accuracy of our data and
-        enhance the resources we provide to the community.
-      </p>
+      <h3 className="report-subtitle">{t("report.contact_thank_you")}</h3>
+      <p className="report-text">{t("report.contact_intro")}</p>
 
-      <label className="report-label" htmlFor="contact-name">What's your name?</label>
+      <label className="report-label" htmlFor="contact-name">
+        {t("report.contact_name_label")}
+      </label>
       <input
         id="contact-name"
         type="text"
@@ -69,7 +68,9 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
         onChange={(e) => setName(e.target.value)}
       />
 
-      <label className="report-label" htmlFor="contact-email">What's your email?</label>
+      <label className="report-label" htmlFor="contact-email">
+        {t("report.contact_email_label")}
+      </label>
       <input
         id="contact-email"
         type="email"
@@ -78,7 +79,9 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <label className="report-label" htmlFor="contact-phone">What's your phone number?</label>
+      <label className="report-label" htmlFor="contact-phone">
+        {t("report.contact_phone_label")}
+      </label>
       <input
         id="contact-phone"
         type="tel"
@@ -95,7 +98,9 @@ const ContactInfoForm = ({ incidentId, onSubmitted }) => {
           className="report-primary-btn"
           disabled={submitting}
         >
-          {submitting ? "Submitting..." : "Contact Me"}
+          {submitting
+            ? t("report.form_submitting")
+            : t("report.contact_submit")}
         </button>
       </div>
     </form>

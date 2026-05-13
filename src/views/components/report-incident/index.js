@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "react-modal";
 import Intro from "./Intro";
 import ReportForm from "./ReportForm";
@@ -21,6 +22,7 @@ const STEPS = {
 };
 
 const ReportIncident = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(STEPS.INTRO);
   const [incidentId, setIncidentId] = useState(null);
@@ -78,7 +80,7 @@ const ReportIncident = () => {
   return (
     <>
       <button className="report-incident-btn" onClick={open}>
-        Report Incident
+        {t("report.report_incident_button")}
       </button>
 
       <Modal
@@ -88,7 +90,7 @@ const ReportIncident = () => {
         className="modal-content report-modal"
         shouldCloseOnOverlayClick={false}
       >
-        <button className="modal-close" onClick={close} aria-label="Close">
+        <button className="modal-close" onClick={close} aria-label={t("report.close")}>
           ×
         </button>
         {renderStep()}

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SelectPicker } from "rsuite";
 import { forEachState } from "../../../utility/Utils";
 import { uploadAttachments } from "../../../services/storage";
@@ -22,6 +23,7 @@ forEachState((abbrev, name) => STATE_OPTIONS.push({ label: name, value: abbrev }
 const todayIsoDate = () => new Date().toISOString().split("T")[0];
 
 const ReportForm = ({ onSubmitted, onCancel }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef(null);
   const [pickerContainer, setPickerContainer] = useState(null);
   const [date, setDate] = useState(todayIsoDate());
@@ -54,11 +56,11 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
 
   const validate = () => {
     if (!state) {
-      setError("Please pick where the incident took place.");
+      setError(t("report.validation_location"));
       return false;
     }
     if (!description.trim()) {
-      setError("Please describe what happened.");
+      setError(t("report.validation_description"));
       return false;
     }
     setError("");
@@ -98,7 +100,7 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
       onSubmitted(incidentId);
     } catch (err) {
       console.error("Failed to submit report:", err);
-      setError("Something went wrong while submitting the report. Please try again.");
+      setError(t("report.error_submit"));
     } finally {
       setSubmitting(false);
     }
@@ -111,7 +113,7 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
       ref={setPickerContainer}
     >
       <label className="report-label" htmlFor="report-date">
-        When was the incident?
+        {t("report.form_date_label")}
       </label>
       <input
         id="report-date"
@@ -123,7 +125,7 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
       />
 
       <label className="report-label">
-        Where did the incident take place?
+        {t("report.form_location_label")}
       </label>
       <SelectPicker
         data={STATE_OPTIONS}
@@ -131,7 +133,7 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
         onChange={(value) => setState(value || "")}
         searchable
         cleanable={false}
-        placeholder="All States"
+        placeholder={t("report.form_location_placeholder")}
         block
         menuMaxHeight={240}
         className="rs-theme-dark report-state-picker"
@@ -142,19 +144,19 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
       />
 
       <label className="report-label" htmlFor="report-description">
-        Describe in detail what happened
+        {t("report.form_description_label")}
       </label>
       <textarea
         id="report-description"
         className="report-input report-textarea"
-        placeholder="Description"
+        placeholder={t("report.form_description_placeholder")}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={6}
       />
 
       <label className="report-label">
-        If you have any images or videos related to the incident, please upload them here.
+        {t("report.form_media_label")}
       </label>
       <div className="report-upload-box">
         <button
@@ -163,8 +165,8 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
           onClick={() => fileInputRef.current && fileInputRef.current.click()}
         >
           <span className="report-upload-icon" aria-hidden="true">↓</span>
-          <span className="report-upload-text">Choose files</span>
-          <span className="report-upload-hint">(Size limit: 10MB)</span>
+          <span className="report-upload-text">{t("report.form_choose_files")}</span>
+          <span className="report-upload-hint">{t("report.form_size_limit")}</span>
         </button>
         <input
           ref={fileInputRef}
@@ -195,7 +197,7 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
                   type="button"
                   className="report-media-remove"
                   onClick={() => removeFile(i)}
-                  aria-label={`Remove ${f.file.name}`}
+                  aria-label={t("report.form_remove_file_aria", { name: f.file.name })}
                 >
                   ×
                 </button>
@@ -214,14 +216,14 @@ const ReportForm = ({ onSubmitted, onCancel }) => {
           onClick={onCancel}
           disabled={submitting}
         >
-          Cancel
+          {t("report.form_cancel")}
         </button>
         <button
           type="submit"
           className="report-primary-btn"
           disabled={submitting}
         >
-          {submitting ? "Submitting..." : "Submit"}
+          {submitting ? t("report.form_submitting") : t("report.form_submit")}
         </button>
       </div>
     </form>
