@@ -41,6 +41,10 @@ const IncidentChartD3 = ({
     const mobileLegendContainer = d3.select("#chart-legend-mobile");
     mobileLegendContainer.selectAll("*").remove();
 
+    if (!showSelfReport) {
+      return;
+    }
+
     const legendData = [
       {
         name: t("media_reported"),
@@ -252,10 +256,13 @@ const IncidentChartD3 = ({
           : dayjs(d.data.key).format("YYYY-MM-DD");
 
         let html = `<strong>${dateStr}</strong><br/>`;
-        html += `${t("news_cases")}: ${d.data[KEY_NEWS]}`;
-
-        if (showSelfReport && d.data[KEY_SELF_REPORT] !== undefined) {
-          html += `<br/>${t("user_reported_incidents")}: ${d.data[KEY_SELF_REPORT]}`;
+        if (showSelfReport) {
+          html += `${t("news_cases")}: ${d.data[KEY_NEWS]}`;
+          if (d.data[KEY_SELF_REPORT] !== undefined) {
+            html += `<br/>${t("user_reported_incidents")}: ${d.data[KEY_SELF_REPORT]}`;
+          }
+        } else {
+          html += `${t("incident_map.cases")}: ${d.data[KEY_NEWS]}`;
         }
 
         tooltip
