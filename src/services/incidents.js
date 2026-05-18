@@ -63,6 +63,19 @@ export function upsertIncident(incident) {
         }).then((response) => { return response.data && response.data.incident_id; });
 }
 
+// Update contact info for an existing self-reported incident.
+// Mirrors the mobile services/incidents.service#updateIncidentContact call.
+export function updateIncidentContact(id, contactData) {
+    const incidentAPIUrl = config.api_endpoint + "/incidents/" + id + "/contact";
+    return axios.post(incidentAPIUrl, contactData,
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "false",
+                "strict-origin-when-cross-origin": "false"
+            }
+        }).then((response) => { return response.data && response.data.incident_id; });
+}
+
 export function deleteIncident(id) {
     const incidentAPIUrl = config.api_endpoint + "/incidents/" + id;
     return axios.delete(incidentAPIUrl, 

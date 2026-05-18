@@ -58,6 +58,9 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 	const isUploading = pendingUploads.some(p => p.status === "uploading");
 
 	// Detect unsaved changes so we can warn before discarding them on Cancel.
+	// Contact fields are persisted by the backend as `contact_name`, `email`,
+	// and `phone` — matching the self-report flow's `/incidents/<id>/contact`
+	// payload — so the edit form binds to those names.
 	const isDirty = useMemo(() => {
 		const sameAttachments =
 			localIncident.attachments.length === initialIncident.attachments.length &&
@@ -69,8 +72,9 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 			(localIncident.incident_time || "") !== (initialIncident.incident_time || "") ||
 			(localIncident.incident_location || "") !== (initialIncident.incident_location || "") ||
 			(localIncident.abstract || "") !== (initialIncident.abstract || "") ||
-			(localIncident.contact_email || "") !== (initialIncident.contact_email || "") ||
-			(localIncident.contact_phone_number || "") !== (initialIncident.contact_phone_number || "")
+			(localIncident.contact_name || "") !== (initialIncident.contact_name || "") ||
+			(localIncident.email || "") !== (initialIncident.email || "") ||
+			(localIncident.phone || "") !== (initialIncident.phone || "")
 		);
 	}, [localIncident, initialIncident]);
 
@@ -335,22 +339,39 @@ const IncidentEdit = ({ incident, onBack, reviewer }) => {
 
 						<FormGroup>
 							<Row form>
-								<Col md={3}>
+								<Col md={4}>
 									<FormGroup>
-										<Label for="contactEmail">Contact Email:</Label>
-										<Input type="email" name="contactEmail" id="contactEmail" value={localIncident.contact_email || ''}
-											onChange={(e) => setLocalIncident(prev => ({ ...prev, contact_email: e.target.value }))} />
+										<Label for="contactName">Contact Name:</Label>
+										<Input
+											type="text"
+											name="contactName"
+											id="contactName"
+											value={localIncident.contact_name || ''}
+											onChange={(e) => setLocalIncident(prev => ({ ...prev, contact_name: e.target.value }))}
+										/>
 									</FormGroup>
 								</Col>
-								<Col md={3}>
+								<Col md={4}>
+									<FormGroup>
+										<Label for="contactEmail">Contact Email:</Label>
+										<Input
+											type="email"
+											name="contactEmail"
+											id="contactEmail"
+											value={localIncident.email || ''}
+											onChange={(e) => setLocalIncident(prev => ({ ...prev, email: e.target.value }))}
+										/>
+									</FormGroup>
+								</Col>
+								<Col md={4}>
 									<FormGroup>
 										<Label for="contactPhoneNumber">Contact Phone Number:</Label>
 										<Input
 											type="text"
 											name="contactPhoneNumber"
 											id="contactPhoneNumber"
-											value={localIncident.contact_phone_number || ''}
-											onChange={(e) => setLocalIncident(prev => ({ ...prev, contact_phone_number: e.target.value }))}
+											value={localIncident.phone || ''}
+											onChange={(e) => setLocalIncident(prev => ({ ...prev, phone: e.target.value }))}
 										/>
 									</FormGroup>
 								</Col>
