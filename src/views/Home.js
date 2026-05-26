@@ -396,17 +396,9 @@ const Home = () => {
                 />
               </div>
               <div className="map-section">
-                {/* Mobile: Geography title above everything */}
-                <div className="mobile-label-title">
-                  <h3 className="label">{t('geography')}</h3>
-                </div>
-
                 <div className="map-content">
-                  {/* Desktop: Geography + Legend grouped */}
+                  {/* Desktop: legend only (Geography title removed) */}
                   <div className="map-legend-wrapper">
-                    <div className="desktop-label-title">
-                      <h3 className="label">{t('geography')}</h3>
-                    </div>
                     <div id="map-legend-container" className="map-legend" />
                   </div>
 
@@ -429,18 +421,14 @@ const Home = () => {
               </div>
 
               <div className="chart-section">
-                {/* Mobile: Trend title and TimeToggle in same line */}
+                {/* Mobile: TimeToggle only (Trend title removed) */}
                 <div className="mobile-chart-header">
-                  <h3 className="label">{t('trend')}</h3>
                   <TimeToggle viewMode={viewMode} setViewMode={setViewMode} />
                 </div>
 
                 <div className="chart-content">
-                  {/* Desktop: Trend + Legend grouped */}
+                  {/* Desktop: legend only (Trend title removed) */}
                   <div className="chart-legend-wrapper">
-                    <div className="desktop-label-title">
-                      <h3 className="label">{t('trend')}</h3>
-                    </div>
                     <div id="chart-legend-container" className="chart-legend" />
                   </div>
 
